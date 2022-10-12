@@ -1,14 +1,9 @@
-import os
-import re
-# external imports
+# -*- coding: utf-8 -*- 
+
 import requests
 import logging
 import xml.etree.ElementTree as ET
-# internal import
-from mail import mail
-import logs
-from datetime import datetime
-
+import re
 
 class AbesXml(object):
     """
@@ -24,8 +19,8 @@ class AbesXml(object):
         self.logger = logging.getLogger(service)
         self.endpoint = "https://www.sudoc.fr"
         self.service = service
-        self.ppn = ppn
-        if not(re.search("^\d{8}[\dxX]$", ppn)):
+        self.ppn = str(ppn)
+        if not(re.search("^\d{8}[\dxX]$", self.ppn)):
             self.status = "Error"
             self.logger.error("{} :: XmlAbes_Init :: PPN invalide".format(ppn))
             self.error_msg = "PPN invalide"
@@ -41,39 +36,40 @@ class AbesXml(object):
             else:
                 self.record = r.content.decode('utf-8')
                 self.status = 'Succes'
-                self.logger.debug("{} :: AbesXml :: Notice trouvées".format(ppn))
+                self.logger.debug("{} :: AbesXml :: Notice trouvée".format(ppn))
 
-    @property
-    
     def get_record(self):
-        """
-        Return the entire record
-        
-        Returns:
-            string -- the record in unimarc_xml 
-        """
+        """Return the entire record as a string in unimarc_xml."""
         return self.record
     
     def get_init_status(self):
-        """Return the init status
-        """
+        """Return the init status as a string."""
         return self.status
 
     def get_error_msg(self):
+        """Return the error message as a string."""
         if self.error_msg is not None:
             return self.error_msg
         else:
             return "Pas de message d'erreur"
 
     def get_title_info(self):
-        key_title = ''
+        """Return the first 200 field's title content as a string.
+        Each subfield is separated by a space."""
+        key_title = []
         root = ET.fromstring(self.record)
-        for subfield in root.find("./datafield[@tag='200']").getchildren():
+        for subfield in root.find("./datafield[@tag='200']").findall("./subfield"):
             if subfield.attrib['code'] in ('a','d','e','h','i','v') :
-                key_title = key_title + " " +subfield.text
-        return key_title
+                key_title.append(subfield.text)
+        return " ".join(key_title)
   
     def get_dates_pub(self):
+        """Return all publication dates in the 100 field.
+        Returns a tuple :
+         - 100 field
+         - date type (pos. 8)
+         - 1st publication date (pos. 9-12)
+         - 2nd publication date (pos. 13-16)"""
         root = ET.fromstring(self.record)
         zone_100 = None
         date_type = None
@@ -87,6 +83,7 @@ class AbesXml(object):
         return zone_100,date_type,date_1,date_2
    
     def get_leader(self):
+        """Return the leader field content as a string."""
         root = ET.fromstring(self.record)
         return root.find("./leader").text
     
@@ -98,6 +95,7 @@ class AbesXml(object):
         return ppn_list
 
     def get_editeurs(self):
+        """Return all publishers in 210/214$c subfields as a list."""
         root = ET.fromstring(self.record)
         ed_list = []
         for ed in root.findall("./datafield[@tag='214']/subfield[@code='c']"):
@@ -105,3 +103,22 @@ class AbesXml(object):
         for ed in root.findall("./datafield[@tag='210']/subfield[@code='c']"):
             ed_list.append(ed.text)
         return ed_list
+
+    def get_local_system_nb(self, ILN):
+        """Return all local system numbers as a list, without duplicates.
+
+        Takes the ILN as argument.
+        """
+        root = ET.fromstring(self.record)
+        local_sys_nb = []
+        U035s = root.findall(".//datafield[@tag='035']")
+
+        for U035 in U035s:
+            U035iln = U035.find("subfield[@code='1']")
+            if U035iln == None:
+                continue
+            
+            if U035iln.text == str(ILN) and not U035.find("subfield[@code='a']").text in local_sys_nb:
+                local_sys_nb.append(U035.find("subfield[@code='a']").text)
+
+        return local_sys_nb

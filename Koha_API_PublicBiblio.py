@@ -5,16 +5,12 @@
 
 # À améliorer pour que ça prenne aussi en compte le "private" getBiblio
 
-import os
-import re
 # external imports
-import requests
 import logging
+import requests
 import xml.etree.ElementTree as ET
 import json
-# internal import
-import logs
-from datetime import datetime
+import re
 
 NS = {
     'marc': 'http://www.loc.gov/MARC21/slim'
@@ -33,8 +29,6 @@ class Koha_API_PublicBiblio(object):
         - "application/marc-in-json"
         - "application/marc"
         - "text/plain"
-
-    ex : 
 """
 
     def __init__(self,bibnb,kohaUrl,service='Koha_API_PublicBiblio', format="application/marcxml+xml"):
@@ -49,13 +43,12 @@ class Koha_API_PublicBiblio(object):
             self.format = "application/marcxml+xml"
         else:
             self.format = format
-        #self.error_msg = ""
         if re.sub("\D", "", self.bibnb) != self.bibnb: # |||revoir cette conditin
             self.status = "Error"
             self.logger.error("{} :: Koha_API_PublicBiblio :: Biblionumber invalide".format(bibnb))
             self.error_msg = "Biblionumber invalide"
         else:
-            url =  '{}/{}'.format(self.endpoint, self.bibnb) #Changer ça
+            url =  '{}/{}'.format(self.endpoint, self.bibnb)
             payload = {
                 
                 }
@@ -80,18 +73,15 @@ class Koha_API_PublicBiblio(object):
                 self.logger.debug("{} :: Koha_API_PublicBiblio :: Notice trouvée".format(bibnb))
 
     def get_record(self):
-            """Return the entire record as a string of the specified format.
-            """
+            """Return the entire record as a string of the specified format."""
             return self.record
 
     def get_init_status(self):
-        """Return the init status as a string.
-        """
+        """Return the init status as a string."""
         return self.status
 
     def get_error_msg(self):
-        """Return the error message as a string.
-        """
+        """Return the error message as a string."""
         if hasattr(self, "error_msg"):
             return self.error_msg
         else:
@@ -208,5 +198,4 @@ class Koha_API_PublicBiblio(object):
     #     get_ppn_autre_support
     # Manque peut-être :
     #     get_dates_pub_210/214
-
-print(Koha_API_PublicBiblio(116946, "https://pro-ensa-koha.test.biblibre.eu", format="application/marc-in-json").get_editeurs())
+    #    get_bibnb_autre_support
