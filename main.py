@@ -377,6 +377,8 @@ with open(FILE_IN, 'r', encoding="utf-8") as fh:
         if len(result['SUDOC_214210c']) > 0 and len(result['KOHA_214210c']) > 0 : 
             result['MATCHING_EDITEUR_SIMILARITE'],result['SUDOC_CHOSEN_ED'],result['KOHA_CHOSEN_ED'] = teste_editeur(result['SUDOC_214210c'], result['KOHA_214210c'])
             logger.debug("{} :: {} :: {}".format(result["ISBN2PPN_ISBN"], SERVICE, "Scores des éditeurs : " + str(result['MATCHING_EDITEUR_SIMILARITE'])))
+        else: # Mandatory to prevent an error at the end
+            result['MATCHING_EDITEUR_SIMILARITE'],result['SUDOC_CHOSEN_ED'],result['KOHA_CHOSEN_ED'] = -1, "", ""
 
             # AlP : ignoré parce que on fait du physique sur physique, je pense pas que ce soit utile
 #             # Si les dates ne matche pas on va voir si la notice possède un lien vers la version physique pour aller tester cette date
@@ -445,6 +447,7 @@ for res in results:
         continue #if error, leaves
 
     # It was a success
+    results_report["SUCCES_ISBN2PPN"] += 1
     results_report["SUCCES_GLOBAL"] += 1
 
     # --------------- ANALYSIS ---------------
@@ -515,7 +518,7 @@ with open(FILE_OUT_RESULTS, 'w', encoding='utf-8') as f:
     f.write("Nombre de cas traités : " + str(results_report["TRAITES"]) + "\n")
     f.write("Nombre d'échecs sur isbn2ppn : " + str(results_report["ECHEC_ISBN2PPN"]) + "\n")
     f.write("Nombre multiples résultats sur isbn2ppn : " + str(results_report["TROP_PPN"]) + "\n")
-    f.write("Nombre de correspondance unique sur isbn2ppn : " + str(results_report["SUCCES_ISBN2PPN"]) + "\n")
+    f.write("Nombre de correspondance unique sur isbn2ppn : " + str(results_report["SUCCES_ISBN2PPN"]-results_report["TROP_PPN"]) + "\n")
     f.write("Nombre d'échecs sur Koha : " + str(results_report["ECHEC_KOHA"]) + "\n")
     f.write("Nombre d'échecs sur Sudoc : " + str(results_report["ECHEC_SUDOC"]) + "\n")
     f.write("Nombre de cas traités avec succès : " + str(results_report["SUCCES_GLOBAL"]) + "\n")
@@ -523,15 +526,5 @@ with open(FILE_OUT_RESULTS, 'w', encoding='utf-8') as f:
 logger.info("Fichier contenant le rapport : " + FILE_OUT_RESULTS)
 logger.info("--------------- Exécution terminée avec succès ---------------")
 
-# Forme du fichier pour l'abes : https://documentation.abes.fr/aideitem/index.html#ConstituerFichierDonneesExemplariser
-
-#Liste des changements :
-    # - modification du nettoyage des éditeurs pour enlever certains mots
-    # - changement du niveau des infos dans le logger vers INFO
-    # - corrections d'assignation de var (réécriture de la liste des ed avec l'ed choisi, titre de Sudoc affiché à la palce de celui de Koha, etc.)
-    # - ajout d'un paramètre pour choisir l'analyse voulue
-    # - ajout de l'analyse
-    # - paramétrage + export en CSV
-    # - pour éviter tout problème, l'export vers ITEM se fera sur une autre appli basée sur ce fichier
-    # - Koha utilise le JSON à cause d'un problème au niveau du XML qui parfois ne renvoie pas les 214$c + n'encode pas en UTF-8
-    # - exlusion dans le test des dates des dates vides
+# Il faut rajouter une vérification sur sile fichier existe
+# Regarder pourquoi les même bibnb plantent sur Koha
