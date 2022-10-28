@@ -9,7 +9,7 @@
 
 Le `résultats.txt` a un problème dans le Nombre de correspondance unique sur isbn2ppn.
 Il y en a 388 en réalité.
-Sur les 388, 19 requête Koha ont échouées, soit 4,9%.
+Sur les 388, 19 requêtes Koha ont échouées, soit 4,9%.
 
 Le format JSON dans Koha semble avoir corriger le problème pour les éditeurs
 
@@ -56,7 +56,7 @@ __Ce sont les mêmes biblionumbers qui ont échoué :__
 228100
 228197
 
-__Voir quel est le problème__
+__Ces notices n'existent plus dans Koha, il n'y a donc pas de problème au niveau du script__, c'est juste l'âge du fichier qui en est la cause.
 
 __Les mêmes ISBN ont échoué sur isbn2ppn.__
 L'isbn `211085457X` a eu un résultat de plus de la part de isbn2ppn dans le second essai.

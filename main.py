@@ -1,260 +1,66 @@
 # -*- coding: utf-8 -*- 
 
 # External imports
-from lzma import MODE_FAST
-import os
 import logging
-import re
-from unidecode import unidecode
 from fuzzywuzzy import fuzz
 import json
 
 # Internal import
+import os
 import logs
 import Abes_isbn2ppn
 import AbesXml
 import Koha_API_PublicBiblio
+from analysis import * # pour éviter de devoir réécrire tous les appels de fonctions
 
-# Var init
-SERVICE = "Compare_Koha_Sudoc_records"
-MY_PATH = os.getenv("MY_PATH")
+# Load settings
+with open('settings.json', encoding="utf-8") as f:
+    settings = json.load(f)
+
+# Get the original file
+MY_PATH = settings["MY_PATH"]
 file_in_name = input("Nom du fichier : ")
 FILE_IN = MY_PATH + "\\" + file_in_name
+
+# Leaves if the file doesn't exists
+if not os.path.exists(FILE_IN):
+    print("Erreur : le fichier n'existe pas")
+    exit()
+
+# Get the analysis to perform
+ANALYSIS = settings["ANALYSIS"] # Score = 0 to ignore
+ANALYSIS_NB = input("\n".join("N°{} : {}".format(str(ii), obj["name"]) for ii, obj in enumerate(ANALYSIS))
+                + "\n\nSaisir le numéro de l'analyse : ")
+
+# Leaves if the analysis id is invalid
+if ANALYSIS_NB.isnumeric():
+    if int(ANALYSIS_NB) >= 0 and int(ANALYSIS_NB) < len(ANALYSIS):
+        CHOSEN_ANALYSIS = ANALYSIS[int(ANALYSIS_NB)]
+    else:
+        print("Erreur : l'analyse choisie n'existe pas")
+        exit()
+else:
+    print("Erreur : il faut indiquer le numéro de l'analyse. A été indiquer :\n" + str(ANALYSIS_NB))
+    exit()
+
+# At this point, everything is OK, loads and initialise all vars
+SERVICE = settings["SERVICE"]
+
+LOGS_PATH = settings["LOGS_PATH"]
+
 FILE_OUT_RESULTS = MY_PATH + "\\resultats.txt"
 FILE_OUT_JSON = MY_PATH + "\\resultats.json"
 FILE_OUT_CSV = MY_PATH + "\\resultats.csv"
-LIST_ERROR_ADM = []
-KOHA_URL = os.getenv("KOHA_URL")
 
-# Analysis parameter
-# Score = 0 to ignore
-ANALYSIS = [
-    {"id":0,
-    "name": "Aucune analyse",
-    "TITLE_MIN_SCORE":0,
-    "NB_TITLE_OK":0,
-    "PUBLISHER_MIN_SCORE":0,
-    "USE_DATE":False
-    },
-    {"id":1,
-    "name": "Titre 80 (3/4), Editeurs 80, Dates",
-    "TITLE_MIN_SCORE":80,
-    "NB_TITLE_OK":3,
-    "PUBLISHER_MIN_SCORE":80,
-    "USE_DATE":True
-    },
-    {"id":2,
-    "name": "Titre 90",
-    "TITLE_MIN_SCORE":90,
-    "NB_TITLE_OK":4,
-    "PUBLISHER_MIN_SCORE":0,
-    "USE_DATE":False
-    },
-    {"id":3,
-    "name": "Titre 95, Editeurs 95",
-    "TITLE_MIN_SCORE":95,
-    "NB_TITLE_OK":4,
-    "PUBLISHER_MIN_SCORE":95,
-    "USE_DATE":False
-    },
-]
+KOHA_URL = settings["KOHA_URL"]
 
-ANALYSIS_ID = input("\n".join("ID {} : {}".format(str(ii["id"]), ii["name"]) for ii in ANALYSIS)
-                + "\n\nSaisir l'identifiant de l'analyse : ")
-
-# Leaves if the analysis id is invalid
-if ANALYSIS_ID.isnumeric():
-    if int(ANALYSIS_ID) >= 0 and int(ANALYSIS_ID) < len(ANALYSIS):
-        CHOSEN_ANALYSIS = ANALYSIS[int(ANALYSIS_ID)]
-    else:
-        exit()
-else:
-    exit()
-
-# CSV export columns
-# /!\ All the columns from the orignal doc will be appended at the end
-CSV_EXPORT_COLS = [
-    {"id":"INPUT_ISBN", "name":"ISBN Export Koha", "list":False},
-    {"id":"INPUT_KOHA_BIB_NB", "name":"Biblionumber Export Koha", "list":False},
-    {"id":"ERROR", "name":"Erreur", "list":False},
-    {"id":"ERROR_MSG", "name":"Message d'erreur", "list":False},
-    {"id":"FINAL_OK", "name":"Validation globale", "list":False},
-    {"id":"TITLE_OK", "name":"Validation des titres", "list":False},
-    {"id":"PUB_OK", "name":"Validation des éditeurs", "list":False},
-    {"id":"DATE_OK", "name":"Validation des dates", "list":False},
-    {"id":"ISBN2PPN_ISBN", "name":"ISBN pour isbn2ppn", "list":False},
-    {"id":"ISBN2PPN_NB_RES", "name":"Nb de résultats isbn2ppn", "list":False},
-    {"id":"ISBN2PPN_RES", "name":"Résultats isbn2ppn", "list":True},
-    {"id":"KOHA_BIB_NB", "name":"Biblionumber Koha", "list":False},
-    {"id":"PPN", "name":"PPN", "list":False},
-    {"id":"KOHA_200adehiv", "name":"Clef de titre Koha", "list":False},
-    {"id":"SUDOC_200adehiv", "name":"Clef de titre Sudoc", "list":False},
-    {"id":"KOHA_214210c", "name":"Éditeurs Koha", "list":True},
-    {"id":"SUDOC_214210c", "name":"Éditeurs Sudoc", "list":True},
-    {"id":"KOHA_CHOSEN_ED", "name":"Clef d'éditeur choisi Koha", "list":False},
-    {"id":"SUDOC_CHOSEN_ED", "name":"Clef d'éditeur choisi Sudoc", "list":False},
-    {"id":"KOHA_DATE_1", "name":"Date de pub. 1 Koha", "list":False},
-    {"id":"SUDOC_DATE_1", "name":"Date de pub. 1 Sudoc", "list":False},
-    {"id":"KOHA_DATE_2", "name":"Date de pub. 2 Koha", "list":False},
-    {"id":"SUDOC_DATE_2", "name":"Date de pub. 2 Sudoc", "list":False},
-    {"id":"MATCHING_TITRE_SIMILARITE", "name":"Score de similarité des titres", "list":False},
-    {"id":"MATCHING_TITRE_APPARTENANCE", "name":"Score d'appartenance des titres", "list":False},
-    {"id":"MATCHING_TITRE_INVERSION", "name":"Score d'inversion des titres", "list":False},
-    {"id":"MATCHING_TITRE_INVERSION_APPARTENANCE", "name":"Score d'inversion appartenance des titres", "list":False},
-    {"id":"MATCHING_EDITEUR_SIMILARITE", "name":"Score de similarité des éditeurs choisis", "list":False},
-    {"id":"MATCHING_DATE_PUB", "name":"Correspondance des dates de publications", "list":False}
-]
+CSV_EXPORT_COLS = settings["CSV_EXPORT_COLS"] # /!\ All the columns from the orignal doc will be appended at the end
 
 #On initialise le logger
-logs.init_logs(os.getenv('LOGS_PATH'),SERVICE,'DEBUG') # rajouter la date et heure d'exécution
+logs.init_logs(LOGS_PATH,SERVICE,'DEBUG') # rajouter la date et heure d'exécution
 logger = logging.getLogger(SERVICE)
 logger.info("Fichier en cours de traitement : " + FILE_IN)
 logger.info("URL Koha : " + KOHA_URL)
-
-
-def prepString(_str, _noise = True, _multiplespaces = True):
-    """Returns a string without punctuation and/or multispaces stripped and in lower case.
-
-    Takes as arguments :
-        - _str : the string to edit
-        - _noise [optional] {bool} : remove punctuation ?
-        - _multispaces [optional] {bool} : remove multispaces ?
-    """
-    # remove noise (punctuation) if asked (by default yes)
-    if _noise:
-        noise_list = [".", ",", "?", "!", ";","/",":","="]
-        for car in noise_list:
-            _str = _str.replace(car, " ")
-    # replace multiple spaces by ine in string if requested (default yes)
-    if _multiplespaces:
-        _str = re.sub("\s+", " ", _str).strip()
-    return _str.strip().lower()
-
-def nettoie_titre(titre) :
-    """Supprime les espaces, la ponctuation et les diacritiques transforme "&" en "et"
-
-    Args:
-        titre (string): une chaîne de caractères
-    """
-    if titre is not None :
-        titre_norm = prepString(titre)
-        titre_norm = titre_norm.replace('&', 'et')
-        titre_norm = titre_norm.replace('œ', 'oe')
-        # out = re.sub(r'[^\w]','',unidecode(titre_norm))
-        out = unidecode(titre_norm)
-        return out.lower()
-    else :
-        return titre
-
-def teste_date_pub(date_pub_sudoc, date_pub_koha):
-    """Checks if one of Sudoc publication date matches on of Koha's and returns True if it's the case.
-
-    Args:
-        date_pub_sudoc (tuple of strings): 1st and 2nd publication date in the Sudoc record
-        date_pub_koha (tuple of strings): 1st and 2nd publication date in the Koha record
-    """
-    # si Type de date de pub = reproduction on confronte la date de pub Alma à al date de pub. originale et à la date de reproduction
-    # ↑ AlP : j'ai un doute sur ce commentaire du code original
-
-    for date in date_pub_sudoc :
-        if date in date_pub_koha and date != "    ": # excludes empty dates
-            return True
-    return False
-
-# --- Designé pour Alma ---
-# AlP : pas adapté à Koha parce que supposément les documents ont pas de PPN dans Koha
-# def teste_ppn(ppn_sudoc,ppn_alma):
-    
-#     if ppn_sudoc == ppn_alma[5:]:
-#         return True
-#     else : 
-#         return False
-
-# --- Designé pour Alma ---
-# AlP : Je gère ça directement dans les conencteurs API
-# def zones_multiples(code_champ,code_sous_champ,record):
-#     liste_valeurs = []
-#     for champ in record.get_fields(code_champ):
-#         liste_valeurs.append(champ[code_sous_champ])
-#     return liste_valeurs
-
-# --- Designé pour Alma ---
-# AlP : pas adapté à Koha parce que supposément les documents ont pas de PPN dans Koha
-# def get_ppn(record):
-#     ppn_list = []
-#     champs_035 = zones_multiples('035','a',record)
-#     logger.debug(champs_035)
-#     for sys_number in champs_035 :
-#         if sys_number is not None :
-#             if sys_number.startswith('(PPN)') :
-#                 ppn_list.append(sys_number[5:14])
-#     return ppn_list
-
-def clean_publisher(pub):
-    """Deletes from the publisher name a list of words and returns the result as a string.
-
-    Takes as an argument the publisher name as a string."""
-    if pub is not None :
-        pub_noise_list = ["les editions", "les ed.", "les ed", "editions", "edition", "ed."] # this WILL probably delete too much things but we take the risk
-        # pas "ed" parce que c'est vraiment trop commun
-        pub_norm = prepString(pub, _noise=False) # We keep punctuation for the time being
-        pub_norm = pub_norm.lower()
-        pub_norm = pub_norm.replace('&', 'et')
-        pub_norm = pub_norm.replace('œ', 'oe')
-        pub_norm = unidecode(pub_norm)
-        
-        for car in pub_noise_list:
-            pub_norm = pub_norm.replace(car, " ")
-        
-        return prepString(pub_norm) # we don't need punctuation anymore
-    else :
-        return pub
-
-def teste_editeur(list_ed_sudoc, list_ed_koha):
-    """Confront every Sudoc publishers with every Koha publishers and returns the pair with the higher matching ratio as a tuple :
-            - score
-            - chosen Sudoc publisher
-            - chosen Koha publisher
-
-    Args:
-        list_ed_sudoc (list of strings): all 210/4$c of the Sudoc record
-        list_ed_koha (list of strings): all 210/4$c of the Koha record
-    """
-    score = 0
-    return_ed_sudoc = ""
-    return_ed_koha = ""
-    for ed_sudoc in list_ed_sudoc :
-        ed_sudoc = clean_publisher(ed_sudoc)
-        for ed_koha in list_ed_koha :
-            ed_koha = clean_publisher(ed_koha)
-            ratio_de_similarite = fuzz.ratio(ed_koha,ed_sudoc)
-            if ratio_de_similarite > score :
-                score = ratio_de_similarite
-                return_ed_sudoc = ed_sudoc
-                return_ed_koha = ed_koha
-    return score, return_ed_sudoc, return_ed_koha
-
-def analysis_checks(check, res):
-    """Launches each check for the analysis, returns the result as a boolean.
-    
-    Args:
-        check (string) : name of the check to perform
-        res (dict) : the result dict of the record to check"""
-    # Titles
-    if check == "TITLE":
-        res["TITLE_OK_NB"] = 0
-        # for each matching score, checks if it's high enough
-        title_score_list = ["SIMILARITE", "APPARTENANCE", "INVERSION", "INVERSION_APPARTENANCE"]
-        for title_score in title_score_list:
-            if res["MATCHING_TITRE_"+title_score] >= CHOSEN_ANALYSIS["TITLE_MIN_SCORE"]:
-                res["TITLE_OK_NB"] += 1
-        return (res["TITLE_OK_NB"] >= CHOSEN_ANALYSIS["NB_TITLE_OK"])
-    # Publishers
-    elif check == "PUB":
-        return (res["MATCHING_EDITEUR_SIMILARITE"] >= CHOSEN_ANALYSIS["PUBLISHER_MIN_SCORE"])
-    # Dates
-    elif check == "DATE":
-        return res["MATCHING_DATE_PUB"]
 
 def generate_line_for_csv(res):
     """Generates the line for the CSV export. Returns a string."""
@@ -287,7 +93,7 @@ with open(FILE_IN, 'r', encoding="utf-8") as fh:
         # 5 = 930$a, 6 = 930$j, 7 = 930$v, 8 = L035$a
         result["LINE_DIVIDED"] = line.split(";")
         result["INPUT_ISBN"] = result["LINE_DIVIDED"][0]
-        result["INPUT_KOHA_BIB_NB"] = result["LINE_DIVIDED"][8].rstrip()
+        result["INPUT_KOHA_BIB_NB"] = result["LINE_DIVIDED"][len(result["LINE_DIVIDED"])-1].rstrip()
         logger.info("-----> Traitement de la ligne : ISBN = \"{}\", Koha Bib Nb = \"{}\"".format(result["INPUT_ISBN"],result["INPUT_KOHA_BIB_NB"]))
 
         # --------------- ISBN2PPN ---------------
@@ -361,7 +167,6 @@ with open(FILE_IN, 'r', encoding="utf-8") as fh:
         result['MATCHING_TITRE_APPARTENANCE'] = fuzz.partial_ratio(result['SUDOC_200adehiv'].lower(),result['KOHA_200adehiv'].lower())
         result['MATCHING_TITRE_INVERSION'] = fuzz.token_sort_ratio(result['SUDOC_200adehiv'],result['KOHA_200adehiv'])
         result['MATCHING_TITRE_INVERSION_APPARTENANCE'] = fuzz.token_set_ratio(result['SUDOC_200adehiv'],result['KOHA_200adehiv'])
-        # ||| Corriger les énoncés
         logger.debug("{} :: {} :: {}".format(result["ISBN2PPN_ISBN"], SERVICE, "Score des titres : "
                                      + "Similarité : " + str(result['MATCHING_TITRE_SIMILARITE'])
                                      + " || Appartenance : " + str(result['MATCHING_TITRE_APPARTENANCE'])
@@ -452,7 +257,7 @@ for res in results:
 
     # --------------- ANALYSIS ---------------
     for check in results_list:
-        res[check+"_OK"] = analysis_checks(check, res)
+        res[check+"_OK"] = analysis_checks(CHOSEN_ANALYSIS, check, res)
 
     # Global validation
     # "" if 0 checks are asked, OK if all checks are OK, else, nb of OK 
@@ -490,7 +295,7 @@ logger.info("Fichier contenant les données en JSON : " + FILE_OUT_JSON)
 with open(FILE_OUT_CSV, 'w', encoding='utf-8') as f_csv:
     logger.info("Fichier contenant les données en CSV : " + FILE_OUT_CSV)
     # /!\ remember to change the headers if the Koha export changes
-    f_csv.write(";".join(col["name"] for col in CSV_EXPORT_COLS)+"isbn;915$a;$b;930$c;$e;$a;$j;$v;L035$a"+"\n")
+    f_csv.write(";".join(col["name"] for col in CSV_EXPORT_COLS)+";isbn;915$a;$b;930$c;$e;$a;$j;$v;L035$a"+"\n")
 
     # --------------- LOOP START ---------------
     for res in results:
@@ -525,6 +330,3 @@ with open(FILE_OUT_RESULTS, 'w', encoding='utf-8') as f:
 
 logger.info("Fichier contenant le rapport : " + FILE_OUT_RESULTS)
 logger.info("--------------- Exécution terminée avec succès ---------------")
-
-# Il faut rajouter une vérification sur sile fichier existe
-# Regarder pourquoi les même bibnb plantent sur Koha
