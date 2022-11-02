@@ -186,7 +186,7 @@ Toute donnée qui aurait dû être générer après qu'une erreur ait été renc
 Ci-dessous, la liste des clefs des dictionnaires compris dans `results` :
 * `ERROR` {bool}
 * `ERROR_MSG` {str} : chaîne de caractère vide si aucune erreur n'a eu lieu
-* `LINE_DIVIDED` {list of str} : chaque colonne du fichier original
+* chaque colonne du fichier original : chaque en-tête est une clef
 * `INPUT_ISBN` {str} : première colonne du fichier original (supposément, l'ISBN)
 * `INPUT_KOHA_BIB_NB` {str} : dernière colonne du fichier original (supposément, le biblionumber de Koha)
 * `ISBN2PPN_ISBN` {str} : IBSN normalisé renvoyé par `isbn2ppn.py validate_isbn()`, qui a été utilisé pour interroger isbn2ppn
@@ -264,5 +264,4 @@ Les messages suivent la même mise en forme, chaque information étant séparée
 ## À faire
 
 * Revoir si la comparaison des dates est bonne pour le mathc des éditions surtout
-* Changer la documentation pour l'analyse (avant, à la fin, maintenant, en plein milieu)
 * Forme du fichier pour l'abes : https://documentation.abes.fr/aideitem/index.html#ConstituerFichierDonneesExemplariser
