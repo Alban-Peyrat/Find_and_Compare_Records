@@ -23,7 +23,7 @@ def prepString(_str, _noise = True, _multiplespaces = True):
     return _str.strip().lower()
 
 def nettoie_titre(titre) :
-    """Supprime les espaces, la ponctuation et les diacritiques transforme "&" en "et"
+    """Supprime les espaces, la ponctuation et les diacritiques transforme "&" en "et" et renvoie le résultat en minuscule.
 
     Args:
         titre (string): une chaîne de caractères

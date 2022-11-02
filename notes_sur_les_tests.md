@@ -70,3 +70,18 @@ Validation globale :
 * 339 OK
 * 22 1
 * 7 0
+
+# Notes sur le test 3 (499 notices), version finale
+
+Aucune anomalie détectée à première vue
+
+* Analyse choisie : 2
+* 499 notices dans le fichier choisi
+
+* resultats.json : 711ko, 21970 lignes
+* resultats.csv : 155ko
+* logs : 665ko, 5702 lignes
+
+* Premier log : 2022-11-02 14:08:15,511
+* Dernier log : 2022-11-02 14:14:12,783
+* ~6 min pour l'exécution sur 499 documents (+30 sec par rapport à la dernière)

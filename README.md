@@ -5,7 +5,70 @@ Le traitement se focalise sur les correspondances uniques (ISBN trouvé et ne co
 
 # Fonctionnement
 
-Le script prend 
+## Validation de l'ISBN
+
+Pour chaque ligne dans le document à traiter, le script vérifie [si l'ISBN est valide](https://www.oreilly.com/library/view/regular-expressions-cookbook/9780596802837/ch04s13.html).
+S'il ne l'est pas, soit par sa forme, soit car la clef de contrôle est erronée, renvoie une erreur et passe à la prochaine ligne.
+
+## Interrogation de `isbn2ppn`
+
+Si l'ISBN est valide, interroge le [webservice `isbn2ppn` de l'Abes](https://documentation.abes.fr/sudoc/manuels/administration/aidewebservices/index.html#isbn2ppn) avec l'ISBN nettoyé (seul les chiffres et `X` sont conservés) pour récupérer le ou les PPNs associés à cet ISBN.
+Si le script ne parvient pas à sa connecter au service, si aucun PPN n'est renvoyé ou si trop de PPN sont renvoyés, renvoie une erreur et passe à la prochaine ligne
+
+## Récupération des informations des notices
+
+Si un seul PPN est renvoyé par `isbn2ppn`, le script interroge alors l'[API `getBiblioPublic` de Koha](https://api.koha-community.org/20.11.html#operation/getBiblioPublic) et le [webservice `MARCXML` de l'Abes](https://documentation.abes.fr/sudoc/manuels/administration/aidewebservices/index.html#SudocMarcXML).
+Il récupère de chacune de ces notices les informations suivantes :
+* le titre du document : une chaîne de caractère formée par le contenu de chaque sous-champ dont le code est `a`, `d`, `e`, `h`, `i` ou `v` du premier 200, séparé par un espace
+* les dates de publications : la première et la seconde date de publication contenu dans la 100$a
+* le nom de chaque éditeur : une liste contenant le contenu de chaque 210$c ou 214$c présent dans la notice
+
+Si l'interrogation à l'une des bases échoue, renvoie une erreur et passe à la prochaine ligne.
+
+## Nettoyage des titres
+
+Une fois le titre récupéré, le nettoie :
+* en remplaçant `.`, `,`, `?`, `!`, `;`, `/`, `:`, `=` par un espace
+* en suprimant les doubles espaces
+* en retirant les espaces en début en fin de titre
+* en le passant en minuscule
+* en remplaçant `&` par `et`
+* en remplaçant `œ` par `oe`
+* en ASCIIisant le titre (retirant les accents, cédilles, etc.)
+* en le passant à nouveau en minuscule
+
+## Nettoyage des éditeurs
+
+Les éditeurs sont également nettoyés avant d'être comparés :
+* en suprimant les doubles espaces
+* en retirant les espaces en début en fin de titre
+* en le passant en minuscule
+* en le passant à nouveau en minuscule
+* en remplaçant `&` par `et`
+* en remplaçant `œ` par `oe`
+* en ASCIIisant le titre (retirant les accents, cédilles, etc.)
+* en remplaçant par un espace, __dans l'ordre__ :
+  * `les editions`
+  * `les ed.`
+  * `les ed`
+  * `editions`
+  * `edition`
+  * `ed`
+* en remplaçant `.`, `,`, `?`, `!`, `;`, `/`, `:`, `=` par un espace
+* en suprimant les doubles espaces
+* en retirant les espaces en début en fin de titre
+* en le passant en minuscule
+
+## Comparaison des données entre les bases
+
+Une fois toutes les informations récupérées, compare les données entre les deux bases :
+* pour le titre : génère un score de similarité, d'appartenance, d'inversion et d'inversion appartenance à l'aide de [la distance de Levenshtein](https://fr.wikipedia.org/wiki/Distance_de_Levenshtein)
+* pour les dates de publication : vérifie si l'un des dates de Koha est comprise dans l'une des dates du Sudoc (ne compare pas si les dates ne sont pas renseignées)
+* pour les éditeurs : compare chaque éditeur de Koha avec chaque éditeur du Sudoc en génèrant un score de similarité, puis renvoie la paire avec le score le plus élevé.
+
+## Validation des critères de comparaisons
+
+Enfin, le script valide ou non chaque critère de comparaison de l'analyse choisie puis passe à la ligne suivante
 
 # Prérequis avant l'exécution du script
 
@@ -22,6 +85,12 @@ Ces variables doivent avoir été paramétrées dans `settings.json` avant l'ex�
 * `MY_PATH` : chemin d'accès au dossier contenant le fichier à analyser, dans lequel seront créé les fichiers de sortie
 * `KOHA_URL` : l'URL du Koha à interroger
 * `LOGS_PATH` : chemin d'accès au dossier dans lequel sera créé le fichiers contenant les logs
+
+Ces variables peuvent être modifiées si voulu :
+* `SERVICE` : nom du service, apparaît notamment dans les logs (et définit le nom du fichier de logs)
+* `ANALYSIS` : les analyses disponibles dans le script. [Voir comment configurer une analyse](#configurer-une-analyse)
+* `CSV_EXPORT_COLS` : les colonnes exportées dans le fichier CSV (hors colonnes du fichier original qui sont forcément exportées). [Voir comment ajouter des colonnes exportées](#fichier-csv)
+* `REPORT_SETTINGS` : les lignes affichées dans le rapport final. [Voir comment ajouter des lignes au rapport](#fichier-txt)
 
 # Analyse des résultats des correspondances
 
@@ -93,9 +162,9 @@ Pour ajouter une nouvelle analyse, il faut rajouter à la liste `ANALYSIS` défi
 # Forme des fichiers de sorties
 
 Le script génère 3 fichiers de sortie et 1 fichier de logs :
-* [`resultats.csv`](#fichier-csv) : 
-* [`resultats.json`](#fichier-json) : 
-* [`resultats.txt`](#fichier-txt) : un rapport textuel rappelant les paramétrages sélectionnés et des données chiffrées sur l'analyse
+* [`resultats.csv`](#fichier-csv)
+* [`resultats.json`](#fichier-json)
+* [`resultats.txt`](#fichier-txt)
 * [`Compare_Koha_Sudoc_records.log`](#logs)
 
 ## Fichier CSV
@@ -103,19 +172,18 @@ Le script génère 3 fichiers de sortie et 1 fichier de logs :
 Les données exportées pour chaque ligne sont définies dans la liste `CSV_EXPORT_COLS` définie dans `settings.json`, auxquelles seront forcément rajoutées l'intégralité des colonnes du fichier original, en dernières positions.
 Pour les données renseignées dans `CSV_EXPORT_COLS`, l'ordre des colonnes est égal à l'ordre des dictionnaires dans la liste.
 
-Pour les données conservant des listes, toutes les valeurs de la liste sont concaténées en utilisant `|` comme séparateur.
-__Les valeurs égale à `None` ne sont pas exportées.__ (voir #38705 et les problèmes de sous-champs vidés en MARCMXL dans Koha)
+Pour les données conservant des listes, toutes les valeurs de la liste sont concaténées au sein d'un `[]` en utilisant `,` comme séparateur et `'` comme délimiteur de texte (ou `"` si un `'` est présent dans la chaîne de texte).
 
 Pour rajouter une colonne, il faut ajouter à `CSV_EXPORT_COLS` un dictionnaire avec les clefs suivantes :
 * `id` {str} : nom de la donnée dans le script
 * `name` {str} : nom de la colonne dans le fichier CSV
-* `list` {bool} : la donnée est-elle une liste ?
+* __[inutile dans cette version]__`list` {bool} : la donnée est-elle une liste ?
 
 ## Fichier JSON
 
 Correspond à l'intégralité de la liste `results`, qui contient pour chaque ligne les informations utilisées pour l'analyse et les résultats de celle-ci.
 Toute donnée qui aurait dû être générer après qu'une erreur ait été rencontrée est absente pour la ligne.
-Ci dessous, la liste des clefs des dictionnaires compris dans `results` :
+Ci-dessous, la liste des clefs des dictionnaires compris dans `results` :
 * `ERROR` {bool}
 * `ERROR_MSG` {str} : chaîne de caractère vide si aucune erreur n'a eu lieu
 * `LINE_DIVIDED` {list of str} : chaque colonne du fichier original
@@ -126,15 +194,75 @@ Ci dessous, la liste des clefs des dictionnaires compris dans `results` :
 * `ISBN2PPN_RES` {list of str} : chaque PPN renvoyé par isbn2ppn
 * `PPN` {str} : le PPN renvoyé par isbn2ppn
 * `KOHA_BIB_NB` {str} : le biblionumber de Koha utilisé pour interroger Koha
-* || à finir
+* `KOHA_Leader` {str} : le label de la notice Koha
+* `KOHA_100a` {str} : le contenu de la 100$a de la notice Koha
+* `KOHA_DATE_TYPE` {str} : le type de la date de publication en 100$a de la notice Koha (caractère en position 8)
+* `KOHA_DATE_1` {str} : première date de publication en 100$a de la notice Koha (caractères en position 9-12)
+* `KOHA_DATE_2` {str} : seconde date de publication en 100$a de la notice Koha (caractères en position 13-16)
+* `KOHA_214210c` {list of str} : chaque contenu des 210$c ou 214$c de la notice Koha
+* `KOHA_200adehiv` {str} : renvoie [le titre nettoyé](#nettoyage-des-titres) présent en 200 de la notice Koha
+* `KOHA_Leader` {str} : le label de la notice Sudoc
+* `KOHA_100a` {str} : le contenu de la 100$a de la notice Sudoc
+* `KOHA_DATE_TYPE` {str} : le type de la date de publication en 100$a de la notice Sudoc (caractère en position 8)
+* `KOHA_DATE_1` {str} : première date de publication en 100$a de la notice Sudoc (caractères en position 9-12)
+* `KOHA_DATE_2` {str} : seconde date de publication en 100$a de la notice Sudoc (caractères en position 13-16)
+* `KOHA_214210c` {list of str} : chaque contenu des 210$c ou 214$c de la notice Sudoc
+* `KOHA_200adehiv` {str} : renvoie [le titre nettoyé](#nettoyage-des-titres) présent en 200 de la notice Sudoc
+* `MATCHING_TITRE_SIMILARITE` {int} : score de similarité des titres
+* `MATCHING_TITRE_APPARTENANCE` {int} : score d'appartenance des titres
+* `MATCHING_TITRE_INVERSION` {int} : score d'inversion des titres
+* `MATCHING_TITRE_INVERSION_APPARTENANCE` {int} : score d'inversion appartenance des titres
+* `MATCHING_DATE_PUB` {bool} : résultat de la comparaison des dates de publication
+* `MATCHING_EDITEUR_SIMILARITE` {int} : score de similarité des éditeurs choisis
+* `SUDOC_CHOSEN_ED` {str} : [nom de l'éditeur nettoyé](#nettoyage-des-editeurs) choisi dans la notice Sudoc
+* `KOHA_CHOSEN_ED` {str} : [nom de l'éditeur nettoyé](#nettoyage-des-editeurs) choisi dans la notice Koha
+* `TITLE_OK_NB` {int} : nombre de formes de titre ayant un score supéreieur ou égal au seuil minimum
+* `TITLE_OK` {bool} : [voir les résultats de l'analyse](#resultats-de-lanalyse)
+* `PUB_OK` {bool} : [voir les résultats de l'analyse](#resultats-de-lanalyse)
+* `DATE_OK` {bool} : [voir les résultats de l'analyse](#resultats-de-lanalyse)
+* `FINAL_OK` {str} : [voir les résultats de l'analyse](#resultats-de-lanalyse)
 
 ## Fichier TXT
 
+Ce fichier contient un rapport sur l'analyse, rappelant les paramétrages et des résultats de l'analyse.
+
+Les données exportées dans le rapport sont définies dans la liste `REPORT_SETTINGS` définie dans `settings.json`.
+L'ordre d'apparition au sein d'une même section est égal à l'ordre des dictionnaires dans la liste.
+
+Pour rajouter une ligne, il faut ajouter à `REPORT_SETTINGS` un dictionnaire avec les clefs suivantes :
+* `name` {str} : texte à afficher. Si une `var` est renseignée, ` : ` sera ajouté entre `name` et la valeur de `var`
+* `section` {int} : numéro de la section dans laquelle afficher la ligne
+* `var` {str} :
+  * `null` si l'on souhaite uniquement afficher du texte
+  * le nom de la variable dont l'on veut afficher le contenu
+
 ## Logs
+
+Le fichier contient les logs de niveau `DEBUG` et plus élevés (seuls `INFO` et `ERROR` sont utilisés au-dessus).
+Il suit l'exécution du script et se divise donc en plusieurs étapes, qui sont généralement signalées par des `INFO` entre `---------------`
+
+Les messages suivent la même mise en forme, chaque information étant séparée par ` :: `, les sous-informations étant généralement séparées par ` || ` :
+* le moment du log (`AAAA-MM-JJ HH:MM:SS:MMM`)
+* le niveau du log
+* _pour les DEBUG_ :
+  * l'identifiant utilisé
+  * le nom du service qui a généré le log
+  * l'information loggée
+* _pour les `INFO`_ :
+  * le message à afficher
+* _pour les `ERROR`_ :
+  * la donnée utilisée comme identifiant
+  * le nom du service qui a généré l'erreur
+  * _selon la cause de l'erreur_ :
+    * le nom de l'erreur
+    * des informations sur la requête HTTP qui a entraîné l'erreur :
+      * Statut de la réponse
+      * Méthode de la requête
+      * URL de la requête
+      * Réponse à la requête
 
 ## À faire
 
-* Finir la doc : je suis au fichier JSOn, faut encore faire tout le reste
 * Revoir si la comparaison des dates est bonne pour le mathc des éditions surtout
-* changer la génération des headers de du fichier original dans le nouveau csv
+* Changer la documentation pour l'analyse (avant, à la fin, maintenant, en plein milieu)
 * Forme du fichier pour l'abes : https://documentation.abes.fr/aideitem/index.html#ConstituerFichierDonneesExemplariser

@@ -59,5 +59,92 @@
         {"id":"MATCHING_TITRE_INVERSION_APPARTENANCE", "name":"Score d'inversion appartenance des titres", "list":false},
         {"id":"MATCHING_EDITEUR_SIMILARITE", "name":"Score de similarité des éditeurs choisis", "list":false},
         {"id":"MATCHING_DATE_PUB", "name":"Correspondance des dates de publications", "list":false}
+    ],
+    "REPORT_SETTINGS":[
+        {
+            "name":"Résultats de l'analyse",
+            "section":0,
+            "var":null
+        },
+        {
+            "name":"Fichier traité",
+            "section":1,
+            "var":"FILES['IN']"
+        },
+        {
+            "name":"URL Koha",
+            "section":1,
+            "var":"KOHA_URL"
+        },
+        {
+            "name":"Analyse choisie",
+            "section":1,
+            "var":"CHOSEN_ANALYSIS['name']"
+        },
+        {
+            "name":"Score minimum pour les titres",
+            "section":1,
+            "var":"CHOSEN_ANALYSIS['TITLE_MIN_SCORE']"
+        },
+        {
+            "name":"Nombre minimum de titres valides",
+            "section":1,
+            "var":"CHOSEN_ANALYSIS['NB_TITLE_OK']"
+        },
+        {
+            "name":"Score minimum pour les éditeurs",
+            "section":1,
+            "var":"CHOSEN_ANALYSIS['PUBLISHER_MIN_SCORE']"
+        },
+        {
+            "name":"Prise en compte des dates de publication",
+            "section":1,
+            "var":"CHOSEN_ANALYSIS['USE_DATE']"
+        },
+        {
+            "name":"Fichier contenant les données en JSON",
+            "section":1,
+            "var":"FILES['OUT_JSON']"
+        },
+        {
+            "name":"Fichier contenant les données en CSV",
+            "section":1,
+            "var":"FILES['OUT_CSV']"
+        },
+        {
+            "name":"Nombre de cas traités",
+            "section":2,
+            "var":"results_report['TRAITES']"
+        },
+        {
+            "name":"Nombre d'échecs sur isbn2ppn",
+            "section":2,
+            "var":"results_report['ECHEC_ISBN2PPN']"
+        },
+        {
+            "name":"Nombre multiples résultats sur isbn2ppn",
+            "section":2,
+            "var":"results_report['TROP_PPN']"
+        },
+        {
+            "name":"Nombre de correspondance unique sur isbn2ppn",
+            "section":2,
+            "var":"results_report['SUCCES_ISBN2PPN']-results_report['TROP_PPN']"
+        },
+        {
+            "name":"Nombre d'échecs sur Koha",
+            "section":2,
+            "var":"results_report['ECHEC_KOHA']"
+        },
+        {
+            "name":"Nombre d'échecs sur Sudoc",
+            "section":2,
+            "var":"results_report['ECHEC_SUDOC']"
+        },
+        {
+            "name":"Nombre de cas traités avec succès",
+            "section":2,
+            "var":"results_report['SUCCES_GLOBAL']"
+        }
     ]
 }
