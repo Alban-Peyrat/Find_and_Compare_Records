@@ -84,6 +84,7 @@ Ces bibliothèques sont utilisées par le script mais absentes de la [Python Sta
 Ces variables doivent avoir été paramétrées dans `settings.json` avant l'exécution du script :
 * `MY_PATH` : chemin d'accès au dossier contenant le fichier à analyser, dans lequel seront créé les fichiers de sortie
 * `KOHA_URL` : l'URL du Koha à interroger
+* `ILN` : l'ILN à utiliser pour vérifier la présence de numéros de système locaux au sein de la notice Sudoc
 * `LOGS_PATH` : chemin d'accès au dossier dans lequel sera créé le fichiers contenant les logs
 
 Ces variables peuvent être modifiées si voulu :
@@ -193,6 +194,9 @@ Ci-dessous, la liste des clefs des dictionnaires compris dans `results` :
 * `ISBN2PPN_NB_RES` {int} : nombre de résultats renvoyés par isbn2ppn
 * `ISBN2PPN_RES` {list of str} : chaque PPN renvoyé par isbn2ppn
 * `PPN` {str} : le PPN renvoyé par isbn2ppn
+* `SUDOC_LOCAL_SYSTEM_NB` {list of str} : les numéros de système présents dans la notice Sudoc __dédoublonnés__
+* `SUDOC_NB_LOCAL_SYSTEM_NB` {int} : le nombre de numéros de système présents dans la notice Sudoc __dédoublonnés__
+* `SUDOC_DIFFERENT_LOCAL_SYSTEM_NB` {bool} : si le nombre de numéros de système présents dans la notice Sudoc __dédoublonnés__ est supérieur à 0, est-ce que le biblionumber de Koha utilisé pour interroger Koha est compris dans la liste
 * `KOHA_BIB_NB` {str} : le biblionumber de Koha utilisé pour interroger Koha
 * `KOHA_Leader` {str} : le label de la notice Koha
 * `KOHA_100a` {str} : le contenu de la 100$a de la notice Koha
@@ -214,13 +218,13 @@ Ci-dessous, la liste des clefs des dictionnaires compris dans `results` :
 * `MATCHING_TITRE_INVERSION_APPARTENANCE` {int} : score d'inversion appartenance des titres
 * `MATCHING_DATE_PUB` {bool} : résultat de la comparaison des dates de publication
 * `MATCHING_EDITEUR_SIMILARITE` {int} : score de similarité des éditeurs choisis
-* `SUDOC_CHOSEN_ED` {str} : [nom de l'éditeur nettoyé](#nettoyage-des-editeurs) choisi dans la notice Sudoc
-* `KOHA_CHOSEN_ED` {str} : [nom de l'éditeur nettoyé](#nettoyage-des-editeurs) choisi dans la notice Koha
+* `SUDOC_CHOSEN_ED` {str} : [nom de l'éditeur nettoyé](#nettoyage-des-éditeurs) choisi dans la notice Sudoc
+* `KOHA_CHOSEN_ED` {str} : [nom de l'éditeur nettoyé](#nettoyage-des-éditeurs) choisi dans la notice Koha
 * `TITLE_OK_NB` {int} : nombre de formes de titre ayant un score supéreieur ou égal au seuil minimum
-* `TITLE_OK` {bool} : [voir les résultats de l'analyse](#resultats-de-lanalyse)
-* `PUB_OK` {bool} : [voir les résultats de l'analyse](#resultats-de-lanalyse)
-* `DATE_OK` {bool} : [voir les résultats de l'analyse](#resultats-de-lanalyse)
-* `FINAL_OK` {str} : [voir les résultats de l'analyse](#resultats-de-lanalyse)
+* `TITLE_OK` {bool} : [voir les résultats de l'analyse](#résultats-de-lanalyse)
+* `PUB_OK` {bool} : [voir les résultats de l'analyse](#résultats-de-lanalyse)
+* `DATE_OK` {bool} : [voir les résultats de l'analyse](#résultats-de-lanalyse)
+* `FINAL_OK` {str} : [voir les résultats de l'analyse](#résultats-de-lanalyse)
 
 ## Fichier TXT
 

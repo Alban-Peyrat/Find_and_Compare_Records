@@ -58,6 +58,8 @@ FILES["OUT_CSV"] = MY_PATH + "\\resultats.csv"
 
 KOHA_URL = settings["KOHA_URL"]
 
+ILN = settings["ILN"]
+
 CSV_EXPORT_COLS = settings["CSV_EXPORT_COLS"] # /!\ All the columns from the orignal doc will be appended at the end
 REPORT_SETTINGS = settings["REPORT_SETTINGS"]
 
@@ -182,6 +184,10 @@ with open(FILES["IN"], 'r', newline="", encoding="utf-8") as fh:
         result['SUDOC_100a'],result['SUDOC_DATE_TYPE'],result['SUDOC_DATE_1'],result['SUDOC_DATE_2'] = sudoc_record.get_dates_pub()
         result['SUDOC_214210c'] = sudoc_record.get_editeurs()
         result['SUDOC_200adehiv'] = nettoie_titre(sudoc_record.get_title_info())
+        result["SUDOC_LOCAL_SYSTEM_NB"] = sudoc_record.get_local_system_nb(ILN)
+        result["SUDOC_NB_LOCAL_SYSTEM_NB"] = len(result["SUDOC_LOCAL_SYSTEM_NB"])
+        if result["SUDOC_NB_LOCAL_SYSTEM_NB"] > 0:
+            result["SUDOC_DIFFERENT_LOCAL_SYSTEM_NB"] = not koha_record.bibnb in result["SUDOC_LOCAL_SYSTEM_NB"]
         logger.debug("{} :: {} :: {}".format(result["ISBN2PPN_ISBN"], SERVICE, "PPN : " + result['PPN']))
         logger.debug("{} :: {} :: {}".format(result["ISBN2PPN_ISBN"], SERVICE, "Sudoc titre nettoyé : " + result['SUDOC_200adehiv']))
 
@@ -258,7 +264,7 @@ generate_csv_output(FILES["OUT_CSV"], results, fieldnames_id, fieldnames_names=f
 logger.info("Fichier contenant les données en CSV : " + FILES["OUT_CSV"])
 
 # --------------- REPORT ---------------
-generate_report(REPORT_SETTINGS, FILES, KOHA_URL, CHOSEN_ANALYSIS, results_report)
+generate_report(REPORT_SETTINGS, FILES, KOHA_URL, ILN, CHOSEN_ANALYSIS, results_report)
 logger.info("Fichier contenant le rapport : " + FILES["OUT_RESULTS"])
 logger.info("--------------- Rapport ---------------")
 generate_report(REPORT_SETTINGS, FILES, KOHA_URL, CHOSEN_ANALYSIS, results_report, logger=logger)

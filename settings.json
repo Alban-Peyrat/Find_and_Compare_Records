@@ -3,6 +3,7 @@
     "MY_PATH":"C:\\Path\\To\\Directory\\With\\The\\Original\\File",
     "LOGS_PATH":"C:\\Path\\To\\Directory\\For\\The\\Log\\File",
     "KOHA_URL":"https://mykoha.fr/",
+    "ILN":"000",
     "ANALYSIS":[
         {"name": "Aucune analyse",
         "TITLE_MIN_SCORE":0,
@@ -43,6 +44,9 @@
         {"id":"ISBN2PPN_RES", "name":"Résultats isbn2ppn", "list":true},
         {"id":"KOHA_BIB_NB", "name":"Biblionumber Koha", "list":false},
         {"id":"PPN", "name":"PPN", "list":false},
+        {"id":"SUDOC_LOCAL_SYSTEM_NB", "name":"Koha bibnb déjà dans ce PPN", "list":false},
+        {"id":"SUDOC_NB_LOCAL_SYSTEM_NB", "name":"Nb de Koha bibnb déjà dans ce PPN", "list":false},
+        {"id":"SUDOC_DIFFERENT_LOCAL_SYSTEM_NB", "name":"Bibnb Koha différent de ceux déjà dans ce PPN ?", "list":false},
         {"id":"KOHA_200adehiv", "name":"Clef de titre Koha", "list":false},
         {"id":"SUDOC_200adehiv", "name":"Clef de titre Sudoc", "list":false},
         {"id":"KOHA_214210c", "name":"Éditeurs Koha", "list":true},
@@ -75,6 +79,11 @@
             "name":"URL Koha",
             "section":1,
             "var":"KOHA_URL"
+        },
+        {
+            "name":"ILN",
+            "section":1,
+            "var":"ILN"
         },
         {
             "name":"Analyse choisie",

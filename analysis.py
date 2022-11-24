@@ -50,6 +50,9 @@ def teste_date_pub(date_pub_sudoc, date_pub_koha):
             return True
     return False
 
+# Koha bibnb dans ceux déjà présents dans la notice Koha
+# Directly in the mainloop
+
 # Global analysis
 def analysis_checks(CHOSEN_ANALYSIS, check, res):
     """Launches each check for the analysis, returns the result as a boolean.
