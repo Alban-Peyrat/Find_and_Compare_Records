@@ -269,3 +269,7 @@ Les messages suivent la même mise en forme, chaque information étant séparée
 
 * Revoir si la comparaison des dates est bonne pour le mathc des éditions surtout
 * Forme du fichier pour l'abes : https://documentation.abes.fr/aideitem/index.html#ConstituerFichierDonneesExemplariser
+
+# Fait 
+
+* Utiliser MARCXML plutôt que JSON (#AR141 - #MT38705)

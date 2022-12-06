@@ -146,7 +146,7 @@ with open(FILES["IN"], 'r', newline="", encoding="utf-8") as fh:
 
         # --------------- KOHA ---------------
         # Get Koha record
-        koha_record = Koha_API_PublicBiblio.Koha_API_PublicBiblio(result["INPUT_KOHA_BIB_NB"], KOHA_URL, service=SERVICE, format="application/marc-in-json")
+        koha_record = Koha_API_PublicBiblio.Koha_API_PublicBiblio(result["INPUT_KOHA_BIB_NB"], KOHA_URL, service=SERVICE, format="application/marcxml+xml")
         # || marc-in-json parce que parfois le XML me renvoie pas de l'UTF-8 et renvoie pas de 214$c
         # || TICKET A FAIRE, exemple : 226701, voir les fichiers Probleme_API.txt et idem+_comprtement_normal
         # j'ai rajouté un filter(None) au moment de l'export CSV mais ça pose problème quand même...
