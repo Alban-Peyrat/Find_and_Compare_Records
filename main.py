@@ -8,12 +8,12 @@ from fuzzywuzzy import fuzz
 import json
 
 # Internal import
-import logs
-import Abes_isbn2ppn
-import AbesXml
-import Koha_API_PublicBiblio
-from analysis import * # pour éviter de devoir réécrire tous les appels de fonctions
-from outputing import * # pour éviter de devoir réécrire tous les appels de fonctions
+import scripts.logs as logs
+import api.Abes_isbn2ppn as Abes_isbn2ppn
+import api.AbesXml as AbesXml
+import api.Koha_API_PublicBiblio as Koha_API_PublicBiblio
+from scripts.analysis import * # pour éviter de devoir réécrire tous les appels de fonctions
+from scripts.outputing import * # pour éviter de devoir réécrire tous les appels de fonctions
 
 # Load settings
 with open('settings.json', encoding="utf-8") as f:

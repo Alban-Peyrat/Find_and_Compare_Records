@@ -1,4 +1,5 @@
 my_settings.json
+settings.json
 settings_Sophie.json
 notes_sur_les_tests.md
 pbs
@@ -133,3 +134,4 @@ dmypy.json
 # Pyre type checker
 .pyre/
 
+settings.json

@@ -1,159 +1,293 @@
 {
-    "SERVICE":"Compare_Koha_Sudoc_records",
-    "MY_PATH":"C:\\Path\\To\\Directory\\With\\The\\Original\\File",
-    "LOGS_PATH":"C:\\Path\\To\\Directory\\For\\The\\Log\\File",
-    "KOHA_URL":"https://mykoha.fr/",
-    "ILN":"000",
-    "ANALYSIS":[
-        {"name": "Aucune analyse",
-        "TITLE_MIN_SCORE":0,
-        "NB_TITLE_OK":0,
-        "PUBLISHER_MIN_SCORE":0,
-        "USE_DATE":false
+    "SERVICE": "Compare_Koha_Sudoc_records",
+    "FILE_PATH": "C:/Users/alban.peyrat/Documents/_Code/_EXEC_PYTHON/Better_ITEM/test_for_better_item.txt",
+    "OUTPUT_PATH": "C:/Users/alban.peyrat/Documents/_Code/_EXEC_PYTHON/Better_ITEM/results",
+    "LOGS_PATH": "C:/Users/alban.peyrat/Documents/_Code/_EXEC_PYTHON/_logs",
+    "KOHA_URL": "https://pro-ensa-koha.test.biblibre.eu/",
+    "ILN": "428",
+    "RCR": "130552319",
+    "ANALYSIS": [
+        {
+            "name": "Aucune analyse",
+            "TITLE_MIN_SCORE": 0,
+            "NB_TITLE_OK": 0,
+            "PUBLISHER_MIN_SCORE": 0,
+            "USE_DATE": false
         },
-        {"name": "Titre 80 (3/4), Editeurs 80, Dates",
-        "TITLE_MIN_SCORE":80,
-        "NB_TITLE_OK":3,
-        "PUBLISHER_MIN_SCORE":80,
-        "USE_DATE":true
+        {
+            "name": "Titre 80 (3/4), Editeurs 80, Dates",
+            "TITLE_MIN_SCORE": 80,
+            "NB_TITLE_OK": 3,
+            "PUBLISHER_MIN_SCORE": 80,
+            "USE_DATE": true
         },
-        {"name": "Titre 90",
-        "TITLE_MIN_SCORE":90,
-        "NB_TITLE_OK":4,
-        "PUBLISHER_MIN_SCORE":0,
-        "USE_DATE":false
+        {
+            "name": "Titre 90",
+            "TITLE_MIN_SCORE": 90,
+            "NB_TITLE_OK": 4,
+            "PUBLISHER_MIN_SCORE": 0,
+            "USE_DATE": false
         },
-        {"name": "Titre 95, Editeurs 95",
-        "TITLE_MIN_SCORE":95,
-        "NB_TITLE_OK":4,
-        "PUBLISHER_MIN_SCORE":95,
-        "USE_DATE":false
+        {
+            "name": "Titre 95, Editeurs 95",
+            "TITLE_MIN_SCORE": 95,
+            "NB_TITLE_OK": 4,
+            "PUBLISHER_MIN_SCORE": 95,
+            "USE_DATE": false
         }
     ],
-    "CSV_EXPORT_COLS":[
-        {"id":"INPUT_ISBN", "name":"ISBN Export Koha", "list":false},
-        {"id":"INPUT_KOHA_BIB_NB", "name":"Biblionumber Export Koha", "list":false},
-        {"id":"ERROR", "name":"Erreur", "list":false},
-        {"id":"ERROR_MSG", "name":"Message d'erreur", "list":false},
-        {"id":"FINAL_OK", "name":"Validation globale", "list":false},
-        {"id":"TITLE_OK", "name":"Validation des titres", "list":false},
-        {"id":"PUB_OK", "name":"Validation des éditeurs", "list":false},
-        {"id":"DATE_OK", "name":"Validation des dates", "list":false},
-        {"id":"ISBN2PPN_ISBN", "name":"ISBN pour isbn2ppn", "list":false},
-        {"id":"ISBN2PPN_NB_RES", "name":"Nb de résultats isbn2ppn", "list":false},
-        {"id":"ISBN2PPN_RES", "name":"Résultats isbn2ppn", "list":true},
-        {"id":"KOHA_BIB_NB", "name":"Biblionumber Koha", "list":false},
-        {"id":"PPN", "name":"PPN", "list":false},
-        {"id":"SUDOC_LOCAL_SYSTEM_NB", "name":"Koha bibnb déjà dans ce PPN", "list":false},
-        {"id":"SUDOC_NB_LOCAL_SYSTEM_NB", "name":"Nb de Koha bibnb déjà dans ce PPN", "list":false},
-        {"id":"SUDOC_DIFFERENT_LOCAL_SYSTEM_NB", "name":"Bibnb Koha différent de ceux déjà dans ce PPN ?", "list":false},
-        {"id":"KOHA_200adehiv", "name":"Clef de titre Koha", "list":false},
-        {"id":"SUDOC_200adehiv", "name":"Clef de titre Sudoc", "list":false},
-        {"id":"KOHA_214210c", "name":"Éditeurs Koha", "list":true},
-        {"id":"SUDOC_214210c", "name":"Éditeurs Sudoc", "list":true},
-        {"id":"KOHA_CHOSEN_ED", "name":"Clef d'éditeur choisi Koha", "list":false},
-        {"id":"SUDOC_CHOSEN_ED", "name":"Clef d'éditeur choisi Sudoc", "list":false},
-        {"id":"KOHA_DATE_1", "name":"Date de pub. 1 Koha", "list":false},
-        {"id":"SUDOC_DATE_1", "name":"Date de pub. 1 Sudoc", "list":false},
-        {"id":"KOHA_DATE_2", "name":"Date de pub. 2 Koha", "list":false},
-        {"id":"SUDOC_DATE_2", "name":"Date de pub. 2 Sudoc", "list":false},
-        {"id":"MATCHING_TITRE_SIMILARITE", "name":"Score de similarité des titres", "list":false},
-        {"id":"MATCHING_TITRE_APPARTENANCE", "name":"Score d'appartenance des titres", "list":false},
-        {"id":"MATCHING_TITRE_INVERSION", "name":"Score d'inversion des titres", "list":false},
-        {"id":"MATCHING_TITRE_INVERSION_APPARTENANCE", "name":"Score d'inversion appartenance des titres", "list":false},
-        {"id":"MATCHING_EDITEUR_SIMILARITE", "name":"Score de similarité des éditeurs choisis", "list":false},
-        {"id":"MATCHING_DATE_PUB", "name":"Correspondance des dates de publications", "list":false}
+    "CSV_EXPORT_COLS": [
+        {
+            "id": "INPUT_ISBN",
+            "name": "ISBN Export Koha",
+            "list": false
+        },
+        {
+            "id": "INPUT_KOHA_BIB_NB",
+            "name": "Biblionumber Export Koha",
+            "list": false
+        },
+        {
+            "id": "ERROR",
+            "name": "Erreur",
+            "list": false
+        },
+        {
+            "id": "ERROR_MSG",
+            "name": "Message d'erreur",
+            "list": false
+        },
+        {
+            "id": "FINAL_OK",
+            "name": "Validation globale",
+            "list": false
+        },
+        {
+            "id": "TITLE_OK",
+            "name": "Validation des titres",
+            "list": false
+        },
+        {
+            "id": "PUB_OK",
+            "name": "Validation des \u00e9diteurs",
+            "list": false
+        },
+        {
+            "id": "DATE_OK",
+            "name": "Validation des dates",
+            "list": false
+        },
+        {
+            "id": "ISBN2PPN_ISBN",
+            "name": "ISBN pour isbn2ppn",
+            "list": false
+        },
+        {
+            "id": "ISBN2PPN_NB_RES",
+            "name": "Nb de r\u00e9sultats isbn2ppn",
+            "list": false
+        },
+        {
+            "id": "ISBN2PPN_RES",
+            "name": "R\u00e9sultats isbn2ppn",
+            "list": true
+        },
+        {
+            "id": "KOHA_BIB_NB",
+            "name": "Biblionumber Koha",
+            "list": false
+        },
+        {
+            "id": "PPN",
+            "name": "PPN",
+            "list": false
+        },
+        {
+            "id": "SUDOC_LOCAL_SYSTEM_NB",
+            "name": "Koha bibnb d\u00e9j\u00e0 dans ce PPN",
+            "list": false
+        },
+        {
+            "id": "SUDOC_NB_LOCAL_SYSTEM_NB",
+            "name": "Nb de Koha bibnb d\u00e9j\u00e0 dans ce PPN",
+            "list": false
+        },
+        {
+            "id": "SUDOC_DIFFERENT_LOCAL_SYSTEM_NB",
+            "name": "Bibnb Koha diff\u00e9rent de ceux d\u00e9j\u00e0 dans ce PPN ?",
+            "list": false
+        },
+        {
+            "id": "KOHA_200adehiv",
+            "name": "Clef de titre Koha",
+            "list": false
+        },
+        {
+            "id": "SUDOC_200adehiv",
+            "name": "Clef de titre Sudoc",
+            "list": false
+        },
+        {
+            "id": "KOHA_214210c",
+            "name": "\u00c9diteurs Koha",
+            "list": true
+        },
+        {
+            "id": "SUDOC_214210c",
+            "name": "\u00c9diteurs Sudoc",
+            "list": true
+        },
+        {
+            "id": "KOHA_CHOSEN_ED",
+            "name": "Clef d'\u00e9diteur choisi Koha",
+            "list": false
+        },
+        {
+            "id": "SUDOC_CHOSEN_ED",
+            "name": "Clef d'\u00e9diteur choisi Sudoc",
+            "list": false
+        },
+        {
+            "id": "KOHA_DATE_1",
+            "name": "Date de pub. 1 Koha",
+            "list": false
+        },
+        {
+            "id": "SUDOC_DATE_1",
+            "name": "Date de pub. 1 Sudoc",
+            "list": false
+        },
+        {
+            "id": "KOHA_DATE_2",
+            "name": "Date de pub. 2 Koha",
+            "list": false
+        },
+        {
+            "id": "SUDOC_DATE_2",
+            "name": "Date de pub. 2 Sudoc",
+            "list": false
+        },
+        {
+            "id": "MATCHING_TITRE_SIMILARITE",
+            "name": "Score de similarit\u00e9 des titres",
+            "list": false
+        },
+        {
+            "id": "MATCHING_TITRE_APPARTENANCE",
+            "name": "Score d'appartenance des titres",
+            "list": false
+        },
+        {
+            "id": "MATCHING_TITRE_INVERSION",
+            "name": "Score d'inversion des titres",
+            "list": false
+        },
+        {
+            "id": "MATCHING_TITRE_INVERSION_APPARTENANCE",
+            "name": "Score d'inversion appartenance des titres",
+            "list": false
+        },
+        {
+            "id": "MATCHING_EDITEUR_SIMILARITE",
+            "name": "Score de similarit\u00e9 des \u00e9diteurs choisis",
+            "list": false
+        },
+        {
+            "id": "MATCHING_DATE_PUB",
+            "name": "Correspondance des dates de publications",
+            "list": false
+        }
     ],
-    "REPORT_SETTINGS":[
+    "REPORT_SETTINGS": [
         {
-            "name":"Résultats de l'analyse",
-            "section":0,
-            "var":null
+            "name": "R\u00e9sultats de l'analyse",
+            "section": 0,
+            "var": null
         },
         {
-            "name":"Fichier traité",
-            "section":1,
-            "var":"FILES['IN']"
+            "name": "Fichier trait\u00e9",
+            "section": 1,
+            "var": "FILES['IN']"
         },
         {
-            "name":"URL Koha",
-            "section":1,
-            "var":"KOHA_URL"
+            "name": "URL Koha",
+            "section": 1,
+            "var": "KOHA_URL"
         },
         {
-            "name":"ILN",
-            "section":1,
-            "var":"ILN"
+            "name": "ILN",
+            "section": 1,
+            "var": "ILN"
         },
         {
-            "name":"Analyse choisie",
-            "section":1,
-            "var":"CHOSEN_ANALYSIS['name']"
+            "name": "Analyse choisie",
+            "section": 1,
+            "var": "CHOSEN_ANALYSIS['name']"
         },
         {
-            "name":"Score minimum pour les titres",
-            "section":1,
-            "var":"CHOSEN_ANALYSIS['TITLE_MIN_SCORE']"
+            "name": "Score minimum pour les titres",
+            "section": 1,
+            "var": "CHOSEN_ANALYSIS['TITLE_MIN_SCORE']"
         },
         {
-            "name":"Nombre minimum de titres valides",
-            "section":1,
-            "var":"CHOSEN_ANALYSIS['NB_TITLE_OK']"
+            "name": "Nombre minimum de titres valides",
+            "section": 1,
+            "var": "CHOSEN_ANALYSIS['NB_TITLE_OK']"
         },
         {
-            "name":"Score minimum pour les éditeurs",
-            "section":1,
-            "var":"CHOSEN_ANALYSIS['PUBLISHER_MIN_SCORE']"
+            "name": "Score minimum pour les \u00e9diteurs",
+            "section": 1,
+            "var": "CHOSEN_ANALYSIS['PUBLISHER_MIN_SCORE']"
         },
         {
-            "name":"Prise en compte des dates de publication",
-            "section":1,
-            "var":"CHOSEN_ANALYSIS['USE_DATE']"
+            "name": "Prise en compte des dates de publication",
+            "section": 1,
+            "var": "CHOSEN_ANALYSIS['USE_DATE']"
         },
         {
-            "name":"Fichier contenant les données en JSON",
-            "section":1,
-            "var":"FILES['OUT_JSON']"
+            "name": "Fichier contenant les donn\u00e9es en JSON",
+            "section": 1,
+            "var": "FILES['OUT_JSON']"
         },
         {
-            "name":"Fichier contenant les données en CSV",
-            "section":1,
-            "var":"FILES['OUT_CSV']"
+            "name": "Fichier contenant les donn\u00e9es en CSV",
+            "section": 1,
+            "var": "FILES['OUT_CSV']"
         },
         {
-            "name":"Nombre de cas traités",
-            "section":2,
-            "var":"results_report['TRAITES']"
+            "name": "Nombre de cas trait\u00e9s",
+            "section": 2,
+            "var": "results_report['TRAITES']"
         },
         {
-            "name":"Nombre d'échecs sur isbn2ppn",
-            "section":2,
-            "var":"results_report['ECHEC_ISBN2PPN']"
+            "name": "Nombre d'\u00e9checs sur isbn2ppn",
+            "section": 2,
+            "var": "results_report['ECHEC_ISBN2PPN']"
         },
         {
-            "name":"Nombre multiples résultats sur isbn2ppn",
-            "section":2,
-            "var":"results_report['TROP_PPN']"
+            "name": "Nombre multiples r\u00e9sultats sur isbn2ppn",
+            "section": 2,
+            "var": "results_report['TROP_PPN']"
         },
         {
-            "name":"Nombre de correspondance unique sur isbn2ppn",
-            "section":2,
-            "var":"results_report['SUCCES_ISBN2PPN']-results_report['TROP_PPN']"
+            "name": "Nombre de correspondance unique sur isbn2ppn",
+            "section": 2,
+            "var": "results_report['SUCCES_ISBN2PPN']-results_report['TROP_PPN']"
         },
         {
-            "name":"Nombre d'échecs sur Koha",
-            "section":2,
-            "var":"results_report['ECHEC_KOHA']"
+            "name": "Nombre d'\u00e9checs sur Koha",
+            "section": 2,
+            "var": "results_report['ECHEC_KOHA']"
         },
         {
-            "name":"Nombre d'échecs sur Sudoc",
-            "section":2,
-            "var":"results_report['ECHEC_SUDOC']"
+            "name": "Nombre d'\u00e9checs sur Sudoc",
+            "section": 2,
+            "var": "results_report['ECHEC_SUDOC']"
         },
         {
-            "name":"Nombre de cas traités avec succès",
-            "section":2,
-            "var":"results_report['SUCCES_GLOBAL']"
+            "name": "Nombre de cas trait\u00e9s avec succ\u00e8s",
+            "section": 2,
+            "var": "results_report['SUCCES_GLOBAL']"
         }
     ]
 }
