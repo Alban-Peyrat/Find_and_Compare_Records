@@ -26,13 +26,17 @@ class AbesXml(object):
             self.error_msg = "PPN invalide"
         else:
             url =  '{}/{}.xml'.format(self.endpoint, self.ppn)
-            r = requests.get(url)
             try:
-                r.raise_for_status()  
+                r = requests.get(url)
+                r.raise_for_status()
             except requests.exceptions.HTTPError:
                 self.status = 'Error'
                 self.logger.error("{} :: XmlAbes_Init :: HTTP Status: {} || Method: {} || URL: {} || Response: {}".format(ppn, r.status_code, r.request.method, r.url, r.text))
                 self.error_msg = "PPN inconnu ou service indisponible"
+            except requests.exceptions.RequestException as generic_error:
+                self.status = 'Error'
+                self.logger.error("{} :: XmlAbes_Init :: Generic exception || URL: {} || {}".format(ppn, url, generic_error))
+                self.error_msg = "Exception générique, voir les logs pour plus de détails"
             else:
                 self.record = r.content.decode('utf-8')
                 self.status = 'Succes'

@@ -20,11 +20,14 @@ with open('settings.json', encoding="utf-8") as f:
     settings = json.load(f)
 
 # Get the original file
-MY_PATH = settings["MY_PATH"]
-print("Dossier contenant le fichier à traiter : " + MY_PATH)
-file_in_name = input("Nom du fichier : ")
+FILE_PATH = settings["FILE_PATH"]
+print("Fichier à traiter : " + FILE_PATH)
+file_name = input("Si un autre fichier est à traiter, écrire son nom complet, sinon, laisser vide :\n")
 FILES = {}
-FILES["IN"] = MY_PATH + "\\" + file_in_name
+if file_name == "":
+    FILES["IN"] = FILE_PATH
+else:
+    FILES["IN"] = file_name
 
 # Leaves if the file doesn't exists
 if not os.path.exists(FILES["IN"]):
@@ -50,11 +53,12 @@ else:
 # At this point, everything is OK, loads and initialise all vars
 SERVICE = settings["SERVICE"]
 
+OUTPUT_PATH = settings["OUTPUT_PATH"]
 LOGS_PATH = settings["LOGS_PATH"]
 
-FILES["OUT_RESULTS"] = MY_PATH + "\\resultats.txt"
-FILES["OUT_JSON"] = MY_PATH + "\\resultats.json"
-FILES["OUT_CSV"] = MY_PATH + "\\resultats.csv"
+FILES["OUT_RESULTS"] = OUTPUT_PATH + "/resultats.txt"
+FILES["OUT_JSON"] = OUTPUT_PATH + "/resultats.json"
+FILES["OUT_CSV"] = OUTPUT_PATH + "/resultats.csv"
 
 KOHA_URL = settings["KOHA_URL"]
 

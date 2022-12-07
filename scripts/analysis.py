@@ -4,7 +4,7 @@
 from fuzzywuzzy import fuzz
 
 # Internal import
-from scripts.prep_data import * # pour éviter de devoir réécrire tous les appels de fonctions
+from prep_data import * # pour éviter de devoir réécrire tous les appels de fonctions
 
 # Titles
 # directly in the main loop

@@ -55,13 +55,18 @@ class Koha_API_PublicBiblio(object):
             headers = {
                 "accept":self.format
                 }
-            r = requests.get(url, headers=headers, params=payload)
+            
             try:
-                r.raise_for_status()  
+                r = requests.get(url, headers=headers, params=payload)
+                r.raise_for_status()
             except requests.exceptions.HTTPError:
                 self.status = 'Error'
                 self.logger.error("{} :: Koha_API_PublicBiblio_Init :: HTTP Status: {} || Method: {} || URL: {} || Response: {}".format(bibnb, r.status_code, r.request.method, r.url, r.text))
                 self.error_msg = "Biblionumber inconnu ou service indisponible"
+            except requests.exceptions.RequestException as generic_error:
+                self.status = 'Error'
+                self.logger.error("{} :: Koha_API_PublicBiblio_Init :: Generic exception || URL: {} || {}".format(bibnb, url, generic_error))
+                self.error_msg = "Exception générique, voir les logs pour plus de détails"
             else:
                 # apparently its double-encoded in JSON ?? See : https://stackoverflow.com/questions/4267019/double-decoding-unicode-in-python
                 # So yeah, decode->encode->decode for JSON
