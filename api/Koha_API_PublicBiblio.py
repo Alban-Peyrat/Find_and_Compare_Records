@@ -179,9 +179,7 @@ class Koha_API_PublicBiblio(object):
 
         if self.format == "application/marcxml+xml":
             root = ET.fromstring(self.record)
-            for ed in root.findall("./marc:datafield[@tag='214']/marc:subfield[@code='c']", NS):
-                ed_list.append(ed.text)
-            for ed in root.findall("./marc:datafield[@tag='210']/marc:subfield[@code='c']", NS):
+            for ed in root.findall("./marc:datafield[@tag='214']/marc:subfield[@code='c']", NS) + root.findall("./marc:datafield[@tag='210']/marc:subfield[@code='c']", NS):
                 ed_list.append(ed.text)
 
         elif self.format == "application/marc-in-json":

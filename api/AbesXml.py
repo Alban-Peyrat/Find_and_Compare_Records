@@ -102,9 +102,7 @@ class AbesXml(object):
         """Return all publishers in 210/214$c subfields as a list."""
         root = ET.fromstring(self.record)
         ed_list = []
-        for ed in root.findall("./datafield[@tag='214']/subfield[@code='c']"):
-            ed_list.append(ed.text)
-        for ed in root.findall("./datafield[@tag='210']/subfield[@code='c']"):
+        for ed in root.findall("./datafield[@tag='214']/subfield[@code='c']") + root.findall("./datafield[@tag='210']/subfield[@code='c']"):
             ed_list.append(ed.text)
         return ed_list
 
@@ -126,3 +124,47 @@ class AbesXml(object):
                 local_sys_nb.append(U035.find("subfield[@code='a']").text)
 
         return local_sys_nb
+    
+    def get_library_items(self, RCR):
+        """Return all items for the library as a dict of dict, using EPN as key for the first dict.
+        
+        Takes the RCR as argument.
+        EPN dicts :
+            - barcode {list of str}
+            - all fields {list of str}
+        """
+        
+        root = ET.fromstring(self.record)
+        # From Description des données d'exemplaire pour l'échange d'information bibliographique en format UNIMARC - Recommendations - Version 3 - Mai 2022
+        item_tags = ["915", "916", "917", "919", "920", "930", "931", "932",
+            "955", "956", "957", "958", "990", "991", "992",
+            "316", "317", "318", "319", "371",
+            "702", "703", "712", "713", "722", "723",
+            "856",
+            "940", "941"] #Sudoc
+        items = {}
+        
+        # For each field of item_tags
+        for tag in item_tags:
+            for field in root.findall(".//datafield[@tag='{}']".format(tag)):
+
+                # If the field is linked to an item
+                field5 = field.find("subfield[@code='5']")
+                if field5 != None:
+
+                    # If the item is from this RCR
+                    if field5.text[:9] == RCR:
+                        EPN = field5.text[10:]
+
+                        # Creates this EPN if doesn't exist already
+                        if not EPN in items:
+                            items[EPN] = {"barcodes":[],"fields":[]}
+
+                        # Add barcodes to this EPN
+                        if field.attrib["tag"] == "915":
+                            for U915 in field.findall("subfield[@code='b']"):
+                                items[EPN]["barcodes"].append(U915.text)
+
+                            
+                        items[EPN]["fields"].append(ET.tostring(field))
+        return items
