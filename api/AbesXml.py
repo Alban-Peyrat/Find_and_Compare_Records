@@ -166,5 +166,5 @@ class AbesXml(object):
                                 items[EPN]["barcodes"].append(U915.text)
 
                             
-                        items[EPN]["fields"].append(ET.tostring(field))
+                        items[EPN]["fields"].append(str(ET.tostring(field)))
         return items
