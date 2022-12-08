@@ -22,12 +22,19 @@ with open('./settings.json', "r+", encoding="utf-8") as f:
         [sg.Text("Nom du service :")],
         [sg.Input(key="SERVICE", default_text=settings["SERVICE"], size=(50, None))],
         
+        # Data source
+        [
+            sg.Text("Source de données :"),
+            sg.Radio("Fichier", "DATA-SOURCE", default=True, size=(7,1), key='DATA-SOURCE-FILE'),
+            sg.Radio("Rapport Koha", "DATA-SOURCE", default=False, size=(12,1), key="DATA-SOURCE-KOHA-REPORT")
+        ],
+
         # Original file path
         [sg.Text("Fichier à analyser :")],
         [sg.Input(key="FILE_PATH", default_text=settings["FILE_PATH"], size=(80, None)), sg.FileBrowse()],
 
         # Koha report number
-        [sg.Text("Rapport Koha :")],
+        [sg.Text("Si utilisation d'un rapport Koha :")],
         [
             sg.Text("Numéro de rapport :"),
             sg.Input(key="KOHA-REPORT-NB", default_text=settings["KOHA-REPORT-NB"], size=(6, None)),
@@ -81,22 +88,8 @@ with open('./settings.json', "r+", encoding="utf-8") as f:
         print("Application quittée par l'usager")
         exit()
 
-    # Rewrite settings
-    settings["SERVICE"] = val["SERVICE"]
-    settings["FILE_PATH"] = val["FILE_PATH"]
-    settings["KOHA-REPORT-NB"] = val["KOHA-REPORT-NB"]
-    settings["KOHA-USERID"] = val["KOHA-USERID"]
-    settings["KOHA-PASSWORD"] = val["KOHA-PASSWORD"]
-    settings["OUTPUT_PATH"] = val["OUTPUT_PATH"]
-    settings["LOGS_PATH"] = val["LOGS_PATH"]
-    settings["KOHA_URL"] = val["KOHA_URL"]
-    settings["ILN"] = val["ILN"]
-    settings["RCR"] = val["RCR"]
-
-    f.seek(0)
-    json.dump(settings, f, indent=4)
-    f.truncate()
-    print("Paramètres par défaut sauvegardés avec succès")
 
     # # --------------- Closing the window ---------------
     window.close()
+
+    print("---------- Lancement de l'application ----------")
