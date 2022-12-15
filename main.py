@@ -267,6 +267,6 @@ logger.info("Fichier contenant les données en CSV : " + FILES["OUT_CSV"])
 generate_report(REPORT_SETTINGS, FILES, KOHA_URL, ILN, CHOSEN_ANALYSIS, results_report)
 logger.info("Fichier contenant le rapport : " + FILES["OUT_RESULTS"])
 logger.info("--------------- Rapport ---------------")
-generate_report(REPORT_SETTINGS, FILES, KOHA_URL, CHOSEN_ANALYSIS, results_report, logger=logger)
+generate_report(REPORT_SETTINGS, FILES, KOHA_URL, ILN, CHOSEN_ANALYSIS, results_report, logger=logger)
 
 logger.info("--------------- Exécution terminée avec succès ---------------")
