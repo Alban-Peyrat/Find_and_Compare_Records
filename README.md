@@ -1,5 +1,7 @@
 # Comparaison des notices Koha et Sudoc avant l'utilisation d'ITEM
 
+[![Active Development](https://img.shields.io/badge/Maintenance%20Level-Actively%20Developed-brightgreen.svg)](https://gist.github.com/cheerfulstoic/d107229326a01ff0f333a1d3476e068d)
+
 À partir de la liste de données extraites de Koha pour ITEM, vérifie que les correspondances PPN / ISBN du [webservice `isbn2ppn` de l'Abes](https://documentation.abes.fr/sudoc/manuels/administration/aidewebservices/index.html#isbn2ppn) correpondent bien aux documents enregistrés dans Koha.
 Le traitement se focalise sur les correspondances uniques (ISBN trouvé et ne correspondant qu'à un seul PPN).
 
