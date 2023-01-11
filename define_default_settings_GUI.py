@@ -30,11 +30,11 @@ with open('./settings.json', "r+", encoding="utf-8") as f:
         [sg.Text("Rapport Koha :")],
         [
             sg.Text("Numéro de rapport :"),
-            sg.Input(key="KOHA-REPORT-NB", default_text=settings["KOHA-REPORT-NB"], size=(6, None)),
+            sg.Input(key="KOHA_REPORT_NB", default_text=settings["KOHA_REPORT_NB"], size=(6, None)),
             sg.Text("Identifiant:"),
-            sg.Input(key="KOHA-USERID", default_text=settings["KOHA-USERID"], size=(15, None)),
+            sg.Input(key="KOHA_USERID", default_text=settings["KOHA_USERID"], size=(15, None)),
             sg.Text("Mot de passe :"),
-            sg.Input(key="KOHA-PASSWORD", default_text=settings["KOHA-PASSWORD"], size=(15, None), password_char="*"),
+            sg.Input(key="KOHA_PASSWORD", default_text=settings["KOHA_PASSWORD"], size=(15, None), password_char="*"),
         ],
 
         # Output folder
@@ -84,9 +84,9 @@ with open('./settings.json', "r+", encoding="utf-8") as f:
     # Rewrite settings
     settings["SERVICE"] = val["SERVICE"]
     settings["FILE_PATH"] = val["FILE_PATH"]
-    settings["KOHA-REPORT-NB"] = val["KOHA-REPORT-NB"]
-    settings["KOHA-USERID"] = val["KOHA-USERID"]
-    settings["KOHA-PASSWORD"] = val["KOHA-PASSWORD"]
+    settings["KOHA_REPORT_NB"] = val["KOHA_REPORT_NB"]
+    settings["KOHA_USERID"] = val["KOHA_USERID"]
+    settings["KOHA_PASSWORD"] = val["KOHA_PASSWORD"]
     settings["OUTPUT_PATH"] = val["OUTPUT_PATH"]
     settings["LOGS_PATH"] = val["LOGS_PATH"]
     settings["KOHA_URL"] = val["KOHA_URL"]

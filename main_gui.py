@@ -6,6 +6,7 @@ import json
 
 # Internal import
 from theme.theme import *
+import main
 
 # Get GUI parameters
 sg.set_options(font=font, icon=theme_name + "./theme/logo.ico", window_location=window_location)
@@ -25,8 +26,8 @@ with open('./settings.json', "r+", encoding="utf-8") as f:
         # Data source
         [
             sg.Text("Source de données :"),
-            sg.Radio("Fichier", "DATA-SOURCE", default=True, size=(7,1), key='DATA-SOURCE-FILE'),
-            sg.Radio("Rapport Koha", "DATA-SOURCE", default=False, size=(12,1), key="DATA-SOURCE-KOHA-REPORT")
+            sg.Radio("Fichier", "DATA_SOURCE", default=True, size=(7,1), key='DATA-SOURCE-FILE'),
+            sg.Radio("Rapport Koha", "DATA_SOURCE", default=False, size=(12,1), key="DATA-SOURCE-KOHA-REPORT")
         ],
 
         # Original file path
@@ -37,11 +38,11 @@ with open('./settings.json', "r+", encoding="utf-8") as f:
         [sg.Text("Si utilisation d'un rapport Koha :")],
         [
             sg.Text("Numéro de rapport :"),
-            sg.Input(key="KOHA-REPORT-NB", default_text=settings["KOHA-REPORT-NB"], size=(6, None)),
+            sg.Input(key="KOHA_REPORT_NB", default_text=settings["KOHA_REPORT_NB"], size=(6, None)),
             sg.Text("Identifiant:"),
-            sg.Input(key="KOHA-USERID", default_text=settings["KOHA-USERID"], size=(15, None)),
+            sg.Input(key="KOHA_USERID", default_text=settings["KOHA_USERID"], size=(15, None)),
             sg.Text("Mot de passe :"),
-            sg.Input(key="KOHA-PASSWORD", default_text=settings["KOHA-PASSWORD"], size=(15, None), password_char="*"),
+            sg.Input(key="KOHA_PASSWORD", default_text=settings["KOHA_PASSWORD"], size=(15, None), password_char="*"),
         ],
 
         # Output folder
@@ -71,7 +72,7 @@ with open('./settings.json', "r+", encoding="utf-8") as f:
         ],
 
         # Submit
-        [sg.Button('Sauvegarder les paramètres par défaut', key="submit")]
+        [sg.Button("Lancer l'analyse", key="submit")]
     ]
 
     # # --------------- Window Definition ---------------
@@ -83,13 +84,25 @@ with open('./settings.json', "r+", encoding="utf-8") as f:
     # event, values = window.read()
     event, val = window.read()
 
-
     if event == sg.WIN_CLOSED or event == 'Cancel': # if user closes window or clicks cancel
         print("Application quittée par l'usager")
         exit()
 
-
     # # --------------- Closing the window ---------------
     window.close()
 
-    print("---------- Lancement de l'application ----------")
+    # Launch the main script
+    print("Exécution du script principal")
+    main.main(SERVICE = val["SERVICE"],
+        FILE_PATH = val["FILE_PATH"],
+        OUTPUT_PATH = val["OUTPUT_PATH"],
+        LOGS_PATH = val["LOGS_PATH"],
+        ANALYSIS = settings["ANALYSIS"],
+        CSV_EXPORT_COLS = settings["CSV_EXPORT_COLS"],
+        REPORT_SETTINGS = settings["REPORT_SETTINGS"],
+        KOHA_URL = val["KOHA_URL"],
+        KOHA_REPORT_NB = val["KOHA_REPORT_NB"],
+        KOHA_USERID = val["KOHA_USERID"],
+        KOHA_PASSWORD = val["KOHA_PASSWORD"],
+        ILN = val["ILN"],
+        RCR = val["RCR"])

@@ -73,15 +73,15 @@ class Abes_isbn2ppn(object):
             self.logger.error("{} :: Abes_isbn2ppn :: ISBN {}".format(self.input_isbn, self.isbn_validity))
             self.error_msg = "ISBN " + self.isbn_validity
         else:
-            url =  '{}/{}'.format(self.endpoint, self.isbn)
-            payload = {
+            self.url =  '{}/{}'.format(self.endpoint, self.isbn)
+            self.payload = {
                 
                 }
-            headers = {
+            self.headers = {
                 "accept":self.format
                 }
             try:
-                r = requests.get(url, headers=headers, params=payload)
+                r = requests.get(self.url, headers=self.headers, params=self.payload)
                 r.raise_for_status()  
             except requests.exceptions.HTTPError:
                 self.status = 'Error'
@@ -89,7 +89,7 @@ class Abes_isbn2ppn(object):
                 self.error_msg = "ISBN inconnu ou service indisponible"
             except requests.exceptions.RequestException as generic_error:
                 self.status = 'Error'
-                self.logger.error("{} :: XmlAbes_Init :: Generic exception || URL: {} || {}".format(self.input_isbn, url, generic_error))
+                self.logger.error("{} :: XmlAbes_Init :: Generic exception || URL: {} || {}".format(self.input_isbn, self.url, generic_error))
                 self.error_msg = "Exception générique, voir les logs pour plus de détails"
             else:
                 self.record = r.content.decode('utf-8')
