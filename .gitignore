@@ -1,6 +1,8 @@
 my_settings.json
+settings.json
 settings_Sophie.json
-notes_sur_les_tests.md
+pbs
+info_reseau
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
@@ -131,4 +133,3 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
-

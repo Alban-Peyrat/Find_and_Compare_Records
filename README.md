@@ -79,9 +79,12 @@ Enfin, le script valide ou non chaque critère de comparaison de l'analyse chois
 Ces bibliothèques sont utilisées par le script mais absentes de la [Python Standard Library](https://docs.python.org/3/library/) :
 * [`unidecode`](https://pypi.org/project/Unidecode/)
 * [`FuzzyWuzzy`](https://pypi.org/project/fuzzywuzzy/)
+* [`PySimpleGUI`](https://pypi.org/project/PySimpleGUI/)
 * [`requests`](https://pypi.org/project/requests/)
 
 ## Variables à définir dans `settings.json`
+
+Renommer le fichier `settings.sample.json` en `settings.json`.
 
 Ces variables doivent avoir été paramétrées dans `settings.json` avant l'exécution du script :
 * `MY_PATH` : chemin d'accès au dossier contenant le fichier à analyser, dans lequel seront créé les fichiers de sortie

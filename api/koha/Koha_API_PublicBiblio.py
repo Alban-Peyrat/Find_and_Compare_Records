@@ -48,20 +48,25 @@ class Koha_API_PublicBiblio(object):
             self.logger.error("{} :: Koha_API_PublicBiblio :: Biblionumber invalide".format(bibnb))
             self.error_msg = "Biblionumber invalide"
         else:
-            url =  '{}/{}'.format(self.endpoint, self.bibnb)
-            payload = {
+            self.url =  '{}/{}'.format(self.endpoint, self.bibnb)
+            self.payload = {
                 
                 }
-            headers = {
+            self.headers = {
                 "accept":self.format
                 }
-            r = requests.get(url, headers=headers, params=payload)
+            
             try:
-                r.raise_for_status()  
+                r = requests.get(self.url, headers=self.headers, params=self.payload)
+                r.raise_for_status()
             except requests.exceptions.HTTPError:
                 self.status = 'Error'
                 self.logger.error("{} :: Koha_API_PublicBiblio_Init :: HTTP Status: {} || Method: {} || URL: {} || Response: {}".format(bibnb, r.status_code, r.request.method, r.url, r.text))
                 self.error_msg = "Biblionumber inconnu ou service indisponible"
+            except requests.exceptions.RequestException as generic_error:
+                self.status = 'Error'
+                self.logger.error("{} :: Koha_API_PublicBiblio_Init :: Generic exception || URL: {} || {}".format(bibnb, self.url, generic_error))
+                self.error_msg = "Exception générique, voir les logs pour plus de détails"
             else:
                 # apparently its double-encoded in JSON ?? See : https://stackoverflow.com/questions/4267019/double-decoding-unicode-in-python
                 # So yeah, decode->encode->decode for JSON
@@ -174,9 +179,7 @@ class Koha_API_PublicBiblio(object):
 
         if self.format == "application/marcxml+xml":
             root = ET.fromstring(self.record)
-            for ed in root.findall("./marc:datafield[@tag='214']/marc:subfield[@code='c']", NS):
-                ed_list.append(ed.text)
-            for ed in root.findall("./marc:datafield[@tag='210']/marc:subfield[@code='c']", NS):
+            for ed in root.findall("./marc:datafield[@tag='214']/marc:subfield[@code='c']", NS) + root.findall("./marc:datafield[@tag='210']/marc:subfield[@code='c']", NS):
                 ed_list.append(ed.text)
 
         elif self.format == "application/marc-in-json":
