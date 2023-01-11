@@ -87,9 +87,25 @@ def main(SERVICE, FILE_PATH, OUTPUT_PATH, LOGS_PATH, #mandatory GUI
     results = []
     with open(FILES["IN"], 'r', newline="", encoding="utf-8") as fh:
         logger.info("--------------- Début du traitement du fichier ---------------")
-        # for line in fh.readlines():
+        
+        # Load original file data
         csvdata = csv.DictReader(fh, delimiter=";")
         CSV_ORIGINAL_COLS = csvdata.fieldnames
+
+        # Create CSV output file
+        # Defines headers
+        fieldnames_id, fieldnames_names = [], []
+        for col in CSV_EXPORT_COLS:
+            fieldnames_id.append(col["id"])
+            fieldnames_names.append(col["name"])
+        fieldnames_id += CSV_ORIGINAL_COLS
+        fieldnames_names += CSV_ORIGINAL_COLS
+        # Generates the file header
+        f_csv = open(FILES["OUT_CSV"], 'w', newline="", encoding='utf-8')
+        csv_writer = csv.DictWriter(f_csv, extrasaction="ignore", fieldnames=fieldnames_id, delimiter=";")
+        generate_csv_output_header(csv_writer, fieldnames_id, fieldnames_names=fieldnames_names)
+        logger.info("Fichier contenant les données en CSV : " + FILES["OUT_CSV"])
+
         for line in csvdata:
             # Declaration & set-up of result {dict}
             result = {}
@@ -140,8 +156,6 @@ def main(SERVICE, FILE_PATH, OUTPUT_PATH, LOGS_PATH, #mandatory GUI
             # --------------- KOHA ---------------
             # Get Koha record
             koha_record = Koha_API_PublicBiblio.Koha_API_PublicBiblio(result["INPUT_KOHA_BIB_NB"], KOHA_URL, service=SERVICE, format="application/marcxml+xml")
-            # || marc-in-json parce que parfois le XML me renvoie pas de l'UTF-8 et renvoie pas de 214$c
-            # || TICKET A FAIRE, exemple : 226701, voir les fichiers Probleme_API.txt et idem+_comprtement_normal
             # j'ai rajouté un filter(None) au moment de l'export CSV mais ça pose problème quand même...
             if koha_record.status == 'Error' :
                 result['ERROR'] = True
@@ -234,8 +248,12 @@ def main(SERVICE, FILE_PATH, OUTPUT_PATH, LOGS_PATH, #mandatory GUI
             # --------------- END OF THIS LINE ---------------
             logger.debug("{} :: {} :: {}".format(result["ISBN2PPN_ISBN"], SERVICE,
                 "Résultat : {} (titres : {}, éditeurs : {}, dates : {})".format(str(result["FINAL_OK"]), str(result["TITLE_OK"]), str(result["PUB_OK"]), str(result["DATE_OK"]))))
+            csv_writer.writerow(result)
             log_fin_traitement(logger, result, True)
             results.append(result)
+
+        # Closes CSV file
+        f_csv.close()
 
     # --------------- END OF MAIN FUNCTION ---------------
     logger.info("--------------- Fin du traitement du fichier ---------------")
@@ -247,15 +265,6 @@ def main(SERVICE, FILE_PATH, OUTPUT_PATH, LOGS_PATH, #mandatory GUI
     logger.info("Fichier contenant les données en JSON : " + FILES["OUT_JSON"])
 
     # --------------- CSV FILE ---------------
-    # Defines headers
-    fieldnames_id, fieldnames_names = [], []
-    for col in CSV_EXPORT_COLS:
-        fieldnames_id.append(col["id"])
-        fieldnames_names.append(col["name"])
-    fieldnames_id += CSV_ORIGINAL_COLS
-    fieldnames_names += CSV_ORIGINAL_COLS
-    # Generates the file
-    generate_csv_output(FILES["OUT_CSV"], results, fieldnames_id, fieldnames_names=fieldnames_names)
     logger.info("Fichier contenant les données en CSV : " + FILES["OUT_CSV"])
 
     # --------------- REPORT ---------------
@@ -265,3 +274,19 @@ def main(SERVICE, FILE_PATH, OUTPUT_PATH, LOGS_PATH, #mandatory GUI
     generate_report(REPORT_SETTINGS, FILES, KOHA_URL, ILN, CHOSEN_ANALYSIS, results_report, logger=logger)
 
     logger.info("--------------- Exécution terminée avec succès ---------------")
+
+def generate_csv_output_header(csv_writer, fieldnames_id, fieldnames_names=[]):
+    """Generates the CSV output file headers.
+    
+    Argument :
+        - csv_writeer : the csv_writer
+        - fieldnames_id {list of str} : name of the keys to export
+        - delimiter [optionnal] {str}
+        - fieldnames_names [optionnal] {list of str} : header name if different from the key ID"""
+    if fieldnames_names == []:
+        csv_writer.writeheader()
+    else:
+        new_headers = {}
+        for ii, id in enumerate(fieldnames_id):
+            new_headers[id] = fieldnames_names[ii]
+        csv_writer.writerow(new_headers)

@@ -17,7 +17,7 @@ sg.theme(theme_name)
 with open('./settings.json', "r+", encoding="utf-8") as f:
     settings = json.load(f)
 
-    # # --------------- The Layout ---------------
+    # --------------- The Layout ---------------
     layout = [
         # Service name
         [sg.Text("Nom du service :")],

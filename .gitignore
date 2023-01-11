@@ -3,6 +3,7 @@ settings.json
 settings_Sophie.json
 pbs
 info_reseau
+test.py
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
