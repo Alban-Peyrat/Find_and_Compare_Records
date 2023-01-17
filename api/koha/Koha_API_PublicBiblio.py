@@ -70,10 +70,12 @@ class Koha_API_PublicBiblio(object):
             else:
                 # apparently its double-encoded in JSON ?? See : https://stackoverflow.com/questions/4267019/double-decoding-unicode-in-python
                 # So yeah, decode->encode->decode for JSON
-                if self.format == "application/marc-in-json":
-                    self.record = r.content.decode('utf-8').encode('raw_unicode_escape').decode('utf-8')
-                else:
-                    self.record = r.content.decode('utf-8')
+                # Fixed with Bug 28604 - Bad encoding when using marc-in-json (20.11.09)
+                # if self.format == "application/marc-in-json":
+                #     self.record = r.content.decode('utf-8').encode('raw_unicode_escape').decode('utf-8')
+                # else:
+                #     self.record = r.content.decode('utf-8')
+                self.record = r.content.decode('utf-8')
                 self.status = 'Success'
                 self.logger.debug("{} :: Koha_API_PublicBiblio :: Notice trouvée".format(bibnb))
 
