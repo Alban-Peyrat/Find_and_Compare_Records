@@ -59,14 +59,14 @@ with open('./settings.json', "r+", encoding="utf-8") as f:
             sg.Input(key="KOHA_URL", default_text=settings["KOHA_URL"], size=(60, None))
         ],
 
-        # ILN
+        # Koha PPN + ILN + RCR
         [
+            sg.Text("Koha champ PPN :"),
+            sg.Input(key="KOHA_PPN_FIELD", default_text=settings["KOHA_PPN_FIELD"], size=(3, None)),
+            sg.Text("Koha sous-champ PPN :"),
+            sg.Input(key="KOHA_PPN_SUBFIELD", default_text=settings["KOHA_PPN_SUBFIELD"], size=(1, None)),
             sg.Text("ILN :"),
-            sg.Input(key="ILN", default_text=settings["ILN"], size=(3, None))
-        ],
-
-        # RCR
-        [
+            sg.Input(key="ILN", default_text=settings["ILN"], size=(3, None)),
             sg.Text("RCR :"),
             sg.Input(key="RCR", default_text=settings["RCR"], size=(9, None))
         ],
@@ -101,6 +101,8 @@ with open('./settings.json', "r+", encoding="utf-8") as f:
         CSV_EXPORT_COLS = settings["CSV_EXPORT_COLS"],
         REPORT_SETTINGS = settings["REPORT_SETTINGS"],
         KOHA_URL = val["KOHA_URL"],
+        KOHA_PPN_FIELD = val["KOHA_PPN_FIELD"],
+        KOHA_PPN_SUBFIELD = val["KOHA_PPN_SUBFIELD"],
         KOHA_REPORT_NB = val["KOHA_REPORT_NB"],
         KOHA_USERID = val["KOHA_USERID"],
         KOHA_PASSWORD = val["KOHA_PASSWORD"],

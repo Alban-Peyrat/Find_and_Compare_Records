@@ -17,7 +17,8 @@ from scripts.outputing import * # pour éviter de devoir réécrire tous les app
 
 def main(SERVICE, FILE_PATH, OUTPUT_PATH, LOGS_PATH, #mandatory GUI
     ANALYSIS, CSV_EXPORT_COLS, REPORT_SETTINGS,#mandatory, in settings
-    KOHA_URL="", KOHA_REPORT_NB="", KOHA_USERID="", KOHA_PASSWORD="", #Koha
+    KOHA_URL="", KOHA_PPN_FIELD="", KOHA_PPN_SUBFIELD="", # Koha
+    KOHA_REPORT_NB="", KOHA_USERID="", KOHA_PASSWORD="", #Koha report
     ILN="", RCR=""): # Abes
     """Main function."""
 
@@ -171,6 +172,7 @@ def main(SERVICE, FILE_PATH, OUTPUT_PATH, LOGS_PATH, #mandatory GUI
             result['KOHA_100a'], result['KOHA_DATE_TYPE'],result['KOHA_DATE_1'],result['KOHA_DATE_2'] = koha_record.get_dates_pub()
             result['KOHA_214210c'] = koha_record.get_editeurs()
             result['KOHA_200adehiv'] = nettoie_titre(koha_record.get_title_info())
+            result["KOHA_PPN"] = koha_record.get_ppn(KOHA_PPN_FIELD, KOHA_PPN_SUBFIELD)
             logger.debug("{} :: {} :: {}".format(result["ISBN2PPN_ISBN"], SERVICE, "Koha biblionumber : " + result['KOHA_BIB_NB']))
             logger.debug("{} :: {} :: {}".format(result["ISBN2PPN_ISBN"], SERVICE, "Koha titre nettoyé : " + result['KOHA_200adehiv']))
 

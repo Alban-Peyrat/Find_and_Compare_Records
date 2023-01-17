@@ -196,6 +196,34 @@ class Koha_API_PublicBiblio(object):
 
         return ed_list
         
+    def get_ppn(self, field, subfield=None):
+        """Returns the PPN.
+        Properly works only if the field with the PPN is non repeatable
+
+        Takes as arguments ! 
+            field {str} : the field containing the PPN
+            subfield {str} : if the field is not a controlfield, the subfield containing the PPN
+        """
+        
+        if self.format == "application/marcxml+xml":
+            root = ET.fromstring(self.record)
+            if int(field) < 10:
+                if root.find("./marc:controlfield[@tag='{}']".format(str(field)), NS) != None :
+                    return root.find("./marc:controlfield[@tag='{}']".format(str(field)), NS).text
+            else:
+                if root.find("./marc:datafield[@tag='{}']/marc:subfield[@code='{}']".format(str(field), str(subfield)), NS) != None :
+                    return root.find("./marc:datafield[@tag='{}']/marc:subfield[@code='{}']".format(str(field), str(subfield)), NS).text
+
+        elif self.format == "application/marc-in-json":
+            for record_field in json.loads(self.record)["fields"]:
+                if str(field) in record_field.keys():
+                    if int(field) < 10:
+                        return record_field[str(field)]
+                    else:
+                        for record_subfield in record_field[str(field)]["subfields"]:
+                            code = list(record_subfield.keys())[0]
+                            if code == str(subfield):
+                                return record_subfield[code]       
 
     # Manque de AbesXml :
     #     get_ppn_autre_support

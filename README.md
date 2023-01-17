@@ -202,6 +202,8 @@ Ci-dessous, la liste des clefs des dictionnaires compris dans `results` :
 * `SUDOC_LOCAL_SYSTEM_NB` {list of str} : les numéros de système présents dans la notice Sudoc __dédoublonnés__
 * `SUDOC_NB_LOCAL_SYSTEM_NB` {int} : le nombre de numéros de système présents dans la notice Sudoc __dédoublonnés__
 * `SUDOC_DIFFERENT_LOCAL_SYSTEM_NB` {bool} : si le nombre de numéros de système présents dans la notice Sudoc __dédoublonnés__ est supérieur à 0, est-ce que le biblionumber de Koha utilisé pour interroger Koha est compris dans la liste
+* `SUDOC_ITEMS` {list of str} : les code-barres associés à ce RCR présents dans la notice Sudoc
+* `SUDOC_HAS_ITEMS` {bool} : déjà des exemplaires pour ce RCR dans la notice Sudoc ?
 * `KOHA_BIB_NB` {str} : le biblionumber de Koha utilisé pour interroger Koha
 * `KOHA_Leader` {str} : le label de la notice Koha
 * `KOHA_100a` {str} : le contenu de la 100$a de la notice Koha
