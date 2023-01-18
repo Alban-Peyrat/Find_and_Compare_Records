@@ -9,11 +9,15 @@ import json
 
 # Internal import
 import scripts.logs as logs
-import api.abes.Abes_isbn2ppn as Abes_isbn2ppn
+import match_records
+# import api.abes.Abes_isbn2ppn as Abes_isbn2ppn
 import api.abes.AbesXml as AbesXml
 import api.koha.Koha_API_PublicBiblio as Koha_API_PublicBiblio
 from analysis import * # pour éviter de devoir réécrire tous les appels de fonctions
 from scripts.outputing import * # pour éviter de devoir réécrire tous les appels de fonctions
+
+# TEMP AR228 
+MATCH_RECORDS_API = "Abes_isbn2ppn"
 
 def main(SERVICE, FILE_PATH, OUTPUT_PATH, LOGS_PATH, #mandatory GUI
     ANALYSIS, CSV_EXPORT_COLS, REPORT_SETTINGS,#mandatory, in settings
@@ -69,9 +73,9 @@ def main(SERVICE, FILE_PATH, OUTPUT_PATH, LOGS_PATH, #mandatory GUI
     # Init report dic
     results_report = {}
     results_report["TRAITES"] = 0
-    results_report["ECHEC_ISBN2PPN"] = 0
-    results_report["TROP_PPN"] = 0
-    results_report["SUCCES_ISBN2PPN"] = 0
+    results_report["MATCH_RECORDS_ERRORS"] = 0
+    results_report["MATCH_RECORDS_FAKE_ERRORS"] = 0
+    results_report["MATCH_RECORDS_SUCCESS"] = 0
     results_report["ECHEC_KOHA"] = 0
     results_report["ECHEC_SUDOC"] = 0
     results_report["SUCCES_GLOBAL"] = 0
@@ -111,6 +115,7 @@ def main(SERVICE, FILE_PATH, OUTPUT_PATH, LOGS_PATH, #mandatory GUI
             # Declaration & set-up of result {dict}
             result = {}
             result['ERROR'] = False
+            result['FAKE_ERROR'] = False
             result['ERROR_MSG'] = ''
             results_report["TRAITES"] += 1 # report stats
 
@@ -119,40 +124,57 @@ def main(SERVICE, FILE_PATH, OUTPUT_PATH, LOGS_PATH, #mandatory GUI
             # 5 = 930$a, 6 = 930$j, 7 = 930$v, 8 = L035$a
             result.update(line)
             #pour éviter des problèmes de changement de nom de la clef, on conserve l'utilisation du index 1 et last index )
-            result["INPUT_ISBN"] = line[CSV_ORIGINAL_COLS[0]]
+            result["INPUT_QUERY"] = line[CSV_ORIGINAL_COLS[0]]
             result["INPUT_KOHA_BIB_NB"] = line[CSV_ORIGINAL_COLS[len(line)-1]].rstrip()
-            logger.info("Traitement de la ligne : ISBN = \"{}\", Koha Bib Nb = \"{}\"".format(result["INPUT_ISBN"],result["INPUT_KOHA_BIB_NB"]))
+            logger.info("Traitement de la ligne : ISBN = \"{}\", Koha Bib Nb = \"{}\"".format(result["INPUT_QUERY"],result["INPUT_KOHA_BIB_NB"]))
 
-            # --------------- ISBN2PPN ---------------
-            # Get isbn2ppn results
-            isbn2ppn_record = Abes_isbn2ppn.Abes_isbn2ppn(result["INPUT_ISBN"],service=SERVICE)
-            if isbn2ppn_record.status == 'Error':
-                result['ERROR'] = True
-                result['ERROR_MSG'] = "Abes_isbn2ppn : " + isbn2ppn_record.error_msg
-                results_report["ECHEC_ISBN2PPN"] += 1 # report stats
-                log_fin_traitement(logger, result, False)
-                results.append(result)
-                continue # skip to next line
+            # --------------- Match records ---------------
+            result.update(match_records.main(api=MATCH_RECORDS_API, query=result["INPUT_QUERY"], service=SERVICE)) 
+            if result["ERROR"]:
+                if result["FAKE_ERROR"]: # report stats
+                    results_report["MATCH_RECORDS_FAKE_ERRORS"] += 1
+                    logger.error("{} :: {} :: {}".format(result["MATCH_RECORDS_QUERY"], SERVICE, "{} : {}".format(str(result["ERROR_MSG"]), str(result["MATCH_RECORDS_NB_RES"]))))
+                else:
+                    results_report["MATCH_RECORDS_ERRORS"] += 1 
+                
+                # Skip to next line
+                go_next(logger, results, csv_writer, result, False)
+                continue
             
-            # isbn2ppn was a success
-            results_report["SUCCES_ISBN2PPN"] += 1 # report stats
-            result["ISBN2PPN_ISBN"] = isbn2ppn_record.get_isbn_no_sep()
-            result["ISBN2PPN_NB_RES"] = isbn2ppn_record.get_nb_results()[0] # We take every result
-            result["ISBN2PPN_RES"] = isbn2ppn_record.get_results(merge=True)
-            logger.debug("{} :: {} :: {}".format(result["ISBN2PPN_ISBN"], SERVICE, "Résultat isbn2ppn : " + " || ".join(result["ISBN2PPN_RES"])))
+            # Match records was a success
+            results_report["MATCH_RECORDS_SUCCESS"] += 1 # report stats
+            logger.debug("{} :: {} :: {}".format(result["MATCH_RECORDS_QUERY"], SERVICE, "Résultat {} : ".format(str(MATCH_RECORDS_API)) + " || ".join(result["MATCH_RECORDS_RES"])))
 
-            # More than 1 match
-            if result["ISBN2PPN_NB_RES"] != 1:
-                result["ERROR"] = True
-                result['ERROR_MSG'] = "Abes_isbn2ppn : trop de résultats"
-                logger.error("{} :: {} :: {}".format(result["ISBN2PPN_ISBN"], SERVICE, "Trop de PPN renvoyés : " + str(result['ISBN2PPN_NB_RES'])))
-                results_report["TROP_PPN"] += 1 # report stats
-                log_fin_traitement(logger, result, False)
-                results.append(result)
-                continue # skip to next line
+            # # --------------- ISBN2PPN ---------------
+            # # Get isbn2ppn results
+            # isbn2ppn_record = Abes_isbn2ppn.Abes_isbn2ppn(result["INPUT_ISBN"],service=SERVICE)
+            # if isbn2ppn_record.status == 'Error':
+            #     result['ERROR'] = True
+            #     result['ERROR_MSG'] = "Abes_isbn2ppn : " + isbn2ppn_record.error_msg
+            #     results_report["ECHEC_ISBN2PPN"] += 1 # report stats
+            #     log_fin_traitement(logger, result, False)
+            #     results.append(result)
+            #     continue # skip to next line
+            
+            # # isbn2ppn was a success
+            # results_report["SUCCES_ISBN2PPN"] += 1 # report stats
+            # result["ISBN2PPN_ISBN"] = isbn2ppn_record.get_isbn_no_sep()
+            # result["ISBN2PPN_NB_RES"] = isbn2ppn_record.get_nb_results()[0] # We take every result
+            # result["ISBN2PPN_RES"] = isbn2ppn_record.get_results(merge=True)
+            # logger.debug("{} :: {} :: {}".format(result["ISBN2PPN_ISBN"], SERVICE, "Résultat isbn2ppn : " + " || ".join(result["ISBN2PPN_RES"])))
 
-            # Only 1 match : gets the PPN
-            result["PPN"] = result["ISBN2PPN_RES"][0]
+            # # More than 1 match
+            # if result["ISBN2PPN_NB_RES"] != 1:
+            #     result["ERROR"] = True
+            #     result['ERROR_MSG'] = "Abes_isbn2ppn : trop de résultats"
+            #     logger.error("{} :: {} :: {}".format(result["ISBN2PPN_ISBN"], SERVICE, "Trop de PPN renvoyés : " + str(result['ISBN2PPN_NB_RES'])))
+            #     results_report["TROP_PPN"] += 1 # report stats
+            #     log_fin_traitement(logger, result, False)
+            #     results.append(result)
+            #     continue # skip to next line
+
+            # # Only 1 match : gets the PPN
+            # result["PPN"] = result["ISBN2PPN_RES"][0]
 
             # --------------- KOHA ---------------
             # Get Koha record
@@ -162,8 +184,7 @@ def main(SERVICE, FILE_PATH, OUTPUT_PATH, LOGS_PATH, #mandatory GUI
                 result['ERROR'] = True
                 result['ERROR_MSG'] = "Koha_API_PublicBiblio : " + koha_record.error_msg
                 results_report["ECHEC_KOHA"] += 1 # report stats
-                log_fin_traitement(logger, result, False)
-                results.append(result)
+                go_next(logger, results, csv_writer, result, False)
                 continue # skip to next line
             
             # Successfully got Koha record
@@ -173,18 +194,17 @@ def main(SERVICE, FILE_PATH, OUTPUT_PATH, LOGS_PATH, #mandatory GUI
             result['KOHA_214210c'] = koha_record.get_editeurs()
             result['KOHA_200adehiv'] = nettoie_titre(koha_record.get_title_info())
             result["KOHA_PPN"] = koha_record.get_ppn(KOHA_PPN_FIELD, KOHA_PPN_SUBFIELD)
-            logger.debug("{} :: {} :: {}".format(result["ISBN2PPN_ISBN"], SERVICE, "Koha biblionumber : " + result['KOHA_BIB_NB']))
-            logger.debug("{} :: {} :: {}".format(result["ISBN2PPN_ISBN"], SERVICE, "Koha titre nettoyé : " + result['KOHA_200adehiv']))
+            logger.debug("{} :: {} :: {}".format(result["MATCH_RECORDS_QUERY"], SERVICE, "Koha biblionumber : " + result['KOHA_BIB_NB']))
+            logger.debug("{} :: {} :: {}".format(result["MATCH_RECORDS_QUERY"], SERVICE, "Koha titre nettoyé : " + result['KOHA_200adehiv']))
 
             # --------------- SUDOC ---------------
             # Get Sudoc record
-            sudoc_record = AbesXml.AbesXml(result["PPN"],service=SERVICE)
+            sudoc_record = AbesXml.AbesXml(result["MATCHED_ID"],service=SERVICE)
             if sudoc_record.status == 'Error':
                 result['ERROR'] = True
                 result['ERROR_MSG'] = sudoc_record.error_msg
                 results_report["ECHEC_SUDOC"] += 1 # report stats
-                log_fin_traitement(logger, result, False)
-                results.append(result)
+                go_next(logger, results, csv_writer, result, False)
                 continue # skip to next line
 
             # Successfully got Sudoc record
@@ -199,8 +219,8 @@ def main(SERVICE, FILE_PATH, OUTPUT_PATH, LOGS_PATH, #mandatory GUI
                 result["SUDOC_DIFFERENT_LOCAL_SYSTEM_NB"] = not koha_record.bibnb in result["SUDOC_LOCAL_SYSTEM_NB"]
             result["SUDOC_ITEMS"] = sudoc_record.get_library_items(RCR)
             result["SUDOC_HAS_ITEMS"] = len(result["SUDOC_ITEMS"]) > 0
-            logger.debug("{} :: {} :: {}".format(result["ISBN2PPN_ISBN"], SERVICE, "PPN : " + result['PPN']))
-            logger.debug("{} :: {} :: {}".format(result["ISBN2PPN_ISBN"], SERVICE, "Sudoc titre nettoyé : " + result['SUDOC_200adehiv']))
+            logger.debug("{} :: {} :: {}".format(result["MATCH_RECORDS_QUERY"], SERVICE, "PPN : " + result["MATCHED_ID"]))
+            logger.debug("{} :: {} :: {}".format(result["MATCH_RECORDS_QUERY"], SERVICE, "Sudoc titre nettoyé : " + result['SUDOC_200adehiv']))
 
             # --------------- MATCHING PROCESS ---------------
             # Titles
@@ -208,7 +228,7 @@ def main(SERVICE, FILE_PATH, OUTPUT_PATH, LOGS_PATH, #mandatory GUI
             result['MATCHING_TITRE_APPARTENANCE'] = fuzz.partial_ratio(result['SUDOC_200adehiv'].lower(),result['KOHA_200adehiv'].lower())
             result['MATCHING_TITRE_INVERSION'] = fuzz.token_sort_ratio(result['SUDOC_200adehiv'],result['KOHA_200adehiv'])
             result['MATCHING_TITRE_INVERSION_APPARTENANCE'] = fuzz.token_set_ratio(result['SUDOC_200adehiv'],result['KOHA_200adehiv'])
-            logger.debug("{} :: {} :: {}".format(result["ISBN2PPN_ISBN"], SERVICE, "Score des titres : "
+            logger.debug("{} :: {} :: {}".format(result["MATCH_RECORDS_QUERY"], SERVICE, "Score des titres : "
                                         + "Similarité : " + str(result['MATCHING_TITRE_SIMILARITE'])
                                         + " || Appartenance : " + str(result['MATCHING_TITRE_APPARTENANCE'])
                                         + " || Inversion : " + str(result['MATCHING_TITRE_INVERSION'])
@@ -217,12 +237,12 @@ def main(SERVICE, FILE_PATH, OUTPUT_PATH, LOGS_PATH, #mandatory GUI
 
             # Dates
             result['MATCHING_DATE_PUB'] = teste_date_pub((result['SUDOC_DATE_1'],result['SUDOC_DATE_2']),(result['KOHA_DATE_1'],result['KOHA_DATE_2']))
-            logger.debug("{} :: {} :: {}".format(result["ISBN2PPN_ISBN"], SERVICE, "Correspondance des dates : " + str(result['MATCHING_DATE_PUB'])))
+            logger.debug("{} :: {} :: {}".format(result["MATCH_RECORDS_QUERY"], SERVICE, "Correspondance des dates : " + str(result['MATCHING_DATE_PUB'])))
 
             # Publishers
             if len(result['SUDOC_214210c']) > 0 and len(result['KOHA_214210c']) > 0 : 
                 result['MATCHING_EDITEUR_SIMILARITE'],result['SUDOC_CHOSEN_ED'],result['KOHA_CHOSEN_ED'] = teste_editeur(result['SUDOC_214210c'], result['KOHA_214210c'])
-                logger.debug("{} :: {} :: {}".format(result["ISBN2PPN_ISBN"], SERVICE, "Scores des éditeurs : " + str(result['MATCHING_EDITEUR_SIMILARITE'])))
+                logger.debug("{} :: {} :: {}".format(result["MATCH_RECORDS_QUERY"], SERVICE, "Scores des éditeurs : " + str(result['MATCHING_EDITEUR_SIMILARITE'])))
             else: # Mandatory to prevent an error at the end
                 result['MATCHING_EDITEUR_SIMILARITE'],result['SUDOC_CHOSEN_ED'],result['KOHA_CHOSEN_ED'] = -1, "", ""
 
@@ -248,11 +268,9 @@ def main(SERVICE, FILE_PATH, OUTPUT_PATH, LOGS_PATH, #mandatory GUI
                     result[check + "_OK"] = ""
 
             # --------------- END OF THIS LINE ---------------
-            logger.debug("{} :: {} :: {}".format(result["ISBN2PPN_ISBN"], SERVICE,
+            logger.debug("{} :: {} :: {}".format(result["MATCH_RECORDS_QUERY"], SERVICE,
                 "Résultat : {} (titres : {}, éditeurs : {}, dates : {})".format(str(result["FINAL_OK"]), str(result["TITLE_OK"]), str(result["PUB_OK"]), str(result["DATE_OK"]))))
-            csv_writer.writerow(result)
-            log_fin_traitement(logger, result, True)
-            results.append(result)
+            go_next(logger, results, csv_writer, result, True)
 
         # Closes CSV file
         f_csv.close()
@@ -292,3 +310,9 @@ def generate_csv_output_header(csv_writer, fieldnames_id, fieldnames_names=[]):
         for ii, id in enumerate(fieldnames_id):
             new_headers[id] = fieldnames_names[ii]
         csv_writer.writerow(new_headers)
+
+def go_next(logger, results, csv_writer, result, success):
+    """Executes all necessary things before continuing to next line"""
+    csv_writer.writerow(result)
+    log_fin_traitement(logger, result, success)
+    results.append(result)
