@@ -189,6 +189,16 @@
             "list": false
         },
         {
+            "id": "KOHA_305",
+            "name": "Note edition Koha",
+            "list": true
+        },
+        {
+            "id": "SUDOC_305",
+            "name": "Note edition Sudoc",
+            "list": true
+        },
+        {
             "id": "MATCHING_TITRE_SIMILARITE",
             "name": "Score de similarit\u00e9 des titres",
             "list": false
@@ -281,19 +291,19 @@
             "var": "results_report['TRAITES']"
         },
         {
-            "name": "Nombre d'\u00e9checs sur isbn2ppn",
+            "name": "Nombre d'erreurs sur match_records",
             "section": 2,
             "var": "results_report['MATCH_RECORDS_ERRORS']"
         },
         {
-            "name": "Nombre multiples r\u00e9sultats sur isbn2ppn",
+            "name": "Nombre de fausses erreurs sur match_records",
             "section": 2,
             "var": "results_report['MATCH_RECORDS_FAKE_ERRORS']"
         },
         {
-            "name": "Nombre de correspondance unique sur isbn2ppn",
+            "name": "Nombre de succès sur match_records",
             "section": 2,
-            "var": "results_report['MATCH_RECORDS_SUCCESS']-results_report['MATCH_RECORDS_FAKE_ERRORS']"
+            "var": "results_report['MATCH_RECORDS_SUCCESS']"
         },
         {
             "name": "Nombre d'\u00e9checs sur Koha",

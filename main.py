@@ -18,6 +18,8 @@ from scripts.outputing import * # pour éviter de devoir réécrire tous les app
 
 # TEMP AR228 
 MATCH_RECORDS_API = "Abes_isbn2ppn"
+# TEMP AR235
+# MATCH_RECORDS_API = "Koha_SRU" 
 
 def main(SERVICE, FILE_PATH, OUTPUT_PATH, LOGS_PATH, #mandatory GUI
     ANALYSIS, CSV_EXPORT_COLS, REPORT_SETTINGS,#mandatory, in settings
@@ -129,13 +131,15 @@ def main(SERVICE, FILE_PATH, OUTPUT_PATH, LOGS_PATH, #mandatory GUI
             logger.info("Traitement de la ligne : ISBN = \"{}\", Koha Bib Nb = \"{}\"".format(result["INPUT_QUERY"],result["INPUT_KOHA_BIB_NB"]))
 
             # --------------- Match records ---------------
-            result.update(match_records.main(api=MATCH_RECORDS_API, query=result["INPUT_QUERY"], service=SERVICE)) 
+            # result["INPUT_QUERY"] = "renard style"
+            result.update(match_records.main(api=MATCH_RECORDS_API, query=result["INPUT_QUERY"], service=SERVICE, return_records=False, args={"KOHA_URL":KOHA_URL})) 
             if result["ERROR"]:
                 if result["FAKE_ERROR"]: # report stats
                     results_report["MATCH_RECORDS_FAKE_ERRORS"] += 1
                     logger.error("{} :: {} :: {}".format(result["MATCH_RECORDS_QUERY"], SERVICE, "{} : {}".format(str(result["ERROR_MSG"]), str(result["MATCH_RECORDS_NB_RES"]))))
                 else:
-                    results_report["MATCH_RECORDS_ERRORS"] += 1 
+                    results_report["MATCH_RECORDS_ERRORS"] += 1
+                    logger.error("{} :: {} :: {}".format(result["INPUT_QUERY"], SERVICE, str(result["ERROR_MSG"])))
                 
                 # Skip to next line
                 go_next(logger, results, csv_writer, result, False)
@@ -143,7 +147,7 @@ def main(SERVICE, FILE_PATH, OUTPUT_PATH, LOGS_PATH, #mandatory GUI
             
             # Match records was a success
             results_report["MATCH_RECORDS_SUCCESS"] += 1 # report stats
-            logger.debug("{} :: {} :: {}".format(result["MATCH_RECORDS_QUERY"], SERVICE, "Résultat {} : ".format(str(MATCH_RECORDS_API)) + " || ".join(result["MATCH_RECORDS_RES"])))
+            logger.debug("{} :: {} :: {}".format(result["MATCH_RECORDS_QUERY"], SERVICE, "Résultat {} : ".format(str(MATCH_RECORDS_API)) + " || ".join(str(result["MATCH_RECORDS_RES"]))))
 
             # # --------------- ISBN2PPN ---------------
             # # Get isbn2ppn results
@@ -193,6 +197,7 @@ def main(SERVICE, FILE_PATH, OUTPUT_PATH, LOGS_PATH, #mandatory GUI
             result['KOHA_100a'], result['KOHA_DATE_TYPE'],result['KOHA_DATE_1'],result['KOHA_DATE_2'] = koha_record.get_dates_pub()
             result['KOHA_214210c'] = koha_record.get_editeurs()
             result['KOHA_200adehiv'] = nettoie_titre(koha_record.get_title_info())
+            result['KOHA_305'] = koha_record.get_note_edition()
             result["KOHA_PPN"] = koha_record.get_ppn(KOHA_PPN_FIELD, KOHA_PPN_SUBFIELD)
             logger.debug("{} :: {} :: {}".format(result["MATCH_RECORDS_QUERY"], SERVICE, "Koha biblionumber : " + result['KOHA_BIB_NB']))
             logger.debug("{} :: {} :: {}".format(result["MATCH_RECORDS_QUERY"], SERVICE, "Koha titre nettoyé : " + result['KOHA_200adehiv']))
@@ -213,6 +218,7 @@ def main(SERVICE, FILE_PATH, OUTPUT_PATH, LOGS_PATH, #mandatory GUI
             result['SUDOC_100a'],result['SUDOC_DATE_TYPE'],result['SUDOC_DATE_1'],result['SUDOC_DATE_2'] = sudoc_record.get_dates_pub()
             result['SUDOC_214210c'] = sudoc_record.get_editeurs()
             result['SUDOC_200adehiv'] = nettoie_titre(sudoc_record.get_title_info())
+            result['SUDOC_305'] = sudoc_record.get_note_edition()
             result["SUDOC_LOCAL_SYSTEM_NB"] = sudoc_record.get_local_system_nb(ILN)
             result["SUDOC_NB_LOCAL_SYSTEM_NB"] = len(result["SUDOC_LOCAL_SYSTEM_NB"])
             if result["SUDOC_NB_LOCAL_SYSTEM_NB"] > 0:

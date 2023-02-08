@@ -1,11 +1,13 @@
 # -*- coding: utf-8 -*- 
 
 # External imports
+import types
 
 # Internal imports
 import api.abes.Abes_isbn2ppn as Abes_isbn2ppn
+import api.koha.Koha_SRU as Koha_SRU
 
-def main(api, query, return_records=False, service="match_records"):
+def main(api, query, return_records=False, service="match_records", args={}):
     """Main function.
     
     Takes as argument :
@@ -14,7 +16,8 @@ def main(api, query, return_records=False, service="match_records"):
             - "Koha_SRU"
         - query {str}
         - return_records {bool} : returns IDs or complete records (default to false)
-        - servie {str}
+        - service {str}
+        - args {dict}
     
     Returns a tupple :
         error {bool}
@@ -25,7 +28,7 @@ def main(api, query, return_records=False, service="match_records"):
     output = {}
     
     # General part
-    result = call_api(api=api, query=query, service=service)
+    result = call_api(api=api, query=query, service=service, args=args)
     output["ERROR"], output["ERROR_MSG"] = is_error(result, api)
 
     # Leaves if there was an error
@@ -33,30 +36,25 @@ def main(api, query, return_records=False, service="match_records"):
         return output
 
     # Specific actions
-    output.update(specific_actions(api=api, result=result))
+    output.update(specific_actions(api=api, result=result, return_records=return_records))
 
     return output
 
-def call_api(api, query, service):
+def call_api(api, query, service, args):
     """Calls the API.
     
     Returns the object"""
     if api == "Abes_isbn2ppn":
         return Abes_isbn2ppn.Abes_isbn2ppn(query, service=service)
     elif api == "Koha_SRU":
-        return "a"
+        # checks if a Koha URL was provided
+        if not "KOHA_URL" in args:
+            return types.SimpleNamespace(status="Error", error_msg="Koha_SRU called in match_records without specifying a Koha URL in args.")
+        elif args["KOHA_URL"] == "":
+            return types.SimpleNamespace(status="Error", error_msg="Koha_SRU called in match_records with empty string as Koha URL in args.")
+        return Koha_SRU.Koha_SRU(query, kohaUrl=args["KOHA_URL"], service=service) #VERSION QUE POUR NANTES
 
-def is_error(request_object, service):
-    """Returns if the request response was an error.
-    
-    Returns a tupple :
-        {bool}
-        {str} : the error message, starting with the service name"""
-    if request_object.status == 'Error':
-        return True, "{} : {}".format(str(service), str(request_object.error_msg))
-    return False, ""
-
-def specific_actions(api, result):
+def specific_actions(api, result, return_records=False):
     """
     """
     output = {}
@@ -70,8 +68,34 @@ def specific_actions(api, result):
             output['ERROR_MSG'] = "{} : trop de résultats".format(str(api))
         if output["MATCH_RECORDS_NB_RES"] == 1: # Only 1 match : gets the PPN
             output["MATCHED_ID"] = output["MATCH_RECORDS_RES"][0]
+    elif api == "Koha_SRU":
+        output["MATCH_RECORDS_QUERY"] = result.query
+        output["MATCH_RECORDS_NB_RES"] = result.get_nb_results()
+        if return_records:
+            output["MATCH_RECORDS_RES"] = result.get_records()
+        else:
+            output["MATCH_RECORDS_RES"] = result.get_records_id()
+        if int(output["MATCH_RECORDS_NB_RES"]) != 1:
+            output["ERROR"] = True
+            output["FAKE_ERROR"] = True
+            if int(output["MATCH_RECORDS_NB_RES"]) == 0:
+                output['ERROR_MSG'] = "{} : aucun résultat".format(str(api))
+            else:
+                output['ERROR_MSG'] = "{} : trop de résultats".format(str(api))
+        if output["MATCH_RECORDS_NB_RES"] == 1 and not return_records:
+            output["MATCHED_ID"] = output["MATCH_RECORDS_RES"][0]
 
     return output
+
+def is_error(request_object, service):
+    """Returns if the request response was an error.
+    
+    Returns a tupple :
+        {bool}
+        {str} : the error message, starting with the service name"""
+    if request_object.status == 'Error':
+        return True, "{} : {}".format(str(service), str(request_object.error_msg))
+    return False, ""
 
 # multiple PPNs w/ hold only : 2110860723 [06/10/2022]
 # multiple PPNs + no hold : 2-07-037026-7 [06/10/2022]

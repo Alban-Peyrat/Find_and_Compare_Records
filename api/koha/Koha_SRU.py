@@ -4,12 +4,16 @@
 import logging
 import requests
 import xml.etree.ElementTree as ET
+import urllib.parse
 
 #https://koha-community.org/manual/20.11/fr/html/webservices.html#sru-server
 # https://www.loc.gov/standards/sru/sru-1-1.html
+# https://www.loc.gov/standards/sru/cql/contextSets/cql-context-set-v1-2.html
 
 NS = {
-    "zs": "http://docs.oasis-open.org/ns/search-ws/sruResponse",
+    "zs2.0": "http://docs.oasis-open.org/ns/search-ws/sruResponse",
+    "zs1.1": "http://www.loc.gov/zing/srw/",
+    "zs1.2": "http://www.loc.gov/zing/srw/",
     "marc": "http://www.loc.gov/MARC21/slim"
     }
 
@@ -28,18 +32,20 @@ class Koha_SRU(object):
         - "text/plain"
 """
 
-    def __init__(self, query, kohaUrl, service="Koha_SRU", version="2.0", operation="searchRetrieve", maximumRecords=100, startRecord=1):
+    def __init__(self, query, kohaUrl, service="Koha_SRU", version="1.1", recordSchema="marcxml", operation="searchRetrieve", maximumRecords=100, startRecord=1):
         self.logger = logging.getLogger(service)
         self.endpoint = kohaUrl + "/biblios"
         self.service = service
-        self.query = str(query)
+        self.query = urllib.parse.quote(query)
         self.version = str(version)
+        self.recordSchema = str(recordSchema)
         self.operation = operation
         self.maximumRecords = maximumRecords
         self.startRecord = startRecord
-        self.url =  '{}?version={}&operation={}&query={}&startRecord={}&maximumRecords={}'.format(self.endpoint,
-                                            self.version, self.operation, self.query,
+        self.url =  '{}?version={}&recordSchema={}&operation={}&query={}&startRecord={}&maximumRecords={}'.format(self.endpoint,
+                                            self.version, self.recordSchema, self.operation, self.query,
                                             self.startRecord, self.maximumRecords)
+        print(self.url)
         self.payload = {
             
             }
@@ -80,20 +86,20 @@ class Koha_SRU(object):
     def get_nb_results(self):
         """Returns the number of results as an int."""
         root = ET.fromstring(self.result)
-        if root.findall("zs:numberOfRecords", NS):
-            return root.find("zs:numberOfRecords", NS).text
+        if root.findall("zs{}:numberOfRecords".format(self.version), NS):
+            return root.find("zs{}:numberOfRecords".format(self.version), NS).text
         else: 
             return 0
 
     def get_records(self):
         """Returns all records as a list"""
         root = ET.fromstring(self.result)
-        return root.findall(".//zs:record", NS)
+        return root.findall(".//zs{}:record".format(self.version), NS)
 
     def get_records_id(self):
         """Returns all records as a list of strings"""
         root = ET.fromstring(self.result)
-        records = root.findall(".//zs:record", NS)
+        records = root.findall(".//zs{}:record".format(self.version), NS)
 
         output = []
         for record in records:

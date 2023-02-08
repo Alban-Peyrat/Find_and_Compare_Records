@@ -168,3 +168,10 @@ class AbesXml(object):
                             
                         items[EPN]["fields"].append(str(ET.tostring(field)))
         return items
+    
+    def get_note_edition(self):
+        root = ET.fromstring(self.record)
+        note_list = []
+        for ppn in root.findall("./datafield[@tag='305']/subfield[@code='a']"):
+            note_list.append(ppn.text)
+        return note_list

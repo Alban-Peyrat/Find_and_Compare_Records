@@ -227,6 +227,30 @@ class Koha_API_PublicBiblio(object):
                             if code == str(subfield):
                                 return record_subfield[code]       
 
+    def get_note_edition(self):
+        """
+        """
+        note_list = []
+
+        if self.format == "application/marcxml+xml":
+            root = ET.fromstring(self.record)
+            for note in root.findall("./marc:datafield[@tag='305']/marc:subfield[@code='a']", NS):
+                note_list.append(note.text)
+
+        elif self.format == "application/marc-in-json":
+            for field in json.loads(self.record)["fields"]:
+                tag = list(field.keys())[0]
+                if tag == "305":
+                    for subfield in field[tag]["subfields"]:
+                        code = list(subfield.keys())[0]
+                        if code == "a":
+                            note_list.append(subfield[code])
+        
+        # elif self.format == "application/marc" or self.format == "text/plain":
+        #     return "Pas de prise en charge de ce format pour le moment."
+
+        return note_list
+
     # Manque de AbesXml :
     #     get_ppn_autre_support
     # Manque peut-être :
