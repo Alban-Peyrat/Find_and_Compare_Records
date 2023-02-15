@@ -31,6 +31,20 @@ def main(api, query, return_records=False, service="match_records", args={}):
     result = call_api(api=api, query=query, service=service, args=args)
     output["ERROR"], output["ERROR_MSG"] = is_error(result, api)
 
+    #AR226
+    # If error on isbn2ppn, try again converting the ISBN to 10<->13
+    if output["ERROR"] and api == "Abes_isbn2ppn" and (len(result.isbn) == 13 or len(result.isbn) == 10):
+        if len(result.isbn) == 13:
+            new_query = result.isbn[3:-1]
+            new_query += Abes_isbn2ppn.compute_isbn_10_check_digit(list(str(new_query)))
+        else:
+            # Doesn't consider 979[...] as the original issue should only concern old ISBN
+            new_query = "978" + result.isbn[:-1]
+            new_query += Abes_isbn2ppn.compute_isbn_13_check_digit(list(str(new_query)))
+
+        result = call_api(api=api, query=new_query, service=service, args=args)
+        output["ERROR"], output["ERROR_MSG"] = is_error(result, api)
+
     # Leaves if there was an error
     if output["ERROR"]:
         return output

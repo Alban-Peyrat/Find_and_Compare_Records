@@ -29,18 +29,20 @@ def validate_isbn(isbn):
 
         if len(chars) == 9:
             # Compute the ISBN-10 check digit
-            val = sum((x + 2) * int(y) for x,y in enumerate(reversed(chars)))
-            check = 11 - (val % 11)
-            if check == 10:
-                check = "X"
-            elif check == 11:
-                check = "0"
+            # val = sum((x + 2) * int(y) for x,y in enumerate(reversed(chars)))
+            # check = 11 - (val % 11)
+            # if check == 10:
+            #     check = "X"
+            # elif check == 11:
+            #     check = "0"
+            check = compute_isbn_10_check_digit(chars)
         else:
             # Compute the ISBN-13 check digit
-            val = sum((x % 2 * 2 + 1) * int(y) for x,y in enumerate(chars))
-            check = 10 - (val % 10)
-            if check == 10:
-                check = "0"
+            # val = sum((x % 2 * 2 + 1) * int(y) for x,y in enumerate(chars))
+            # check = 10 - (val % 10)
+            # if check == 10:
+            #     check = "0"
+            check = compute_isbn_13_check_digit(chars)
 
         if (str(check) == last):
             return "Valid", isbn, "".join(chars)+last
@@ -48,6 +50,30 @@ def validate_isbn(isbn):
             return "Invalid check", isbn, "".join(chars)+last
     else:
         return "Invalid", isbn, None
+
+def compute_isbn_10_check_digit(chars):
+    """Returns the check as a string for an ISBN 10.
+    
+    Argument : {list of str} each digit of the ISBN except the check
+    """
+    val = sum((x + 2) * int(y) for x,y in enumerate(reversed(chars)))
+    check = 11 - (val % 11)
+    if check == 10:
+        check = "X"
+    elif check == 11:
+        check = "0"
+    return str(check)
+
+def compute_isbn_13_check_digit(chars):
+    """Returns the check as a string for an ISBN 13.
+    
+    Argument : {list of str} each digit of the ISBN except the check
+    """
+    val = sum((x % 2 * 2 + 1) * int(y) for x,y in enumerate(chars))
+    check = 10 - (val % 10)
+    if check == 10:
+        check = "0"
+    return str(check)
 
 class Abes_isbn2ppn(object):
     """Abes_isbn2ppn

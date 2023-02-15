@@ -9,6 +9,7 @@ import urllib.parse
 #https://koha-community.org/manual/20.11/fr/html/webservices.html#sru-server
 # https://www.loc.gov/standards/sru/sru-1-1.html
 # https://www.loc.gov/standards/sru/cql/contextSets/cql-context-set-v1-2.html
+# dc.identifier
 
 NS = {
     "zs2.0": "http://docs.oasis-open.org/ns/search-ws/sruResponse",
