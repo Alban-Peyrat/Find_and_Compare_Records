@@ -15,6 +15,7 @@ import api.abes.AbesXml as AbesXml
 import api.koha.Koha_API_PublicBiblio as Koha_API_PublicBiblio
 from analysis import * # pour éviter de devoir réécrire tous les appels de fonctions
 from scripts.outputing import * # pour éviter de devoir réécrire tous les appels de fonctions
+import scripts.prep_data as prep_data
 
 # TEMP AR228 
 MATCH_RECORDS_API = "Abes_isbn2ppn"
@@ -199,6 +200,12 @@ def main(SERVICE, FILE_PATH, OUTPUT_PATH, LOGS_PATH, #mandatory GUI
             result['KOHA_200adehiv'] = nettoie_titre(koha_record.get_title_info())
             result['KOHA_305'] = koha_record.get_note_edition()
             result["KOHA_PPN"] = koha_record.get_ppn(KOHA_PPN_FIELD, KOHA_PPN_SUBFIELD)
+            result["KOHA_214210a_DATES"] = []
+            for date_str in koha_record.get_dates_from_21X():
+                result["KOHA_214210a_DATES"] += prep_data.get_year(date_str)
+            result["KOHA_215a_DATES"] = []    
+            for desc_str in koha_record.get_desc(): #AR259
+                result["KOHA_215a_DATES"] += prep_data.get_year(desc_str)
             logger.debug("{} :: {} :: {}".format(result["MATCH_RECORDS_QUERY"], SERVICE, "Koha biblionumber : " + result['KOHA_BIB_NB']))
             logger.debug("{} :: {} :: {}".format(result["MATCH_RECORDS_QUERY"], SERVICE, "Koha titre nettoyé : " + result['KOHA_200adehiv']))
 

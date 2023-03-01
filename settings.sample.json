@@ -199,6 +199,16 @@
             "list": true
         },
         {
+            "id": "KOHA_214210a_DATES",
+            "name": "Date de pub 210/4 Koha",
+            "list": true
+        },
+        {
+            "id": "KOHA_215a_DATES",
+            "name": "Date de pub 215a Koha",
+            "list": true
+        },
+        {
             "id": "MATCHING_TITRE_SIMILARITE",
             "name": "Score de similarit\u00e9 des titres",
             "list": false
