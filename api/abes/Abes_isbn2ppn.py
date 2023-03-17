@@ -49,7 +49,7 @@ def validate_isbn(isbn):
         else:
             return "Invalid check", isbn, "".join(chars)+last
     else:
-        return "Invalid", isbn, None
+        return "Invalid", isbn, ""
 
 def compute_isbn_10_check_digit(chars):
     """Returns the check as a string for an ISBN 10.
