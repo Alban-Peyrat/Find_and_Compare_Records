@@ -119,7 +119,7 @@ class Koha_API_PublicBiblio(object):
             root = ET.fromstring(self.record)
             for subfield in root.find("./marc:datafield[@tag='200']", NS).findall("./marc:subfield", NS):
                 if subfield.attrib['code'] in ('a','d','e','h','i','v') :
-                    key_title.append(subfield.text)
+                    key_title.append(str(subfield.text or "")) #AR294 : MARCXML can have empty subfields that returns None, but we need a string
 
         elif self.format == "application/marc-in-json":
             for field in json.loads(self.record)["fields"]:
