@@ -175,3 +175,10 @@ class AbesXml(object):
         for ppn in root.findall("./datafield[@tag='305']/subfield[@code='a']"):
             note_list.append(ppn.text)
         return note_list
+
+    def get_wrong_isbn(self):
+        root = ET.fromstring(self.record)
+        isbn_list = []
+        for isbn in root.findall("./datafield[@tag='010']/subfield[@code='z']"):
+            isbn_list.append(isbn.text)
+        return isbn_list

@@ -127,6 +127,16 @@
             "list": false
         },
         {
+            "id": "KOHA_010z",
+            "name": "ISBN erronés Koha",
+            "list": true
+        },
+        {
+            "id": "SUDOC_010z",
+            "name": "ISBN erronés Sudoc",
+            "list": true
+        },
+        {
             "id": "KOHA_200adehiv",
             "name": "Clef de titre Koha",
             "list": false

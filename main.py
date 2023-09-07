@@ -206,6 +206,7 @@ def main(SERVICE, FILE_PATH, OUTPUT_PATH, LOGS_PATH, #mandatory GUI
             result["KOHA_215a_DATES"] = []    
             for desc_str in koha_record.get_desc(): #AR259
                 result["KOHA_215a_DATES"] += prep_data.get_year(desc_str)
+            result['KOHA_010z'] = koha_record.get_wrong_isbn()
             logger.debug("{} :: {} :: {}".format(result["MATCH_RECORDS_QUERY"], SERVICE, "Koha biblionumber : " + result['KOHA_BIB_NB']))
             logger.debug("{} :: {} :: {}".format(result["MATCH_RECORDS_QUERY"], SERVICE, "Koha titre nettoyé : " + result['KOHA_200adehiv']))
 
@@ -232,6 +233,7 @@ def main(SERVICE, FILE_PATH, OUTPUT_PATH, LOGS_PATH, #mandatory GUI
                 result["SUDOC_DIFFERENT_LOCAL_SYSTEM_NB"] = not koha_record.bibnb in result["SUDOC_LOCAL_SYSTEM_NB"]
             result["SUDOC_ITEMS"] = sudoc_record.get_library_items(RCR)
             result["SUDOC_HAS_ITEMS"] = len(result["SUDOC_ITEMS"]) > 0
+            result['SUDOC_010z'] = sudoc_record.get_wrong_isbn()
             logger.debug("{} :: {} :: {}".format(result["MATCH_RECORDS_QUERY"], SERVICE, "PPN : " + result["MATCHED_ID"]))
             logger.debug("{} :: {} :: {}".format(result["MATCH_RECORDS_QUERY"], SERVICE, "Sudoc titre nettoyé : " + result['SUDOC_200adehiv']))
 
