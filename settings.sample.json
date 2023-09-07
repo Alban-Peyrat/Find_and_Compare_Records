@@ -1,16 +1,4 @@
 {
-    "SERVICE":"Compare_Koha_Sudoc_records",
-    "FILE_PATH":"C:\\Path\\To\\Directory\\With\\The\\Original\\File",
-    "OUTPUT_PATH":"C:\\Path\\To\\Directory\\With\\The\\Output\\Folder",
-    "LOGS_PATH":"C:\\Path\\To\\Directory\\For\\The\\Log\\File",
-    "KOHA_URL":"https://mykoha.fr/",
-    "KOHA_PPN_FIELD":"061",
-    "KOHA_PPN_SUBFIELD":"9",
-    "KOHA_REPORT_NB":"0",
-    "KOHA_USERID":"report.account.userid",
-    "KOHA_PASSWORD":"reallystrongpassword",
-    "ILN":"000",
-    "RCR":"123456789",
     "ANALYSIS":[
         {"name": "Aucune analyse",
         "TITLE_MIN_SCORE":0,
