@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 
+import bi_classes as bic
+
 def log_fin_traitement(logger, result, success):
     """Log une INFO pour dire que la ligne est terminée.
     Sert à modifier partout le message.
@@ -13,13 +15,16 @@ def log_fin_traitement(logger, result, success):
         msg = "ÉCHEC"
     logger.info("{} du traitement de la ligne : ISBN = \"{}\", Koha Bib Nb = \"{}\"".format(msg, result["INPUT_QUERY"],result["INPUT_KOHA_BIB_NB"]))
 
-def generate_report(REPORT_SETTINGS, FILES, KOHA_URL, ILN, CHOSEN_ANALYSIS, results_report, logger=None):
+def generate_report(es: bic.execution_settings, results_report: bic.report, logger=None):
+# def generate_report(REPORT_SETTINGS, FILES, KOHA_URL, ILN, CHOSEN_ANALYSIS, results_report: bi_classes.report, logger=None):
     """Génère le rapport. Mettre le logger pour créer le rapport dans le logs aussi.
     
     REPORT_SETTINGS:
         "name" {str} : libellé de la donnée
         "section" {int} : numéro de la section dans le rapport, commence à 0
         "var" : null si c'est juste une ligne de texte, sinon, le nom de la variable"""
+    
+    return #temps
     sections = []
     for row in REPORT_SETTINGS:
         line = row["name"]

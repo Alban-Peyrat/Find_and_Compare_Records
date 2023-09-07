@@ -9,6 +9,7 @@ from dotenv import load_dotenv
 # Internal import
 from theme.theme import *
 import main
+import bi_classes
 
 # Load env var
 load_dotenv()
@@ -97,20 +98,9 @@ if event == sg.WIN_CLOSED or event == 'Cancel': # if user closes window or click
 # # --------------- Closing the window ---------------
 window.close()
 
+execution_settings = bi_classes.execution_settings()
+execution_settings.get_values_from_GUI(val)
+
 # Launch the main script
 print("Exécution du script principal")
-main.main(SERVICE = val["SERVICE"],
-    FILE_PATH = val["FILE_PATH"],
-    OUTPUT_PATH = val["OUTPUT_PATH"],
-    LOGS_PATH = val["LOGS_PATH"],
-    ANALYSIS = settings["ANALYSIS"],
-    CSV_EXPORT_COLS = settings["CSV_EXPORT_COLS"],
-    REPORT_SETTINGS = settings["REPORT_SETTINGS"],
-    KOHA_URL = val["KOHA_URL"],
-    KOHA_PPN_FIELD = val["KOHA_PPN_FIELD"],
-    KOHA_PPN_SUBFIELD = val["KOHA_PPN_SUBFIELD"],
-    KOHA_REPORT_NB = val["KOHA_REPORT_NB"],
-    KOHA_USERID = val["KOHA_USERID"],
-    KOHA_PASSWORD = val["KOHA_PASSWORD"],
-    ILN = val["ILN"],
-    RCR = val["RCR"])
+main.main(execution_settings)
