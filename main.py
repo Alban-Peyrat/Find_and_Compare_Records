@@ -23,7 +23,7 @@ MATCH_RECORDS_API = "Abes_isbn2ppn"
 # TEMP AR235
 # MATCH_RECORDS_API = "Koha_SRU" 
 
-def main(es: bic.execution_settings):
+def main(es: bic.Execution_Settings):
     """Main function."""
 
     # Get the original file
@@ -67,7 +67,7 @@ def main(es: bic.execution_settings):
 
     # ----------------- AR220 : a edit
     # Init report
-    results_report = bic.report()
+    results_report = bic.Report()
     # ----------------- Fin de AR220 : a edit
 
     #On initialise le logger
@@ -101,24 +101,29 @@ def main(es: bic.execution_settings):
         logger.info("Fichier contenant les données en CSV : " + es.file_path_out_csv)
 
         for line in csvdata:
-            # Declaration & set-up of result {dict}
+            # Declaration & set-up of record
+            rec = bic.Record(line)
+            results_report.increase_processed() # report stats
+            # Retrieve ISBN + KohaBibNb
+            # 0 = ISBN, 1 = 915$a, 2 = 915$b, 3 = 930$c, 4 = 930$e,
+            # 5 = 930$a, 6 = 930$j, 7 = 930$v, 8 = L035$a
+
+            # Gets input query and original uid
+            rec.extract_from_original_line(CSV_ORIGINAL_COLS)
+            logger.info(f"Traitement de la ligne : ISBN = \"{rec.input_query}\", Koha Bib Nb = \"{rec.original_uid}\"")
+
+            # ||| AR358 to del
             result = {}
             result['ERROR'] = False
             result['FAKE_ERROR'] = False
             result['ERROR_MSG'] = ''
-            results_report.increase_processed() # report stats
-
-            # Retrieve ISBN + KohaBibNb
-            # 0 = ISBN, 1 = 915$a, 2 = 915$b, 3 = 930$c, 4 = 930$e,
-            # 5 = 930$a, 6 = 930$j, 7 = 930$v, 8 = L035$a
             result.update(line)
-            #pour éviter des problèmes de changement de nom de la clef, on conserve l'utilisation du index 1 et last index )
             result["INPUT_QUERY"] = line[CSV_ORIGINAL_COLS[0]]
             result["INPUT_KOHA_BIB_NB"] = line[CSV_ORIGINAL_COLS[len(line)-1]].rstrip()
-            logger.info("Traitement de la ligne : ISBN = \"{}\", Koha Bib Nb = \"{}\"".format(result["INPUT_QUERY"],result["INPUT_KOHA_BIB_NB"]))
+            # ||| End of AR358 to del
 
             # --------------- Match records ---------------
-            # result["INPUT_QUERY"] = "renard style"
+            
             result.update(match_records.main(api=MATCH_RECORDS_API, query=result["INPUT_QUERY"], service=es.service, return_records=False, args={"KOHA_URL":es.koha_url})) 
             if result["ERROR"]:
                 if result["FAKE_ERROR"]: # report stats

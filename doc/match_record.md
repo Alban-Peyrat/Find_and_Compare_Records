@@ -1,3 +1,11 @@
+# Instantiate a `Match_Records`
+
+Three arguments are required :
+
+* `operation` : the operation to execute as `Enum Operations` entry
+* `query` : the suery as a `string` 
+* `es` : the execution settings as a `bi_classes.execution_parameters` instance
+
 # Handle data returned from `Matched_Records`
 
 `Matched_Records` instances always have these properties :
@@ -41,6 +49,7 @@ Connectors, to work with `Find_And_Compare_Records`, need to be able to :
 ## Add an operation
 
 * `Operations` define where and how `Find_And_Compare_Records` should look for matching records
+* _In `bi_classes.py`_
 * First, add a new entry in the `Enum Operations`
 * Then, add this entry in the `dict TRY_OPERATIONS` :
   * The key is the `Enum Operations` entry (everything, not only the name or value)
@@ -51,8 +60,10 @@ Connectors, to work with `Find_And_Compare_Records`, need to be able to :
 
 * `Actions` define where `Find_And_Compare_Records` will be looking for and what will the query be
   * You can have multiple actions requesting from the same API if you want to modify the query : for example, you can have an action that queries `isbn2ppn` without modifying the input query, and another action that still queries `isbn2ppn` but this time the input query is changed into the 13/10 digits form of the ISBN
+* _In `bi_classes.py`_
+* Add a new entry in the `Enum Actions`
+* _In `matched_records.py`_
 * First, if needed, import the connector to the webservice or other
-* Then, add a new entry in the `Enum Actions`
 * Then, add in the `Match_records.request_action()` method a new `elif action == Actions.YOUR_NEW_ACTION`
   * In this `elif`, you call the API or other
   * Call `thistry.define_used_query` with as argument the used query as a `string` 
@@ -68,6 +79,7 @@ Connectors, to work with `Find_And_Compare_Records`, need to be able to :
 
 ## Add a type of error
 
+* _In `bi_classes.py`_
 * First, add a new entry in the `Enum Match_Records_Errors`
 * Then, add this entry in the `dict MATCH_RECORDS_ERROR_MESSAGES` :
   * The key is the `Enum Match_Records_Errors` entry (everything, not only the name or value)
@@ -75,4 +87,5 @@ Connectors, to work with `Find_And_Compare_Records`, need to be able to :
 
 ## Add a try status
 
+* _In `bi_classes.py`_
 * Add a new entry in the `Enum Try_Status`

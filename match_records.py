@@ -1,39 +1,12 @@
 # -*- coding: utf-8 -*- 
 
 # External imports
-import types
-from enum import Enum
 
 # Internal imports
 import api.abes.Abes_isbn2ppn as Abes_isbn2ppn
 import api.abes.Sudoc_SRU as ssru
 import api.koha.Koha_SRU as Koha_SRU
-
-class Match_Records_Errors(Enum):
-    GENERIC_ERROR = 0
-    NOTHING_WAS_FOUND = 1
-
-MATCH_RECORDS_ERROR_MESSAGES = {
-    Match_Records_Errors.GENERIC_ERROR: "Generic error",
-    Match_Records_Errors.NOTHING_WAS_FOUND: "Nothing was found"
-}
-
-class Operations(Enum):
-    SEARCH_IN_SUDOC_BY_ISBN = 0
-    SEARCH_IN_KOHA = 1
-    SEARCH_IN_SUDOC_BY_ISBN_ONLY_ISBN2PPN = 2
-    SEARCH_IN_SUDOC_BY_ISBN_ONLY_SRU = 3
-    # SEARCH_IN_ISO2701_FILE = 4
-
-class Actions(Enum):
-    ISBN2PPN = 0
-    ISBN2PPN_MODIFIED_ISBN = 1
-    SRU_SUDOC_ISBN = 2
-
-class Try_Status(Enum):
-    UNKNWON = 0
-    SUCCESS = 1
-    ERROR = 2
+from bi_classes import Execution_Settings, Operations, Actions, Try_Status, Match_Records_Errors, TRY_OPERATIONS, MATCH_RECORDS_ERROR_MESSAGES
 
 class Request_Try(object):
     """"""
@@ -74,29 +47,12 @@ class Request_Try(object):
         self.returned_records = records
         self.includes_records = True
 
-# TRY_OPERATIONS defines for each Operations a lsit of Actions to execute
-# The order in the list is the order of execution
-TRY_OPERATIONS = {
-    Operations.SEARCH_IN_SUDOC_BY_ISBN: [
-        Actions.ISBN2PPN,
-        Actions.ISBN2PPN_MODIFIED_ISBN,
-        Actions.SRU_SUDOC_ISBN
-    ],
-    Operations.SEARCH_IN_SUDOC_BY_ISBN_ONLY_ISBN2PPN: [
-        Actions.ISBN2PPN,
-        Actions.ISBN2PPN_MODIFIED_ISBN
-    ],
-    Operations.SEARCH_IN_SUDOC_BY_ISBN_ONLY_SRU: [
-        Actions.SRU_SUDOC_ISBN
-    ]
-}
-
 class Matched_Records(object):
     """
     
     Takes as argument :
         - operation {Operations Instance} (defaults to SEARCH_IN_SUDOC_BY_ISBN)"""
-    def __init__(self, operation: Operations, query: str):
+    def __init__(self, operation: Operations, query: str, es: Execution_Settings):
         self.error = None
         self.error_msg = None
         self.tries = []
@@ -167,68 +123,31 @@ class Matched_Records(object):
             else:
                 thisTry.add_returned_ids(res.get_records_id())
                 thisTry.add_returned_records(res.get_records())
+        # Action isbn2ppn
+        # /!\ THIS PART IS ALSO USED IN Actions.ISBN2PPN_MODIFIED_PPN DO NOT FORGET TO UPDATE
+        # THE OTHER ONE IF NECESSARY
+        # Sinon je mets des fonction communes du genre : Abes_ISBN2PNN_get_error or something
+        elif action == Actions.ISBN2PPN:
+            res = Abes_isbn2ppn.Abes_isbn2ppn(self.query)
+            thisTry.define_used_query(res.isbn)
 
+        # Action isbn2ppn with changed ISBN
+        elif action == Actions.ISBN2PPN_MODIFIED_ISBN:
+            #AR226
+            # Converting the ISBN to 10<->13
+            if len(self.query) == 13:
+                new_query = self.query[3:-1]
+                new_query += Abes_isbn2ppn.compute_isbn_10_check_digit(list(str(new_query)))
+            elif len(self.query) == 10:
+                # Doesn't consider 979[...] as the original issue should only concern old ISBN
+                new_query = "978" + self.query[:-1]
+                new_query += Abes_isbn2ppn.compute_isbn_13_check_digit(list(str(new_query)))
+            
+            # Same thing as Action ISBN2PPN
+            res = Abes_isbn2ppn.Abes_isbn2ppn(self.query)
+            thisTry.define_used_query(res.isbn)
 
-
-def main(api: Operations, query: str, return_records=False, service="match_records", args={}):
-    """Main function.
-    
-    Takes as argument :
-        - api {Operations instance}
-        - query {str}
-        - service {str}
-        - args {dict}
-    
-    Returns a tupple :
-        error {bool}
-        error_msg {str}
-        output {list}
-            """
-
-    # Do not return records or IDS, return records with IDS (see SRU_Abes)
-
-    output = {}
-    
-    # General part
-    result = call_api(api=api, query=query, service=service, args=args)
-    output["ERROR"], output["ERROR_MSG"] = is_error(result, api)
-
-    #AR226
-    # If error on isbn2ppn, try again converting the ISBN to 10<->13
-    if output["ERROR"] and api == "Abes_isbn2ppn" and (len(result.isbn) == 13 or len(result.isbn) == 10):
-        if len(result.isbn) == 13:
-            new_query = result.isbn[3:-1]
-            new_query += Abes_isbn2ppn.compute_isbn_10_check_digit(list(str(new_query)))
-        else:
-            # Doesn't consider 979[...] as the original issue should only concern old ISBN
-            new_query = "978" + result.isbn[:-1]
-            new_query += Abes_isbn2ppn.compute_isbn_13_check_digit(list(str(new_query)))
-
-        result = call_api(api=api, query=new_query, service=service, args=args)
-        output["ERROR"], output["ERROR_MSG"] = is_error(result, api)
-
-    # Leaves if there was an error
-    if output["ERROR"]:
-        return output
-
-    # Specific actions
-    output.update(specific_actions(api=api, result=result, return_records=return_records))
-
-    return output
-
-def call_api(api, query, service, args):
-    """Calls the API.
-    
-    Returns the object"""
-    if api == "Abes_isbn2ppn":
-        return Abes_isbn2ppn.Abes_isbn2ppn(query, service=service)
-    elif api == "Koha_SRU":
-        # checks if a Koha URL was provided
-        if not "KOHA_URL" in args:
-            return types.SimpleNamespace(status="Error", error_msg="Koha_SRU called in match_records without specifying a Koha URL in args.")
-        elif args["KOHA_URL"] == "":
-            return types.SimpleNamespace(status="Error", error_msg="Koha_SRU called in match_records with empty string as Koha URL in args.")
-        return Koha_SRU.Koha_SRU(query, kohaUrl=args["KOHA_URL"], service=service) #VERSION QUE POUR NANTES
+        # Action in Koha SRU
 
 def specific_actions(api, result, return_records=False):
     """
@@ -263,16 +182,7 @@ def specific_actions(api, result, return_records=False):
 
     return output
 
-# ready to del
-# def is_error(request_object, service):
-#     """Returns if the request response was an error.
-    
-#     Returns a tupple :
-#         {bool}
-#         {str} : the error message, starting with the service name"""
-#     if request_object.status == 'Error':
-#         return True, "{} : {}".format(str(service), str(request_object.error_msg))
-#     return False, ""
+
 
 # multiple PPNs w/ hold only : 2110860723 [06/10/2022]
 # multiple PPNs + no hold : 2-07-037026-7 [06/10/2022]

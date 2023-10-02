@@ -6,7 +6,9 @@ import json
 from dotenv import load_dotenv
 from enum import Enum
 
-class execution_settings(object):
+# -------------------- MAIN --------------------
+
+class Execution_Settings(object):
     def __init__(self):
         # Load settings file
         with open('./settings.json', "r+", encoding="utf-8") as f:
@@ -53,9 +55,17 @@ class execution_settings(object):
         self.chosen_analysis = self.analysis[nb]
     
 
-class record(object):
-    def __init__(self):
-        self.a = 1
+class Record(object):
+    def __init__(self, line: dict):
+        self.error = None
+        self.error_message = None
+        self.original_line = line
+    
+    def extract_from_original_line(self, headers: list):
+        """Extract the first column of the file as the input query and
+        the last column as the original UID regardless of the headers name"""
+        self.input_query = self.original_line[headers[0]]
+        self.original_uid = self.original_line[headers[len(self.original_line)-1]].rstrip()
 
 # Used in report class
 class Success(Enum):
@@ -69,7 +79,7 @@ class Errors(Enum):
     KOHA = 2
     SUDOC = 3
 
-class report(object):
+class Report(object):
     def __init__(self):
         self.processed = 0
         self.errors = {}
@@ -88,3 +98,47 @@ class report(object):
     def increase_fail(self, err: Errors):
         self.errors[err.value] += 1
         
+# -------------------- MATCH RECORDS --------------------
+
+class Operations(Enum):
+    SEARCH_IN_SUDOC_BY_ISBN = 0
+    SEARCH_IN_KOHA = 1
+    SEARCH_IN_SUDOC_BY_ISBN_ONLY_ISBN2PPN = 2
+    SEARCH_IN_SUDOC_BY_ISBN_ONLY_SRU = 3
+    # SEARCH_IN_ISO2701_FILE = 4
+
+class Actions(Enum):
+    ISBN2PPN = 0
+    ISBN2PPN_MODIFIED_ISBN = 1
+    SRU_SUDOC_ISBN = 2
+
+class Try_Status(Enum):
+    UNKNWON = 0
+    SUCCESS = 1
+    ERROR = 2
+
+class Match_Records_Errors(Enum):
+    GENERIC_ERROR = 0
+    NOTHING_WAS_FOUND = 1
+
+# TRY_OPERATIONS defines for each Operations a lsit of Actions to execute
+# The order in the list is the order of execution
+TRY_OPERATIONS = {
+    Operations.SEARCH_IN_SUDOC_BY_ISBN: [
+        Actions.ISBN2PPN,
+        Actions.ISBN2PPN_MODIFIED_ISBN,
+        Actions.SRU_SUDOC_ISBN
+    ],
+    Operations.SEARCH_IN_SUDOC_BY_ISBN_ONLY_ISBN2PPN: [
+        Actions.ISBN2PPN,
+        Actions.ISBN2PPN_MODIFIED_ISBN
+    ],
+    Operations.SEARCH_IN_SUDOC_BY_ISBN_ONLY_SRU: [
+        Actions.SRU_SUDOC_ISBN
+    ]
+}
+
+MATCH_RECORDS_ERROR_MESSAGES = {
+    Match_Records_Errors.GENERIC_ERROR: "Generic error",
+    Match_Records_Errors.NOTHING_WAS_FOUND: "Nothing was found"
+}
