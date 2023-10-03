@@ -98,7 +98,7 @@ if event == sg.WIN_CLOSED or event == 'Cancel': # if user closes window or click
 # # --------------- Closing the window ---------------
 window.close()
 
-execution_settings = bi_classes.execution_settings()
+execution_settings = bi_classes.Execution_Settings()
 execution_settings.get_values_from_GUI(val)
 
 # Launch the main script

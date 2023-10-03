@@ -15,7 +15,7 @@ def log_fin_traitement(logger, result, success):
         msg = "ÉCHEC"
     logger.info("{} du traitement de la ligne : ISBN = \"{}\", Koha Bib Nb = \"{}\"".format(msg, result["INPUT_QUERY"],result["INPUT_KOHA_BIB_NB"]))
 
-def generate_report(es: bic.execution_settings, results_report: bic.report, logger=None):
+def generate_report(es: bic.Execution_Settings, results_report: bic.Report, logger=None):
 # def generate_report(REPORT_SETTINGS, FILES, KOHA_URL, ILN, CHOSEN_ANALYSIS, results_report: bi_classes.report, logger=None):
     """Génère le rapport. Mettre le logger pour créer le rapport dans le logs aussi.
     

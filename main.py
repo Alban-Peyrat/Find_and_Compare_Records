@@ -9,7 +9,6 @@ import json
 
 # Internal import
 import scripts.logs as logs
-import match_records
 # import api.abes.Abes_isbn2ppn as Abes_isbn2ppn
 import api.abes.AbesXml as AbesXml
 import api.koha.Koha_API_PublicBiblio as Koha_API_PublicBiblio
@@ -19,7 +18,7 @@ import scripts.prep_data as prep_data
 import bi_classes as bic
 
 # TEMP AR228 
-MATCH_RECORDS_API = "Abes_isbn2ppn"
+Matched_record_opration = bic.Operations.SEARCH_IN_SUDOC_BY_ISBN
 # TEMP AR235
 # MATCH_RECORDS_API = "Koha_SRU" 
 
@@ -102,7 +101,7 @@ def main(es: bic.Execution_Settings):
 
         for line in csvdata:
             # Declaration & set-up of record
-            rec = bic.Record(line)
+            rec = bic.Original_Record(line)
             results_report.increase_processed() # report stats
             # Retrieve ISBN + KohaBibNb
             # 0 = ISBN, 1 = 915$a, 2 = 915$b, 3 = 930$c, 4 = 930$e,
@@ -123,8 +122,26 @@ def main(es: bic.Execution_Settings):
             # ||| End of AR358 to del
 
             # --------------- Match records ---------------
-            
-            result.update(match_records.main(api=MATCH_RECORDS_API, query=result["INPUT_QUERY"], service=es.service, return_records=False, args={"KOHA_URL":es.koha_url})) 
+            rec.get_matched_records_instance(bic.Matched_Records(Matched_record_opration, rec.input_query, es))     
+
+            # ||| AR358 to del |||
+            result["MATCH_RECORDS_QUERY"] = rec.query_used
+            result["MATCH_RECORDS_NB_RES"] = rec.nb_matched_records
+            result["MATCH_RECORDS_RES"] = rec.matched_records_ids
+            # result["MATCH_RECORDS_RES_RECORDS"] = rec.matched_records
+            if result["MATCH_RECORDS_NB_RES"] > 1:
+                result["ERROR"] = True
+                result["FAKE_ERROR"] = True
+                result['ERROR_MSG'] = "{} : trop de résultats".format(str(Matched_record_opration.name))
+            if result["MATCH_RECORDS_NB_RES"] == 0:
+                result["ERROR"] = True
+                result["FAKE_ERROR"] = False
+                result['ERROR_MSG'] = "{} : aucun résultat".format(str(Matched_record_opration.name))
+            if result["MATCH_RECORDS_NB_RES"] == 1: # Only 1 match : gets the PPN
+                result["MATCHED_ID"] = result["MATCH_RECORDS_RES"][0]
+            # ||| End of AR358 to del
+    
+            # ||| needs to be redone with enhanced match records errors
             if result["ERROR"]:
                 if result["FAKE_ERROR"]: # report stats
                     results_report.increase_fail(bic.Errors.MATCH_RECORD_FAKE)
@@ -139,7 +156,7 @@ def main(es: bic.Execution_Settings):
             
             # Match records was a success
             results_report.increase_success(bic.Success.MATCH_RECORD) # report stats
-            logger.debug("{} :: {} :: {}".format(result["MATCH_RECORDS_QUERY"], es.service, "Résultat {} : ".format(str(MATCH_RECORDS_API)) + " || ".join(str(result["MATCH_RECORDS_RES"]))))
+            logger.debug("{} :: {} :: {}".format(result["MATCH_RECORDS_QUERY"], es.service, "Résultat {} : ".format(str(Matched_record_opration)) + " || ".join(str(result["MATCH_RECORDS_RES"]))))
 
             # --------------- KOHA ---------------
             # Get Koha record
