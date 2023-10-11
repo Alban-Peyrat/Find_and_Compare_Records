@@ -15,14 +15,14 @@ import api.koha.Koha_API_PublicBiblio as Koha_API_PublicBiblio
 from analysis import * # pour éviter de devoir réécrire tous les appels de fonctions
 from scripts.outputing import * # pour éviter de devoir réécrire tous les appels de fonctions
 import scripts.prep_data as prep_data
-import bi_classes as bic
+import fcr_classes as fcr
 
 # TEMP AR228 
-Matched_record_opration = bic.Operations.SEARCH_IN_SUDOC_BY_ISBN
+Matched_record_opration = fcr.Operations.SEARCH_IN_SUDOC_BY_ISBN
 # TEMP AR235
 # MATCH_RECORDS_API = "Koha_SRU" 
 
-def main(es: bic.Execution_Settings):
+def main(es: fcr.Execution_Settings):
     """Main function."""
 
     # Get the original file
@@ -66,7 +66,7 @@ def main(es: bic.Execution_Settings):
 
     # ----------------- AR220 : a edit
     # Init report
-    results_report = bic.Report()
+    results_report = fcr.Report()
     # ----------------- Fin de AR220 : a edit
 
     #On initialise le logger
@@ -101,7 +101,7 @@ def main(es: bic.Execution_Settings):
 
         for line in csvdata:
             # Declaration & set-up of record
-            rec = bic.Original_Record(line)
+            rec = fcr.Original_Record(line)
             results_report.increase_processed() # report stats
             # Retrieve ISBN + KohaBibNb
             # 0 = ISBN, 1 = 915$a, 2 = 915$b, 3 = 930$c, 4 = 930$e,
@@ -122,7 +122,7 @@ def main(es: bic.Execution_Settings):
             # ||| End of AR358 to del
 
             # --------------- Match records ---------------
-            rec.get_matched_records_instance(bic.Matched_Records(Matched_record_opration, rec.input_query, es))     
+            rec.get_matched_records_instance(fcr.Matched_Records(Matched_record_opration, rec.input_query, es))     
 
             # ||| AR358 to del |||
             result["MATCH_RECORDS_QUERY"] = rec.query_used
@@ -144,10 +144,10 @@ def main(es: bic.Execution_Settings):
             # ||| needs to be redone with enhanced match records errors
             if result["ERROR"]:
                 if result["FAKE_ERROR"]: # report stats
-                    results_report.increase_fail(bic.Errors.MATCH_RECORD_FAKE)
+                    results_report.increase_fail(fcr.Errors.MATCH_RECORD_FAKE)
                     logger.error("{} :: {} :: {}".format(result["MATCH_RECORDS_QUERY"], es.service, "{} : {}".format(str(result["ERROR_MSG"]), str(result["MATCH_RECORDS_NB_RES"]))))
                 else:
-                    results_report.increase_fail(bic.Errors.MATCH_RECORD_REAL)
+                    results_report.increase_fail(fcr.Errors.MATCH_RECORD_REAL)
                     logger.error("{} :: {} :: {}".format(result["INPUT_QUERY"], es.service, str(result["ERROR_MSG"])))
                 
                 # Skip to next line
@@ -155,7 +155,7 @@ def main(es: bic.Execution_Settings):
                 continue
             
             # Match records was a success
-            results_report.increase_success(bic.Success.MATCH_RECORD) # report stats
+            results_report.increase_success(fcr.Success.MATCH_RECORD) # report stats
             logger.debug("{} :: {} :: {}".format(result["MATCH_RECORDS_QUERY"], es.service, "Résultat {} : ".format(str(Matched_record_opration)) + " || ".join(str(result["MATCH_RECORDS_RES"]))))
 
             # --------------- KOHA ---------------
@@ -165,7 +165,7 @@ def main(es: bic.Execution_Settings):
             if koha_record.status == 'Error' :
                 result['ERROR'] = True
                 result['ERROR_MSG'] = "Koha_API_PublicBiblio : " + koha_record.error_msg
-                results_report.increase_fail(bic.Errors.KOHA) # report stats
+                results_report.increase_fail(fcr.Errors.KOHA) # report stats
                 go_next(logger, results, csv_writer, result, False)
                 continue # skip to next line
             
@@ -193,12 +193,12 @@ def main(es: bic.Execution_Settings):
             if sudoc_record.status == 'Error':
                 result['ERROR'] = True
                 result['ERROR_MSG'] = sudoc_record.error_msg
-                results_report.increase_fail(bic.Errors.SUDOC) # report stats
+                results_report.increase_fail(fcr.Errors.SUDOC) # report stats
                 go_next(logger, results, csv_writer, result, False)
                 continue # skip to next line
 
             # Successfully got Sudoc record
-            results_report.increase_success(bic.Success.GLOBAL) # report stats
+            results_report.increase_success(fcr.Success.GLOBAL) # report stats
             result['SUDOC_Leader'] = sudoc_record.get_leader()
             result['SUDOC_100a'],result['SUDOC_DATE_TYPE'],result['SUDOC_DATE_1'],result['SUDOC_DATE_2'] = sudoc_record.get_dates_pub()
             result['SUDOC_214210c'] = sudoc_record.get_editeurs()

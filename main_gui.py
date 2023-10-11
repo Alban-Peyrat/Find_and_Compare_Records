@@ -9,7 +9,7 @@ from dotenv import load_dotenv
 # Internal import
 from theme.theme import *
 import main
-import bi_classes
+import fcr_classes as fcr
 
 # Load env var
 load_dotenv()
@@ -98,7 +98,7 @@ if event == sg.WIN_CLOSED or event == 'Cancel': # if user closes window or click
 # # --------------- Closing the window ---------------
 window.close()
 
-execution_settings = bi_classes.Execution_Settings()
+execution_settings = fcr.Execution_Settings()
 execution_settings.get_values_from_GUI(val)
 
 # Launch the main script
