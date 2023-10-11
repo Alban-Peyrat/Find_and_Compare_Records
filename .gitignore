@@ -1,8 +1,10 @@
 my_settings.json
 settings.json
-settings_Sophie.json
 pbs
 info_reseau
+test.py
+.env
+my.env
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
