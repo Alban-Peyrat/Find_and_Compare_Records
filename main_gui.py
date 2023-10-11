@@ -69,9 +69,9 @@ layout = [
     # Koha PPN + ILN + RCR
     [
         sg.Text("Koha champ PPN :"),
-        sg.Input(key="KOHA_PPN_FIELD", default_text=os.getenv("KOHA_PPN_FIELD"), size=(3, None)),
+        sg.Input(key="SOURCE_PPN_FIELD", default_text=os.getenv("SOURCE_PPN_FIELD"), size=(3, None)),
         sg.Text("Koha sous-champ PPN :"),
-        sg.Input(key="KOHA_PPN_SUBFIELD", default_text=os.getenv("KOHA_PPN_SUBFIELD"), size=(1, None)),
+        sg.Input(key="SOURCE_PPN_SUBFIELD", default_text=os.getenv("SOURCE_PPN_SUBFIELD"), size=(1, None)),
         sg.Text("ILN :"),
         sg.Input(key="ILN", default_text=os.getenv("ILN"), size=(3, None)),
         sg.Text("RCR :"),

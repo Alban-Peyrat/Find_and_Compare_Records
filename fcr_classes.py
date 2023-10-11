@@ -2,9 +2,12 @@
 
 # External import
 import os
-import json
 from dotenv import load_dotenv
 from enum import Enum
+import json
+import xml.etree.ElementTree as ET
+import pymarc
+import re
 
 # ----- Match Records imports -----
 # Internal imports
@@ -22,6 +25,10 @@ class Execution_Settings(object):
             self.analysis = settings["ANALYSIS"]
             self.csv_export_cols = settings["CSV_EXPORT_COLS"]
             self.report_settings = settings["REPORT_SETTINGS"]
+        
+        # Load marc fields
+        with open('./marc_fields.json', "r+", encoding="utf-8") as f:
+            self.marc_fields_json = json.load(f)
     
     def get_values_from_GUI(self, val: dict):
         self.service = val["SERVICE"]
@@ -29,8 +36,8 @@ class Execution_Settings(object):
         self.output_path = val["OUTPUT_PATH"]
         self.logs_path = val["LOGS_PATH"]
         self.koha_url = val["KOHA_URL"]
-        self.koha_ppn_field = val["KOHA_PPN_FIELD"]
-        self.koha_ppn_subfield = val["KOHA_PPN_SUBFIELD"]
+        self.source_ppn_field = val["SOURCE_PPN_FIELD"]
+        self.source_ppn_subfield = val["SOURCE_PPN_SUBFIELD"]
         self.koha_report_nb = val["KOHA_REPORT_NB"]
         self.koha_userid = val["KOHA_USERID"]
         self.koha_password = val["KOHA_PASSWORD"]
@@ -255,6 +262,202 @@ class Matched_Records(object):
 
         # Action in Koha SRU
 
+# -------------------- UNIVERSAL DATA EXTRACTOR --------------------
+
+class Databases(Enum):
+    ABESXML = 0
+    SUDOC_SRU = 1
+    KOHA_PUBLIC_BIBLIO = 2
+    KOHA_SRU = 3
+    LOCAL = 4
+
+class Record_Formats(Enum):
+    UNKNOWN = 0
+    JSON_DICT = 1
+    ET_ELEMENT = 2
+    PYMARC_RECORD = 3
+
+class Xml_Namespaces(Enum):
+    MARC = "marc"
+    ZS2_0 = "zs2.0"
+    ZS1_1 = "zs1.1"
+    ZS1_2 = "zs1.2"
+    SRW = "srw"
+    ZR = "zr"
+    MG = "mg"
+    PPXML = "ppxml"
+
+
+XML_NS = {
+    "marc": "http://www.loc.gov/MARC21/slim",
+    "zs2.0": "http://docs.oasis-open.org/ns/search-ws/sruResponse",
+    "zs1.1": "http://www.loc.gov/zing/srw/",
+    "zs1.2": "http://www.loc.gov/zing/srw/",
+    "srw":"http://www.loc.gov/zing/srw/",
+    "zr":"http://explain.z3950.org/dtd/2.0/",
+    "mg":"info:srw/extension/5/metadata-grouping-v1.0",
+    "ppxml":"http://www.oclcpica.org/xmlns/ppxml-1.0"
+}
+
+class Marc_Field(object):
+    def __init__(self, data_obj: dict):
+        self.tag = data_obj["tag"]
+        self.tag_as_int = int(self.tag)
+        self.single_line_coded_data = data_obj["single_line_coded_data"]
+        self.filtering_subfield = data_obj["filtering_subfield"]
+        self.subfields = data_obj["subfields"]
+        self.positions = data_obj["positions"]
+    
+    def as_dict(self):
+        output = {}
+        output["tag"] = str(self.tag)
+        output["single_line_coded_data"] = self.single_line_coded_data
+        output["filtering_subfield"] = self.filtering_subfield
+        output["subfields"] = self.subfields
+        output["positions"] = self.positions
+        return output
+
+class Marc_Fields_Data(object):
+    def __init__(self, data_obj: dict):
+        self.label = data_obj["label"]
+        self.fields = []
+        for field in data_obj["fields"]:
+            self.fields.append(Marc_Field(field))
+    
+    def as_dict(self):
+        output = {}
+        output["label"] = self.label
+        output["fields"] = []
+        for field in self.fields:
+            output["fields"].append(field.as_dict())
+        return output
+
+class Marc_Fields_Mapping(object):
+    def __init__(self,  es: Execution_Settings, is_target_db=False):
+        # Loads the marc field mapping
+        self.is_target_db = is_target_db
+        self.marc_fields_json = {}
+        if self.is_target_db and type(self.is_target_db) == bool:
+            self.marc_fields_json = es.marc_fields_json["TARGET_DATABASE"]
+        elif not self.is_target_db and type(self.is_target_db) == bool:
+            self.marc_fields_json = es.marc_fields_json["ORIGIN_DATABASE"]
+        self.ppn = Marc_Fields_Data(self.marc_fields_json["ppn"])
+        self.general_processing_dates_single_line_coded_data = Marc_Fields_Data(self.marc_fields_json["general_processing_dates_single_line_coded_data"])
+        self.erroneous_isbn = Marc_Fields_Data(self.marc_fields_json["erroneous_isbn"])
+        self.title = Marc_Fields_Data(self.marc_fields_json["title"])
+        self.publishers_name = Marc_Fields_Data(self.marc_fields_json["publishers_name"])
+        self.edition_note = Marc_Fields_Data(self.marc_fields_json["edition_note"])
+        self.publication_dates = Marc_Fields_Data(self.marc_fields_json["publication_dates"])
+        self.physical_desription = Marc_Fields_Data(self.marc_fields_json["physical_desription"])
+        self.other_edition_in_other_medium_bibliographic_id = Marc_Fields_Data(self.marc_fields_json["other_edition_in_other_medium_bibliographic_id"])
+        self.other_database_id = Marc_Fields_Data(self.marc_fields_json["other_database_id"])
+        self.items = Marc_Fields_Data(self.marc_fields_json["items"])
+        self.items_barcode = Marc_Fields_Data(self.marc_fields_json["items_barcode"])
+
+class Universal_Data_Extractor(object):
+    def __init__(self, record: str | ET.ElementTree | dict, database: Databases, is_target_db: bool, es: Execution_Settings):
+        self.record = record
+        self.format = Record_Formats.UNKNOWN
+        if type(self.record) == ET.Element:
+            self.format = Record_Formats.ET_ELEMENT
+        elif type(self.record) == dict:
+            self.format = Record_Formats.JSON_DICT
+        elif type(self.record) == pymarc.record.Record:
+            self.format = Record_Formats.PYMARC_RECORD
+        self.database = database
+        self.xml_namespace = self.get_xml_namespace()
+        self.is_target_db = is_target_db
+        self.marc_fields_mapping = Marc_Fields_Mapping(es, self.is_target_db)
+    
+    def get_xml_namespace(self):
+        """Returns the namespace code with a "/" at the beginning and a ":" at the end"""
+        if self.database == Databases.KOHA_PUBLIC_BIBLIO:
+            return "/" + Xml_Namespaces.MARC.value + ":"
+        elif self.database == Databases.KOHA_SRU:
+            return "/" + Xml_Namespaces.MARC.value + ":"
+        else:
+            return ""
+
+    def get_leader(self):
+        """Return the leader field content as a list of string"""
+        # List so we avoid crash with the formats who don't display the leader
+        output = []
+        if self.format == Record_Formats.ET_ELEMENT:
+            for field in self.record.findall(f"./{self.xml_namespace}leader", XML_NS):
+                output.append(field.text)
+        elif self.format == Record_Formats.JSON_DICT:
+            output.append(self.record["leader"])
+        elif self.format == Record_Formats.PYMARC_RECORD:
+            output.append(self.record.leader)
+        return output
+
+    def get_other_database_id(self, filter_value=None):
+        """Return all other database id as a list, without duplicates.
+
+        Takes filter_value as argument is mapped to have a filtering subfield.
+        """
+        output = []
+        mapped_fields = self.marc_fields_mapping.other_database_id.fields
+        # donc là je dois récupérer au sein de chaque fields le tag + sbfields + filterinf
+        if self.format == Record_Formats.ET_ELEMENT:
+            for field in self.record.findall(f"./{self.xml_namespace}leader", XML_NS):
+                output.append(field.text)
+        elif self.format == Record_Formats.JSON_DICT:
+            output.append(self.record["leader"])
+        elif self.format == Record_Formats.PYMARC_RECORD:
+            output.append(self.record.leader)
+        root = ET.fromstring(self.record)
+        local_sys_nb = []
+        U035s = root.findall(".//datafield[@tag='035']")
+
+        for U035 in U035s:
+            U035iln = U035.find("subfield[@code='1']")
+            if U035iln == None:
+                continue
+            
+            if U035iln.text == str(ILN) and not U035.find("subfield[@code='a']").text in local_sys_nb:
+                local_sys_nb.append(U035.find("subfield[@code='a']").text)
+
+        return local_sys_nb
+
+    # def get_title(self):
+    #     """Return all fields mapped as title as a list of strings
+    #     Each subfield is separated by a space"""
+    #     output = []
+    #     mapped_fields = self.marc_fields_mapping.title.fields
+    #     mapped_subfields
+    #     if self.format == Record_Formats.ET_ELEMENT:
+    #         for field in self.record.findall(f"./{self.xml_namespace}leader", XML_NS):
+    #             output.append(field.text)
+    #     elif self.format == Record_Formats.JSON_DICT:
+    #         output.append(self.record["leader"])
+    #     elif self.format == Record_Formats.PYMARC_RECORD:
+    #         output.append(self.record.leader)
+        
+        
+        
+    #     key_title = []
+        
+    #     if self.format == "application/marcxml+xml":
+    #         root = ET.fromstring(self.record)
+    #         for subfield in root.find("./marc:datafield[@tag='200']", NS).findall("./marc:subfield", NS):
+    #             if subfield.attrib['code'] in ('a','d','e','h','i','v') :
+    #                 key_title.append(str(subfield.text or "")) #AR294 : MARCXML can have empty subfields that returns None, but we need a string
+
+    #     elif self.format == "application/marc-in-json":
+    #         for field in json.loads(self.record)["fields"]:
+    #             if "200" in field.keys():
+    #                 for subfield in field["200"]["subfields"]:
+    #                     code = list(subfield.keys())[0]
+    #                     if code in ('a','d','e','h','i','v') :
+    #                         key_title.append(subfield[code])
+    #                 break # To match XML find first, prevents finding another 200
+        
+    #     elif self.format == "application/marc" or self.format == "text/plain":
+    #         return "Pas de prise en charge de ce format pour le moment."
+        
+    #     return " ".join(key_title)
+    #     return output
 
 # -------------------- MAIN --------------------
 

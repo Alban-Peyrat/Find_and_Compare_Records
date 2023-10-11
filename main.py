@@ -176,7 +176,7 @@ def main(es: fcr.Execution_Settings):
             result['KOHA_214210c'] = koha_record.get_editeurs()
             result['KOHA_200adehiv'] = nettoie_titre(koha_record.get_title_info())
             result['KOHA_305'] = koha_record.get_note_edition()
-            result["KOHA_PPN"] = koha_record.get_ppn(es.koha_ppn_field, es.koha_ppn_subfield)
+            result["KOHA_PPN"] = koha_record.get_ppn(es.source_ppn_field, es.source_ppn_subfield)
             result["KOHA_214210a_DATES"] = []
             for date_str in koha_record.get_dates_from_21X():
                 result["KOHA_214210a_DATES"] += prep_data.get_year(date_str)

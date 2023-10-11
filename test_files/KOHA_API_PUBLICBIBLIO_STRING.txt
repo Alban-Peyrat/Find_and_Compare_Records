@@ -1,0 +1,228 @@
+LDR 04784cam0 2201189   4500
+001     133402
+003     http://www.sudoc.fr/000017396
+005     20231011132231.0
+009     000017396
+010    _a2-85303-073-3
+       _bbr.
+       _d35 FRF
+010    _a2-8530-3073-3
+020    _aFR
+       _b07603830
+021    _aFR
+       _bD.L. 75-25211
+033    _ahttp://catalogue.bnf.fr/ark:/12148/cb345529076
+035    _aMRSL0000047023
+035    _aBRET13366
+035    _aNRMD5459
+035    _aTOUL10827
+035    _aCLRF3356
+035    _aPLVT17461
+035    _aNNCY5881
+035    _aMALQ25549
+035    _a149424299
+       _9sudoc
+035    _a(OCoLC)299370564
+035    _asib0689965
+035    _aAIC00580134
+035    _aurouen12701
+035    _aocm02284488
+035    _aPRITEC.GEO.010060624001
+035    _ajvSO100730003201
+035    _acba00002167
+035    _afrBN000050640
+035    _aFRBNF345529070000001
+       _zFRBNF34552907
+035    _5751062311
+       _a133402
+035    _5751062311
+       _a133402
+035    _5751062311
+       _a133402
+035    _5751062311
+       _a133402
+035    _5751062311
+       _a133402
+035    _5751062311
+       _a133402
+073  1 _a9782853030731
+090    _a133402
+098    _e2021-02-01
+099    _tLIV
+       _c2003-01-28
+       _s0
+       _e2023-10-11
+       _d2023-10-11
+100    _a19760227d1975    k  y0frey50      ba
+101 0  _afre
+       _2639-2
+102    _aFR
+105    _aa   a   000yy
+106    _ar
+181    _6z01
+       _ctxt
+       _2rdacontent
+181  1 _6z01
+       _ai#
+       _bxxxe##
+182    _6z01
+       _cn
+       _2rdamedia
+182  1 _6z01
+       _an
+183    _6z01
+       _anga
+       _2RDAfrCarrier
+200 1  _aL'organisation urbaine
+       _ethéories et modèles
+       _fAntoine S. Bailly
+       _g[publié par le Centre de recherche d'urbanisme]
+214  0 _aParis
+       _cCentre de recherche d'urbanisme
+       _dDL 1975
+215    _a1 vol. (272 p.)
+       _cill., couv. ill.
+       _d21 cm
+320    _aBibliogr. p. 241-268
+330  1 _aCe livre se propose de faire connaitre une branche méthodologique de la recherche urbaine : il traite de la conceptualisation et de la méthode scientifique dans la compréhension des mécanismes urbains
+600    _9211154
+       _aChristaller
+       _bWalter
+       _f1893-1969
+600    _9224028
+       _aLosch
+       _bAugust
+600    _9224027
+       _aThunen
+       _bJohannes Von
+606    _3027267768
+       _9340332
+       _aGéographie urbaine
+       _2rameau
+606    _3027254925
+       _9339235
+       _aUrbanisme
+       _3027315754
+       _9339071
+       _xRecherche
+       _2rameau
+606    _3027255034
+       _9339270
+       _aUrbanisation
+       _2rameau
+610    _aOrganisation spatiale
+       _xSpatial organization
+       _959618
+610    _aModèle en urbanisme
+       _xUrban model
+       _960531
+610    _aThéorie de l'urbanisme
+       _xUrban planning theory
+       _959156
+675    _a70
+       _vÉd. 1967
+676    _a700
+680    _aHT371
+       _b.B25
+700  1 _3026701154
+       _9374576
+       _aBailly
+       _bAntoine S.
+       _f1944-2021
+       _4070
+712 02 _3026508028
+       _9341371
+       _aCentre de recherche et de rencontres d'urbanisme
+       _cParis
+       _4340
+801  3 _bAbes
+       _c20210519
+       _gAFNOR
+       _h149424299
+801  3 _bBN
+       _c19990126
+       _gAFNOR
+801  3 _bSF
+       _c19990209
+801  1 _bOCLC
+801  2 _bAUROC
+801  0 _bLettres Lafayette
+       _c19970911
+915    _5751062311:685111873
+       _a5189
+       _bMALQ0017912
+930    _5751062311:685111873
+       _b751062311
+       _cET2
+       _a711.2 BAI
+       _jg
+991    _5751062311:685111873
+       _aExemplaire créé en masse par ITEM. le 29-01-2021 15:46
+915    _5774682305:686298276
+       _bMLVL007206
+930    _5774682305:686298276
+       _b774682305
+       _cRES
+       _a50 320
+       _jg
+991    _5774682305:686298276
+       _aExemplaire créé en masse par ITEM. le 09-02-2021 08:24
+915    _5786462302:691394032
+       _a15762
+       _bVRSL3030026158512
+930    _5786462302:691394032
+       _b786462302
+       _cSL
+       _a711.010 BAI
+       _jg
+991    _5786462302:691394032
+       _aExemplaire créé en masse par ITEM. le 13-03-2021 19:01
+915    _5130552319:742111822
+       _bD0000000957258
+930    _5130552319:742111822
+       _b130552319
+       _cMAG
+       _aD4951
+       _jg
+991    _5130552319:742111822
+       _aExemplaire créé en masse par ITEM. le 19-09-2022 13:41
+915    _5543952305:778682862
+       _a1/2468
+       _bNNCY0009633
+930    _5543952305:778682862
+       _b543952305
+       _cFC
+       _a711.01 BAIL
+       _jg
+991    _5543952305:778682862
+       _aExemplaire créé en masse par ITEM. le 27-02-2023 13:52
+915    _5352382318:793813557
+       _a20716
+       _bBRET013291
+930    _5352382318:793813557
+       _b352382318
+       _cARCHIV
+       _aBoîte URBA 5
+       _jg
+991    _5352382318:793813557
+       _aExemplaire créé en masse par ITEM. le 04-07-2023 12:46
+915    _5335222303:797622268
+       _a25941
+       _bBRDX0032112
+930    _5335222303:797622268
+       _b335222303
+       _cFA
+       _aFA 2235
+       _jg
+991    _5335222303:797622268
+       _aExemplaire créé en masse par ITEM. le 19-09-2023 17:40
+915    _5762122301:799545899
+       _aD 4000
+       _bNRMD0000003454
+930    _5762122301:799545899
+       _b762122301
+       _cARCHIV
+       _a11.1.BAIARCHIVES
+       _jg
+991    _5762122301:799545899
+       _aExemplaire créé en masse par ITEM. le 10-10-2023 17:54
