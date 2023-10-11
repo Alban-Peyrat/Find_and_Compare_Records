@@ -70,10 +70,12 @@ class Koha_API_PublicBiblio(object):
             else:
                 # apparently its double-encoded in JSON ?? See : https://stackoverflow.com/questions/4267019/double-decoding-unicode-in-python
                 # So yeah, decode->encode->decode for JSON
-                if self.format == "application/marc-in-json":
-                    self.record = r.content.decode('utf-8').encode('raw_unicode_escape').decode('utf-8')
-                else:
-                    self.record = r.content.decode('utf-8')
+                # Fixed with Bug 28604 - Bad encoding when using marc-in-json (20.11.09)
+                # if self.format == "application/marc-in-json":
+                #     self.record = r.content.decode('utf-8').encode('raw_unicode_escape').decode('utf-8')
+                # else:
+                #     self.record = r.content.decode('utf-8')
+                self.record = r.content.decode('utf-8')
                 self.status = 'Success'
                 self.logger.debug("{} :: Koha_API_PublicBiblio :: Notice trouvée".format(bibnb))
 
@@ -117,7 +119,7 @@ class Koha_API_PublicBiblio(object):
             root = ET.fromstring(self.record)
             for subfield in root.find("./marc:datafield[@tag='200']", NS).findall("./marc:subfield", NS):
                 if subfield.attrib['code'] in ('a','d','e','h','i','v') :
-                    key_title.append(subfield.text)
+                    key_title.append(str(subfield.text or "")) #AR294 : MARCXML can have empty subfields that returns None, but we need a string
 
         elif self.format == "application/marc-in-json":
             for field in json.loads(self.record)["fields"]:
@@ -195,7 +197,135 @@ class Koha_API_PublicBiblio(object):
         #     return "Pas de prise en charge de ce format pour le moment."
 
         return ed_list
+
+    def get_ppn(self, field, subfield=None):
+        """Returns the PPN.
+        Properly works only if the field with the PPN is non repeatable
+
+        Takes as arguments ! 
+            field {str} : the field containing the PPN
+            subfield {str} : if the field is not a controlfield, the subfield containing the PPN
+        """
         
+        if self.format == "application/marcxml+xml":
+            root = ET.fromstring(self.record)
+            if int(field) < 10:
+                if root.find("./marc:controlfield[@tag='{}']".format(str(field)), NS) != None :
+                    return root.find("./marc:controlfield[@tag='{}']".format(str(field)), NS).text
+            else:
+                if root.find("./marc:datafield[@tag='{}']/marc:subfield[@code='{}']".format(str(field), str(subfield)), NS) != None :
+                    return root.find("./marc:datafield[@tag='{}']/marc:subfield[@code='{}']".format(str(field), str(subfield)), NS).text
+
+        elif self.format == "application/marc-in-json":
+            for record_field in json.loads(self.record)["fields"]:
+                if str(field) in record_field.keys():
+                    if int(field) < 10:
+                        return record_field[str(field)]
+                    else:
+                        for record_subfield in record_field[str(field)]["subfields"]:
+                            code = list(record_subfield.keys())[0]
+                            if code == str(subfield):
+                                return record_subfield[code]       
+
+    def get_note_edition(self):
+        """
+        """
+        note_list = []
+
+        if self.format == "application/marcxml+xml":
+            root = ET.fromstring(self.record)
+            for note in root.findall("./marc:datafield[@tag='305']/marc:subfield[@code='a']", NS):
+                note_list.append(note.text)
+
+        elif self.format == "application/marc-in-json":
+            for field in json.loads(self.record)["fields"]:
+                tag = list(field.keys())[0]
+                if tag == "305":
+                    for subfield in field[tag]["subfields"]:
+                        code = list(subfield.keys())[0]
+                        if code == "a":
+                            note_list.append(subfield[code])
+        
+        # elif self.format == "application/marc" or self.format == "text/plain":
+        #     return "Pas de prise en charge de ce format pour le moment."
+
+        return note_list
+
+    def get_dates_from_21X(self):
+        """Return all texts in 210/214$d subfields as a list.
+        
+        Application/marc and Text/plain formats are not supported for the time being.
+        """
+        date_list = []
+
+        if self.format == "application/marcxml+xml":
+            root = ET.fromstring(self.record)
+            for ed in root.findall("./marc:datafield[@tag='214']/marc:subfield[@code='d']", NS) + root.findall("./marc:datafield[@tag='210']/marc:subfield[@code='d']", NS):
+                date_list.append(ed.text)
+
+        elif self.format == "application/marc-in-json":
+            for field in json.loads(self.record)["fields"]:
+                tag = list(field.keys())[0]
+                if tag == "210" or tag == "214":
+                    for subfield in field[tag]["subfields"]:
+                        code = list(subfield.keys())[0]
+                        if code == "d":
+                            date_list.append(subfield[code])
+        
+        # elif self.format == "application/marc" or self.format == "text/plain":
+        #     return "Pas de prise en charge de ce format pour le moment."
+
+        return date_list
+    
+    def get_desc(self):
+        """Return all texts in 215$d subfields as a list.
+        
+        Application/marc and Text/plain formats are not supported for the time being.
+        """
+        desc_list = []
+
+        if self.format == "application/marcxml+xml":
+            root = ET.fromstring(self.record)
+            for ed in root.findall("./marc:datafield[@tag='215']/marc:subfield[@code='a']", NS):
+                desc_list.append(ed.text)
+
+        elif self.format == "application/marc-in-json":
+            for field in json.loads(self.record)["fields"]:
+                tag = list(field.keys())[0]
+                if tag == "215":
+                    for subfield in field[tag]["subfields"]:
+                        code = list(subfield.keys())[0]
+                        if code == "a":
+                            desc_list.append(subfield[code])
+        
+        # elif self.format == "application/marc" or self.format == "text/plain":
+        #     return "Pas de prise en charge de ce format pour le moment."
+
+        return desc_list
+
+    def get_wrong_isbn(self):
+        """
+        """
+        isbn_list = []
+
+        if self.format == "application/marcxml+xml":
+            root = ET.fromstring(self.record)
+            for isbn in root.findall("./marc:datafield[@tag='010']/marc:subfield[@code='z']", NS):
+                isbn_list.append(isbn.text)
+
+        elif self.format == "application/marc-in-json":
+            for field in json.loads(self.record)["fields"]:
+                tag = list(field.keys())[0]
+                if tag == "010":
+                    for subfield in field[tag]["subfields"]:
+                        code = list(subfield.keys())[0]
+                        if code == "z":
+                            isbn_list.append(subfield[code])
+        
+        # elif self.format == "application/marc" or self.format == "text/plain":
+        #     return "Pas de prise en charge de ce format pour le moment."
+
+        return isbn_list
 
     # Manque de AbesXml :
     #     get_ppn_autre_support

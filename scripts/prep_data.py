@@ -57,3 +57,9 @@ def clean_publisher(pub):
         return prepString(pub_norm) # we don't need punctuation anymore
     else :
         return pub
+
+def get_year(txt):
+    """Returns all 4 consecutive digits included in the string as a list of strings.
+    
+    Takes as an argument a string."""
+    return re.findall("\d{4}", txt)
