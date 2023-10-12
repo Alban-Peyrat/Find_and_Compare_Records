@@ -22,4 +22,5 @@ Each one has a `label` and `fields` key, the last one being an object with :
   * If `subfields` is an empty array, every subfield will be retrieved
   * `positions` is only used for single line coded data
   * `positions` must contain strings
+  * MARC position always start at `0`
   * For multiple characters positions, separate the start and end (included) by `-` (`"13-17"`)

@@ -138,7 +138,7 @@
             "label":"Items",
             "fields":[
                 {
-                    "tag":"995",
+                    "tag":"930",
                     "single_line_coded_data":false,
                     "filtering_subfield":"",
                     "subfields":[],
@@ -150,10 +150,10 @@
             "label":"Items barcode",
             "fields":[
                 {
-                    "tag":"995",
+                    "tag":"930",
                     "single_line_coded_data":false,
-                    "filtering_subfield":"",
-                    "subfields":["f"],
+                    "filtering_subfield":"5",
+                    "subfields":["a"],
                     "positions":[]
                 }
             ]
@@ -298,7 +298,7 @@
             "label":"Items",
             "fields":[
                 {
-                    "tag":"995",
+                    "tag":"930",
                     "single_line_coded_data":false,
                     "filtering_subfield":"",
                     "subfields":[],
@@ -310,10 +310,10 @@
             "label":"Items barcode",
             "fields":[
                 {
-                    "tag":"995",
+                    "tag":"930",
                     "single_line_coded_data":false,
-                    "filtering_subfield":"",
-                    "subfields":["f"],
+                    "filtering_subfield":"5",
+                    "subfields":["b"],
                     "positions":[]
                 }
             ]

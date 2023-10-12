@@ -8,6 +8,7 @@ import json
 import xml.etree.ElementTree as ET
 import pymarc
 import re
+from typing import Dict, List, Tuple, Optional, Union
 
 # ----- Match Records imports -----
 # Internal imports
@@ -308,7 +309,7 @@ class Marc_Field(object):
         self.subfields = data_obj["subfields"]
         self.positions = data_obj["positions"]
     
-    def as_dict(self):
+    def as_dict(self) -> dict:
         output = {}
         output["tag"] = str(self.tag)
         output["single_line_coded_data"] = self.single_line_coded_data
@@ -324,7 +325,7 @@ class Marc_Fields_Data(object):
         for field in data_obj["fields"]:
             self.fields.append(Marc_Field(field))
     
-    def as_dict(self):
+    def as_dict(self) -> dict:
         output = {}
         output["label"] = self.label
         output["fields"] = []
@@ -333,7 +334,7 @@ class Marc_Fields_Data(object):
         return output
 
 class Marc_Fields_Mapping(object):
-    def __init__(self,  es: Execution_Settings, is_target_db=False):
+    def __init__(self,  es: Execution_Settings, is_target_db: bool = False):
         # Loads the marc field mapping
         self.is_target_db = is_target_db
         self.marc_fields_json = {}
@@ -355,7 +356,7 @@ class Marc_Fields_Mapping(object):
         self.items_barcode = Marc_Fields_Data(self.marc_fields_json["items_barcode"])
 
 class Universal_Data_Extractor(object):
-    def __init__(self, record: str | ET.ElementTree | dict, database: Databases, is_target_db: bool, es: Execution_Settings):
+    def __init__(self, record: str | ET.ElementTree | dict | pymarc.record.Record, database: Databases, is_target_db: bool, es: Execution_Settings):
         self.record = record
         self.format = Record_Formats.UNKNOWN
         if type(self.record) == ET.Element:
@@ -369,7 +370,7 @@ class Universal_Data_Extractor(object):
         self.is_target_db = is_target_db
         self.marc_fields_mapping = Marc_Fields_Mapping(es, self.is_target_db)
     
-    def get_xml_namespace(self):
+    def get_xml_namespace(self) -> str:
         """Returns the namespace code with a "/" at the beginning and a ":" at the end"""
         if self.database == Databases.KOHA_PUBLIC_BIBLIO:
             return "/" + Xml_Namespaces.MARC.value + ":"
@@ -378,7 +379,7 @@ class Universal_Data_Extractor(object):
         else:
             return ""
 
-    def get_leader(self):
+    def get_leader(self) -> List[str]:
         """Return the leader field content as a list of string"""
         # List so we avoid crash with the formats who don't display the leader
         output = []
@@ -391,7 +392,80 @@ class Universal_Data_Extractor(object):
             output.append(self.record.leader)
         return output
 
-    def get_other_database_id(self, filter_value=None):
+    def get_data_from_marc_field(self, mapped_field_data: Marc_Fields_Data, filter_value: Optional[str] = None) -> List[List[Union[str, List[str]]]]:
+        """Mother function of all get_DATA (except leader).
+        
+        Returns a list of list of string (add another layer of list if the field was coded data with positions)"""
+        output: List[List[Union[str, List[str]]]] = []
+        marc_fields: List[Marc_Field] = mapped_field_data.fields
+        if self.format == Record_Formats.ET_ELEMENT:
+            return self.get_data_from_marc_field_XML(marc_fields, filter_value)
+
+    def extract_positions_from_coded_data(self, field_text: str, positions: List[str]) -> List[str]:
+        """Returns a lsit of string of the asked positions.
+        If any problem was too occured, skips"""
+        output: List[str] = []
+        for position in positions:
+            # single character
+            if not "-" in position and position.isdigit():
+                pos = int(position)
+                if pos < len(field_text):
+                    output.append(field_text[pos])
+            # Range
+            else:
+                regex_matched = re.search(r"^(\d+)-(\d+)$", position)
+                if regex_matched:
+                    begining = int(regex_matched.group(1))
+                    end = int(regex_matched.group(2)) + 1
+                    # End must be > begin and can be equal to the len
+                    if begining < len(field_text) and end <= len(field_text) and begining < end:
+                        output.append(field_text[begining:end])
+        return output
+
+    def get_data_from_marc_field_XML(self, marc_fields: List[Marc_Field], filter_value: Optional[str] = None) -> List[List[Union[str, List[str]]]]:
+        """Gets data from XML"""
+        output: List[List[Union[str, List[str]]]] = []
+        for marc_field in marc_fields:
+            # Control fields
+            if marc_field.tag_as_int < 10:
+                for field in self.record.findall(f"./{self.xml_namespace}controlfield[@tag='{marc_field.tag}']", XML_NS):
+                    output.append([field.text])
+            # Datafields
+            else:
+                # Gets the field to analyze
+                list_of_fields: List[ET.Element] = []
+                for field in self.record.findall(f"./{self.xml_namespace}datafield[@tag='{marc_field.tag}']", XML_NS):
+                    # If filtering subfield, exclude this field if not correct
+                    if marc_field.filtering_subfield:
+                        for subfield in field.findall(f"./{self.xml_namespace}subfield[@code='{marc_field.filtering_subfield}']", XML_NS):
+                            if subfield.text == filter_value:
+                                list_of_fields.append(field)
+                    else:
+                        list_of_fields.append(field)
+
+                # For each field to analyze
+                for field in list_of_fields:
+                    # Retrieves all the subfield mapped
+                    field_output = []
+                    list_of_subfields: List[ET.Element] = []
+                    # If specific subfields were mapped
+                    for marc_subfield in marc_field.subfields:
+                        list_of_subfields += field.findall(f"./{self.xml_namespace}subfield[@code='{marc_subfield}']", XML_NS)
+                    # If no specific subfield was mapped
+                    if len(marc_field.subfields) == 0:
+                        list_of_subfields += field.findall(f"./{self.xml_namespace}subfield", XML_NS)
+
+                    for subfield in list_of_subfields:
+                        # If coded data, retrieve only asked position
+                        if marc_field.single_line_coded_data and len(marc_field.positions) > 0:
+                            field_output.append(self.extract_positions_from_coded_data(subfield.text, marc_field.positions))
+                        else:
+                            field_output.append(subfield.text)
+                    output.append(field_output)
+        # return
+        return output
+
+    def get_other_database_id(self, filter_value: Optional[str] = None):
         """Return all other database id as a list, without duplicates.
 
         Takes filter_value as argument is mapped to have a filtering subfield.
@@ -400,7 +474,7 @@ class Universal_Data_Extractor(object):
         mapped_fields = self.marc_fields_mapping.other_database_id.fields
         # donc là je dois récupérer au sein de chaque fields le tag + sbfields + filterinf
         if self.format == Record_Formats.ET_ELEMENT:
-            for field in self.record.findall(f"./{self.xml_namespace}leader", XML_NS):
+            for field in self.record.findall(f"./{self.xml_namespace}datafield[@tag='{self}']/subfield", XML_NS):
                 output.append(field.text)
         elif self.format == Record_Formats.JSON_DICT:
             output.append(self.record["leader"])
@@ -415,7 +489,7 @@ class Universal_Data_Extractor(object):
             if U035iln == None:
                 continue
             
-            if U035iln.text == str(ILN) and not U035.find("subfield[@code='a']").text in local_sys_nb:
+            if U035iln.text == str("ILN") and not U035.find("subfield[@code='a']").text in local_sys_nb:
                 local_sys_nb.append(U035.find("subfield[@code='a']").text)
 
         return local_sys_nb
@@ -467,7 +541,7 @@ class Original_Record(object):
         self.error_message = None
         self.original_line = line
     
-    def extract_from_original_line(self, headers: list):
+    def extract_from_original_line(self, headers: List[str]):
         """Extract the first column of the file as the input query and
         the last column as the original UID regardless of the headers name"""
         self.input_query = self.original_line[headers[0]]
