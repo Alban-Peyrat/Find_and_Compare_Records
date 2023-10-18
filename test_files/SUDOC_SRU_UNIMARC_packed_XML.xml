@@ -6,6 +6,9 @@
     <datafield tag="035" ind1=" " ind2=" ">
         <subfield code="a">(OCoLC)1377726425</subfield>
     </datafield>
+    <datafield tag="035" ind1=" " ind2=" ">
+        <subfield code="a">(OCoLC)Other BD ID 2</subfield>
+    </datafield>
     <datafield tag="100" ind1=" " ind2=" ">
         <subfield code="a">20230428f2023    m  y0frey50      ba</subfield>
     </datafield>

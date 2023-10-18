@@ -28,6 +28,10 @@
         <subfield code="a">OCoLC</subfield>
         <subfield code="0">1377726425</subfield>
     </datafield>
+    <datafield tag="003O">
+        <subfield code="a">OCoLC</subfield>
+        <subfield code="0">Other DB ID 2</subfield>
+    </datafield>
     <datafield tag="010@">
         <subfield code="S">0#</subfield>
         <subfield code="a">fre</subfield>

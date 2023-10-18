@@ -303,7 +303,9 @@ XML_NS = {
 class Marc_Field(object):
     def __init__(self, data_obj: dict):
         self.tag = data_obj["tag"]
-        self.tag_as_int = int(self.tag)
+        self.tag_as_int = 99999 #only used to check if control field
+        if self.tag.isdigit():
+            self.tag_as_int = int(self.tag)
         self.single_line_coded_data = data_obj["single_line_coded_data"]
         self.filtering_subfield = data_obj["filtering_subfield"]
         self.subfields = data_obj["subfields"]
@@ -335,13 +337,29 @@ class Marc_Fields_Data(object):
 
 class Marc_Fields_Mapping(object):
     def __init__(self,  es: Execution_Settings, is_target_db: bool = False):
-        # Loads the marc field mapping
+        """Loads the marc field mapping"""
         self.is_target_db = is_target_db
         self.marc_fields_json = {}
         if self.is_target_db and type(self.is_target_db) == bool:
             self.marc_fields_json = es.marc_fields_json["TARGET_DATABASE"]
         elif not self.is_target_db and type(self.is_target_db) == bool:
             self.marc_fields_json = es.marc_fields_json["ORIGIN_DATABASE"]
+        self.ppn = Marc_Fields_Data(self.marc_fields_json["ppn"])
+        self.general_processing_dates_single_line_coded_data = Marc_Fields_Data(self.marc_fields_json["general_processing_dates_single_line_coded_data"])
+        self.erroneous_isbn = Marc_Fields_Data(self.marc_fields_json["erroneous_isbn"])
+        self.title = Marc_Fields_Data(self.marc_fields_json["title"])
+        self.publishers_name = Marc_Fields_Data(self.marc_fields_json["publishers_name"])
+        self.edition_note = Marc_Fields_Data(self.marc_fields_json["edition_note"])
+        self.publication_dates = Marc_Fields_Data(self.marc_fields_json["publication_dates"])
+        self.physical_desription = Marc_Fields_Data(self.marc_fields_json["physical_desription"])
+        self.other_edition_in_other_medium_bibliographic_id = Marc_Fields_Data(self.marc_fields_json["other_edition_in_other_medium_bibliographic_id"])
+        self.other_database_id = Marc_Fields_Data(self.marc_fields_json["other_database_id"])
+        self.items = Marc_Fields_Data(self.marc_fields_json["items"])
+        self.items_barcode = Marc_Fields_Data(self.marc_fields_json["items_barcode"])
+    
+    def force_load_mapping(self, es: Execution_Settings, name: str):
+        """Loads a marc field mappig by name (debgging)"""
+        self.marc_fields_json = es.marc_fields_json[name]
         self.ppn = Marc_Fields_Data(self.marc_fields_json["ppn"])
         self.general_processing_dates_single_line_coded_data = Marc_Fields_Data(self.marc_fields_json["general_processing_dates_single_line_coded_data"])
         self.erroneous_isbn = Marc_Fields_Data(self.marc_fields_json["erroneous_isbn"])
@@ -381,7 +399,7 @@ class Universal_Data_Extractor(object):
         else:
             return ""
 
-    def get_data_from_marc_field(self, mapped_field_data: Marc_Fields_Data, filter_value: Optional[str] = None) -> List[List[Union[str, List[str]]]]:
+    def get_data_from_marc_field(self, mapped_field_data: Marc_Fields_Data, filter_value: Optional[str] = "") -> List[List[Union[str, List[str]]]]:
         """Mother function of all get_DATA (except leader).
         
         Returns a list of list of string (add another layer of list if the field was coded data with positions)"""
@@ -394,7 +412,7 @@ class Universal_Data_Extractor(object):
         if self.format == Record_Formats.PYMARC_RECORD:
             return self.get_data_from_marc_field_PYMARC(marc_fields, filter_value)
 
-    def get_data_from_marc_field_XML(self, marc_fields: List[Marc_Field], filter_value: Optional[str] = None) -> List[List[Union[str, List[str]]]]:
+    def get_data_from_marc_field_XML(self, marc_fields: List[Marc_Field], filter_value: Optional[str] = "") -> List[List[Union[str, List[str]]]]:
         """Gets data from XML"""
         output: List[List[Union[str, List[str]]]] = []
         for marc_field in marc_fields:
@@ -410,7 +428,7 @@ class Universal_Data_Extractor(object):
                     # If filtering subfield, exclude this field if not correct
                     if marc_field.filtering_subfield:
                         for subfield in field.findall(f"./{self.xml_namespace}subfield[@code='{marc_field.filtering_subfield}']", XML_NS):
-                            if subfield.text == filter_value:
+                            if subfield.text.startswith(filter_value):
                                 list_of_fields.append(field)
                     else:
                         list_of_fields.append(field)
@@ -450,7 +468,7 @@ class Universal_Data_Extractor(object):
                         if marc_field.filtering_subfield:
                             for subfield in field[marc_field.tag]["subfields"]:
                                 if list(subfield.keys())[0] == marc_field.filtering_subfield:
-                                    if subfield[marc_field.filtering_subfield] == filter_value:
+                                    if subfield[marc_field.filtering_subfield].startswith(filter_value):
                                         list_of_fields.append(field[marc_field.tag])
                         else:
                             list_of_fields.append(field[marc_field.tag])
@@ -470,7 +488,7 @@ class Universal_Data_Extractor(object):
                     output.append(self.extract_subfield_values(subfields_values, marc_field))
         return output
 
-    def get_data_from_marc_field_PYMARC(self, marc_fields: List[Marc_Field], filter_value: Optional[str] = None) -> List[List[Union[str, List[str]]]]:
+    def get_data_from_marc_field_PYMARC(self, marc_fields: List[Marc_Field], filter_value: Optional[str] = "") -> List[List[Union[str, List[str]]]]:
         """Gets data from PYMARC"""
         output: List[List[Union[str, List[str]]]] = []
         for marc_field in marc_fields:
@@ -486,7 +504,7 @@ class Universal_Data_Extractor(object):
                     # If filtering subfield, exclude this field if not correct
                     if marc_field.filtering_subfield:
                         for subfield_value in field.get_subfields(marc_field.filtering_subfield):
-                            if subfield_value == filter_value:
+                            if subfield_value.startswith(filter_value):
                                 list_of_fields.append(field)
                     else:
                         list_of_fields.append(field)
@@ -557,7 +575,7 @@ class Universal_Data_Extractor(object):
             output.append(self.record.leader)
         return output
     
-    def get_other_database_id(self, filter_value: Optional[str] = None):
+    def get_other_database_id(self, filter_value: Optional[str] = ""):
         """Return all other database id as a list, without duplicates.
 
         Takes filter_value as argument is mapped to have a filtering subfield.

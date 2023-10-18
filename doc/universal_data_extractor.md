@@ -5,6 +5,10 @@ add to marc_feilds
 
 add to get_xml_namespace if the action is based on xml depending on how you call in actions
 
+the filter value checks if it __starts with__
+
+Sudoc SRU PICA XML is not supported 
+
 # Setting up `marc_fields.json`
 
 This file contains an object with at least two keys, `ORIGIN_DATABASE` and `TARGET_DATABASE`.
@@ -18,7 +22,7 @@ Each one has a `label` and `fields` key, the last one being an object with :
 * `filtering_subfield` as a string
 * `subfields` and `positions` as arrays
   * For control fields (00X), all pother data is ignored
-  * If `filtering_subfield` is an empty string, is ingored
+  * If `filtering_subfield` is an empty string, is ignored
   * If `subfields` is an empty array, every subfield will be retrieved
   * `positions` is only used for single line coded data
   * `positions` must contain strings

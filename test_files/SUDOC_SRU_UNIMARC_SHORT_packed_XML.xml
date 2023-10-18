@@ -9,7 +9,17 @@
     <datafield tag="105" ind1=" " ind2=" ">
         <subfield code="a">y   |||||||||</subfield>
     </datafield>
+    <datafield tag="035" ind1=" " ind2=" ">
+        <subfield code="a">Test other DB ID</subfield>
+    </datafield>
+    <datafield tag="035" ind1=" " ind2=" ">
+        <subfield code="a">Test other DB ID 2</subfield>
+    </datafield>
     <datafield tag="200">
+        <subfield code="a">Art islamique, art d'Asie</subfield>
+        <subfield code="e">vente aux ench&#232;res publiques, Drouot Richelieu, vendredi 21 avril 2023</subfield>
+    </datafield>
+    <datafield tag="503">
         <subfield code="a">Art islamique, art d'Asie</subfield>
         <subfield code="e">vente aux ench&#232;res publiques, Drouot Richelieu, vendredi 21 avril 2023</subfield>
     </datafield>
@@ -54,5 +64,15 @@
         <subfield code="b">Abes</subfield>
         <subfield code="c">00000000</subfield>
         <subfield code="g">AFNOR</subfield>
+    </datafield>
+    <datafield tag="930">
+        <subfield code="5">751025206</subfield>
+        <subfield code="a">Alice</subfield>
+        <subfield code="b">Bob</subfield>
+    </datafield>
+    <datafield tag="930">
+        <subfield code="5">75102</subfield>
+        <subfield code="a">Alice 2</subfield>
+        <subfield code="b">Bob 2</subfield>
     </datafield>
 </record>
