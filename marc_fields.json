@@ -138,9 +138,9 @@
             "label":"Items",
             "fields":[
                 {
-                    "tag":"930",
+                    "tag":"991",
                     "single_line_coded_data":false,
-                    "filtering_subfield":"",
+                    "filtering_subfield":"5",
                     "subfields":[],
                     "positions":[]
                 }

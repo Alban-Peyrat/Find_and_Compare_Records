@@ -370,6 +370,8 @@ class Universal_Data_Extractor(object):
         self.is_target_db = is_target_db
         self.marc_fields_mapping = Marc_Fields_Mapping(es, self.is_target_db)
     
+    # --- Resources methods ---
+
     def get_xml_namespace(self) -> str:
         """Returns the namespace code with a "/" at the beginning and a ":" at the end"""
         if self.database == Databases.KOHA_PUBLIC_BIBLIO:
@@ -379,19 +381,6 @@ class Universal_Data_Extractor(object):
         else:
             return ""
 
-    def get_leader(self) -> List[str]:
-        """Return the leader field content as a list of string"""
-        # List so we avoid crash with the formats who don't display the leader
-        output = []
-        if self.format == Record_Formats.ET_ELEMENT:
-            for field in self.record.findall(f"./{self.xml_namespace}leader", XML_NS):
-                output.append(field.text)
-        elif self.format == Record_Formats.JSON_DICT:
-            output.append(self.record["leader"])
-        elif self.format == Record_Formats.PYMARC_RECORD:
-            output.append(self.record.leader)
-        return output
-
     def get_data_from_marc_field(self, mapped_field_data: Marc_Fields_Data, filter_value: Optional[str] = None) -> List[List[Union[str, List[str]]]]:
         """Mother function of all get_DATA (except leader).
         
@@ -400,27 +389,8 @@ class Universal_Data_Extractor(object):
         marc_fields: List[Marc_Field] = mapped_field_data.fields
         if self.format == Record_Formats.ET_ELEMENT:
             return self.get_data_from_marc_field_XML(marc_fields, filter_value)
-
-    def extract_positions_from_coded_data(self, field_text: str, positions: List[str]) -> List[str]:
-        """Returns a lsit of string of the asked positions.
-        If any problem was too occured, skips"""
-        output: List[str] = []
-        for position in positions:
-            # single character
-            if not "-" in position and position.isdigit():
-                pos = int(position)
-                if pos < len(field_text):
-                    output.append(field_text[pos])
-            # Range
-            else:
-                regex_matched = re.search(r"^(\d+)-(\d+)$", position)
-                if regex_matched:
-                    begining = int(regex_matched.group(1))
-                    end = int(regex_matched.group(2)) + 1
-                    # End must be > begin and can be equal to the len
-                    if begining < len(field_text) and end <= len(field_text) and begining < end:
-                        output.append(field_text[begining:end])
-        return output
+        if self.format == Record_Formats.JSON_DICT:
+            return self.get_data_from_marc_field_JSON(marc_fields, filter_value)
 
     def get_data_from_marc_field_XML(self, marc_fields: List[Marc_Field], filter_value: Optional[str] = None) -> List[List[Union[str, List[str]]]]:
         """Gets data from XML"""
@@ -462,9 +432,92 @@ class Universal_Data_Extractor(object):
                         else:
                             field_output.append(subfield.text)
                     output.append(field_output)
-        # return
         return output
 
+    def get_data_from_marc_field_JSON(self, marc_fields: List[Marc_Field], filter_value: Optional[str] = None) -> List[List[Union[str, List[str]]]]:
+        """Gets data from JSON"""
+        output: List[List[Union[str, List[str]]]] = []
+        for marc_field in marc_fields:
+            # Control fields
+            if marc_field.tag_as_int < 10:
+                for field in self.record["fields"]:
+                    if marc_field.tag in field.keys():
+                        output.append([field[marc_field.tag]])
+            # Datafields
+            else:
+                # Gets the field to analyze
+                list_of_fields: List[dict] = [] # The dict is the one after the tag {"035":{THIS_ONE}}
+                for field in self.record["fields"]:
+                    if marc_field.tag in field.keys():
+                        # If filtering subfield, exclude this field if not correct
+                        if marc_field.filtering_subfield:
+                            for subfield in field[marc_field.tag]["subfields"]:
+                                if list(subfield.keys())[0] == marc_field.filtering_subfield:
+                                    if subfield[marc_field.filtering_subfield] == filter_value:
+                                        list_of_fields.append(field[marc_field.tag])
+                        else:
+                            list_of_fields.append(field[marc_field.tag])
+                    
+                # For each field to analyze
+                for field in list_of_fields:
+                    # Retrieves all the subfield mapped
+                    field_output = []
+                    list_of_subfields_values: List[str] = []
+                    for subfield in field["subfields"]:
+                        # If specific subfields were mapped
+                        if list(subfield.keys())[0] in marc_field.subfields:
+                            list_of_subfields_values.append(subfield[list(subfield.keys())[0]])
+                        # If specific subfields were mapped
+                        elif len(marc_field.subfields) == 0:
+                            list_of_subfields_values.append(subfield[list(subfield.keys())[0]])
+
+                    for subfield_value in list_of_subfields_values:
+                        # If coded data, retrieve only asked position
+                        if marc_field.single_line_coded_data and len(marc_field.positions) > 0:
+                            field_output.append(self.extract_positions_from_coded_data(subfield_value, marc_field.positions))
+                        else:
+                            field_output.append(subfield_value)
+                    output.append(field_output)
+        return output
+                    
+
+
+
+    def extract_positions_from_coded_data(self, field_text: str, positions: List[str]) -> List[str]:
+        """Returns a lsit of string of the asked positions.
+        If any problem was too occured, skips"""
+        output: List[str] = []
+        for position in positions:
+            # single character
+            if not "-" in position and position.isdigit():
+                pos = int(position)
+                if pos < len(field_text):
+                    output.append(field_text[pos])
+            # Range
+            else:
+                regex_matched = re.search(r"^(\d+)-(\d+)$", position)
+                if regex_matched:
+                    begining = int(regex_matched.group(1))
+                    end = int(regex_matched.group(2)) + 1
+                    # End must be > begin and can be equal to the len
+                    if begining < len(field_text) and end <= len(field_text) and begining < end:
+                        output.append(field_text[begining:end])
+        return output
+
+    # --- Get targetted data ---
+    def get_leader(self) -> List[str]:
+        """Return the leader field content as a list of string"""
+        # List so we avoid crash with the formats who don't display the leader
+        output = []
+        if self.format == Record_Formats.ET_ELEMENT:
+            for field in self.record.findall(f"./{self.xml_namespace}leader", XML_NS):
+                output.append(field.text)
+        elif self.format == Record_Formats.JSON_DICT:
+            output.append(self.record["leader"])
+        elif self.format == Record_Formats.PYMARC_RECORD:
+            output.append(self.record.leader)
+        return output
+    
     def get_other_database_id(self, filter_value: Optional[str] = None):
         """Return all other database id as a list, without duplicates.
 
