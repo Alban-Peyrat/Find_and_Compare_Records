@@ -416,22 +416,17 @@ class Universal_Data_Extractor(object):
                 # For each field to analyze
                 for field in list_of_fields:
                     # Retrieves all the subfield mapped
-                    field_output = []
-                    list_of_subfields: List[ET.Element] = []
+                    subfields_values: List[str] = []
                     # If specific subfields were mapped
                     for marc_subfield in marc_field.subfields:
-                        list_of_subfields += field.findall(f"./{self.xml_namespace}subfield[@code='{marc_subfield}']", XML_NS)
+                        for subfield in field.findall(f"./{self.xml_namespace}subfield[@code='{marc_subfield}']", XML_NS):
+                            subfields_values.append(subfield.text)
                     # If no specific subfield was mapped
                     if len(marc_field.subfields) == 0:
-                        list_of_subfields += field.findall(f"./{self.xml_namespace}subfield", XML_NS)
-
-                    for subfield in list_of_subfields:
-                        # If coded data, retrieve only asked position
-                        if marc_field.single_line_coded_data and len(marc_field.positions) > 0:
-                            field_output.append(self.extract_positions_from_coded_data(subfield.text, marc_field.positions))
-                        else:
-                            field_output.append(subfield.text)
-                    output.append(field_output)
+                        for subfield in field.findall(f"./{self.xml_namespace}subfield", XML_NS):
+                            subfields_values.append(subfield.text)
+                    # If coded data, retrieve only asked position
+                    output.append(self.extract_subfield_values(subfields_values, marc_field))
         return output
 
     def get_data_from_marc_field_JSON(self, marc_fields: List[Marc_Field], filter_value: Optional[str] = None) -> List[List[Union[str, List[str]]]]:
@@ -461,27 +456,29 @@ class Universal_Data_Extractor(object):
                 # For each field to analyze
                 for field in list_of_fields:
                     # Retrieves all the subfield mapped
-                    field_output = []
-                    list_of_subfields_values: List[str] = []
+                    subfields_values: List[str] = []
                     for subfield in field["subfields"]:
                         # If specific subfields were mapped
                         if list(subfield.keys())[0] in marc_field.subfields:
-                            list_of_subfields_values.append(subfield[list(subfield.keys())[0]])
+                            subfields_values.append(subfield[list(subfield.keys())[0]])
                         # If specific subfields were mapped
                         elif len(marc_field.subfields) == 0:
-                            list_of_subfields_values.append(subfield[list(subfield.keys())[0]])
-
-                    for subfield_value in list_of_subfields_values:
-                        # If coded data, retrieve only asked position
-                        if marc_field.single_line_coded_data and len(marc_field.positions) > 0:
-                            field_output.append(self.extract_positions_from_coded_data(subfield_value, marc_field.positions))
-                        else:
-                            field_output.append(subfield_value)
-                    output.append(field_output)
+                            subfields_values.append(subfield[list(subfield.keys())[0]])
+                    # If coded data, retrieve only asked position
+                    output.append(self.extract_subfield_values(subfields_values, marc_field))
         return output
                     
 
-
+    def extract_subfield_values(self, values: List[str], marc_field: Marc_Field) -> List[str]:
+        """Returns a list of srtings of the ubfield values, only with positions if needed"""
+        output = []
+        for subfield_value in values:
+            # If coded data, retrieve only asked position
+            if marc_field.single_line_coded_data and len(marc_field.positions) > 0:
+                output.append(self.extract_positions_from_coded_data(subfield_value, marc_field.positions))
+            else:
+                output.append(subfield_value)
+        return output
 
     def extract_positions_from_coded_data(self, field_text: str, positions: List[str]) -> List[str]:
         """Returns a lsit of string of the asked positions.
