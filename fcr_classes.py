@@ -16,7 +16,7 @@ import api.abes.Abes_isbn2ppn as isbn2ppn
 import api.abes.Sudoc_SRU as ssru
 import api.koha.Koha_SRU as Koha_SRU
 
-# -------------------- Execution settings --------------------
+# -------------------- Execution settings (ES) --------------------
 
 class Execution_Settings(object):
     def __init__(self):
@@ -68,7 +68,7 @@ class Execution_Settings(object):
     def define_chosen_analysis(self, nb: int):
         self.chosen_analysis = self.analysis[nb]
         
-# -------------------- MATCH RECORDS --------------------
+# -------------------- MATCH RECORDS (MR) --------------------
 
 class Operations(Enum):
     SEARCH_IN_SUDOC_BY_ISBN = 0
@@ -263,7 +263,7 @@ class Matched_Records(object):
 
         # Action in Koha SRU
 
-# -------------------- UNIVERSAL DATA EXTRACTOR --------------------
+# -------------------- UNIVERSAL DATA EXTRACTOR (UDE) --------------------
 
 class Databases(Enum):
     ABESXML = 0
@@ -391,6 +391,8 @@ class Universal_Data_Extractor(object):
             return self.get_data_from_marc_field_XML(marc_fields, filter_value)
         if self.format == Record_Formats.JSON_DICT:
             return self.get_data_from_marc_field_JSON(marc_fields, filter_value)
+        if self.format == Record_Formats.PYMARC_RECORD:
+            return self.get_data_from_marc_field_PYMARC(marc_fields, filter_value)
 
     def get_data_from_marc_field_XML(self, marc_fields: List[Marc_Field], filter_value: Optional[str] = None) -> List[List[Union[str, List[str]]]]:
         """Gets data from XML"""
@@ -461,13 +463,53 @@ class Universal_Data_Extractor(object):
                         # If specific subfields were mapped
                         if list(subfield.keys())[0] in marc_field.subfields:
                             subfields_values.append(subfield[list(subfield.keys())[0]])
-                        # If specific subfields were mapped
+                        # If no specific subfield was mapped
                         elif len(marc_field.subfields) == 0:
                             subfields_values.append(subfield[list(subfield.keys())[0]])
                     # If coded data, retrieve only asked position
                     output.append(self.extract_subfield_values(subfields_values, marc_field))
         return output
+
+    def get_data_from_marc_field_PYMARC(self, marc_fields: List[Marc_Field], filter_value: Optional[str] = None) -> List[List[Union[str, List[str]]]]:
+        """Gets data from PYMARC"""
+        output: List[List[Union[str, List[str]]]] = []
+        for marc_field in marc_fields:
+            # Control fields
+            if marc_field.tag_as_int < 10:
+                for field in self.record.get_fields(marc_field.tag):
+                    output.append([field.data])
+            # Datafields
+            else:
+                # Gets the field to analyze
+                list_of_fields: List[pymarc.field.Field] = []
+                for field in self.record.get_fields(marc_field.tag):
+                    # If filtering subfield, exclude this field if not correct
+                    if marc_field.filtering_subfield:
+                        for subfield_value in field.get_subfields(marc_field.filtering_subfield):
+                            if subfield_value == filter_value:
+                                list_of_fields.append(field)
+                    else:
+                        list_of_fields.append(field)
                     
+                # For each field to analyze
+                for field in list_of_fields:
+                    # Retrieves all the subfield mapped
+                    subfields_values: List[str] = []
+                    # If specific subfields were mapped
+                    if len(marc_field.subfields) > 0:
+                        # The * unpack the list
+                        subfields_values = field.get_subfields(*marc_field.subfields)
+                    # If no specific subfield was mapped
+                    elif len(marc_field.subfields) == 0:
+                        for index, subfield_value in enumerate(field.subfields):
+                            # field.subfields return a list with even index = code, odd index = val
+                            if index % 2 == 1:
+                                subfields_values.append(subfield_value)
+                    # If coded data, retrieve only asked position
+                    output.append(self.extract_subfield_values(subfields_values, marc_field))
+        return output
+
+    # --- Resource methods for the resource methods ---
 
     def extract_subfield_values(self, values: List[str], marc_field: Marc_Field) -> List[str]:
         """Returns a list of srtings of the ubfield values, only with positions if needed"""
