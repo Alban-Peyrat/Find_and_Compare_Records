@@ -12,7 +12,7 @@
                 }
             ]
         },
-        "general_processing_dates_single_line_coded_data":{
+        "general_processing_data_dates":{
             "label":"Dates from general prcessing data",
             "fields":[
                 {
@@ -172,7 +172,7 @@
                 }
             ]
         },
-        "general_processing_dates_single_line_coded_data":{
+        "general_processing_data_dates":{
             "label":"Dates from general prcessing data",
             "fields":[
                 {
@@ -319,7 +319,7 @@
             ]
         }
     },
-    "SUDOC":{
+    "KOHA_ARCHIRES":{
         "ppn":{
             "label":"PPN",
             "fields":[
@@ -332,7 +332,7 @@
                 }
             ]
         },
-        "general_processing_dates_single_line_coded_data":{
+        "general_processing_data_dates":{
             "label":"Dates from general prcessing data",
             "fields":[
                 {
@@ -340,7 +340,7 @@
                     "single_line_coded_data":true,
                     "filtering_subfield":"",
                     "subfields":[],
-                    "positions":["9-12", "13-16"]
+                    "positions":["8", "9-12", "13-16"]
                 }
             ]
         },
@@ -479,7 +479,7 @@
             ]
         }
     },
-    "KOHA_ARCHIRES":{
+    "SUDOC":{
         "ppn":{
             "label":"PPN",
             "fields":[
@@ -492,15 +492,15 @@
                 }
             ]
         },
-        "general_processing_dates_single_line_coded_data":{
-            "label":"Dates from general prcessing data",
+        "general_processing_data_dates":{
+            "label":"Dates from general processing data",
             "fields":[
                 {
                     "tag":"100",
                     "single_line_coded_data":true,
                     "filtering_subfield":"",
                     "subfields":[],
-                    "positions":["9-12", "13-16"]
+                    "positions":["8", "9-12", "13-16"]
                 }
             ]
         },
@@ -848,7 +848,7 @@
                 }
             ]
         },
-        "general_processing_dates_single_line_coded_data":{
+        "general_processing_data_dates":{
             "label":"Dates from general prcessing data",
             "fields":[
                 {
@@ -1015,7 +1015,7 @@
                 }
             ]
         },
-        "general_processing_dates_single_line_coded_data":{
+        "general_processing_data_dates":{
             "label":"Dates from general prcessing data",
             "fields":[
                 {
@@ -1182,7 +1182,7 @@
                 }
             ]
         },
-        "general_processing_dates_single_line_coded_data":{
+        "general_processing_data_dates":{
             "label":"Dates from general prcessing data",
             "fields":[
                 {

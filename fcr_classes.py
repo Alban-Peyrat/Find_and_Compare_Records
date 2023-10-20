@@ -345,7 +345,7 @@ class Marc_Fields_Mapping(object):
         elif not self.is_target_db and type(self.is_target_db) == bool:
             self.marc_fields_json = es.marc_fields_json["ORIGIN_DATABASE"]
         self.ppn = Marc_Fields_Data(self.marc_fields_json["ppn"])
-        self.general_processing_dates_single_line_coded_data = Marc_Fields_Data(self.marc_fields_json["general_processing_dates_single_line_coded_data"])
+        self.general_processing_data_dates = Marc_Fields_Data(self.marc_fields_json["general_processing_data_dates"])
         self.erroneous_isbn = Marc_Fields_Data(self.marc_fields_json["erroneous_isbn"])
         self.title = Marc_Fields_Data(self.marc_fields_json["title"])
         self.publishers_name = Marc_Fields_Data(self.marc_fields_json["publishers_name"])
@@ -361,7 +361,7 @@ class Marc_Fields_Mapping(object):
         """Loads a marc field mappig by name (debgging)"""
         self.marc_fields_json = es.marc_fields_json[name]
         self.ppn = Marc_Fields_Data(self.marc_fields_json["ppn"])
-        self.general_processing_dates_single_line_coded_data = Marc_Fields_Data(self.marc_fields_json["general_processing_dates_single_line_coded_data"])
+        self.general_processing_data_dates = Marc_Fields_Data(self.marc_fields_json["general_processing_data_dates"])
         self.erroneous_isbn = Marc_Fields_Data(self.marc_fields_json["erroneous_isbn"])
         self.title = Marc_Fields_Data(self.marc_fields_json["title"])
         self.publishers_name = Marc_Fields_Data(self.marc_fields_json["publishers_name"])
@@ -399,20 +399,20 @@ class Universal_Data_Extractor(object):
         else:
             return ""
 
-    def get_data_from_marc_field(self, mapped_field_data: Marc_Fields_Data, filter_value: Optional[str] = "") -> List[List[Union[str, List[str]]]]:
+    def extract_data_from_marc_field(self, mapped_field_data: Marc_Fields_Data, filter_value: Optional[str] = "") -> List[List[Union[str, List[str]]]]:
         """Mother function of all get_DATA (except leader).
         
         Returns a list of list of string (add another layer of list if the field was coded data with positions)"""
         output: List[List[Union[str, List[str]]]] = []
         marc_fields: List[Marc_Field] = mapped_field_data.fields
         if self.format == Record_Formats.ET_ELEMENT:
-            return self.get_data_from_marc_field_XML(marc_fields, filter_value)
+            return self.extract_data_from_marc_field_XML(marc_fields, filter_value)
         if self.format == Record_Formats.JSON_DICT:
-            return self.get_data_from_marc_field_JSON(marc_fields, filter_value)
+            return self.extract_data_from_marc_field_JSON(marc_fields, filter_value)
         if self.format == Record_Formats.PYMARC_RECORD:
-            return self.get_data_from_marc_field_PYMARC(marc_fields, filter_value)
+            return self.extract_data_from_marc_field_PYMARC(marc_fields, filter_value)
 
-    def get_data_from_marc_field_XML(self, marc_fields: List[Marc_Field], filter_value: Optional[str] = "") -> List[List[Union[str, List[str]]]]:
+    def extract_data_from_marc_field_XML(self, marc_fields: List[Marc_Field], filter_value: Optional[str] = "") -> List[List[Union[str, List[str]]]]:
         """Gets data from XML"""
         output: List[List[Union[str, List[str]]]] = []
         for marc_field in marc_fields:
@@ -449,7 +449,7 @@ class Universal_Data_Extractor(object):
                     output.append(self.extract_subfield_values(subfields_values, marc_field))
         return output
 
-    def get_data_from_marc_field_JSON(self, marc_fields: List[Marc_Field], filter_value: Optional[str] = None) -> List[List[Union[str, List[str]]]]:
+    def extract_data_from_marc_field_JSON(self, marc_fields: List[Marc_Field], filter_value: Optional[str] = None) -> List[List[Union[str, List[str]]]]:
         """Gets data from JSON"""
         output: List[List[Union[str, List[str]]]] = []
         for marc_field in marc_fields:
@@ -488,7 +488,7 @@ class Universal_Data_Extractor(object):
                     output.append(self.extract_subfield_values(subfields_values, marc_field))
         return output
 
-    def get_data_from_marc_field_PYMARC(self, marc_fields: List[Marc_Field], filter_value: Optional[str] = "") -> List[List[Union[str, List[str]]]]:
+    def extract_data_from_marc_field_PYMARC(self, marc_fields: List[Marc_Field], filter_value: Optional[str] = "") -> List[List[Union[str, List[str]]]]:
         """Gets data from PYMARC"""
         output: List[List[Union[str, List[str]]]] = []
         for marc_field in marc_fields:
@@ -575,73 +575,126 @@ class Universal_Data_Extractor(object):
             output.append(self.record.leader)
         return output
     
-    def get_other_database_id(self, filter_value: Optional[str] = ""):
-        """Return all other database id as a list, without duplicates.
+    def get_other_database_id(self, filter_value: Optional[str] = "") -> List[str]:
+        """Return all other database id as a list of str, without duplicates.
 
-        Takes filter_value as argument is mapped to have a filtering subfield.
-        """
+        Takes filter_value as argument if mapped to have a filtering subfield."""
+        return self.extract_list_of_ids(self.marc_fields_mapping.other_database_id, filter_value)
+
+    def get_title(self, filter_value: Optional[str] = "") -> List[str]:
+        """Return all fields mapped as title as a list of strings
+        Each subfield is separated by a space
+        
+        Takes filter_value as argument if mapped to have a filtering subfield."""
+        return self.extract_list_of_strings(self.marc_fields_mapping.title, filter_value)
+    
+    def get_general_processing_data_dates(self, filter_value: Optional[str] = "") -> List[List[str]]:
+        """Return all publication dates from the general processign data as a list (usually of list containing :
+            - Type of date
+            - Date 1
+            - Date 2)
+
+        Takes filter_value as argument if mapped to have a filtering subfield."""
+        return self.extract_list_of_lists(self.marc_fields_mapping.general_processing_data_dates, filter_value)
+
+    def get_publishers_name(self, filter_value: Optional[str] = "") -> List[str]:
+        """Return all fields mapped as publisher names as a list of strings
+        Each subfield is separated by a space
+        
+        Takes filter_value as argument if mapped to have a filtering subfield."""
+        return self.extract_list_of_strings(self.marc_fields_mapping.publishers_name, filter_value)
+    
+    def get_ppn(self, filter_value: Optional[str] = "") -> List[str]:
+        """Return all PPN as a list of str, without duplicates.
+
+        Takes filter_value as argument if mapped to have a filtering subfield."""
+        return self.extract_list_of_ids(self.marc_fields_mapping.ppn, filter_value)
+
+    def get_edition_notes(self, filter_value: Optional[str] = "") -> List[str]:
+        """Return all fields mapped as edition notes as a list of strings
+        Each subfield is separated by a space
+        
+        Takes filter_value as argument if mapped to have a filtering subfield."""
+        return self.extract_list_of_strings(self.marc_fields_mapping.edition_note, filter_value)
+
+    def get_publication_dates(self, filter_value: Optional[str] = "") -> List[str]:
+        """Return all fields mapped as publication dates as a list of strings
+        Each subfield is separated by a space
+        
+        Takes filter_value as argument if mapped to have a filtering subfield."""
+        return self.extract_list_of_strings(self.marc_fields_mapping.publication_dates, filter_value)
+
+    def get_physical_description(self, filter_value: Optional[str] = "") -> List[str]:
+        """Return all fields mapped as physical descriptions as a list of strings
+        Each subfield is separated by a space
+        
+        Takes filter_value as argument if mapped to have a filtering subfield."""
+        return self.extract_list_of_strings(self.marc_fields_mapping.physical_desription, filter_value)
+
+    def get_erroneous_ISBN(self, filter_value: Optional[str] = "") -> List[str]:
+        """Return all erroneous ISBN as a list of str, without duplicates.
+
+        Takes filter_value as argument if mapped to have a filtering subfield."""
+        return self.extract_list_of_ids(self.marc_fields_mapping.erroneous_isbn, filter_value)
+
+    def get_other_edition_in_other_medium_bibliographic_id(self, filter_value: Optional[str] = "") -> List[str]:
+        """Return all of other edition in other medium bibliographic id as a list of str, without duplicates.
+
+        Takes filter_value as argument if mapped to have a filtering subfield."""
+        return self.extract_list_of_ids(self.marc_fields_mapping.other_edition_in_other_medium_bibliographic_id, filter_value)
+
+    def get_items_barcode(self, filter_value: Optional[str] = "") -> List[str]:
+        """Return all items barcode as a list of str, without duplicates.
+
+        Takes filter_value as argument if mapped to have a filtering subfield."""
+        return self.extract_list_of_ids(self.marc_fields_mapping.items_barcode, filter_value)
+
+    def get_items(self, filter_value: Optional[str] = "") -> List[List[str]]:
+        """Return all publication dates from the general processign data as a list (usually of list containing :
+            - Type of date
+            - Date 1
+            - Date 2)
+
+        Takes filter_value as argument if mapped to have a filtering subfield."""
+        return self.extract_data_from_marc_field(self.marc_fields_mapping.items, filter_value)
+        # return self.extract_list_of_lists(self.marc_fields_mapping.items, filter_value)
+
+    # --- Resources methods to get targetted data ---
+    def flatten_list(self, thisList: list, all_layers: bool) -> list:
+        """Returns the lsit flattened, only one layer if all_layers is False."""
+        if all_layers:
+            result = []
+            for item in thisList:
+                if isinstance(item, list):
+                    result.extend(self.flatten_list(item, True))
+                else:
+                    result.append(item)
+            return result
+        else:
+            return [item for sublist in thisList for item in sublist]
+    
+    def extract_list_of_ids(self,marc_field: Marc_Fields_Data, filter_value: Optional[str] = "") -> List[str]:
+        """Generic funciton to get a list of ID without duplicates"""
         output = []
-        mapped_fields = self.marc_fields_mapping.other_database_id.fields
-        # donc là je dois récupérer au sein de chaque fields le tag + sbfields + filterinf
-        if self.format == Record_Formats.ET_ELEMENT:
-            for field in self.record.findall(f"./{self.xml_namespace}datafield[@tag='{self}']/subfield", XML_NS):
-                output.append(field.text)
-        elif self.format == Record_Formats.JSON_DICT:
-            output.append(self.record["leader"])
-        elif self.format == Record_Formats.PYMARC_RECORD:
-            output.append(self.record.leader)
-        root = ET.fromstring(self.record)
-        local_sys_nb = []
-        U035s = root.findall(".//datafield[@tag='035']")
+        extraction = self.extract_data_from_marc_field(marc_field, filter_value)
+        output = self.flatten_list(extraction, True)
+        return list(set(output))
 
-        for U035 in U035s:
-            U035iln = U035.find("subfield[@code='1']")
-            if U035iln == None:
-                continue
-            
-            if U035iln.text == str("ILN") and not U035.find("subfield[@code='a']").text in local_sys_nb:
-                local_sys_nb.append(U035.find("subfield[@code='a']").text)
+    def extract_list_of_strings(self,marc_field: Marc_Fields_Data, filter_value: Optional[str] = "") -> List[str]:
+        """Generic funciton to get a list of strings merging subfields if needed (with duplicates)"""
+        output = []
+        extraction = self.extract_data_from_marc_field(marc_field, filter_value)
+        for field_value in extraction:
+            output.append(" ".join(field_value))
+        return output
+    
+    def extract_list_of_lists(self,marc_field: Marc_Fields_Data, filter_value: Optional[str] = "") -> List[str]:
+        """Generic funciton to get a list, merging only one layer, so, supposedly, a list of list"""
+        output = []
+        extraction = self.extract_data_from_marc_field(marc_field, filter_value)
+        output = self.flatten_list(extraction, False)
+        return output
 
-        return local_sys_nb
-
-    # def get_title(self):
-    #     """Return all fields mapped as title as a list of strings
-    #     Each subfield is separated by a space"""
-    #     output = []
-    #     mapped_fields = self.marc_fields_mapping.title.fields
-    #     mapped_subfields
-    #     if self.format == Record_Formats.ET_ELEMENT:
-    #         for field in self.record.findall(f"./{self.xml_namespace}leader", XML_NS):
-    #             output.append(field.text)
-    #     elif self.format == Record_Formats.JSON_DICT:
-    #         output.append(self.record["leader"])
-    #     elif self.format == Record_Formats.PYMARC_RECORD:
-    #         output.append(self.record.leader)
-        
-        
-        
-    #     key_title = []
-        
-    #     if self.format == "application/marcxml+xml":
-    #         root = ET.fromstring(self.record)
-    #         for subfield in root.find("./marc:datafield[@tag='200']", NS).findall("./marc:subfield", NS):
-    #             if subfield.attrib['code'] in ('a','d','e','h','i','v') :
-    #                 key_title.append(str(subfield.text or "")) #AR294 : MARCXML can have empty subfields that returns None, but we need a string
-
-    #     elif self.format == "application/marc-in-json":
-    #         for field in json.loads(self.record)["fields"]:
-    #             if "200" in field.keys():
-    #                 for subfield in field["200"]["subfields"]:
-    #                     code = list(subfield.keys())[0]
-    #                     if code in ('a','d','e','h','i','v') :
-    #                         key_title.append(subfield[code])
-    #                 break # To match XML find first, prevents finding another 200
-        
-    #     elif self.format == "application/marc" or self.format == "text/plain":
-    #         return "Pas de prise en charge de ce format pour le moment."
-        
-    #     return " ".join(key_title)
-    #     return output
 
 # -------------------- MAIN --------------------
 
