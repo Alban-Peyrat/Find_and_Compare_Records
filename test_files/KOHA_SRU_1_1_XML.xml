@@ -1,0 +1,646 @@
+<ns0:searchRetrieveResponse xmlns:ns0="http://www.loc.gov/zing/srw/"
+  xmlns:ns1="http://www.loc.gov/MARC21/slim"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+        <ns1:record xsi:schemaLocation="http://www.loc.gov/MARC21/slim http://www.loc.gov/standards/marcxml/schema/MARC21slim.xsd">
+
+          <ns1:leader>06424cam0a2201357   4500</ns1:leader>
+          <ns1:controlfield tag="001">133402</ns1:controlfield>
+          <ns1:controlfield tag="003">http://www.sudoc.fr/000017396</ns1:controlfield>
+          <ns1:controlfield tag="005">20231011132231.0</ns1:controlfield>
+          <ns1:controlfield tag="009">000017396</ns1:controlfield>
+          <ns1:datafield tag="010" ind1=" " ind2=" ">
+            <ns1:subfield code="a">2-85303-073-3</ns1:subfield>
+            <ns1:subfield code="b">br.</ns1:subfield>
+            <ns1:subfield code="d">35 FRF</ns1:subfield>
+          </ns1:datafield>
+          <ns1:datafield tag="010" ind1=" " ind2=" ">
+            <ns1:subfield code="a">2-8530-3073-3</ns1:subfield>
+          </ns1:datafield>
+          <ns1:datafield tag="020" ind1=" " ind2=" ">
+            <ns1:subfield code="a">FR</ns1:subfield>
+            <ns1:subfield code="b">07603830</ns1:subfield>
+          </ns1:datafield>
+          <ns1:datafield tag="021" ind1=" " ind2=" ">
+            <ns1:subfield code="a">FR</ns1:subfield>
+            <ns1:subfield code="b">D.L. 75-25211</ns1:subfield>
+          </ns1:datafield>
+          <ns1:datafield tag="033" ind1=" " ind2=" ">
+            <ns1:subfield code="a">http://catalogue.bnf.fr/ark:/12148/cb345529076</ns1:subfield>
+          </ns1:datafield>
+          <ns1:datafield tag="035" ind1=" " ind2=" ">
+            <ns1:subfield code="a">MRSL0000047023</ns1:subfield>
+          </ns1:datafield>
+          <ns1:datafield tag="035" ind1=" " ind2=" ">
+            <ns1:subfield code="a">BRET13366</ns1:subfield>
+          </ns1:datafield>
+          <ns1:datafield tag="035" ind1=" " ind2=" ">
+            <ns1:subfield code="a">NRMD5459</ns1:subfield>
+          </ns1:datafield>
+          <ns1:datafield tag="035" ind1=" " ind2=" ">
+            <ns1:subfield code="a">TOUL10827</ns1:subfield>
+          </ns1:datafield>
+          <ns1:datafield tag="035" ind1=" " ind2=" ">
+            <ns1:subfield code="a">CLRF3356</ns1:subfield>
+          </ns1:datafield>
+          <ns1:datafield tag="035" ind1=" " ind2=" ">
+            <ns1:subfield code="a">PLVT17461</ns1:subfield>
+          </ns1:datafield>
+          <ns1:datafield tag="035" ind1=" " ind2=" ">
+            <ns1:subfield code="a">NNCY5881</ns1:subfield>
+          </ns1:datafield>
+          <ns1:datafield tag="035" ind1=" " ind2=" ">
+            <ns1:subfield code="a">MALQ25549</ns1:subfield>
+          </ns1:datafield>
+          <ns1:datafield tag="035" ind1=" " ind2=" ">
+            <ns1:subfield code="a">149424299</ns1:subfield>
+            <ns1:subfield code="9">sudoc</ns1:subfield>
+          </ns1:datafield>
+          <ns1:datafield tag="035" ind1=" " ind2=" ">
+            <ns1:subfield code="a">(OCoLC)299370564</ns1:subfield>
+          </ns1:datafield>
+          <ns1:datafield tag="035" ind1=" " ind2=" ">
+            <ns1:subfield code="a">sib0689965</ns1:subfield>
+          </ns1:datafield>
+          <ns1:datafield tag="035" ind1=" " ind2=" ">
+            <ns1:subfield code="a">AIC00580134</ns1:subfield>
+          </ns1:datafield>
+          <ns1:datafield tag="035" ind1=" " ind2=" ">
+            <ns1:subfield code="a">urouen12701</ns1:subfield>
+          </ns1:datafield>
+          <ns1:datafield tag="035" ind1=" " ind2=" ">
+            <ns1:subfield code="a">ocm02284488</ns1:subfield>
+          </ns1:datafield>
+          <ns1:datafield tag="035" ind1=" " ind2=" ">
+            <ns1:subfield code="a">PRITEC.GEO.010060624001</ns1:subfield>
+          </ns1:datafield>
+          <ns1:datafield tag="035" ind1=" " ind2=" ">
+            <ns1:subfield code="a">jvSO100730003201</ns1:subfield>
+          </ns1:datafield>
+          <ns1:datafield tag="035" ind1=" " ind2=" ">
+            <ns1:subfield code="a">cba00002167</ns1:subfield>
+          </ns1:datafield>
+          <ns1:datafield tag="035" ind1=" " ind2=" ">
+            <ns1:subfield code="a">frBN000050640</ns1:subfield>
+          </ns1:datafield>
+          <ns1:datafield tag="035" ind1=" " ind2=" ">
+            <ns1:subfield code="a">FRBNF345529070000001</ns1:subfield>
+            <ns1:subfield code="z">FRBNF34552907</ns1:subfield>
+          </ns1:datafield>
+          <ns1:datafield tag="035" ind1=" " ind2=" ">
+            <ns1:subfield code="5">751062311</ns1:subfield>
+            <ns1:subfield code="a">133402</ns1:subfield>
+          </ns1:datafield>
+          <ns1:datafield tag="035" ind1=" " ind2=" ">
+            <ns1:subfield code="5">751062311</ns1:subfield>
+            <ns1:subfield code="a">133402</ns1:subfield>
+          </ns1:datafield>
+          <ns1:datafield tag="035" ind1=" " ind2=" ">
+            <ns1:subfield code="5">751062311</ns1:subfield>
+            <ns1:subfield code="a">133402</ns1:subfield>
+          </ns1:datafield>
+          <ns1:datafield tag="035" ind1=" " ind2=" ">
+            <ns1:subfield code="5">751062311</ns1:subfield>
+            <ns1:subfield code="a">133402</ns1:subfield>
+          </ns1:datafield>
+          <ns1:datafield tag="035" ind1=" " ind2=" ">
+            <ns1:subfield code="5">751062311</ns1:subfield>
+            <ns1:subfield code="a">133402</ns1:subfield>
+          </ns1:datafield>
+          <ns1:datafield tag="035" ind1=" " ind2=" ">
+            <ns1:subfield code="5">751062311</ns1:subfield>
+            <ns1:subfield code="a">133402</ns1:subfield>
+          </ns1:datafield>
+          <ns1:datafield tag="073" ind1=" " ind2="1">
+            <ns1:subfield code="a">9782853030731</ns1:subfield>
+          </ns1:datafield>
+          <ns1:datafield tag="090" ind1=" " ind2=" ">
+            <ns1:subfield code="a">133402</ns1:subfield>
+          </ns1:datafield>
+          <ns1:datafield tag="098" ind1=" " ind2=" ">
+            <ns1:subfield code="e">2021-02-01</ns1:subfield>
+          </ns1:datafield>
+          <ns1:datafield tag="099" ind1=" " ind2=" ">
+            <ns1:subfield code="t">LIV</ns1:subfield>
+            <ns1:subfield code="c">2003-01-28</ns1:subfield>
+            <ns1:subfield code="s">0</ns1:subfield>
+            <ns1:subfield code="e">2023-10-11</ns1:subfield>
+            <ns1:subfield code="d">2023-10-11</ns1:subfield>
+          </ns1:datafield>
+          <ns1:datafield tag="100" ind1=" " ind2=" ">
+            <ns1:subfield code="a">19760227d1975    k  y0frey50      ba</ns1:subfield>
+          </ns1:datafield>
+          <ns1:datafield tag="101" ind1="0" ind2=" ">
+            <ns1:subfield code="a">fre</ns1:subfield>
+            <ns1:subfield code="2">639-2</ns1:subfield>
+          </ns1:datafield>
+          <ns1:datafield tag="102" ind1=" " ind2=" ">
+            <ns1:subfield code="a">FR</ns1:subfield>
+          </ns1:datafield>
+          <ns1:datafield tag="105" ind1=" " ind2=" ">
+            <ns1:subfield code="a">a   a   000yy</ns1:subfield>
+          </ns1:datafield>
+          <ns1:datafield tag="106" ind1=" " ind2=" ">
+            <ns1:subfield code="a">r</ns1:subfield>
+          </ns1:datafield>
+          <ns1:datafield tag="181" ind1=" " ind2=" ">
+            <ns1:subfield code="6">z01</ns1:subfield>
+            <ns1:subfield code="c">txt</ns1:subfield>
+            <ns1:subfield code="2">rdacontent</ns1:subfield>
+          </ns1:datafield>
+          <ns1:datafield tag="181" ind1=" " ind2="1">
+            <ns1:subfield code="6">z01</ns1:subfield>
+            <ns1:subfield code="a">i#</ns1:subfield>
+            <ns1:subfield code="b">xxxe##</ns1:subfield>
+          </ns1:datafield>
+          <ns1:datafield tag="182" ind1=" " ind2=" ">
+            <ns1:subfield code="6">z01</ns1:subfield>
+            <ns1:subfield code="c">n</ns1:subfield>
+            <ns1:subfield code="2">rdamedia</ns1:subfield>
+          </ns1:datafield>
+          <ns1:datafield tag="182" ind1=" " ind2="1">
+            <ns1:subfield code="6">z01</ns1:subfield>
+            <ns1:subfield code="a">n</ns1:subfield>
+          </ns1:datafield>
+          <ns1:datafield tag="183" ind1=" " ind2=" ">
+            <ns1:subfield code="6">z01</ns1:subfield>
+            <ns1:subfield code="a">nga</ns1:subfield>
+            <ns1:subfield code="2">RDAfrCarrier</ns1:subfield>
+          </ns1:datafield>
+          <ns1:datafield tag="200" ind1="1" ind2=" ">
+            <ns1:subfield code="a">L'organisation urbaine</ns1:subfield>
+            <ns1:subfield code="e">théories et modèles</ns1:subfield>
+            <ns1:subfield code="f">Antoine S. Bailly</ns1:subfield>
+            <ns1:subfield code="g">[publié par le Centre de recherche d'urbanisme]</ns1:subfield>
+          </ns1:datafield>
+          <ns1:datafield tag="214" ind1=" " ind2="0">
+            <ns1:subfield code="a">Paris</ns1:subfield>
+            <ns1:subfield code="c">Centre de recherche d'urbanisme</ns1:subfield>
+            <ns1:subfield code="d">DL 1975</ns1:subfield>
+          </ns1:datafield>
+          <ns1:datafield tag="215" ind1=" " ind2=" ">
+            <ns1:subfield code="a">1 vol. (272 p.)</ns1:subfield>
+            <ns1:subfield code="c">ill., couv. ill.</ns1:subfield>
+            <ns1:subfield code="d">21 cm</ns1:subfield>
+          </ns1:datafield>
+          <ns1:datafield tag="320" ind1=" " ind2=" ">
+            <ns1:subfield code="a">Bibliogr. p. 241-268</ns1:subfield>
+          </ns1:datafield>
+          <ns1:datafield tag="330" ind1=" " ind2="1">
+            <ns1:subfield code="a">Ce livre se propose de faire connaitre une branche méthodologique de la recherche urbaine : il traite de la conceptualisation et de la méthode scientifique dans la compréhension des mécanismes urbains</ns1:subfield>
+          </ns1:datafield>
+          <ns1:datafield tag="600" ind1=" " ind2=" ">
+            <ns1:subfield code="9">211154</ns1:subfield>
+            <ns1:subfield code="a">Christaller</ns1:subfield>
+            <ns1:subfield code="b">Walter</ns1:subfield>
+            <ns1:subfield code="f">1893-1969</ns1:subfield>
+          </ns1:datafield>
+          <ns1:datafield tag="600" ind1=" " ind2=" ">
+            <ns1:subfield code="9">224028</ns1:subfield>
+            <ns1:subfield code="a">Losch</ns1:subfield>
+            <ns1:subfield code="b">August</ns1:subfield>
+          </ns1:datafield>
+          <ns1:datafield tag="600" ind1=" " ind2=" ">
+            <ns1:subfield code="9">224027</ns1:subfield>
+            <ns1:subfield code="a">Thunen</ns1:subfield>
+            <ns1:subfield code="b">Johannes Von</ns1:subfield>
+          </ns1:datafield>
+          <ns1:datafield tag="606" ind1=" " ind2=" ">
+            <ns1:subfield code="3">027267768</ns1:subfield>
+            <ns1:subfield code="9">340332</ns1:subfield>
+            <ns1:subfield code="a">Géographie urbaine</ns1:subfield>
+            <ns1:subfield code="2">rameau</ns1:subfield>
+          </ns1:datafield>
+          <ns1:datafield tag="606" ind1=" " ind2=" ">
+            <ns1:subfield code="3">027254925</ns1:subfield>
+            <ns1:subfield code="9">339235</ns1:subfield>
+            <ns1:subfield code="a">Urbanisme</ns1:subfield>
+            <ns1:subfield code="3">027315754</ns1:subfield>
+            <ns1:subfield code="9">339071</ns1:subfield>
+            <ns1:subfield code="x">Recherche</ns1:subfield>
+            <ns1:subfield code="2">rameau</ns1:subfield>
+          </ns1:datafield>
+          <ns1:datafield tag="606" ind1=" " ind2=" ">
+            <ns1:subfield code="3">027255034</ns1:subfield>
+            <ns1:subfield code="9">339270</ns1:subfield>
+            <ns1:subfield code="a">Urbanisation</ns1:subfield>
+            <ns1:subfield code="2">rameau</ns1:subfield>
+          </ns1:datafield>
+          <ns1:datafield tag="610" ind1=" " ind2=" ">
+            <ns1:subfield code="a">Organisation spatiale</ns1:subfield>
+            <ns1:subfield code="x">Spatial organization</ns1:subfield>
+            <ns1:subfield code="9">59618</ns1:subfield>
+          </ns1:datafield>
+          <ns1:datafield tag="610" ind1=" " ind2=" ">
+            <ns1:subfield code="a">Modèle en urbanisme</ns1:subfield>
+            <ns1:subfield code="x">Urban model</ns1:subfield>
+            <ns1:subfield code="9">60531</ns1:subfield>
+          </ns1:datafield>
+          <ns1:datafield tag="610" ind1=" " ind2=" ">
+            <ns1:subfield code="a">Théorie de l'urbanisme</ns1:subfield>
+            <ns1:subfield code="x">Urban planning theory</ns1:subfield>
+            <ns1:subfield code="9">59156</ns1:subfield>
+          </ns1:datafield>
+          <ns1:datafield tag="675" ind1=" " ind2=" ">
+            <ns1:subfield code="a">70</ns1:subfield>
+            <ns1:subfield code="v">Éd. 1967</ns1:subfield>
+          </ns1:datafield>
+          <ns1:datafield tag="676" ind1=" " ind2=" ">
+            <ns1:subfield code="a">700</ns1:subfield>
+          </ns1:datafield>
+          <ns1:datafield tag="680" ind1=" " ind2=" ">
+            <ns1:subfield code="a">HT371</ns1:subfield>
+            <ns1:subfield code="b">.B25</ns1:subfield>
+          </ns1:datafield>
+          <ns1:datafield tag="700" ind1=" " ind2="1">
+            <ns1:subfield code="3">026701154</ns1:subfield>
+            <ns1:subfield code="9">374576</ns1:subfield>
+            <ns1:subfield code="a">Bailly</ns1:subfield>
+            <ns1:subfield code="b">Antoine S.</ns1:subfield>
+            <ns1:subfield code="f">1944-2021</ns1:subfield>
+            <ns1:subfield code="4">070</ns1:subfield>
+          </ns1:datafield>
+          <ns1:datafield tag="712" ind1="0" ind2="2">
+            <ns1:subfield code="3">026508028</ns1:subfield>
+            <ns1:subfield code="9">341371</ns1:subfield>
+            <ns1:subfield code="a">Centre de recherche et de rencontres d'urbanisme</ns1:subfield>
+            <ns1:subfield code="c">Paris</ns1:subfield>
+            <ns1:subfield code="4">340</ns1:subfield>
+          </ns1:datafield>
+          <ns1:datafield tag="801" ind1=" " ind2="3">
+            <ns1:subfield code="a">FR</ns1:subfield>
+            <ns1:subfield code="b">Abes</ns1:subfield>
+            <ns1:subfield code="c">20210519</ns1:subfield>
+            <ns1:subfield code="g">AFNOR</ns1:subfield>
+            <ns1:subfield code="h">149424299</ns1:subfield>
+          </ns1:datafield>
+          <ns1:datafield tag="801" ind1=" " ind2="3">
+            <ns1:subfield code="a">FR</ns1:subfield>
+            <ns1:subfield code="b">BN</ns1:subfield>
+            <ns1:subfield code="c">19990126</ns1:subfield>
+            <ns1:subfield code="g">AFNOR</ns1:subfield>
+          </ns1:datafield>
+          <ns1:datafield tag="801" ind1=" " ind2="3">
+            <ns1:subfield code="a">FR</ns1:subfield>
+            <ns1:subfield code="b">SF</ns1:subfield>
+            <ns1:subfield code="c">19990209</ns1:subfield>
+          </ns1:datafield>
+          <ns1:datafield tag="801" ind1=" " ind2="1">
+            <ns1:subfield code="a">US</ns1:subfield>
+            <ns1:subfield code="b">OCLC</ns1:subfield>
+          </ns1:datafield>
+          <ns1:datafield tag="801" ind1=" " ind2="2">
+            <ns1:subfield code="a">FR</ns1:subfield>
+            <ns1:subfield code="b">AUROC</ns1:subfield>
+          </ns1:datafield>
+          <ns1:datafield tag="801" ind1=" " ind2="0">
+            <ns1:subfield code="a">FR</ns1:subfield>
+            <ns1:subfield code="b">Lettres Lafayette</ns1:subfield>
+            <ns1:subfield code="c">19970911</ns1:subfield>
+          </ns1:datafield>
+          <ns1:datafield tag="915" ind1=" " ind2=" ">
+            <ns1:subfield code="5">751062311:685111873</ns1:subfield>
+            <ns1:subfield code="a">5189</ns1:subfield>
+            <ns1:subfield code="b">MALQ0017912</ns1:subfield>
+          </ns1:datafield>
+          <ns1:datafield tag="930" ind1=" " ind2=" ">
+            <ns1:subfield code="5">751062311:685111873</ns1:subfield>
+            <ns1:subfield code="b">751062311</ns1:subfield>
+            <ns1:subfield code="c">ET2</ns1:subfield>
+            <ns1:subfield code="a">711.2 BAI</ns1:subfield>
+            <ns1:subfield code="j">g</ns1:subfield>
+          </ns1:datafield>
+          <ns1:datafield tag="991" ind1=" " ind2=" ">
+            <ns1:subfield code="5">751062311:685111873</ns1:subfield>
+            <ns1:subfield code="a">Exemplaire créé en masse par ITEM. le 29-01-2021 15:46</ns1:subfield>
+          </ns1:datafield>
+          <ns1:datafield tag="915" ind1=" " ind2=" ">
+            <ns1:subfield code="5">774682305:686298276</ns1:subfield>
+            <ns1:subfield code="b">MLVL007206</ns1:subfield>
+          </ns1:datafield>
+          <ns1:datafield tag="930" ind1=" " ind2=" ">
+            <ns1:subfield code="5">774682305:686298276</ns1:subfield>
+            <ns1:subfield code="b">774682305</ns1:subfield>
+            <ns1:subfield code="c">RES</ns1:subfield>
+            <ns1:subfield code="a">50 320</ns1:subfield>
+            <ns1:subfield code="j">g</ns1:subfield>
+          </ns1:datafield>
+          <ns1:datafield tag="991" ind1=" " ind2=" ">
+            <ns1:subfield code="5">774682305:686298276</ns1:subfield>
+            <ns1:subfield code="a">Exemplaire créé en masse par ITEM. le 09-02-2021 08:24</ns1:subfield>
+          </ns1:datafield>
+          <ns1:datafield tag="915" ind1=" " ind2=" ">
+            <ns1:subfield code="5">786462302:691394032</ns1:subfield>
+            <ns1:subfield code="a">15762</ns1:subfield>
+            <ns1:subfield code="b">VRSL3030026158512</ns1:subfield>
+          </ns1:datafield>
+          <ns1:datafield tag="930" ind1=" " ind2=" ">
+            <ns1:subfield code="5">786462302:691394032</ns1:subfield>
+            <ns1:subfield code="b">786462302</ns1:subfield>
+            <ns1:subfield code="c">SL</ns1:subfield>
+            <ns1:subfield code="a">711.010 BAI</ns1:subfield>
+            <ns1:subfield code="j">g</ns1:subfield>
+          </ns1:datafield>
+          <ns1:datafield tag="991" ind1=" " ind2=" ">
+            <ns1:subfield code="5">786462302:691394032</ns1:subfield>
+            <ns1:subfield code="a">Exemplaire créé en masse par ITEM. le 13-03-2021 19:01</ns1:subfield>
+          </ns1:datafield>
+          <ns1:datafield tag="915" ind1=" " ind2=" ">
+            <ns1:subfield code="5">130552319:742111822</ns1:subfield>
+            <ns1:subfield code="b">D0000000957258</ns1:subfield>
+          </ns1:datafield>
+          <ns1:datafield tag="930" ind1=" " ind2=" ">
+            <ns1:subfield code="5">130552319:742111822</ns1:subfield>
+            <ns1:subfield code="b">130552319</ns1:subfield>
+            <ns1:subfield code="c">MAG</ns1:subfield>
+            <ns1:subfield code="a">D4951</ns1:subfield>
+            <ns1:subfield code="j">g</ns1:subfield>
+          </ns1:datafield>
+          <ns1:datafield tag="991" ind1=" " ind2=" ">
+            <ns1:subfield code="5">130552319:742111822</ns1:subfield>
+            <ns1:subfield code="a">Exemplaire créé en masse par ITEM. le 19-09-2022 13:41</ns1:subfield>
+          </ns1:datafield>
+          <ns1:datafield tag="915" ind1=" " ind2=" ">
+            <ns1:subfield code="5">543952305:778682862</ns1:subfield>
+            <ns1:subfield code="a">1/2468</ns1:subfield>
+            <ns1:subfield code="b">NNCY0009633</ns1:subfield>
+          </ns1:datafield>
+          <ns1:datafield tag="930" ind1=" " ind2=" ">
+            <ns1:subfield code="5">543952305:778682862</ns1:subfield>
+            <ns1:subfield code="b">543952305</ns1:subfield>
+            <ns1:subfield code="c">FC</ns1:subfield>
+            <ns1:subfield code="a">711.01 BAIL</ns1:subfield>
+            <ns1:subfield code="j">g</ns1:subfield>
+          </ns1:datafield>
+          <ns1:datafield tag="991" ind1=" " ind2=" ">
+            <ns1:subfield code="5">543952305:778682862</ns1:subfield>
+            <ns1:subfield code="a">Exemplaire créé en masse par ITEM. le 27-02-2023 13:52</ns1:subfield>
+          </ns1:datafield>
+          <ns1:datafield tag="915" ind1=" " ind2=" ">
+            <ns1:subfield code="5">352382318:793813557</ns1:subfield>
+            <ns1:subfield code="a">20716</ns1:subfield>
+            <ns1:subfield code="b">BRET013291</ns1:subfield>
+          </ns1:datafield>
+          <ns1:datafield tag="930" ind1=" " ind2=" ">
+            <ns1:subfield code="5">352382318:793813557</ns1:subfield>
+            <ns1:subfield code="b">352382318</ns1:subfield>
+            <ns1:subfield code="c">ARCHIV</ns1:subfield>
+            <ns1:subfield code="a">Boîte URBA 5</ns1:subfield>
+            <ns1:subfield code="j">g</ns1:subfield>
+          </ns1:datafield>
+          <ns1:datafield tag="991" ind1=" " ind2=" ">
+            <ns1:subfield code="5">352382318:793813557</ns1:subfield>
+            <ns1:subfield code="a">Exemplaire créé en masse par ITEM. le 04-07-2023 12:46</ns1:subfield>
+          </ns1:datafield>
+          <ns1:datafield tag="915" ind1=" " ind2=" ">
+            <ns1:subfield code="5">335222303:797622268</ns1:subfield>
+            <ns1:subfield code="a">25941</ns1:subfield>
+            <ns1:subfield code="b">BRDX0032112</ns1:subfield>
+          </ns1:datafield>
+          <ns1:datafield tag="930" ind1=" " ind2=" ">
+            <ns1:subfield code="5">335222303:797622268</ns1:subfield>
+            <ns1:subfield code="b">335222303</ns1:subfield>
+            <ns1:subfield code="c">FA</ns1:subfield>
+            <ns1:subfield code="a">FA 2235</ns1:subfield>
+            <ns1:subfield code="j">g</ns1:subfield>
+          </ns1:datafield>
+          <ns1:datafield tag="991" ind1=" " ind2=" ">
+            <ns1:subfield code="5">335222303:797622268</ns1:subfield>
+            <ns1:subfield code="a">Exemplaire créé en masse par ITEM. le 19-09-2023 17:40</ns1:subfield>
+          </ns1:datafield>
+          <ns1:datafield tag="915" ind1=" " ind2=" ">
+            <ns1:subfield code="5">762122301:799545899</ns1:subfield>
+            <ns1:subfield code="a">D 4000</ns1:subfield>
+            <ns1:subfield code="b">NRMD0000003454</ns1:subfield>
+          </ns1:datafield>
+          <ns1:datafield tag="930" ind1=" " ind2=" ">
+            <ns1:subfield code="5">762122301:799545899</ns1:subfield>
+            <ns1:subfield code="b">762122301</ns1:subfield>
+            <ns1:subfield code="c">ARCHIV</ns1:subfield>
+            <ns1:subfield code="a">11.1.BAIARCHIVES</ns1:subfield>
+            <ns1:subfield code="j">g</ns1:subfield>
+          </ns1:datafield>
+          <ns1:datafield tag="991" ind1=" " ind2=" ">
+            <ns1:subfield code="5">762122301:799545899</ns1:subfield>
+            <ns1:subfield code="a">Exemplaire créé en masse par ITEM. le 10-10-2023 17:54</ns1:subfield>
+          </ns1:datafield>
+          <ns1:datafield tag="995" ind1=" " ind2=" ">
+            <ns1:subfield code="0">0</ns1:subfield>
+            <ns1:subfield code="2">0</ns1:subfield>
+            <ns1:subfield code="5">2013-06-17</ns1:subfield>
+            <ns1:subfield code="9">159623</ns1:subfield>
+            <ns1:subfield code="b">MALQ</ns1:subfield>
+            <ns1:subfield code="c">MALQ</ns1:subfield>
+            <ns1:subfield code="e">ET2</ns1:subfield>
+            <ns1:subfield code="f">MALQ0017912</ns1:subfield>
+            <ns1:subfield code="j">5189</ns1:subfield>
+            <ns1:subfield code="k">711.2 BAI</ns1:subfield>
+            <ns1:subfield code="o">0</ns1:subfield>
+            <ns1:subfield code="r">LIV</ns1:subfield>
+            <ns1:subfield code="w">2013-06-17</ns1:subfield>
+            <ns1:subfield code="a">5189</ns1:subfield>
+          </ns1:datafield>
+          <ns1:datafield tag="995" ind1=" " ind2=" ">
+            <ns1:subfield code="0">0</ns1:subfield>
+            <ns1:subfield code="2">0</ns1:subfield>
+            <ns1:subfield code="5">2013-06-17</ns1:subfield>
+            <ns1:subfield code="9">159624</ns1:subfield>
+            <ns1:subfield code="b">MLVL</ns1:subfield>
+            <ns1:subfield code="c">MLVL</ns1:subfield>
+            <ns1:subfield code="e">RES</ns1:subfield>
+            <ns1:subfield code="f">MLVL007206</ns1:subfield>
+            <ns1:subfield code="k">50 320</ns1:subfield>
+            <ns1:subfield code="o">3</ns1:subfield>
+            <ns1:subfield code="r">LIV</ns1:subfield>
+            <ns1:subfield code="w">2013-06-17</ns1:subfield>
+          </ns1:datafield>
+          <ns1:datafield tag="995" ind1=" " ind2=" ">
+            <ns1:subfield code="0">0</ns1:subfield>
+            <ns1:subfield code="2">0</ns1:subfield>
+            <ns1:subfield code="5">2013-06-17</ns1:subfield>
+            <ns1:subfield code="9">159625</ns1:subfield>
+            <ns1:subfield code="b">NNCY</ns1:subfield>
+            <ns1:subfield code="c">NNCY</ns1:subfield>
+            <ns1:subfield code="e">FC</ns1:subfield>
+            <ns1:subfield code="f">NNCY0009633</ns1:subfield>
+            <ns1:subfield code="j">1/2468</ns1:subfield>
+            <ns1:subfield code="k">711.01 BAIL</ns1:subfield>
+            <ns1:subfield code="m">2017-10-30</ns1:subfield>
+            <ns1:subfield code="o">0</ns1:subfield>
+            <ns1:subfield code="r">LIV</ns1:subfield>
+            <ns1:subfield code="w">2018-06-08</ns1:subfield>
+            <ns1:subfield code="a">1/2468</ns1:subfield>
+          </ns1:datafield>
+          <ns1:datafield tag="995" ind1=" " ind2=" ">
+            <ns1:subfield code="0">0</ns1:subfield>
+            <ns1:subfield code="2">0</ns1:subfield>
+            <ns1:subfield code="5">2013-06-17</ns1:subfield>
+            <ns1:subfield code="9">208077</ns1:subfield>
+            <ns1:subfield code="b">PLVT</ns1:subfield>
+            <ns1:subfield code="c">PLVT</ns1:subfield>
+            <ns1:subfield code="e">BIB</ns1:subfield>
+            <ns1:subfield code="f">PLVTL0019187</ns1:subfield>
+            <ns1:subfield code="j">8323</ns1:subfield>
+            <ns1:subfield code="k">911.375 BAI</ns1:subfield>
+            <ns1:subfield code="m">2016-03-11</ns1:subfield>
+            <ns1:subfield code="o">0</ns1:subfield>
+            <ns1:subfield code="r">LIV</ns1:subfield>
+            <ns1:subfield code="w">2016-03-11</ns1:subfield>
+          </ns1:datafield>
+          <ns1:datafield tag="995" ind1=" " ind2=" ">
+            <ns1:subfield code="0">0</ns1:subfield>
+            <ns1:subfield code="2">0</ns1:subfield>
+            <ns1:subfield code="5">2013-06-17</ns1:subfield>
+            <ns1:subfield code="9">270309</ns1:subfield>
+            <ns1:subfield code="b">MRSL</ns1:subfield>
+            <ns1:subfield code="c">MRSL</ns1:subfield>
+            <ns1:subfield code="e">MAG</ns1:subfield>
+            <ns1:subfield code="f">D0000000957258</ns1:subfield>
+            <ns1:subfield code="k">D4951</ns1:subfield>
+            <ns1:subfield code="o">3</ns1:subfield>
+            <ns1:subfield code="r">LIV</ns1:subfield>
+            <ns1:subfield code="w">2013-06-17</ns1:subfield>
+          </ns1:datafield>
+          <ns1:datafield tag="995" ind1=" " ind2=" ">
+            <ns1:subfield code="0">0</ns1:subfield>
+            <ns1:subfield code="2">0</ns1:subfield>
+            <ns1:subfield code="5">2014-08-20</ns1:subfield>
+            <ns1:subfield code="9">382269</ns1:subfield>
+            <ns1:subfield code="b">NRMD</ns1:subfield>
+            <ns1:subfield code="c">NRMD</ns1:subfield>
+            <ns1:subfield code="e">ARCHIV</ns1:subfield>
+            <ns1:subfield code="f">NRMD0000003454</ns1:subfield>
+            <ns1:subfield code="j">D 4000</ns1:subfield>
+            <ns1:subfield code="k">11.1.BAIARCHIVES</ns1:subfield>
+            <ns1:subfield code="o">0</ns1:subfield>
+            <ns1:subfield code="r">LIV</ns1:subfield>
+            <ns1:subfield code="w">2014-08-20</ns1:subfield>
+            <ns1:subfield code="a">D 4000</ns1:subfield>
+          </ns1:datafield>
+          <ns1:datafield tag="995" ind1=" " ind2=" ">
+            <ns1:subfield code="0">0</ns1:subfield>
+            <ns1:subfield code="2">0</ns1:subfield>
+            <ns1:subfield code="5">2014-08-20</ns1:subfield>
+            <ns1:subfield code="9">382270</ns1:subfield>
+            <ns1:subfield code="b">BRET</ns1:subfield>
+            <ns1:subfield code="c">BRET</ns1:subfield>
+            <ns1:subfield code="e">ARCHIV</ns1:subfield>
+            <ns1:subfield code="f">BRET013291</ns1:subfield>
+            <ns1:subfield code="j">20716</ns1:subfield>
+            <ns1:subfield code="k">Boîte URBA 5</ns1:subfield>
+            <ns1:subfield code="o">0</ns1:subfield>
+            <ns1:subfield code="r">LIV</ns1:subfield>
+            <ns1:subfield code="w">2014-08-20</ns1:subfield>
+            <ns1:subfield code="z">711.1 BAI</ns1:subfield>
+            <ns1:subfield code="a">20716</ns1:subfield>
+          </ns1:datafield>
+          <ns1:datafield tag="995" ind1=" " ind2=" ">
+            <ns1:subfield code="0">0</ns1:subfield>
+            <ns1:subfield code="2">0</ns1:subfield>
+            <ns1:subfield code="5">2014-08-20</ns1:subfield>
+            <ns1:subfield code="9">497116</ns1:subfield>
+            <ns1:subfield code="b">CLRF</ns1:subfield>
+            <ns1:subfield code="c">CLRF</ns1:subfield>
+            <ns1:subfield code="e">SL</ns1:subfield>
+            <ns1:subfield code="f">CLRF3531</ns1:subfield>
+            <ns1:subfield code="j">3531</ns1:subfield>
+            <ns1:subfield code="k">711.1 BAI</ns1:subfield>
+            <ns1:subfield code="m">2023-06-16</ns1:subfield>
+            <ns1:subfield code="o">0</ns1:subfield>
+            <ns1:subfield code="r">LIV</ns1:subfield>
+            <ns1:subfield code="w">2023-06-29</ns1:subfield>
+          </ns1:datafield>
+          <ns1:datafield tag="995" ind1=" " ind2=" ">
+            <ns1:subfield code="0">0</ns1:subfield>
+            <ns1:subfield code="2">0</ns1:subfield>
+            <ns1:subfield code="5">2014-08-20</ns1:subfield>
+            <ns1:subfield code="9">497117</ns1:subfield>
+            <ns1:subfield code="b">CLRF</ns1:subfield>
+            <ns1:subfield code="c">CLRF</ns1:subfield>
+            <ns1:subfield code="e">SL</ns1:subfield>
+            <ns1:subfield code="f">CLRF3532</ns1:subfield>
+            <ns1:subfield code="j">3532</ns1:subfield>
+            <ns1:subfield code="k">711.1 BAI</ns1:subfield>
+            <ns1:subfield code="o">0</ns1:subfield>
+            <ns1:subfield code="r">LIV</ns1:subfield>
+            <ns1:subfield code="w">2014-08-20</ns1:subfield>
+          </ns1:datafield>
+          <ns1:datafield tag="995" ind1=" " ind2=" ">
+            <ns1:subfield code="0">0</ns1:subfield>
+            <ns1:subfield code="2">0</ns1:subfield>
+            <ns1:subfield code="5">2014-08-20</ns1:subfield>
+            <ns1:subfield code="9">497118</ns1:subfield>
+            <ns1:subfield code="b">CLRF</ns1:subfield>
+            <ns1:subfield code="c">CLRF</ns1:subfield>
+            <ns1:subfield code="e">SL</ns1:subfield>
+            <ns1:subfield code="f">CLRF3533</ns1:subfield>
+            <ns1:subfield code="j">3533</ns1:subfield>
+            <ns1:subfield code="k">711.1 BAI</ns1:subfield>
+            <ns1:subfield code="o">0</ns1:subfield>
+            <ns1:subfield code="r">LIV</ns1:subfield>
+            <ns1:subfield code="w">2014-08-20</ns1:subfield>
+          </ns1:datafield>
+          <ns1:datafield tag="995" ind1=" " ind2=" ">
+            <ns1:subfield code="0">0</ns1:subfield>
+            <ns1:subfield code="2">0</ns1:subfield>
+            <ns1:subfield code="5">2014-08-20</ns1:subfield>
+            <ns1:subfield code="9">572628</ns1:subfield>
+            <ns1:subfield code="b">VRSL</ns1:subfield>
+            <ns1:subfield code="c">VRSL</ns1:subfield>
+            <ns1:subfield code="e">SL</ns1:subfield>
+            <ns1:subfield code="f">VRSL3030026158512</ns1:subfield>
+            <ns1:subfield code="j">15762</ns1:subfield>
+            <ns1:subfield code="k">711.010 BAI</ns1:subfield>
+            <ns1:subfield code="o">0</ns1:subfield>
+            <ns1:subfield code="r">LIV</ns1:subfield>
+            <ns1:subfield code="w">2014-08-20</ns1:subfield>
+            <ns1:subfield code="a">15762</ns1:subfield>
+          </ns1:datafield>
+          <ns1:datafield tag="995" ind1=" " ind2=" ">
+            <ns1:subfield code="0">0</ns1:subfield>
+            <ns1:subfield code="2">0</ns1:subfield>
+            <ns1:subfield code="5">2015-01-20</ns1:subfield>
+            <ns1:subfield code="9">626493</ns1:subfield>
+            <ns1:subfield code="b">BRDX</ns1:subfield>
+            <ns1:subfield code="c">BRDX</ns1:subfield>
+            <ns1:subfield code="e">FA</ns1:subfield>
+            <ns1:subfield code="f">BRDX0032112</ns1:subfield>
+            <ns1:subfield code="j">25941</ns1:subfield>
+            <ns1:subfield code="k">FA 2235</ns1:subfield>
+            <ns1:subfield code="o">0</ns1:subfield>
+            <ns1:subfield code="r">LIV</ns1:subfield>
+            <ns1:subfield code="w">2015-01-20</ns1:subfield>
+            <ns1:subfield code="a">25941</ns1:subfield>
+          </ns1:datafield>
+          <ns1:datafield tag="995" ind1=" " ind2=" ">
+            <ns1:subfield code="0">0</ns1:subfield>
+            <ns1:subfield code="2">0</ns1:subfield>
+            <ns1:subfield code="5">2022-02-18</ns1:subfield>
+            <ns1:subfield code="9">844619</ns1:subfield>
+            <ns1:subfield code="b">TOUL</ns1:subfield>
+            <ns1:subfield code="c">TOUL</ns1:subfield>
+            <ns1:subfield code="e">RES</ns1:subfield>
+            <ns1:subfield code="f">TOUL047755</ns1:subfield>
+            <ns1:subfield code="j">4767</ns1:subfield>
+            <ns1:subfield code="k">U.H0/BAI</ns1:subfield>
+            <ns1:subfield code="m">2022-02-18</ns1:subfield>
+            <ns1:subfield code="o">0</ns1:subfield>
+            <ns1:subfield code="r">LIV</ns1:subfield>
+            <ns1:subfield code="w">2022-04-15</ns1:subfield>
+          </ns1:datafield>
+          <ns1:datafield tag="995" ind1=" " ind2=" ">
+            <ns1:subfield code="0">0</ns1:subfield>
+            <ns1:subfield code="2">0</ns1:subfield>
+            <ns1:subfield code="5">2015-02-20</ns1:subfield>
+            <ns1:subfield code="9">887673</ns1:subfield>
+            <ns1:subfield code="b">IUAR</ns1:subfield>
+            <ns1:subfield code="c">IMVT</ns1:subfield>
+            <ns1:subfield code="e">LA</ns1:subfield>
+            <ns1:subfield code="f">IUAR392004995</ns1:subfield>
+            <ns1:subfield code="k">711 BAI</ns1:subfield>
+            <ns1:subfield code="o">0</ns1:subfield>
+            <ns1:subfield code="r">LIV</ns1:subfield>
+            <ns1:subfield code="w">2023-07-12</ns1:subfield>
+            <ns1:subfield code="a">IUAR</ns1:subfield>
+          </ns1:datafield>
+        </ns1:record>
+</ns0:searchRetrieveResponse>

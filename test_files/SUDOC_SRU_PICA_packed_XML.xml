@@ -1,0 +1,265 @@
+<record>
+    <datafield tag="001@">
+        <subfield code="0">90,126</subfield>
+    </datafield>
+    <datafield tag="001A">
+        <subfield code="0">751132304:28-04-23</subfield>
+    </datafield>
+    <datafield tag="001B">
+        <subfield code="0">751025206:11-09-23</subfield>
+        <subfield code="t">16:23:13.000</subfield>
+    </datafield>
+    <datafield tag="001D">
+        <subfield code="0">751132304:28-04-23</subfield>
+    </datafield>
+    <datafield tag="001U">
+        <subfield code="0">utf8</subfield>
+    </datafield>
+    <datafield tag="001X">
+        <subfield code="0">0</subfield>
+    </datafield>
+    <datafield tag="002@">
+        <subfield code="0">Aax3</subfield>
+    </datafield>
+    <datafield tag="003@">
+        <subfield code="0">269631593</subfield>
+    </datafield>
+    <datafield tag="003O">
+        <subfield code="a">OCoLC</subfield>
+        <subfield code="0">1377726425</subfield>
+    </datafield>
+    <datafield tag="003O">
+        <subfield code="a">OCoLC</subfield>
+        <subfield code="0">Other DB ID 2</subfield>
+    </datafield>
+    <datafield tag="010@">
+        <subfield code="S">0#</subfield>
+        <subfield code="a">fre</subfield>
+    </datafield>
+    <datafield tag="011@">
+        <subfield code="S">1#</subfield>
+        <subfield code="a">2023</subfield>
+    </datafield>
+    <datafield tag="012A">
+        <subfield code="S">##</subfield>
+        <subfield code="a">m</subfield>
+        <subfield code="b">y</subfield>
+        <subfield code="c">y</subfield>
+        <subfield code="d">ba</subfield>
+        <subfield code="e">0</subfield>
+        <subfield code="f">fre</subfield>
+    </datafield>
+    <datafield tag="012B">
+        <subfield code="S">##</subfield>
+        <subfield code="a">a</subfield>
+        <subfield code="b">b</subfield>
+        <subfield code="c">0</subfield>
+        <subfield code="d">0</subfield>
+        <subfield code="e">0</subfield>
+        <subfield code="f">y</subfield>
+        <subfield code="g">y</subfield>
+    </datafield>
+    <datafield tag="012C">
+        <subfield code="S">##</subfield>
+        <subfield code="a">r</subfield>
+    </datafield>
+    <datafield tag="012T">
+        <subfield code="S">##</subfield>
+        <subfield code="P">01</subfield>
+        <subfield code="c">txt</subfield>
+    </datafield>
+    <datafield tag="012T">
+        <subfield code="S">##</subfield>
+        <subfield code="P">02</subfield>
+        <subfield code="c">sti</subfield>
+    </datafield>
+    <datafield tag="012U">
+        <subfield code="S">##</subfield>
+        <subfield code="P">01</subfield>
+        <subfield code="c">n</subfield>
+    </datafield>
+    <datafield tag="012U">
+        <subfield code="S">##</subfield>
+        <subfield code="P">02</subfield>
+        <subfield code="c">n</subfield>
+    </datafield>
+    <datafield tag="012V">
+        <subfield code="S">##</subfield>
+        <subfield code="P">01</subfield>
+        <subfield code="P">02</subfield>
+        <subfield code="c">nga</subfield>
+    </datafield>
+    <datafield tag="019@">
+        <subfield code="S">##</subfield>
+        <subfield code="a">FR</subfield>
+    </datafield>
+    <datafield tag="021A">
+        <subfield code="S">1#</subfield>
+        <subfield code="a">@Art islamique, art d'Asie</subfield>
+        <subfield code="d">vente aux ench&#232;res publiques, Drouot Richelieu, vendredi 21 avril 2023</subfield>
+        <subfield code="h">Beaussant Lef&#232;vre &amp; Associ&#233;s, soci&#233;t&#233; de ventes</subfield>
+        <subfield code="j">&#201;ric Beaussant, Pierre-Yves Lef&#232;vre, Arthur de Moras, Vincent Heraud, Th&#233;o Lavignon, , commissaires-priseurs</subfield>
+        <subfield code="j">assist&#233;s de Michel Imbault</subfield>
+        <subfield code="j">experts, Alexis Renard, Cabinet Portier &amp; associ&#233;s, Alice Josseaume</subfield>
+    </datafield>
+    <datafield tag="022E">
+        <subfield code="S">##</subfield>
+        <subfield code="a">@Vente</subfield>
+        <subfield code="b">Art</subfield>
+        <subfield code="m">Paris</subfield>
+        <subfield code="n">Drouot Richelieu</subfield>
+        <subfield code="j">2023</subfield>
+        <subfield code="d">0421</subfield>
+    </datafield>
+    <datafield tag="028B">
+        <subfield code="S">#1</subfield>
+        <subfield code="9">068667604</subfield>
+        <subfield code="8">Beaussant, &#201;ric</subfield>
+        <subfield code="B">065</subfield>
+    </datafield>
+    <datafield tag="028B">
+        <subfield code="S">#1</subfield>
+        <subfield code="9">068667639</subfield>
+        <subfield code="8">Lef&#232;vre, Pierre-Yves (19..-.... ; commissaire-priseur)</subfield>
+        <subfield code="B">065</subfield>
+    </datafield>
+    <datafield tag="028B">
+        <subfield code="S">#1</subfield>
+        <subfield code="9">259814962</subfield>
+        <subfield code="8">Moras, Arthur de</subfield>
+        <subfield code="B">065</subfield>
+    </datafield>
+    <datafield tag="028B">
+        <subfield code="S">#1</subfield>
+        <subfield code="9">269631801</subfield>
+        <subfield code="8">Heraud, Vincent</subfield>
+        <subfield code="B">065</subfield>
+    </datafield>
+    <datafield tag="028B">
+        <subfield code="S">#1</subfield>
+        <subfield code="9">240764641</subfield>
+        <subfield code="8">Lavignon, Th&#233;o (commissaire-priseur)</subfield>
+        <subfield code="B">065</subfield>
+    </datafield>
+    <datafield tag="028B">
+        <subfield code="S">#1</subfield>
+        <subfield code="9">17474451X</subfield>
+        <subfield code="8">Imbault, Michel</subfield>
+        <subfield code="B">065</subfield>
+    </datafield>
+    <datafield tag="028B">
+        <subfield code="S">#1</subfield>
+        <subfield code="9">163701504</subfield>
+        <subfield code="8">Renard, Alexis (19..-.... ; expert ; marchand d'art)</subfield>
+        <subfield code="B">365</subfield>
+    </datafield>
+    <datafield tag="028B">
+        <subfield code="S">#1</subfield>
+        <subfield code="9">202746860</subfield>
+        <subfield code="8">Josseaume, Alice</subfield>
+        <subfield code="B">365</subfield>
+    </datafield>
+    <datafield tag="029A">
+        <subfield code="S">02</subfield>
+        <subfield code="9">068667450</subfield>
+        <subfield code="8">@Beaussant Lef&#232;vre (maison de ventes)</subfield>
+        <subfield code="B">065</subfield>
+    </datafield>
+    <datafield tag="029B">
+        <subfield code="S">02</subfield>
+        <subfield code="9">156224178</subfield>
+        <subfield code="8">@Cabinet Portier &amp; associ&#233;s</subfield>
+        <subfield code="B">365</subfield>
+    </datafield>
+    <datafield tag="033B">
+        <subfield code="S">#0</subfield>
+        <subfield code="a">Paris</subfield>
+        <subfield code="c">Beaussant Lef&#232;vre &amp; Associ&#233;s</subfield>
+        <subfield code="d">[2023]</subfield>
+    </datafield>
+    <datafield tag="034R">
+        <subfield code="S">##</subfield>
+        <subfield code="a">1 volume (83 pages)</subfield>
+        <subfield code="c">illustrations en couleurs, couverture illustr&#233;e en couleurs</subfield>
+        <subfield code="d">27 cm</subfield>
+    </datafield>
+    <datafield tag="037A">
+        <subfield code="S">##</subfield>
+        <subfield code="a">270 lots</subfield>
+    </datafield>
+    <datafield tag="044T">
+        <subfield code="S">##</subfield>
+        <subfield code="9">029903440</subfield>
+        <subfield code="8">Catalogues de vente</subfield>
+        <subfield code="2">rameau</subfield>
+    </datafield>
+    <datafield tag="046F">
+        <subfield code="S">##</subfield>
+        <subfield code="a">Ann&#233;e de publication d'apr&#232;s l'ann&#233;e de la vente aux ench&#232;res</subfield>
+    </datafield>
+    <datafield tag="101@">
+        <subfield code="a">90</subfield>
+        <subfield code="b">751025206</subfield>
+    </datafield>
+    <datafield tag="208@" occurrence="01">
+        <subfield code="a">11-09-23</subfield>
+        <subfield code="b">x</subfield>
+    </datafield>
+    <datafield tag="201B" occurrence="01">
+        <subfield code="0">11-09-23</subfield>
+        <subfield code="t">16:23:13.000</subfield>
+    </datafield>
+    <datafield tag="201D" occurrence="01">
+        <subfield code="0">751025206:11-09-23</subfield>
+    </datafield>
+    <datafield tag="201U" occurrence="01">
+        <subfield code="0">utf8</subfield>
+    </datafield>
+    <datafield tag="203@" occurrence="01">
+        <subfield code="0">796955166</subfield>
+    </datafield>
+    <datafield tag="209A" occurrence="01">
+        <subfield code="S">##</subfield>
+        <subfield code="b">751025206</subfield>
+        <subfield code="o">VP</subfield>
+        <subfield code="a">VP </subfield>
+        <subfield code="d">g</subfield>
+        <subfield code="x">00</subfield>
+    </datafield>
+    <datafield tag="209G" occurrence="01">
+        <subfield code="S">##</subfield>
+        <subfield code="i">.</subfield>
+    </datafield>
+    <datafield tag="101@">
+        <subfield code="a">126</subfield>
+        <subfield code="b">751132304</subfield>
+    </datafield>
+    <datafield tag="208@" occurrence="01">
+        <subfield code="a">28-04-23</subfield>
+        <subfield code="b">x</subfield>
+    </datafield>
+    <datafield tag="201B" occurrence="01">
+        <subfield code="0">28-04-23</subfield>
+        <subfield code="t">15:20:12.000</subfield>
+    </datafield>
+    <datafield tag="201D" occurrence="01">
+        <subfield code="0">751132304:28-04-23</subfield>
+    </datafield>
+    <datafield tag="201U" occurrence="01">
+        <subfield code="0">utf8</subfield>
+    </datafield>
+    <datafield tag="203@" occurrence="01">
+        <subfield code="0">786985178</subfield>
+    </datafield>
+    <datafield tag="209A" occurrence="01">
+        <subfield code="S">##</subfield>
+        <subfield code="b">751132304</subfield>
+        <subfield code="d">s</subfield>
+        <subfield code="x">00</subfield>
+    </datafield>
+    <datafield tag="244Z" occurrence="01">
+        <subfield code="S">##</subfield>
+        <subfield code="a">M2023-11</subfield>
+        <subfield code="b">Lot A</subfield>
+    </datafield>
+</record>

@@ -76,6 +76,11 @@ class Koha_API_PublicBiblio(object):
                 # else:
                 #     self.record = r.content.decode('utf-8')
                 self.record = r.content.decode('utf-8')
+                self.record_parsed = None
+                if self.format == "application/marcxml+xml":
+                    self.record_parsed = ET.fromstring(self.record)
+                elif self.format == "application/marc-in-json":
+                    self.record_parsed = json.loads(self.record)
                 self.status = 'Success'
                 self.logger.debug("{} :: Koha_API_PublicBiblio :: Notice trouvée".format(bibnb))
 

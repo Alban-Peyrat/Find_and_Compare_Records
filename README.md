@@ -79,7 +79,7 @@ Enfin, le script valide ou non chaque critère de comparaison de l'analyse chois
 
 # Prérequis avant l'exécution du script
 
-## Bibliothèques non incluses dans la Python Standard Library
+## Libraries outside Python Standard Library
 
 Ces bibliothèques sont utilisées par le script mais absentes de la [Python Standard Library](https://docs.python.org/3/library/) :
 * [`unidecode`](https://pypi.org/project/Unidecode/)
