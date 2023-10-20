@@ -18,6 +18,45 @@ import api.koha.Koha_SRU as Koha_SRU
 
 # -------------------- Execution settings (ES) --------------------
 
+class FCR_Mapped_Fields(Enum):
+    LEADER = "Leader"
+    ID = "id"
+    PPN = "ppn"
+    GENERAL_PROCESSING_DATA_DATES = "general_processing_data_dates"
+    ERRONEOUS_ISBN = "erroneous_isbn"
+    TITLE = "title"
+    PUBLISHERS_NAME = "publishers_name"
+    EDITION_NOTES = "edition_note"
+    PUBLICATION_DATES = "publication_dates"
+    PHYSICAL_DESCRIPTION = "physical_desription"
+    OTHER_ED_IN_OTHER_MEDIUM_BIBG_ID = "other_edition_in_other_medium_bibliographic_id"
+    OTHER_DB_ID = "other_database_id"
+    ITEMS = "items"
+    ITEMS_BARCODE = "items_barcode"
+
+class FCR_Processing_Data_Target(Enum):
+    ORIGIN = 0
+    TARGET = 1
+    BOTH = 2
+
+class FCR_Processings(Enum):
+    BETTER_ITEM = {
+        FCR_Mapped_Fields.LEADER: FCR_Processing_Data_Target.BOTH,
+        FCR_Mapped_Fields.ID: FCR_Processing_Data_Target.BOTH,
+        FCR_Mapped_Fields.PPN: FCR_Processing_Data_Target.ORIGIN,
+        FCR_Mapped_Fields.GENERAL_PROCESSING_DATA_DATES: FCR_Processing_Data_Target.BOTH,
+        FCR_Mapped_Fields.ERRONEOUS_ISBN: FCR_Processing_Data_Target.BOTH,
+        FCR_Mapped_Fields.TITLE: FCR_Processing_Data_Target.BOTH,
+        FCR_Mapped_Fields.PUBLISHERS_NAME: FCR_Processing_Data_Target.BOTH,
+        FCR_Mapped_Fields.EDITION_NOTES: FCR_Processing_Data_Target.BOTH,
+        FCR_Mapped_Fields.PUBLICATION_DATES: FCR_Processing_Data_Target.BOTH,
+        FCR_Mapped_Fields.PHYSICAL_DESCRIPTION: FCR_Processing_Data_Target.ORIGIN,
+        FCR_Mapped_Fields.OTHER_DB_ID: FCR_Processing_Data_Target.TARGET,
+        FCR_Mapped_Fields.ITEMS_BARCODE: FCR_Processing_Data_Target.TARGET,
+        FCR_Mapped_Fields.ITEMS: FCR_Processing_Data_Target.TARGET
+        }
+    OTHER_DB_IN_LOCAL_DB = {}
+
 class Execution_Settings(object):
     def __init__(self):
         # Load settings file
@@ -266,19 +305,26 @@ class Matched_Records(object):
 # -------------------- UNIVERSAL DATA EXTRACTOR (UDE) --------------------
 
 class Databases(Enum):
-    ABESXML = 0
-    SUDOC_SRU = 1
-    KOHA_PUBLIC_BIBLIO = 2
-    KOHA_SRU = 3
-    LOCAL = 4
+    """List of databases and their filter field"""
+    ABESXML = {
+        FCR_Mapped_Fields.OTHER_DB_ID:"ILN",
+        FCR_Mapped_Fields.ITEMS:"RCR",
+        FCR_Mapped_Fields.ITEMS_BARCODE:"RCR"
+    }
+    SUDOC_SRU = {}
+    KOHA_PUBLIC_BIBLIO = {}
+    KOHA_SRU = {}
+    LOCAL = {}
 
 class Record_Formats(Enum):
+    """List of supported record formats"""
     UNKNOWN = 0
     JSON_DICT = 1
     ET_ELEMENT = 2
     PYMARC_RECORD = 3
 
 class Xml_Namespaces(Enum):
+    """List of supported XML namespaces"""
     MARC = "marc"
     ZS2_0 = "zs2.0"
     ZS1_1 = "zs1.1"
@@ -301,6 +347,9 @@ XML_NS = {
 }
 
 class Marc_Field(object):
+    """Contains the configuration of a field for a data type in the database.
+    
+    Takes as argument a dict, from Marc_Fields_Data isntances."""
     def __init__(self, data_obj: dict):
         self.tag = data_obj["tag"]
         self.tag_as_int = 99999 #only used to check if control field
@@ -312,6 +361,7 @@ class Marc_Field(object):
         self.positions = data_obj["positions"]
     
     def as_dict(self) -> dict:
+        """Returns this field configuration as a dict."""
         output = {}
         output["tag"] = str(self.tag)
         output["single_line_coded_data"] = self.single_line_coded_data
@@ -321,6 +371,9 @@ class Marc_Field(object):
         return output
 
 class Marc_Fields_Data(object):
+    """Contains all the fields configurations for a data type in the database.
+    
+    Takes as argumetn a dict, coming from the chosen database in marc_fields.json"""
     def __init__(self, data_obj: dict):
         self.label = data_obj["label"]
         self.fields = []
@@ -328,6 +381,7 @@ class Marc_Fields_Data(object):
             self.fields.append(Marc_Field(field))
     
     def as_dict(self) -> dict:
+        """Return this data type configuration as a dict."""
         output = {}
         output["label"] = self.label
         output["fields"] = []
@@ -336,45 +390,49 @@ class Marc_Fields_Data(object):
         return output
 
 class Marc_Fields_Mapping(object):
+    """Contains the mapping between every data type and MARC fields for this database.
+    
+    Takes as argument :
+        - es : execution settings
+        - is_target_db {bool} : determines if the database is ORIGIN_DATABSE/TARGET_DATABASE
+    in marc_fields.json"""
     def __init__(self,  es: Execution_Settings, is_target_db: bool = False):
         """Loads the marc field mapping"""
         self.is_target_db = is_target_db
         self.marc_fields_json = {}
         if self.is_target_db and type(self.is_target_db) == bool:
-            self.marc_fields_json = es.marc_fields_json["TARGET_DATABASE"]
+            self.load_mapping(es, "TARGET_DATABASE")
         elif not self.is_target_db and type(self.is_target_db) == bool:
+            self.load_mapping(es, "ORIGIN_DATABASE")
             self.marc_fields_json = es.marc_fields_json["ORIGIN_DATABASE"]
-        self.ppn = Marc_Fields_Data(self.marc_fields_json["ppn"])
-        self.general_processing_data_dates = Marc_Fields_Data(self.marc_fields_json["general_processing_data_dates"])
-        self.erroneous_isbn = Marc_Fields_Data(self.marc_fields_json["erroneous_isbn"])
-        self.title = Marc_Fields_Data(self.marc_fields_json["title"])
-        self.publishers_name = Marc_Fields_Data(self.marc_fields_json["publishers_name"])
-        self.edition_note = Marc_Fields_Data(self.marc_fields_json["edition_note"])
-        self.publication_dates = Marc_Fields_Data(self.marc_fields_json["publication_dates"])
-        self.physical_desription = Marc_Fields_Data(self.marc_fields_json["physical_desription"])
-        self.other_edition_in_other_medium_bibliographic_id = Marc_Fields_Data(self.marc_fields_json["other_edition_in_other_medium_bibliographic_id"])
-        self.other_database_id = Marc_Fields_Data(self.marc_fields_json["other_database_id"])
-        self.items = Marc_Fields_Data(self.marc_fields_json["items"])
-        self.items_barcode = Marc_Fields_Data(self.marc_fields_json["items_barcode"])
     
-    def force_load_mapping(self, es: Execution_Settings, name: str):
-        """Loads a marc field mappig by name (debgging)"""
+    def load_mapping(self, es: Execution_Settings, name: str):
+        """Loads a marc field mappig by name from marc_fields.json (debgging)"""
         self.marc_fields_json = es.marc_fields_json[name]
-        self.ppn = Marc_Fields_Data(self.marc_fields_json["ppn"])
-        self.general_processing_data_dates = Marc_Fields_Data(self.marc_fields_json["general_processing_data_dates"])
-        self.erroneous_isbn = Marc_Fields_Data(self.marc_fields_json["erroneous_isbn"])
-        self.title = Marc_Fields_Data(self.marc_fields_json["title"])
-        self.publishers_name = Marc_Fields_Data(self.marc_fields_json["publishers_name"])
-        self.edition_note = Marc_Fields_Data(self.marc_fields_json["edition_note"])
-        self.publication_dates = Marc_Fields_Data(self.marc_fields_json["publication_dates"])
-        self.physical_desription = Marc_Fields_Data(self.marc_fields_json["physical_desription"])
-        self.other_edition_in_other_medium_bibliographic_id = Marc_Fields_Data(self.marc_fields_json["other_edition_in_other_medium_bibliographic_id"])
-        self.other_database_id = Marc_Fields_Data(self.marc_fields_json["other_database_id"])
-        self.items = Marc_Fields_Data(self.marc_fields_json["items"])
-        self.items_barcode = Marc_Fields_Data(self.marc_fields_json["items_barcode"])
+        self.id = Marc_Fields_Data(self.marc_fields_json[FCR_Mapped_Fields.ID.value])
+        self.ppn = Marc_Fields_Data(self.marc_fields_json[FCR_Mapped_Fields.PPN.value])
+        self.general_processing_data_dates = Marc_Fields_Data(self.marc_fields_json[FCR_Mapped_Fields.GENERAL_PROCESSING_DATA_DATES.value])
+        self.erroneous_isbn = Marc_Fields_Data(self.marc_fields_json[FCR_Mapped_Fields.ERRONEOUS_ISBN.value])
+        self.title = Marc_Fields_Data(self.marc_fields_json[FCR_Mapped_Fields.TITLE.value])
+        self.publishers_name = Marc_Fields_Data(self.marc_fields_json[FCR_Mapped_Fields.PUBLISHERS_NAME.value])
+        self.edition_note = Marc_Fields_Data(self.marc_fields_json[FCR_Mapped_Fields.EDITION_NOTES.value])
+        self.publication_dates = Marc_Fields_Data(self.marc_fields_json[FCR_Mapped_Fields.PUBLICATION_DATES.value])
+        self.physical_desription = Marc_Fields_Data(self.marc_fields_json[FCR_Mapped_Fields.PHYSICAL_DESCRIPTION.value])
+        self.other_edition_in_other_medium_bibliographic_id = Marc_Fields_Data(self.marc_fields_json[FCR_Mapped_Fields.OTHER_ED_IN_OTHER_MEDIUM_BIBG_ID.value])
+        self.other_database_id = Marc_Fields_Data(self.marc_fields_json[FCR_Mapped_Fields.OTHER_DB_ID.value])
+        self.items = Marc_Fields_Data(self.marc_fields_json[FCR_Mapped_Fields.ITEMS.value])
+        self.items_barcode = Marc_Fields_Data(self.marc_fields_json[FCR_Mapped_Fields.ITEMS_BARCODE.value])
 
 class Universal_Data_Extractor(object):
-    def __init__(self, record: str | ET.ElementTree | dict | pymarc.record.Record, database: Databases, is_target_db: bool, es: Execution_Settings):
+    """Central class to extract data from a record.
+    
+    Takes as argument :
+        - the parsed record
+        - Databases instance
+        - is_target_db {bool} : determines if the database is ORIGIN_DATABSE/TARGET_DATABASE
+    in marc_fields.json
+        - es : execution settings"""
+    def __init__(self, record: ET.ElementTree | dict | pymarc.record.Record, database: Databases, is_target_db: bool, es: Execution_Settings):
         self.record = record
         self.format = Record_Formats.UNKNOWN
         if type(self.record) == ET.Element:
@@ -413,7 +471,7 @@ class Universal_Data_Extractor(object):
             return self.extract_data_from_marc_field_PYMARC(marc_fields, filter_value)
 
     def extract_data_from_marc_field_XML(self, marc_fields: List[Marc_Field], filter_value: Optional[str] = "") -> List[List[Union[str, List[str]]]]:
-        """Gets data from XML"""
+        """Gets data from XML record"""
         output: List[List[Union[str, List[str]]]] = []
         for marc_field in marc_fields:
             # Control fields
@@ -450,7 +508,7 @@ class Universal_Data_Extractor(object):
         return output
 
     def extract_data_from_marc_field_JSON(self, marc_fields: List[Marc_Field], filter_value: Optional[str] = None) -> List[List[Union[str, List[str]]]]:
-        """Gets data from JSON"""
+        """Gets data from JSON record"""
         output: List[List[Union[str, List[str]]]] = []
         for marc_field in marc_fields:
             # Control fields
@@ -489,7 +547,7 @@ class Universal_Data_Extractor(object):
         return output
 
     def extract_data_from_marc_field_PYMARC(self, marc_fields: List[Marc_Field], filter_value: Optional[str] = "") -> List[List[Union[str, List[str]]]]:
-        """Gets data from PYMARC"""
+        """Gets data from PYMARC record"""
         output: List[List[Union[str, List[str]]]] = []
         for marc_field in marc_fields:
             # Control fields
@@ -562,6 +620,39 @@ class Universal_Data_Extractor(object):
         return output
 
     # --- Get targetted data ---
+    def get_by_mapped_field_name(self, mapped_field: FCR_Mapped_Fields, filter_value: Optional[str] = ""):
+        """Calls the correct get function based on FCR_Mapped_Fields"""
+        if mapped_field == FCR_Mapped_Fields.LEADER:
+            return self.get_leader()
+        elif mapped_field == FCR_Mapped_Fields.ID:
+            return self.get_id(filter_value)
+        elif mapped_field == FCR_Mapped_Fields.PPN:
+            return self.get_ppn(filter_value)
+        elif mapped_field == FCR_Mapped_Fields.GENERAL_PROCESSING_DATA_DATES:
+            return self.get_general_processing_data_dates(filter_value)
+        elif mapped_field == FCR_Mapped_Fields.ERRONEOUS_ISBN:
+            return self.get_erroneous_ISBN(filter_value)
+        elif mapped_field == FCR_Mapped_Fields.TITLE:
+            return self.get_title(filter_value)
+        elif mapped_field == FCR_Mapped_Fields.PUBLISHERS_NAME:
+            return self.get_publishers_name(filter_value)
+        elif mapped_field == FCR_Mapped_Fields.EDITION_NOTES:
+            return self.get_edition_notes(filter_value)
+        elif mapped_field == FCR_Mapped_Fields.PUBLICATION_DATES:
+            return self.get_publication_dates(filter_value)    
+        elif mapped_field == FCR_Mapped_Fields.PHYSICAL_DESCRIPTION:
+            return self.get_physical_description(filter_value)
+        elif mapped_field == FCR_Mapped_Fields.GENERAL_PROCESSING_DATA_DATES:
+            return self.get_general_processing_data_dates(filter_value)
+        elif mapped_field == FCR_Mapped_Fields.OTHER_ED_IN_OTHER_MEDIUM_BIBG_ID:
+            return self.get_other_edition_in_other_medium_bibliographic_id(filter_value)
+        elif mapped_field == FCR_Mapped_Fields.OTHER_DB_ID:
+            return self.get_other_database_id(filter_value)
+        elif mapped_field == FCR_Mapped_Fields.ITEMS:
+            return self.get_items(filter_value)
+        elif mapped_field == FCR_Mapped_Fields.ITEMS_BARCODE:
+            return self.get_items_barcode(filter_value)
+
     def get_leader(self) -> List[str]:
         """Return the leader field content as a list of string"""
         # List so we avoid crash with the formats who don't display the leader
@@ -575,6 +666,12 @@ class Universal_Data_Extractor(object):
             output.append(self.record.leader)
         return output
     
+    def get_id(self, filter_value: Optional[str] = "") -> List[str]:
+        """Return the ID as a list of str, without duplicates.
+
+        Takes filter_value as argument if mapped to have a filtering subfield."""
+        return self.extract_list_of_ids(self.marc_fields_mapping.id, filter_value)
+
     def get_other_database_id(self, filter_value: Optional[str] = "") -> List[str]:
         """Return all other database id as a list of str, without duplicates.
 
@@ -602,7 +699,8 @@ class Universal_Data_Extractor(object):
         Each subfield is separated by a space
         
         Takes filter_value as argument if mapped to have a filtering subfield."""
-        return self.extract_list_of_strings(self.marc_fields_mapping.publishers_name, filter_value)
+        return self.extract_list_of_ids(self.marc_fields_mapping.publishers_name, filter_value)
+        # return self.extract_list_of_strings(self.marc_fields_mapping.publishers_name, filter_value)
     
     def get_ppn(self, filter_value: Optional[str] = "") -> List[str]:
         """Return all PPN as a list of str, without duplicates.
@@ -718,6 +816,42 @@ class Original_Record(object):
         self.matched_records_ids = mr.returned_ids
         self.matched_records = mr.returned_records
         self.matched_records_include_records = mr.includes_record
+    
+    def get_origin_database_data(self, processing: FCR_Processings, record: ET.ElementTree | dict | pymarc.record.Record, database: Databases, es: Execution_Settings):
+        """Extract data from the origin database record"""
+        self.origin_database_data = Database_Record(processing, record, database, False, es)
+
+    def get_target_database_data(self, processing: FCR_Processings, record: ET.ElementTree | dict | pymarc.record.Record, database: Databases, es: Execution_Settings):
+        """Extract data from the origin database record"""
+        self.target_database_data = Database_Record(processing, record, database, True, es)
+
+class Database_Record(object):
+    """Contains extracted data from the record.
+    The data property contains every mapped data for the chosen processing"""
+    def __init__(self, processing: FCR_Processings, record: ET.ElementTree | dict | pymarc.record.Record, database: Databases, is_target_db: bool, es: Execution_Settings):
+        self.processing = processing
+        self.record = record
+        self.database = database
+        self.is_target_db = is_target_db
+        self.ude = Universal_Data_Extractor(self.record, self.database, self.is_target_db, es)
+        self.data = {}
+        for data in processing.value:
+            if (
+                (processing.value[data] == FCR_Processing_Data_Target.BOTH)
+                or (self.is_target_db and processing.value[data] == FCR_Processing_Data_Target.TARGET)
+                or (not self.is_target_db and processing.value[data] == FCR_Processing_Data_Target.ORIGIN)
+            ):
+                if data in self.database.value:
+                    #temp
+                    filter_value = ""
+                    if self.database.value[data] == "RCR":
+                        filter_value = es.rcr
+                    if self.database.value[data] == "ILN":
+                        filter_value = es.iln
+                    #temp
+                    self.data[data] = self.ude.get_by_mapped_field_name(data, filter_value)
+                else:
+                    self.data[data] = self.ude.get_by_mapped_field_name(data)
 
 # Used in report class
 class Success(Enum):

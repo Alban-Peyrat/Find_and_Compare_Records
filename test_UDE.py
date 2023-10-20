@@ -36,15 +36,15 @@ with open("./test_files/SUDOC_SRU_UNIMARC_SHORT_packed_XML.xml", mode="r+", enco
 
 # Get debugging mrac fields mapping
 MARC_FIELD_MAPPING_DEBUG_SUDOC_XML = fcr.Marc_Fields_Mapping(es)
-MARC_FIELD_MAPPING_DEBUG_SUDOC_XML.force_load_mapping(es, "DEBUG_SUDOC_XML")
+MARC_FIELD_MAPPING_DEBUG_SUDOC_XML.load_mapping(es, "DEBUG_SUDOC_XML")
 MARC_FIELD_MAPPING_DEBUG_SUDOC_PICA = fcr.Marc_Fields_Mapping(es)
-MARC_FIELD_MAPPING_DEBUG_SUDOC_PICA.force_load_mapping(es, "DEBUG_SUDOC_PICA")
+MARC_FIELD_MAPPING_DEBUG_SUDOC_PICA.load_mapping(es, "DEBUG_SUDOC_PICA")
 MARC_FIELD_MAPPING_DEBUG_KOHA = fcr.Marc_Fields_Mapping(es)
-MARC_FIELD_MAPPING_DEBUG_KOHA.force_load_mapping(es, "DEBUG_KOHA")
+MARC_FIELD_MAPPING_DEBUG_KOHA.load_mapping(es, "DEBUG_KOHA")
 MARC_FIELD_MAPPING_KOHA_ARCHIRES = fcr.Marc_Fields_Mapping(es)
-MARC_FIELD_MAPPING_KOHA_ARCHIRES.force_load_mapping(es, "KOHA_ARCHIRES")
+MARC_FIELD_MAPPING_KOHA_ARCHIRES.load_mapping(es, "KOHA_ARCHIRES")
 MARC_FIELD_MAPPING_SUDOC = fcr.Marc_Fields_Mapping(es)
-MARC_FIELD_MAPPING_SUDOC.force_load_mapping(es, "SUDOC")
+MARC_FIELD_MAPPING_SUDOC.load_mapping(es, "SUDOC")
 
 
 # Set up universal data extratcor

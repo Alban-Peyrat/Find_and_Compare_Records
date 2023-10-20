@@ -1,13 +1,49 @@
-add things :
+Sudoc PICA XML is not supported
 
-add to marc_feilds
-(add to UI)
+# Add a database
 
-add to get_xml_namespace if the action is based on xml depending on how you call in actions
+* In `fcr_classes.py` :
+  * Add an entry to the _Enum_ `Databases` with as value :
+    * Name = `FCR_Mapped_Fields` entry
+    * Value = as a string, value of the filtered field||| but I don't know yet how to correctly configure this
 
+# Adding an XML data source with new namespaces
+
+* In `fcr_classes.py` :
+  * Add the key / value to the _dict_ `XML_NS`
+  * Add an entry to the _Enum_ `Xml_Namespaces` :
+    * Name : the name inside the code
+    * Value : the prefix code
+  * Add a case to `Universal_Data_Extractor.get_xml_namespace()`
+
+# Add data to extract :
+
+* In `fcr_classes.py` :
+  * Add an entry in `FCR_Mapped_Fields`
+  * Add the object in `marc_fields.json`
+  * Add a property in `Marc_Fields_Mapping` by assigning it is value in `load_mapping`
+  * Add a `get_` function in `Universal_Data_Extractor`
+  * Add a case in `Universal_Data_Extractor.get_by_mapped_field_name()`
+
+# Add data to extract for a processing
+
+* In `fcr_classes.py` :
+  * Add a key for the processing entry in `FCR_Processings`, using as key a `FCR_Mapped_Fields` entry and as value a `FCR_Processing_Data_Target` entry
+
+# For filtered fields
+
+add them to Databases ||| but I don't know yet how to correctly configure this
 the filter value checks if it __starts with__
 
-Sudoc SRU PICA XML is not supported 
+# Adding a `get_{data}` function
+
+* Add another wanted data in FCR_Mapped_Fields and `marc_fields.json` + add dans FCR_procesings
+* Inside the _class_ `Marc_Fields_Mapping`, add a property loading this new wanted data in `load_mapping` + get_by_mapped_field_name
+* Add the `get_{data}` function, with :
+  * A simple `return self.extract_list_of_ids()` to get a flatten list of strings without duplicates
+  * A simple `return self.extract_list_of_strings()` to get a one layer flatten list of strings (merges subfield by separating them by a space)
+  * A simple `return self.extract_list_of_lists()` to get a one layer flatten list (handy if you want to return a list of list)
+  * Or code something if those 3 do not do what you want
 
 # Setting up `marc_fields.json`
 

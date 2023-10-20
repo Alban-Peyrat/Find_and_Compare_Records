@@ -1,5 +1,17 @@
 {
     "ORIGIN_DATABASE":{
+        "id":{
+            "label":"Biblionumber",
+            "fields":[
+                {
+                    "tag":"001",
+                    "single_line_coded_data":false,
+                    "filtering_subfield":"",
+                    "subfields":[],
+                    "positions":[]
+                }
+            ]
+        },
         "ppn":{
             "label":"PPN",
             "fields":[
@@ -20,7 +32,7 @@
                     "single_line_coded_data":true,
                     "filtering_subfield":"",
                     "subfields":[],
-                    "positions":["9-12", "13-16"]
+                    "positions":["8", "9-12", "13-16"]
                 }
             ]
         },
@@ -138,9 +150,9 @@
             "label":"Items",
             "fields":[
                 {
-                    "tag":"991",
+                    "tag":"995",
                     "single_line_coded_data":false,
-                    "filtering_subfield":"5",
+                    "filtering_subfield":"",
                     "subfields":[],
                     "positions":[]
                 }
@@ -150,21 +162,33 @@
             "label":"Items barcode",
             "fields":[
                 {
-                    "tag":"930",
+                    "tag":"995",
                     "single_line_coded_data":false,
-                    "filtering_subfield":"5",
-                    "subfields":["a"],
+                    "filtering_subfield":"",
+                    "subfields":["f"],
                     "positions":[]
                 }
             ]
         }
     },
     "TARGET_DATABASE":{
+        "id":{
+            "label":"PPN",
+            "fields":[
+                {
+                    "tag":"001",
+                    "single_line_coded_data":false,
+                    "filtering_subfield":"",
+                    "subfields":[],
+                    "positions":[]
+                }
+            ]
+        },
         "ppn":{
             "label":"PPN",
             "fields":[
                 {
-                    "tag":"009",
+                    "tag":"001",
                     "single_line_coded_data":false,
                     "filtering_subfield":"",
                     "subfields":[],
@@ -173,14 +197,14 @@
             ]
         },
         "general_processing_data_dates":{
-            "label":"Dates from general prcessing data",
+            "label":"Dates from general processing data",
             "fields":[
                 {
                     "tag":"100",
                     "single_line_coded_data":true,
                     "filtering_subfield":"",
                     "subfields":[],
-                    "positions":["9-12", "13-16"]
+                    "positions":["8", "9-12", "13-16"]
                 }
             ]
         },
@@ -277,7 +301,7 @@
                     "tag":"452",
                     "single_line_coded_data":false,
                     "filtering_subfield":"",
-                    "subfields":["9"],
+                    "subfields":["0"],
                     "positions":[]
                 }
             ]
@@ -288,7 +312,7 @@
                 {
                     "tag":"035",
                     "single_line_coded_data":false,
-                    "filtering_subfield":"",
+                    "filtering_subfield":"1",
                     "subfields":["a"],
                     "positions":[]
                 }
@@ -298,9 +322,205 @@
             "label":"Items",
             "fields":[
                 {
+                    "tag":"915",
+                    "single_line_coded_data":false,
+                    "filtering_subfield":"5",
+                    "subfields":[],
+                    "positions":[]
+                },
+                {
+                    "tag":"916",
+                    "single_line_coded_data":false,
+                    "filtering_subfield":"5",
+                    "subfields":[],
+                    "positions":[]
+                },
+                {
+                    "tag":"917",
+                    "single_line_coded_data":false,
+                    "filtering_subfield":"5",
+                    "subfields":[],
+                    "positions":[]
+                },
+                {
+                    "tag":"919",
+                    "single_line_coded_data":false,
+                    "filtering_subfield":"5",
+                    "subfields":[],
+                    "positions":[]
+                },
+                {
+                    "tag":"920",
+                    "single_line_coded_data":false,
+                    "filtering_subfield":"5",
+                    "subfields":[],
+                    "positions":[]
+                },
+                {
                     "tag":"930",
                     "single_line_coded_data":false,
-                    "filtering_subfield":"",
+                    "filtering_subfield":"5",
+                    "subfields":[],
+                    "positions":[]
+                },
+                {
+                    "tag":"931",
+                    "single_line_coded_data":false,
+                    "filtering_subfield":"5",
+                    "subfields":[],
+                    "positions":[]
+                },
+                {
+                    "tag":"932",
+                    "single_line_coded_data":false,
+                    "filtering_subfield":"5",
+                    "subfields":[],
+                    "positions":[]
+                },
+                {
+                    "tag":"955",
+                    "single_line_coded_data":false,
+                    "filtering_subfield":"5",
+                    "subfields":[],
+                    "positions":[]
+                },
+                {
+                    "tag":"956",
+                    "single_line_coded_data":false,
+                    "filtering_subfield":"5",
+                    "subfields":[],
+                    "positions":[]
+                },
+                {
+                    "tag":"957",
+                    "single_line_coded_data":false,
+                    "filtering_subfield":"5",
+                    "subfields":[],
+                    "positions":[]
+                },
+                {
+                    "tag":"958",
+                    "single_line_coded_data":false,
+                    "filtering_subfield":"5",
+                    "subfields":[],
+                    "positions":[]
+                },
+                {
+                    "tag":"990",
+                    "single_line_coded_data":false,
+                    "filtering_subfield":"5",
+                    "subfields":[],
+                    "positions":[]
+                },
+                {
+                    "tag":"991",
+                    "single_line_coded_data":false,
+                    "filtering_subfield":"5",
+                    "subfields":[],
+                    "positions":[]
+                },
+                {
+                    "tag":"992",
+                    "single_line_coded_data":false,
+                    "filtering_subfield":"5",
+                    "subfields":[],
+                    "positions":[]
+                },
+                {
+                    "tag":"316",
+                    "single_line_coded_data":false,
+                    "filtering_subfield":"5",
+                    "subfields":[],
+                    "positions":[]
+                },
+                {
+                    "tag":"317",
+                    "single_line_coded_data":false,
+                    "filtering_subfield":"5",
+                    "subfields":[],
+                    "positions":[]
+                },
+                {
+                    "tag":"318",
+                    "single_line_coded_data":false,
+                    "filtering_subfield":"5",
+                    "subfields":[],
+                    "positions":[]
+                },
+                {
+                    "tag":"319",
+                    "single_line_coded_data":false,
+                    "filtering_subfield":"5",
+                    "subfields":[],
+                    "positions":[]
+                },
+                {
+                    "tag":"971",
+                    "single_line_coded_data":false,
+                    "filtering_subfield":"5",
+                    "subfields":[],
+                    "positions":[]
+                },
+                {
+                    "tag":"702",
+                    "single_line_coded_data":false,
+                    "filtering_subfield":"5",
+                    "subfields":[],
+                    "positions":[]
+                },
+                {
+                    "tag":"703",
+                    "single_line_coded_data":false,
+                    "filtering_subfield":"5",
+                    "subfields":[],
+                    "positions":[]
+                },
+                {
+                    "tag":"712",
+                    "single_line_coded_data":false,
+                    "filtering_subfield":"5",
+                    "subfields":[],
+                    "positions":[]
+                },
+                {
+                    "tag":"713",
+                    "single_line_coded_data":false,
+                    "filtering_subfield":"5",
+                    "subfields":[],
+                    "positions":[]
+                },
+                {
+                    "tag":"722",
+                    "single_line_coded_data":false,
+                    "filtering_subfield":"5",
+                    "subfields":[],
+                    "positions":[]
+                },
+                {
+                    "tag":"723",
+                    "single_line_coded_data":false,
+                    "filtering_subfield":"5",
+                    "subfields":[],
+                    "positions":[]
+                },
+                {
+                    "tag":"856",
+                    "single_line_coded_data":false,
+                    "filtering_subfield":"5",
+                    "subfields":[],
+                    "positions":[]
+                },
+                {
+                    "tag":"940",
+                    "single_line_coded_data":false,
+                    "filtering_subfield":"5",
+                    "subfields":[],
+                    "positions":[]
+                },
+                {
+                    "tag":"941",
+                    "single_line_coded_data":false,
+                    "filtering_subfield":"5",
                     "subfields":[],
                     "positions":[]
                 }
@@ -310,7 +530,7 @@
             "label":"Items barcode",
             "fields":[
                 {
-                    "tag":"930",
+                    "tag":"915",
                     "single_line_coded_data":false,
                     "filtering_subfield":"5",
                     "subfields":["b"],
@@ -320,6 +540,18 @@
         }
     },
     "KOHA_ARCHIRES":{
+        "id":{
+            "label":"Biblionumber",
+            "fields":[
+                {
+                    "tag":"001",
+                    "single_line_coded_data":false,
+                    "filtering_subfield":"",
+                    "subfields":[],
+                    "positions":[]
+                }
+            ]
+        },
         "ppn":{
             "label":"PPN",
             "fields":[
@@ -480,6 +712,18 @@
         }
     },
     "SUDOC":{
+        "id":{
+            "label":"PPN",
+            "fields":[
+                {
+                    "tag":"001",
+                    "single_line_coded_data":false,
+                    "filtering_subfield":"",
+                    "subfields":[],
+                    "positions":[]
+                }
+            ]
+        },
         "ppn":{
             "label":"PPN",
             "fields":[
@@ -836,6 +1080,18 @@
         }
     },
     "DEBUG_SUDOC_XML":{
+        "id":{
+            "label":"ID",
+            "fields":[
+                {
+                    "tag":"001",
+                    "single_line_coded_data":false,
+                    "filtering_subfield":"",
+                    "subfields":[],
+                    "positions":[]
+                }
+            ]
+        },
         "ppn":{
             "label":"PPN",
             "fields":[
@@ -1003,6 +1259,18 @@
         }
     },
     "DEBUG_SUDOC_PICA":{
+        "id":{
+            "label":"ID",
+            "fields":[
+                {
+                    "tag":"003@",
+                    "single_line_coded_data":false,
+                    "filtering_subfield":"",
+                    "subfields":[],
+                    "positions":[]
+                }
+            ]
+        },
         "ppn":{
             "label":"PPN",
             "fields":[
@@ -1170,6 +1438,18 @@
         }
     },
     "DEBUG_KOHA":{
+        "id":{
+            "label":"ID",
+            "fields":[
+                {
+                    "tag":"001",
+                    "single_line_coded_data":false,
+                    "filtering_subfield":"",
+                    "subfields":[],
+                    "positions":[]
+                }
+            ]
+        },
         "ppn":{
             "label":"PPN",
             "fields":[

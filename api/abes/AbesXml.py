@@ -39,6 +39,7 @@ class AbesXml(object):
                 self.error_msg = "Exception générique, voir les logs pour plus de détails"
             else:
                 self.record = r.content.decode('utf-8')
+                self.record_parsed = ET.fromstring(self.record)
                 self.status = 'Succes'
                 self.logger.debug("{} :: AbesXml :: Notice trouvée".format(ppn))
 
