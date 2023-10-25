@@ -3,7 +3,16 @@
 # External import
 from enum import Enum
 
-class Main_GUI(Enum):
+class GUI_Text(Enum):
+    MAIN_SCREEN_NAME = {
+        "eng": "FCR : execute Find and Compare Records",
+        "fre": "FCR : lancer Find and Compare Records"
+    }
+    # As this is to switch languages, english must be in french
+    CHOSE_LANG = {
+        "eng": "Passer en français",
+        "fre": "Switch to english"
+    }
     SERVICE_NAME = {
         "eng": "Service name (for logs)",
         "fre": "Nom du service (pour les logs)"
