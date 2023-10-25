@@ -5,109 +5,146 @@ import PySimpleGUI as sg
 import json
 import os
 from dotenv import load_dotenv
+from enum import Enum
 
 # Internal import
 from theme.theme import *
 import main
 import fcr_classes as fcr
-import fcr_gui_lang as gui_txt
+from fcr_gui_lang import GUI_Text
 
+CURR_DIR = os.path.dirname(__file__)
 # Load env var
-load_dotenv()
+load_dotenv(CURR_DIR)
 
 # Get GUI parameters
-sg.set_options(font=font, icon="theme/logo.ico", window_location=window_location)
+sg.set_options(font=font, icon=CURR_DIR + "/theme/logo.ico", window_location=window_location)
 sg.theme_add_new(theme_name, theme)
 sg.theme(theme_name)
 
 # Load existing settings
 settings = {}
-with open('./settings.json', "r+", encoding="utf-8") as f:
+with open(CURR_DIR + "/settings.json", "r+", encoding="utf-8") as f:
     settings = json.load(f)
+
 lang = os.getenv("LANG")
+if lang not in ["eng", "fre"]:
+    lang = "fre"
 
-# --------------- The Layout ---------------
-layout = [
-    # Service name
-    [sg.Text(f"{gui_txt.Main_GUI.SERVICE_NAME.value[lang]} :"), sg.Input(key="SERVICE", default_text=os.getenv("SERVICE"), size=(40, None))],
+
+class GUI_Elems_With_Val(Enum):
+    SERVICE = os.getenv("SERVICE")
+    FILE_PATH = os.getenv("FILE_PATH")
+    OUTPUT_PATH = os.getenv("OUTPUT_PATH")
+    LOGS_PATH = os.getenv("LOGS_PATH")
+
+class GUI_Elems_No_Val(Enum):
+    CHOSE_LANG = 0
+    SERVICE_NAME = 1
+    PROCESSING = 2
+    FILE_TO_ANALYZE = 3
+    OUTPUT_FOLDER = 4
+    LOG_FOLDER = 5
+    GO_TO_MARC_FIELDS = 6
+    START_ANALYSIS = 7
+
+class GUI_Screens(Enum):
+    MAIN_SCREEN = 0
+    MARC_FIELDS = 1
+
+# --------------- Function def ---------------
+def switch_languages(window: sg.Window, lang: str):
+    """Switches every test element language.
     
-    # Processing
-    [sg.Text(f"{gui_txt.Main_GUI.PROCESSING.value[lang]} :"), sg.Listbox(["better_item", "ensp"], size=(20, 5), key="labels_APPLI", select_mode=sg.LISTBOX_SELECT_MODE_SINGLE)],
+    Takes as argument :
+        - window : the window element
+        - lang : the lang, as ISO 639-2"""
+    for elem in GUI_Elems_No_Val:
+        if elem.name in window.key_dict:
+            window[elem.name].update(GUI_Text[elem.name].value[lang])
 
-    # Data source
-    # [
-    #     sg.Text("Source de données :"),
-    #     sg.Radio("Fichier", "DATA_SOURCE", default=True, size=(7,1), key='DATA-SOURCE-FILE'),
-    #     sg.Radio("Rapport Koha", "DATA_SOURCE", default=False, size=(12,1), key="DATA-SOURCE-KOHA-REPORT")
-    # ],
+def open_screen(screen: GUI_Screens, lang: str) -> sg.Window:
+    """Generic function to generate a screen.
+    
+    Takes as argument the wanted screen entry in GUI_Screen"""
+    layout = None
+    screen_name = None
+    if screen == GUI_Screens.MAIN_SCREEN:
+        layout = get_main_screen_layout(lang)
+        screen_name = GUI_Text[screen.name + "_NAME"].value[lang]
+    return sg.Window(screen_name, layout)
 
-    # Original file path
-    [sg.Text(f"{gui_txt.Main_GUI.FILE_TO_ANALYZE.value[lang]} :")],
-    [sg.Input(key="FILE_PATH", default_text=os.getenv("FILE_PATH"), size=(80, None)), sg.FileBrowse()],
+# ----- Screen layouts -----
 
-    # Koha report number
-    # [sg.Text("Si utilisation d'un rapport Koha :")],
-    # [
-    #     sg.Text("Numéro de rapport :"),
-    #     sg.Input(key="KOHA_REPORT_NB", default_text=os.getenv("KOHA_REPORT_NB"), size=(6, None)),
-    #     sg.Text("Identifiant:"),
-    #     sg.Input(key="KOHA_USERID", default_text=os.getenv("KOHA_USERID"), size=(15, None)),
-    #     sg.Text("Mot de passe :"),
-    #     sg.Input(key="KOHA_PASSWORD", default_text=os.getenv("KOHA_PASSWORD"), size=(15, None), password_char="*"),
-    # ],
+def get_main_screen_layout(lang: str) -> list:
+    """Returns the main screen layout, takes a lang as ISO 639-2 as argument."""
+    layout = [
+        # Lang
+        [  
+            sg.Push(), # to align right
+            sg.Button(f"{GUI_Text.CHOSE_LANG.value[lang]}", k=GUI_Elems_No_Val.CHOSE_LANG.name)
+        ],
 
-    # Output folder
-    [sg.Text(f"{gui_txt.Main_GUI.OUTPUT_FOLDER.value[lang]} :")],
-    [sg.Input(key="OUTPUT_PATH", default_text=os.getenv("OUTPUT_PATH"), size=(80, None)), sg.FolderBrowse()],
+        # Service name
+        [
+            sg.Text(f"{GUI_Text.SERVICE_NAME.value[lang]} :", k=GUI_Elems_No_Val.SERVICE_NAME.name),
+            sg.Input(key=GUI_Elems_With_Val.SERVICE.name, default_text=GUI_Elems_With_Val.SERVICE.value, size=(40, None))],
+        
+        # Processing
+        [
+            sg.Text(f"{GUI_Text.PROCESSING.value[lang]} :", k=GUI_Elems_No_Val.PROCESSING.name),
+            sg.Listbox(["better_item", "ensp"], size=(20, 5), key="labels_APPLI", select_mode=sg.LISTBOX_SELECT_MODE_SINGLE)
+        ],
 
-    # Logs path
-    [sg.Text(f"{gui_txt.Main_GUI.LOG_FOLDER.value[lang]} :")],
-    [sg.Input(key="LOGS_PATH", default_text=os.getenv("LOGS_PATH"), size=(80, None)), sg.FolderBrowse()],
+        # Original file path
+        [sg.Text(f"{GUI_Text.FILE_TO_ANALYZE.value[lang]} :", k=GUI_Elems_No_Val.FILE_TO_ANALYZE.name)],
+        [sg.Input(key=GUI_Elems_With_Val.FILE_PATH.name, default_text=GUI_Elems_With_Val.FILE_PATH.value, size=(80, None)), sg.FileBrowse()],
 
-    # Koha URL
-    # [
-    #     sg.Text("Koha URL :"),
-    #     sg.Input(key="KOHA_URL", default_text=os.getenv("KOHA_URL"), size=(60, None))
-    # ],
+        # Output folder
+        [sg.Text(f"{GUI_Text.OUTPUT_FOLDER.value[lang]} :", k=GUI_Elems_No_Val.OUTPUT_FOLDER.name)],
+        [sg.Input(key=GUI_Elems_With_Val.OUTPUT_PATH.name, default_text=GUI_Elems_With_Val.OUTPUT_PATH.value, size=(80, None)), sg.FolderBrowse()],
 
-    # Koha PPN + ILN + RCR
-    # [
-    #     sg.Text("Koha champ PPN :"),
-    #     sg.Input(key="SOURCE_PPN_FIELD", default_text=os.getenv("SOURCE_PPN_FIELD"), size=(3, None)),
-    #     sg.Text("Koha sous-champ PPN :"),
-    #     sg.Input(key="SOURCE_PPN_SUBFIELD", default_text=os.getenv("SOURCE_PPN_SUBFIELD"), size=(1, None)),
-    #     sg.Text("ILN :"),
-    #     sg.Input(key="ILN", default_text=os.getenv("ILN"), size=(3, None)),
-    #     sg.Text("RCR :"),
-    #     sg.Input(key="RCR", default_text=os.getenv("RCR"), size=(9, None))
-    # ],
+        # Logs path
+        [sg.Text(f"{GUI_Text.LOG_FOLDER.value[lang]} :", k=GUI_Elems_No_Val.LOG_FOLDER.name)],
+        [sg.Input(key=GUI_Elems_With_Val.LOGS_PATH.name, default_text=GUI_Elems_With_Val.LOGS_PATH.value, size=(80, None)), sg.FolderBrowse()],
 
-    # Go to MARC fields edit
-    [sg.Button(gui_txt.Main_GUI.GO_TO_MARC_FIELDS.value[lang], key="submit")],
+        # Go to MARC fields edit
+        [sg.Button(GUI_Text.GO_TO_MARC_FIELDS.value[lang], key=GUI_Elems_No_Val.GO_TO_MARC_FIELDS.name)],
 
-    # Submit
-    [sg.Button(gui_txt.Main_GUI.START_ANALYSIS.value[lang], key="submit")]
-]
+        # Submit
+        [sg.Button(GUI_Text.START_ANALYSIS.value[lang], key=GUI_Elems_No_Val.START_ANALYSIS.name)]
+    ]
+    return layout
 
 # # --------------- Window Definition ---------------
 # # Create the window
-window = sg.Window("FCR : execute Find and Compare Records", layout)
+window = open_screen(GUI_Screens.MAIN_SCREEN, lang)
 
 # # --------------- Event loop or Window.read call ---------------
 # # Display and interact with the Window
-# event, values = window.read()
-event, val = window.read()
+while True:
+    event, val = window.read()
 
-if event == sg.WIN_CLOSED or event == 'Cancel': # if user closes window or clicks cancel
-    print("Application quittée par l'usager")
-    exit()
+    # --------------- Updates language ---------------
+    if event == GUI_Elems_No_Val.CHOSE_LANG.name:
+        if lang == "eng":
+            lang = "fre"
+        else:
+            lang = "eng"
+        switch_languages(window, lang)
 
-# # --------------- Closing the window ---------------
-window.close()
+    # --------------- User left ---------------
+    if event == sg.WIN_CLOSED or event == 'Cancel': # if user closes window or clicks cancel
+        print("Application quittée par l'usager")
+        exit()
 
-execution_settings = fcr.Execution_Settings()
-execution_settings.get_values_from_GUI(val)
+    # --------------- Close the window && execute main ---------------
+    if event == GUI_Elems_No_Val.START_ANALYSIS.name:
+        window.close()
 
-# Launch the main script
-print("Exécution du script principal")
-main.main(execution_settings)
+        execution_settings = fcr.Execution_Settings()
+        execution_settings.get_values_from_GUI(val)
+
+        # Launch the main script
+        print("Exécution du script principal")
+        main.main(execution_settings)
