@@ -4,7 +4,7 @@
 import PySimpleGUI as sg
 import json
 import os
-from dotenv import load_dotenv
+import dotenv
 from enum import Enum
 
 # Internal import
@@ -15,7 +15,8 @@ from fcr_gui_lang import GUI_Text
 
 CURR_DIR = os.path.dirname(__file__)
 # Load env var
-load_dotenv(CURR_DIR)
+dotenv.load_dotenv()
+DOTENV_FILE = dotenv.find_dotenv()
 
 # Get GUI parameters
 sg.set_options(font=font, icon=CURR_DIR + "/theme/logo.ico", window_location=window_location)
@@ -30,7 +31,7 @@ with open(CURR_DIR + "/settings.json", "r+", encoding="utf-8") as f:
 lang = os.getenv("LANG")
 if lang not in ["eng", "fre"]:
     lang = "fre"
-
+curr_screen = None
 
 class GUI_Elems_With_Val(Enum):
     SERVICE = os.getenv("SERVICE")
@@ -47,12 +48,28 @@ class GUI_Elems_No_Val(Enum):
     LOG_FOLDER = 5
     GO_TO_MARC_FIELDS = 6
     START_ANALYSIS = 7
+    SAVE_THOSE_PARAMETERS = 8
 
 class GUI_Screens(Enum):
-    MAIN_SCREEN = 0
+    MAIN_SCREEN = {
+        "values":[
+            GUI_Elems_With_Val.SERVICE,
+            GUI_Elems_With_Val.FILE_PATH,
+            GUI_Elems_With_Val.OUTPUT_PATH,
+            GUI_Elems_With_Val.LOGS_PATH
+        ]
+    }
     MARC_FIELDS = 1
 
 # --------------- Function def ---------------
+def save_parameters(screen: GUI_Screens, val: dict):
+    """Saves the parameters of the screen.
+    
+    Takes as the current screen."""
+    dotenv.set_key(DOTENV_FILE, "LANG", lang)
+    for screen_val in screen.value["values"]:
+        dotenv.set_key(DOTENV_FILE, screen_val.name, val[screen_val.name])
+
 def switch_languages(window: sg.Window, lang: str):
     """Switches every test element language.
     
@@ -70,6 +87,7 @@ def open_screen(screen: GUI_Screens, lang: str) -> sg.Window:
     layout = None
     screen_name = None
     if screen == GUI_Screens.MAIN_SCREEN:
+        curr_screen = screen
         layout = get_main_screen_layout(lang)
         screen_name = GUI_Text[screen.name + "_NAME"].value[lang]
     return sg.Window(screen_name, layout)
@@ -84,11 +102,6 @@ def get_main_screen_layout(lang: str) -> list:
             sg.Push(), # to align right
             sg.Button(f"{GUI_Text.CHOSE_LANG.value[lang]}", k=GUI_Elems_No_Val.CHOSE_LANG.name)
         ],
-
-        # Service name
-        [
-            sg.Text(f"{GUI_Text.SERVICE_NAME.value[lang]} :", k=GUI_Elems_No_Val.SERVICE_NAME.name),
-            sg.Input(key=GUI_Elems_With_Val.SERVICE.name, default_text=GUI_Elems_With_Val.SERVICE.value, size=(40, None))],
         
         # Processing
         [
@@ -104,6 +117,12 @@ def get_main_screen_layout(lang: str) -> list:
         [sg.Text(f"{GUI_Text.OUTPUT_FOLDER.value[lang]} :", k=GUI_Elems_No_Val.OUTPUT_FOLDER.name)],
         [sg.Input(key=GUI_Elems_With_Val.OUTPUT_PATH.name, default_text=GUI_Elems_With_Val.OUTPUT_PATH.value, size=(80, None)), sg.FolderBrowse()],
 
+        # Service name
+        [
+            sg.Text(f"{GUI_Text.SERVICE_NAME.value[lang]} :", k=GUI_Elems_No_Val.SERVICE_NAME.name),
+            sg.Input(key=GUI_Elems_With_Val.SERVICE.name, default_text=GUI_Elems_With_Val.SERVICE.value, size=(40, None))
+        ],
+
         # Logs path
         [sg.Text(f"{GUI_Text.LOG_FOLDER.value[lang]} :", k=GUI_Elems_No_Val.LOG_FOLDER.name)],
         [sg.Input(key=GUI_Elems_With_Val.LOGS_PATH.name, default_text=GUI_Elems_With_Val.LOGS_PATH.value, size=(80, None)), sg.FolderBrowse()],
@@ -111,19 +130,30 @@ def get_main_screen_layout(lang: str) -> list:
         # Go to MARC fields edit
         [sg.Button(GUI_Text.GO_TO_MARC_FIELDS.value[lang], key=GUI_Elems_No_Val.GO_TO_MARC_FIELDS.name)],
 
-        # Submit
-        [sg.Button(GUI_Text.START_ANALYSIS.value[lang], key=GUI_Elems_No_Val.START_ANALYSIS.name)]
+        # Submit + Save
+        [
+            sg.Push(),
+            sg.Button(GUI_Text.START_ANALYSIS.value[lang], key=GUI_Elems_No_Val.START_ANALYSIS.name),
+            sg.Push(),
+            sg.Button(GUI_Text.SAVE_THOSE_PARAMETERS.value[lang], key=GUI_Elems_No_Val.SAVE_THOSE_PARAMETERS.name)
+        ]
     ]
     return layout
 
 # # --------------- Window Definition ---------------
 # # Create the window
-window = open_screen(GUI_Screens.MAIN_SCREEN, lang)
+curr_screen = GUI_Screens.MAIN_SCREEN
+window = open_screen(curr_screen, lang)
 
 # # --------------- Event loop or Window.read call ---------------
 # # Display and interact with the Window
 while True:
     event, val = window.read()
+
+    # --------------- User left ---------------
+    if event == sg.WIN_CLOSED or event == 'Cancel': # if user closes window or clicks cancel
+        print("Application quittée par l'usager")
+        exit()
 
     # --------------- Updates language ---------------
     if event == GUI_Elems_No_Val.CHOSE_LANG.name:
@@ -133,16 +163,15 @@ while True:
             lang = "eng"
         switch_languages(window, lang)
 
-    # --------------- User left ---------------
-    if event == sg.WIN_CLOSED or event == 'Cancel': # if user closes window or clicks cancel
-        print("Application quittée par l'usager")
-        exit()
+    # --------------- Save those parameters ---------------
+    if event == GUI_Elems_No_Val.SAVE_THOSE_PARAMETERS.name:
+        save_parameters(curr_screen, val)
 
     # --------------- Close the window && execute main ---------------
     if event == GUI_Elems_No_Val.START_ANALYSIS.name:
         window.close()
 
-        execution_settings = fcr.Execution_Settings()
+        execution_settings = fcr.Execution_Settings(CURR_DIR)
         execution_settings.get_values_from_GUI(val)
 
         # Launch the main script
