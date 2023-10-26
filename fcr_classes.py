@@ -58,16 +58,16 @@ class FCR_Processings(Enum):
     OTHER_DB_IN_LOCAL_DB = {}
 
 class Execution_Settings(object):
-    def __init__(self):
+    def __init__(self, dir: str):
         # Load settings file
-        with open('./settings.json', "r+", encoding="utf-8") as f:
+        with open(dir + "/settings.json", "r+", encoding="utf-8") as f:
             settings = json.load(f)
             self.analysis = settings["ANALYSIS"]
             self.csv_export_cols = settings["CSV_EXPORT_COLS"]
             self.report_settings = settings["REPORT_SETTINGS"]
         
         # Load marc fields
-        with open('./marc_fields.json', "r+", encoding="utf-8") as f:
+        with open(dir + "/marc_fields.json", "r+", encoding="utf-8") as f:
             self.marc_fields_json = json.load(f)
     
     def get_values_from_GUI(self, val: dict):

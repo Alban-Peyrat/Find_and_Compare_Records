@@ -84,8 +84,11 @@ Enfin, le script valide ou non chaque critère de comparaison de l'analyse chois
 Ces bibliothèques sont utilisées par le script mais absentes de la [Python Standard Library](https://docs.python.org/3/library/) :
 * [`unidecode`](https://pypi.org/project/Unidecode/)
 * [`FuzzyWuzzy`](https://pypi.org/project/fuzzywuzzy/)
+  * With [`python-Levenshtein`](https://pypi.org/project/python-Levenshtein/)
 * [`PySimpleGUI`](https://pypi.org/project/PySimpleGUI/)
 * [`requests`](https://pypi.org/project/requests/)
+* [`python-dotenv`](https://pypi.org/project/python-dotenv/)
+* [`pymarc`](https://pypi.org/project/pymarc/)
 
 ## Variables à définir dans `settings.json`
 

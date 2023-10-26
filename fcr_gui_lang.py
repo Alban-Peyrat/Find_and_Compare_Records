@@ -41,3 +41,7 @@ class GUI_Text(Enum):
         "eng": "Processing",
         "fre": "Traitement" 
     }
+    SAVE_THOSE_PARAMETERS = {
+        "eng": "Save those settings",
+        "fre": "Sauvegarder ces paramètres" 
+    }
