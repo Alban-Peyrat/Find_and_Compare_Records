@@ -38,6 +38,7 @@ class GUI_Elems_With_Val(Enum):
     FILE_PATH = os.getenv("FILE_PATH")
     OUTPUT_PATH = os.getenv("OUTPUT_PATH")
     LOGS_PATH = os.getenv("LOGS_PATH")
+    PROCESSING_VAL = os.getenv("PROCESSING_VAL")
 
 class GUI_Elems_No_Val(Enum):
     CHOSE_LANG = 0
@@ -54,6 +55,7 @@ class GUI_Screens(Enum):
     MAIN_SCREEN = {
         "values":[
             GUI_Elems_With_Val.SERVICE,
+            GUI_Elems_With_Val.PROCESSING_VAL,
             GUI_Elems_With_Val.FILE_PATH,
             GUI_Elems_With_Val.OUTPUT_PATH,
             GUI_Elems_With_Val.LOGS_PATH
@@ -68,7 +70,10 @@ def save_parameters(screen: GUI_Screens, val: dict):
     Takes as the current screen."""
     dotenv.set_key(DOTENV_FILE, "LANG", lang)
     for screen_val in screen.value["values"]:
-        dotenv.set_key(DOTENV_FILE, screen_val.name, val[screen_val.name])
+        new_val = val[screen_val.name]
+        if type(new_val) == list and len(new_val) == 1:
+            new_val = new_val[0]
+        dotenv.set_key(DOTENV_FILE, screen_val.name, new_val)
 
 def switch_languages(window: sg.Window, lang: str):
     """Switches every test element language.
@@ -106,7 +111,7 @@ def get_main_screen_layout(lang: str) -> list:
         # Processing
         [
             sg.Text(f"{GUI_Text.PROCESSING.value[lang]} :", k=GUI_Elems_No_Val.PROCESSING.name),
-            sg.Listbox(["better_item", "ensp"], size=(20, 5), key="labels_APPLI", select_mode=sg.LISTBOX_SELECT_MODE_SINGLE)
+            sg.Listbox([processing.name for processing in fcr.FCR_Processings], size=(30, 5), key=GUI_Elems_With_Val.PROCESSING_VAL.name, default_values=GUI_Elems_With_Val.PROCESSING_VAL.value, select_mode=sg.LISTBOX_SELECT_MODE_SINGLE)
         ],
 
         # Original file path
