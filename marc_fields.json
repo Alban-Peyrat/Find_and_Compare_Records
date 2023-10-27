@@ -1,19 +1,25 @@
 {
     "ORIGIN_DATABASE":{
         "id":{
-            "label":"Biblionumber",
+            "label":{
+                "eng":"Database ID",
+                "fre":"ID base de données"
+            },
             "fields":[
                 {
                     "tag":"001",
                     "single_line_coded_data":false,
                     "filtering_subfield":"",
                     "subfields":[],
-                    "positions":[]
+                    "positions":["8", "9-12", "13-17"]
                 }
             ]
         },
         "ppn":{
-            "label":"PPN",
+            "label":{
+                "eng":"PPN",
+                "fre":"PPN"
+            },
             "fields":[
                 {
                     "tag":"009",
@@ -25,7 +31,10 @@
             ]
         },
         "general_processing_data_dates":{
-            "label":"Dates from general prcessing data",
+            "label":{
+                "eng":"Dates from general processing data",
+                "fre":"Dates (données générales de traitement)"
+            },
             "fields":[
                 {
                     "tag":"100",
@@ -37,7 +46,10 @@
             ]
         },
         "erroneous_isbn":{
-            "label":"Erroneous ISBN",
+            "label":{
+                "eng":"Erroneous ISBN",
+                "fre": "ISBN erroné"
+            },
             "fields":[
                 {
                     "tag":"010",
@@ -49,7 +61,10 @@
             ]
         },
         "title":{
-            "label":"Title",
+            "label":{
+                "eng":"Title",
+                "fre": "Titre"
+            },
             "fields":[
                 {
                     "tag":"200",
@@ -61,7 +76,10 @@
             ]
         },
         "publishers_name":{
-            "label":"Publishers name",
+            "label":{
+                "eng":"Publishers name",
+                "fre":"Éditeurs"
+            },
             "fields":[
                 {
                     "tag":"210",
@@ -80,7 +98,10 @@
             ]
         },
         "edition_note":{
-            "label":"Note about edition",
+            "label":{
+                "eng":"Notes about edition",
+                "fre":"Notes d'édition"
+            },
             "fields":[
                 {
                     "tag":"305",
@@ -92,7 +113,10 @@
             ]
         },
         "publication_dates":{
-            "label":"Publication date",
+            "label":{
+                "eng": "Publication date",
+                "fre": "Dates de publications"
+            },
             "fields":[
                 {
                     "tag":"210",
@@ -111,7 +135,10 @@
             ]
         },
         "physical_desription":{
-            "label":"Physical description",
+            "label":{
+                "eng":"Physical description",
+                "fre":"Description physique"
+            },
             "fields":[
                 {
                     "tag":"215",
@@ -123,7 +150,10 @@
             ]
         },
         "other_edition_in_other_medium_bibliographic_id":{
-            "label":"Bibliographic IDs of other edition in other medium",
+            "label":{
+                "eng":"Bibliographic IDs of other edition in other medium",
+                "fre":"IDs de notice des autres éditions sur autre support"
+            },
             "fields":[
                 {
                     "tag":"452",
@@ -135,7 +165,10 @@
             ]
         },
         "other_database_id":{
-            "label":"IDs in other database",
+            "label":{
+                "eng":"IDs in other database",
+                "fre":"IDs dans d'autres bases de données"
+            },
             "fields":[
                 {
                     "tag":"035",
@@ -147,7 +180,10 @@
             ]
         },
         "items":{
-            "label":"Items",
+            "label":{
+                "eng":"Items",
+                "fre":"Exemplaires"
+            },
             "fields":[
                 {
                     "tag":"995",
@@ -159,7 +195,10 @@
             ]
         },
         "items_barcode":{
-            "label":"Items barcode",
+            "label":{
+                "eng":"Items barcode",
+                "fre":"Code-barre des exemplaires"
+            },
             "fields":[
                 {
                     "tag":"995",
