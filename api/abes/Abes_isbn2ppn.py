@@ -141,12 +141,6 @@ class Abes_isbn2ppn(object):
             status = Isbn2ppn_Status.ERROR
             error = Isbn2ppn_Errors.HTTP_GENERIC_ERROR
             HTTP_status_code = r.status_code
-            self.logger.error(f"{input_isbn} :: Abes_isbn2ppn Request :: HTTP Status: {HTTP_status_code} || URL: {r.url} || Response: {r.text}")
-            return Isbn2ppn_Result(status, error, self.format, input_isbn, isbn, isbn_validity=isbn_validity, url=url, HTTP_status_code=HTTP_status_code)
-        # Generic error
-        except requests.exceptions.RequestException as generic_error:
-            status = Isbn2ppn_Status.ERROR
-            error = Isbn2ppn_Errors.GENERIC_EXCEPTION
             # If the error is that no PPN were found for this ISBN
             if status == Isbn2ppn_Status.ERROR and error == Isbn2ppn_Errors.HTTP_GENERIC_ERROR and HTTP_status_code == 404:
                 try:
@@ -155,6 +149,14 @@ class Abes_isbn2ppn(object):
                         error = Isbn2ppn_Errors.UNKNOWN_ISBN
                 except:
                     error = Isbn2ppn_Errors.UNAVAILABLE_SERVICE
+                self.logger.error(f"{input_isbn} :: Abes_isbn2ppn Request :: {error.value}")
+                return Isbn2ppn_Result(status, error, self.format, input_isbn, isbn, isbn_validity=isbn_validity, url=url, HTTP_status_code=HTTP_status_code)
+            self.logger.error(f"{input_isbn} :: Abes_isbn2ppn Request :: HTTP Status: {HTTP_status_code} || URL: {r.url} || Response: {r.text}")
+            return Isbn2ppn_Result(status, error, self.format, input_isbn, isbn, isbn_validity=isbn_validity, url=url, HTTP_status_code=HTTP_status_code)
+        # Generic error
+        except requests.exceptions.RequestException as generic_error:
+            status = Isbn2ppn_Status.ERROR
+            error = Isbn2ppn_Errors.GENERIC_EXCEPTION
             self.logger.error(f"{input_isbn} :: Abes_isbn2ppn Request :: {error.value} || URL: {url} || {generic_error}")
             return Isbn2ppn_Result(status, error, self.format, input_isbn, isbn, isbn_validity=isbn_validity, url=url, HTTP_status_code=HTTP_status_code)
         # Success
