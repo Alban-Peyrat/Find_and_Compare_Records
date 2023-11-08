@@ -25,9 +25,13 @@ class GUI_Text(Enum):
         "eng": "Processing main configuration",
         "fre": "Configuration principale du traitement"
     }
-    PROCESSING_CONFIGURATION_ORIGIN_TAB_TITLE = {
-        "eng": "Origin database MARC fields",
-        "fre": "Champs MARC BDD d'origine"
+    PROCESSING_DATABASE_CONFIGURATION_TAB_TITLE = {
+        "eng": "Database MARC fields configuration",
+        "fre": "Configuration des champs MARC BDD"
+    }
+    PROCESSING_CHOSE_DATABASE_MAPPINGS_TAB_TITLE = {
+        "eng": "Chose database mappings",
+        "fre": "Choisir les mappings de BDD"
     }
     # As this is to switch languages, english must be in french
     CHOSE_LANG = {
@@ -90,7 +94,7 @@ class GUI_Text(Enum):
         "eng":"RCR",
         "fre":"RCR"
     }
-    ORIGIN_DATABASE_MARC_TEXT = {
+    DATABASE_MARC_TEXT = {
         "eng": "Select mapping",
         "fre": "Sélectionner le mapping"
     }
@@ -133,4 +137,16 @@ class GUI_Text(Enum):
     SAVE_THIS_MARC_FIELD = {
         "eng": "Save this MARC field",
         "fre": "Sauvegarder ce champ MARC" 
+    }
+    CHOSE_ORIGIN_DATABASE_TEXT = {
+        "eng": "Origin database mapping",
+        "fre": "Mapping de la BDD d'origine"
+    }
+    CHOSE_TARGET_DATABASE_TEXT = {
+        "eng": "Target database mapping",
+        "fre": "Mapping de la BDD de destination"
+    }
+    SAVE_CHOSEN_DATABASE_MAPPINGS = {
+        "eng": "Save chosen database mappings",
+        "fre": "Sauvegarder les mappings de BDD choisis" 
     }
