@@ -104,13 +104,15 @@ class GUI_Elems_With_Val(object):
         self.MARC_DATA_FILTERING_SUBFIELD = None
         self.MARC_DATA_SUBFIELDS = None
         self.MARC_DATA_POSITIONS = None
-        self.update_marc_data_being_configured(self.MARC_DATA_BEING_CONFIGURED_LABEL)
+        self.update_marc_data_being_configured(self.MARC_DATA_BEING_CONFIGURED_LABEL, lang)
 
         # Processings Specifics
         self.ILN = os.getenv("ILN") # Better_Item
         self.RCR = os.getenv("RCR") # Better_Item
     
-    def update_marc_data_being_configured(self, label: str):
+    def update_marc_data_being_configured(self, label: str, lang: str):
+        """ 
+        Takes the label and the lang as argument"""
         db = self.ORIGIN_DATABASE_MARC
         self.MARC_DATA_BEING_CONFIGURED = get_marc_data_id_from_label(db, lang, label)
         id = self.MARC_DATA_BEING_CONFIGURED
@@ -404,7 +406,7 @@ def toggle_screen_visibility(window: sg.Window, wanted_screen: GUI_Screens):
 def reset_marc_field_field_list(db: str, id: str):
     """Resets the seelct UI for the marc field"""
     new_list = get_marc_data_fields_tag(db, id)
-    new_list += GUI_Text.MARC_DATA_NEW_FIELD_TEXT.value[lang]
+    new_list += [GUI_Text.MARC_DATA_NEW_FIELD_TEXT.value[lang]]
     window["MARC_DATA_FIELD"].update(values=new_list)
 
 def get_option_menu_PYSimpleGUI_key_by_TKStringVar_name(window: sg.Window, var_name: str) -> str:
@@ -427,6 +429,14 @@ def option_menu_callback(var, index, mode, key=""):
     key = get_option_menu_PYSimpleGUI_key_by_TKStringVar_name(window, var)
     window.write_event_value(key, window[key].TKStringVar.get())
 
+def update_UI_marc_data_being_configured(window: sg.Window, valls: GUI_Elems_With_Val):
+    """Updates the UI of the MARC DAta being configured"""
+    reset_marc_field_field_list(valls.ORIGIN_DATABASE_MARC, valls.MARC_DATA_BEING_CONFIGURED)
+    window["MARC_DATA_FIELD"].update(value=valls.MARC_DATA_FIELD)
+    window["MARC_DATA_SINGLE_LINE_CODED_DATA"].update(value=valls.MARC_DATA_SINGLE_LINE_CODED_DATA)
+    window["MARC_DATA_FILTERING_SUBFIELD"].update(value=valls.MARC_DATA_FILTERING_SUBFIELD)
+    window["MARC_DATA_SUBFIELDS"].update(value=valls.MARC_DATA_SUBFIELDS)
+    window["MARC_DATA_POSITIONS"].update(value=valls.MARC_DATA_POSITIONS)
 
 # # --------------- Window Definition ---------------
 # # Create the window
@@ -439,6 +449,7 @@ for elem in window.key_dict:
         window[elem].TKStringVar.trace("w", option_menu_callback)
 
 # # --------------- Event loop or Window.read call ---------------
+is_updating_marc_database = False
 # # Display and interact with the Window
 while True:
     event, val = window.read()
@@ -468,13 +479,20 @@ while True:
         open_screen(window, curr_screen, lang)
 
     # --------------- User selected an Origin database ---------------
-    if event == "ORIGIN_DATABASE_MARC":
+    if event == "ORIGIN_DATABASE_MARC" and not is_updating_marc_database:
+        is_updating_marc_database = True
         VALLS.ORIGIN_DATABASE_MARC = val["ORIGIN_DATABASE_MARC"]
+        VALLS.MARC_DATA_BEING_CONFIGURED_LABEL = get_marc_data_label_by_id(VALLS.ORIGIN_DATABASE_MARC, lang, VALLS.MARC_DATA_BEING_CONFIGURED)
+        window["MARC_DATA_BEING_CONFIGURED_LABEL"].update(values=get_marc_data_labels(VALLS.ORIGIN_DATABASE_MARC, lang), value=VALLS.MARC_DATA_BEING_CONFIGURED_LABEL)
+        VALLS.update_marc_data_being_configured(VALLS.MARC_DATA_BEING_CONFIGURED_LABEL, lang)
+        update_UI_marc_data_being_configured(window, VALLS)
+        is_updating_marc_database = False
 
     # --------------- User selected an Origin database ---------------
     if event == "MARC_DATA_BEING_CONFIGURED_LABEL":
         VALLS.MARC_DATA_BEING_CONFIGURED_LABEL = val["MARC_DATA_BEING_CONFIGURED_LABEL"]
-        VALLS.update_marc_data_being_configured(VALLS.MARC_DATA_BEING_CONFIGURED_LABEL)
+        VALLS.update_marc_data_being_configured(VALLS.MARC_DATA_BEING_CONFIGURED_LABEL, lang)
+        update_UI_marc_data_being_configured(window, VALLS)
 
     # --------------- Close the window && execute main ---------------
     if event == GUI_Text.START_ANALYSIS.name:
