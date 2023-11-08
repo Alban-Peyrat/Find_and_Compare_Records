@@ -92,7 +92,7 @@ class GUI_Elems_With_Val(object):
         self.TARGET_URL = os.getenv("TARGET_URL")
         self.ORIGIN_DATABASE_MAPPING = os.getenv("ORIGIN_DATABASE_MAPPING")
         self.TARGET_DATABASE_MAPPING = os.getenv("TARGET_DATABASE_MAPPING")
-        self.DATABASE_MARC = "ORIGIN_DATABASE"
+        self.DATABASE_MARC = self.ORIGIN_DATABASE_MAPPING
         self.MARC_DATA_BEING_CONFIGURED = "id"
         self.MARC_DATA_BEING_CONFIGURED_LABEL = get_marc_data_label_by_id(self.DATABASE_MARC, lang, self.MARC_DATA_BEING_CONFIGURED)
         self.MARC_DATA_FIELD = None
