@@ -94,12 +94,8 @@ class GUI_Elems_With_Val(object):
         self.TARGET_DATABASE_MARC = "TARGET_DATABASE"
         self.MARC_DATA_BEING_CONFIGURED = "id"
         self.MARC_DATA_BEING_CONFIGURED_LABEL = get_marc_data_label_by_id(self.ORIGIN_DATABASE_MARC, lang, self.MARC_DATA_BEING_CONFIGURED)
-        # self.MARC_DATA_FIELD = get_marc_data_fields_tag(self.ORIGIN_DATABASE_MARC, self.MARC_DATA_BEING_CONFIGURED)[0]
-        # self.MARC_DATA_SINGLE_LINE_CODED_DATA = get_marc_data_field_single_line_coded_data(self.ORIGIN_DATABASE_MARC, self.MARC_DATA_BEING_CONFIGURED, self.MARC_DATA_FIELD)
-        # self.MARC_DATA_FILTERING_SUBFIELD = get_marc_data_field_filtering_subfield(self.ORIGIN_DATABASE_MARC, self.MARC_DATA_BEING_CONFIGURED, self.MARC_DATA_FIELD)
-        # self.MARC_DATA_SUBFIELDS = get_marc_data_field_subfields(self.ORIGIN_DATABASE_MARC, self.MARC_DATA_BEING_CONFIGURED, self.MARC_DATA_FIELD)
-        # self.MARC_DATA_POSITIONS = get_marc_data_field_positions(self.ORIGIN_DATABASE_MARC, self.MARC_DATA_BEING_CONFIGURED, self.MARC_DATA_FIELD)
         self.MARC_DATA_FIELD = None
+        self.MARC_DATA_NEW_FIELD = None
         self.MARC_DATA_SINGLE_LINE_CODED_DATA = None
         self.MARC_DATA_FILTERING_SUBFIELD = None
         self.MARC_DATA_SUBFIELDS = None
@@ -124,6 +120,13 @@ class GUI_Elems_With_Val(object):
         self.MARC_DATA_FILTERING_SUBFIELD = get_marc_data_field_filtering_subfield(db, id, tag)
         self.MARC_DATA_SUBFIELDS = get_marc_data_field_subfields(db, id, tag)
         self.MARC_DATA_POSITIONS = get_marc_data_field_positions(db, id, tag)
+
+    def default_marc_field_being_configured(self):
+        """Defaults all values for the current field"""
+        self.MARC_DATA_SINGLE_LINE_CODED_DATA = False
+        self.MARC_DATA_FILTERING_SUBFIELD = ""
+        self.MARC_DATA_SUBFIELDS = ""
+        self.MARC_DATA_POSITIONS = ""
 
 VALLS = GUI_Elems_With_Val()
 
@@ -258,10 +261,16 @@ PROCESSING_CONFIGURATION_SCREEN_ORIGIN_TAB_LAYOUT = [
         sg.OptionMenu(
             get_marc_data_fields_tag(VALLS.ORIGIN_DATABASE_MARC, VALLS.MARC_DATA_BEING_CONFIGURED) + [GUI_Text.MARC_DATA_NEW_FIELD_TEXT.value[lang]],
             size=(30, 5), key="MARC_DATA_FIELD", default_value=VALLS.MARC_DATA_FIELD
+        ),
+        sg.Text(f"{GUI_Text.MARC_DATA_ADD_FIELD_TEXT.value[lang]} :", k=GUI_Text.MARC_DATA_ADD_FIELD_TEXT.name, metadata={"class":["ADD_NEW_MARC_FIELD"]}),
+        sg.Input(key="MARC_DATA_NEW_FIELD",
+            default_text="",
+            size=(5, None),
+            metadata={"class":["ADD_NEW_MARC_FIELD"]}
         )
     ],
 
-    # ----- Signel lien coded data -----
+    # ----- Single line coded data -----
     [
         sg.Text(f"{GUI_Text.MARC_DATA_SINGLE_LINE_CODED_DATA_TEXT.value[lang]} ?", k=GUI_Text.MARC_DATA_SINGLE_LINE_CODED_DATA_TEXT.name),
         sg.Checkbox(GUI_Text.YES.value[lang],
@@ -407,7 +416,9 @@ def reset_marc_field_field_list(db: str, id: str):
     """Resets the seelct UI for the marc field"""
     new_list = get_marc_data_fields_tag(db, id)
     new_list += [GUI_Text.MARC_DATA_NEW_FIELD_TEXT.value[lang]]
-    window["MARC_DATA_FIELD"].update(values=new_list)
+    # window["MARC_DATA_FIELD"].update(values=new_list)
+    window["MARC_DATA_FIELD"].update(values=new_list, value=new_list[0])
+    
 
 def get_option_menu_PYSimpleGUI_key_by_TKStringVar_name(window: sg.Window, var_name: str) -> str:
     """Returns the PySimpleGUI key associated with this TKStringVar.
@@ -437,6 +448,22 @@ def update_UI_marc_data_being_configured(window: sg.Window, valls: GUI_Elems_Wit
     window["MARC_DATA_FILTERING_SUBFIELD"].update(value=valls.MARC_DATA_FILTERING_SUBFIELD)
     window["MARC_DATA_SUBFIELDS"].update(value=valls.MARC_DATA_SUBFIELDS)
     window["MARC_DATA_POSITIONS"].update(value=valls.MARC_DATA_POSITIONS)
+
+def toggle_UI_elems_for_new_marc_field(active: bool, window: sg.Window):
+    """Toggles all elements used to add a new field.
+    Takes as argument a boolean"""
+    for elem in [elem for row in window[GUI_Text.PROCESSING_CONFIGURATION_ORIGIN_TAB_TITLE.name].Rows for elem in row]:
+        if not elem.metadata:
+            continue
+        if "ADD_NEW_MARC_FIELD" in elem.metadata["class"]:
+            elem.update(visible=active)
+
+    # If new marc fields, sets to default values infos
+    if active:
+        VALLS.default_marc_field_being_configured()
+        window["MARC_DATA_SINGLE_LINE_CODED_DATA"].update(value=False)
+        for key in ["MARC_DATA_FILTERING_SUBFIELD", "MARC_DATA_SUBFIELDS", "MARC_DATA_POSITIONS"]:
+            window[key].update(value="")
 
 # # --------------- Window Definition ---------------
 # # Create the window
@@ -477,6 +504,7 @@ while True:
         curr_screen = GUI_Screens.PROCESSING_CONFIGURATION_SCREEN
         VALLS.PROCESSING_VAL = val["PROCESSING_VAL"]
         open_screen(window, curr_screen, lang)
+        toggle_UI_elems_for_new_marc_field(False, window)
 
     # --------------- User selected an Origin database ---------------
     if event == "ORIGIN_DATABASE_MARC" and not is_updating_marc_database:
@@ -488,11 +516,29 @@ while True:
         update_UI_marc_data_being_configured(window, VALLS)
         is_updating_marc_database = False
 
-    # --------------- User selected an Origin database ---------------
+    # --------------- User selected a MARC data ---------------
     if event == "MARC_DATA_BEING_CONFIGURED_LABEL":
         VALLS.MARC_DATA_BEING_CONFIGURED_LABEL = val["MARC_DATA_BEING_CONFIGURED_LABEL"]
         VALLS.update_marc_data_being_configured(VALLS.MARC_DATA_BEING_CONFIGURED_LABEL, lang)
         update_UI_marc_data_being_configured(window, VALLS)
+
+    # --------------- User selected a MARC field for a data ---------------
+    if event == "MARC_DATA_FIELD":
+        # MUST REMOVE THIS TRACE ELSE IT WILL INFINITELY LOOP
+        trace_info = window["MARC_DATA_FIELD"].TKStringVar.trace_info()
+        temp, trace_name = trace_info[len(trace_info)-1]
+        window["MARC_DATA_FIELD"].TKStringVar.trace_remove("write", trace_name)
+        # trace is removed
+        VALLS.MARC_DATA_FIELD = val["MARC_DATA_FIELD"]
+        if VALLS.MARC_DATA_FIELD == GUI_Text.MARC_DATA_NEW_FIELD_TEXT.value[lang]:
+            toggle_UI_elems_for_new_marc_field(True, window)
+            VALLS.default_marc_field_being_configured()
+        else:
+            toggle_UI_elems_for_new_marc_field(False, window)
+            VALLS.update_marc_field_being_configured(VALLS.ORIGIN_DATABASE_MARC, VALLS.MARC_DATA_BEING_CONFIGURED, VALLS.MARC_DATA_FIELD)
+        update_UI_marc_data_being_configured(window, VALLS)
+        # DO NOT FORGET TO REENABLE THE TRACING
+        window["MARC_DATA_FIELD"].TKStringVar.trace("w", option_menu_callback)
 
     # --------------- Close the window && execute main ---------------
     if event == GUI_Text.START_ANALYSIS.name:

@@ -126,3 +126,7 @@ class GUI_Text(Enum):
         "eng": 'Positions to export (separated by ",")',
         "fre": 'Positions à exporter (séparées par ",")'
     }
+    MARC_DATA_ADD_FIELD_TEXT = {
+        "eng": "Field",
+        "fre": "Champ"
+    }

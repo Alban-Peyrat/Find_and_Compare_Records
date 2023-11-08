@@ -10,3 +10,5 @@ All elements in the PROCESSING_CONFIGURATION must have a metadate with the key `
 * "PROCESSING_CONFIGURATION_MAIN"
 * All FCR_Processings __names__ in which it shouldbe displayed
 * _They are used to oly display relevent fields_
+
+Elements to add new field must have the `` class in metadata
