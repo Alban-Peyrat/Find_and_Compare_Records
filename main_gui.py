@@ -407,12 +407,36 @@ def reset_marc_field_field_list(db: str, id: str):
     new_list += GUI_Text.MARC_DATA_NEW_FIELD_TEXT.value[lang]
     window["MARC_DATA_FIELD"].update(values=new_list)
 
+def get_option_menu_PYSimpleGUI_key_by_TKStringVar_name(window: sg.Window, var_name: str) -> str:
+    """Returns the PySimpleGUI key associated with this TKStringVar.
+    Only used for OptionMenu callbacks"""
+    for elem in window.key_dict:
+        if type(window[elem]) != sg.OptionMenu:
+            continue
+        if window[elem].TKStringVar._name == var_name:
+            return elem
+
+def option_menu_callback(var, index, mode, key=""):
+    """
+    For OptionMenu
+    var - tkinter control variable.
+    index - index of var, '' if var is not a list.
+    mode - 'w' for 'write' here.
+    """
+    # From https://github.com/PySimpleGUI/PySimpleGUI/issues/4454
+    key = get_option_menu_PYSimpleGUI_key_by_TKStringVar_name(window, var)
+    window.write_event_value(key, window[key].TKStringVar.get())
+
 
 # # --------------- Window Definition ---------------
 # # Create the window
 window = None
 curr_screen = GUI_Screens.MAIN_SCREEN
 window = open_screen(window, curr_screen, lang)
+# Ensure thar changin option in OptionMenu generates an event
+for elem in window.key_dict:
+    if type(window[elem]) == sg.OptionMenu:
+        window[elem].TKStringVar.trace("w", option_menu_callback)
 
 # # --------------- Event loop or Window.read call ---------------
 # # Display and interact with the Window
