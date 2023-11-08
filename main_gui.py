@@ -90,10 +90,11 @@ class GUI_Elems_With_Val(object):
         self.PROCESSING_VAL = os.getenv("PROCESSING_VAL")
         self.ORIGIN_URL = os.getenv("ORIGIN_URL")
         self.TARGET_URL = os.getenv("TARGET_URL")
-        self.ORIGIN_DATABASE_MARC = "ORIGIN_DATABASE"
-        self.TARGET_DATABASE_MARC = "TARGET_DATABASE"
+        self.ORIGIN_DATABASE_MAPPING = os.getenv("ORIGIN_DATABASE_MAPPING")
+        self.TARGET_DATABASE_MAPPING = os.getenv("TARGET_DATABASE_MAPPING")
+        self.DATABASE_MARC = "ORIGIN_DATABASE"
         self.MARC_DATA_BEING_CONFIGURED = "id"
-        self.MARC_DATA_BEING_CONFIGURED_LABEL = get_marc_data_label_by_id(self.ORIGIN_DATABASE_MARC, lang, self.MARC_DATA_BEING_CONFIGURED)
+        self.MARC_DATA_BEING_CONFIGURED_LABEL = get_marc_data_label_by_id(self.DATABASE_MARC, lang, self.MARC_DATA_BEING_CONFIGURED)
         self.MARC_DATA_FIELD = None
         self.MARC_DATA_NEW_FIELD = None
         self.MARC_DATA_SINGLE_LINE_CODED_DATA = None
@@ -109,7 +110,7 @@ class GUI_Elems_With_Val(object):
     def update_marc_data_being_configured(self, label: str, lang: str):
         """ 
         Takes the label and the lang as argument"""
-        db = self.ORIGIN_DATABASE_MARC
+        db = self.DATABASE_MARC
         self.MARC_DATA_BEING_CONFIGURED = get_marc_data_id_from_label(db, lang, label)
         id = self.MARC_DATA_BEING_CONFIGURED
         self.MARC_DATA_FIELD = get_marc_data_fields_tag(db, id)[0]
@@ -138,14 +139,37 @@ class GUI_Screens(Enum):
             "FILE_PATH",
             "OUTPUT_PATH",
             "LOGS_PATH"
-        ]
+        ],
+        "tabs":[]
     }
     PROCESSING_CONFIGURATION_SCREEN = {
         "values":[
-            "ORIGIN_URL",
-            "TARGET_URL",
-            "ILN",
-            "RCR",
+        ],
+        "tabs":[
+            {
+                GUI_Text.PROCESSING_CONFIGURATION_MAIN_TAB_TITLE.name:{
+                    "values":[
+                        "ORIGIN_URL",
+                        "TARGET_URL",
+                        "ILN",
+                        "RCR"
+                    ]
+                },
+            },
+            {
+                GUI_Text.PROCESSING_DATABASE_CONFIGURATION_TAB_TITLE.name:{
+                    "values":[
+                    ]
+                }
+            },
+            {
+                GUI_Text.PROCESSING_CHOSE_DATABASE_MAPPINGS_TAB_TITLE.name:{
+                    "values":[
+                        "ORIGIN_DATABASE_MAPPING",
+                        "TARGET_DATABASE_MAPPING"
+                    ]
+                }
+            }
         ]
     }
 
@@ -243,20 +267,20 @@ PROCESSING_CONFIGURATION_SCREEN_MAIN_TAB_LAYOUT = [
     ]
 ]
 
-PROCESSING_CONFIGURATION_SCREEN_ORIGIN_TAB_LAYOUT = [
+PROCESSING_DATABASE_CONFIGURATION_TAB_TITLE_TAB_LAYOUT = [
     # ----- Database -----
     [
-        sg.Text(f"{GUI_Text.ORIGIN_DATABASE_MARC_TEXT.value[lang]} :", k=GUI_Text.ORIGIN_DATABASE_MARC_TEXT.name),
-        sg.OptionMenu(list(marc_fields_json.keys()), size=(30, 5), key="ORIGIN_DATABASE_MARC", default_value=VALLS.ORIGIN_DATABASE_MARC)
+        sg.Text(f"{GUI_Text.DATABASE_MARC_TEXT.value[lang]} :", k=GUI_Text.DATABASE_MARC_TEXT.name),
+        sg.OptionMenu(list(marc_fields_json.keys()), size=(30, 5), key="DATABASE_MARC", default_value=VALLS.DATABASE_MARC)
     ],
 
     # ----- Data -----
     [
         sg.Text(f"{GUI_Text.MARC_DATA_TO_CONFIGURE.value[lang]} :", k=GUI_Text.MARC_DATA_TO_CONFIGURE.name),
         sg.OptionMenu(
-            get_marc_data_labels(VALLS.ORIGIN_DATABASE_MARC, lang),
+            get_marc_data_labels(VALLS.DATABASE_MARC, lang),
             size=(60, 5), key="MARC_DATA_BEING_CONFIGURED_LABEL",
-            default_value=get_marc_data_label_by_id(VALLS.ORIGIN_DATABASE_MARC, lang, VALLS.MARC_DATA_BEING_CONFIGURED)
+            default_value=get_marc_data_label_by_id(VALLS.DATABASE_MARC, lang, VALLS.MARC_DATA_BEING_CONFIGURED)
         )
     ],
 
@@ -264,7 +288,7 @@ PROCESSING_CONFIGURATION_SCREEN_ORIGIN_TAB_LAYOUT = [
     [
         sg.Text(f"{GUI_Text.MARC_DATA_FIELDS_TEXT.value[lang]} :", k=GUI_Text.MARC_DATA_FIELDS_TEXT.name),
         sg.OptionMenu(
-            get_marc_data_fields_tag(VALLS.ORIGIN_DATABASE_MARC, VALLS.MARC_DATA_BEING_CONFIGURED) + [GUI_Text.MARC_DATA_NEW_FIELD_TEXT.value[lang]],
+            get_marc_data_fields_tag(VALLS.DATABASE_MARC, VALLS.MARC_DATA_BEING_CONFIGURED) + [GUI_Text.MARC_DATA_NEW_FIELD_TEXT.value[lang]],
             size=(30, 5), key="MARC_DATA_FIELD", default_value=VALLS.MARC_DATA_FIELD
         ),
         sg.Text(f"{GUI_Text.MARC_DATA_ADD_FIELD_TEXT.value[lang]} :", k=GUI_Text.MARC_DATA_ADD_FIELD_TEXT.name, metadata={"class":["ADD_NEW_MARC_FIELD"]}),
@@ -279,7 +303,7 @@ PROCESSING_CONFIGURATION_SCREEN_ORIGIN_TAB_LAYOUT = [
     [
         sg.Text(f"{GUI_Text.MARC_DATA_SINGLE_LINE_CODED_DATA_TEXT.value[lang]} ?", k=GUI_Text.MARC_DATA_SINGLE_LINE_CODED_DATA_TEXT.name),
         sg.Checkbox(GUI_Text.YES.value[lang],
-            default=get_marc_data_field_single_line_coded_data(VALLS.ORIGIN_DATABASE_MARC, VALLS.MARC_DATA_BEING_CONFIGURED, VALLS.MARC_DATA_FIELD),
+            default=get_marc_data_field_single_line_coded_data(VALLS.DATABASE_MARC, VALLS.MARC_DATA_BEING_CONFIGURED, VALLS.MARC_DATA_FIELD),
             k='MARC_DATA_SINGLE_LINE_CODED_DATA',
             enable_events=True
         )
@@ -289,7 +313,7 @@ PROCESSING_CONFIGURATION_SCREEN_ORIGIN_TAB_LAYOUT = [
     [
         sg.Text(f"{GUI_Text.MARC_DATA_FILTERING_SUBFIELD_TEXT.value[lang]} :", k=GUI_Text.MARC_DATA_FILTERING_SUBFIELD_TEXT.name),
         sg.Input(key="MARC_DATA_FILTERING_SUBFIELD",
-            default_text=get_marc_data_field_filtering_subfield(VALLS.ORIGIN_DATABASE_MARC, VALLS.MARC_DATA_BEING_CONFIGURED, VALLS.MARC_DATA_FIELD),
+            default_text=get_marc_data_field_filtering_subfield(VALLS.DATABASE_MARC, VALLS.MARC_DATA_BEING_CONFIGURED, VALLS.MARC_DATA_FIELD),
             size=(2, None)
         )
     ],
@@ -298,7 +322,7 @@ PROCESSING_CONFIGURATION_SCREEN_ORIGIN_TAB_LAYOUT = [
     [
         sg.Text(f"{GUI_Text.MARC_DATA_SUBFIELDS_TEXT.value[lang]} :", k=GUI_Text.MARC_DATA_SUBFIELDS_TEXT.name),
         sg.Input(key="MARC_DATA_SUBFIELDS",
-            default_text=get_marc_data_field_subfields(VALLS.ORIGIN_DATABASE_MARC, VALLS.MARC_DATA_BEING_CONFIGURED, VALLS.MARC_DATA_FIELD),
+            default_text=get_marc_data_field_subfields(VALLS.DATABASE_MARC, VALLS.MARC_DATA_BEING_CONFIGURED, VALLS.MARC_DATA_FIELD),
             size=(38, None)
         )
     ],
@@ -307,7 +331,7 @@ PROCESSING_CONFIGURATION_SCREEN_ORIGIN_TAB_LAYOUT = [
     [
         sg.Text(f"{GUI_Text.MARC_DATA_POSITIONS_TEXT.value[lang]} :", k=GUI_Text.MARC_DATA_POSITIONS_TEXT.name),
         sg.Input(key="MARC_DATA_POSITIONS",
-            default_text=get_marc_data_field_positions(VALLS.ORIGIN_DATABASE_MARC, VALLS.MARC_DATA_BEING_CONFIGURED, VALLS.MARC_DATA_FIELD),
+            default_text=get_marc_data_field_positions(VALLS.DATABASE_MARC, VALLS.MARC_DATA_BEING_CONFIGURED, VALLS.MARC_DATA_FIELD),
             size=(38, None)
         )
     ],
@@ -315,6 +339,26 @@ PROCESSING_CONFIGURATION_SCREEN_ORIGIN_TAB_LAYOUT = [
     # ----- SAve button -----
     [
         sg.Button(GUI_Text.SAVE_THIS_MARC_FIELD.value[lang], key=GUI_Text.SAVE_THIS_MARC_FIELD.name)
+    ],
+
+]
+
+PROCESSING_CHOSE_DATABASE_MAPPINGS_TAB_LAYOUT = [
+    # ----- Origin Database -----
+    [
+        sg.Text(f"{GUI_Text.CHOSE_ORIGIN_DATABASE_TEXT.value[lang]} :", k=GUI_Text.CHOSE_ORIGIN_DATABASE_TEXT.name),
+        sg.OptionMenu(list(marc_fields_json.keys()), size=(30, 5), key="ORIGIN_DATABASE_MAPPING", default_value=VALLS.ORIGIN_DATABASE_MAPPING)
+    ],
+
+    # ----- Origin Database -----
+    [
+        sg.Text(f"{GUI_Text.CHOSE_TARGET_DATABASE_TEXT.value[lang]} :", k=GUI_Text.CHOSE_TARGET_DATABASE_TEXT.name),
+        sg.OptionMenu(list(marc_fields_json.keys()), size=(30, 5), key="TARGET_DATABASE_MAPPING", default_value=VALLS.TARGET_DATABASE_MAPPING)
+    ],
+
+    # ----- SAve button -----
+    [
+        sg.Button(GUI_Text.SAVE_CHOSEN_DATABASE_MAPPINGS.value[lang], key=GUI_Text.SAVE_CHOSEN_DATABASE_MAPPINGS.name)
     ],
 
 ]
@@ -335,10 +379,11 @@ PROCESSING_CONFIGURATION_SCREEN_LAYOUT = [
 
     # Tabs
     [
-        sg.TabGroup([
+        sg.TabGroup(k="PROCESSING_CONFIGURATION_SCREEN_TABS", layout=[
             [
                 sg.Tab(GUI_Text.PROCESSING_CONFIGURATION_MAIN_TAB_TITLE.value[lang], PROCESSING_CONFIGURATION_SCREEN_MAIN_TAB_LAYOUT, k=GUI_Text.PROCESSING_CONFIGURATION_MAIN_TAB_TITLE.name),
-                sg.Tab(GUI_Text.PROCESSING_CONFIGURATION_ORIGIN_TAB_TITLE.value[lang], PROCESSING_CONFIGURATION_SCREEN_ORIGIN_TAB_LAYOUT, k=GUI_Text.PROCESSING_CONFIGURATION_ORIGIN_TAB_TITLE.name)
+                sg.Tab(GUI_Text.PROCESSING_DATABASE_CONFIGURATION_TAB_TITLE.value[lang], PROCESSING_DATABASE_CONFIGURATION_TAB_TITLE_TAB_LAYOUT, k=GUI_Text.PROCESSING_DATABASE_CONFIGURATION_TAB_TITLE.name),
+                sg.Tab(GUI_Text.PROCESSING_CHOSE_DATABASE_MAPPINGS_TAB_TITLE.value[lang], PROCESSING_CHOSE_DATABASE_MAPPINGS_TAB_LAYOUT, k=GUI_Text.PROCESSING_CHOSE_DATABASE_MAPPINGS_TAB_TITLE.name)
             ]
         ])
     ],
@@ -362,14 +407,21 @@ def save_parameters(screen: GUI_Screens, val: dict):
     
     Takes as the current screen."""
     dotenv.set_key(DOTENV_FILE, "LANG", lang)
-    for screen_val in screen.value["values"]:
+    val_list = []
+    if screen.value["tabs"]:
+        for tab in screen.value["tabs"]:
+            if val[screen.name + "_TABS"] in tab.keys():
+                val_list = tab[val[screen.name + "_TABS"]]["values"]
+    else:
+        val_list = screen.value["values"]
+    for screen_val in val_list:
         new_val = val[screen_val]
         if type(new_val) == list and len(new_val) == 1:
             new_val = new_val[0]
         dotenv.set_key(DOTENV_FILE, screen_val, new_val)
 
 def save_marc_field(val, lang):
-    db = val["ORIGIN_DATABASE_MARC"]
+    db = val["DATABASE_MARC"]
     data_id = get_marc_data_id_from_label(db, lang, val["MARC_DATA_BEING_CONFIGURED_LABEL"])
     this_field = None
     if val["MARC_DATA_FIELD"] == GUI_Text.MARC_DATA_NEW_FIELD_TEXT.value[lang]:
@@ -397,11 +449,11 @@ def switch_languages(window: sg.Window, lang: str):
         if elem.name in window.key_dict:
             window[elem.name].update(elem.value[lang])
     # Changes the language of data labels in processing configuration
-    VALLS.MARC_DATA_BEING_CONFIGURED_LABEL = get_marc_data_label_by_id(VALLS.ORIGIN_DATABASE_MARC, lang, VALLS.MARC_DATA_BEING_CONFIGURED)
+    VALLS.MARC_DATA_BEING_CONFIGURED_LABEL = get_marc_data_label_by_id(VALLS.DATABASE_MARC, lang, VALLS.MARC_DATA_BEING_CONFIGURED)
     window["MARC_DATA_BEING_CONFIGURED_LABEL"].update(
-        values=get_marc_data_labels(VALLS.ORIGIN_DATABASE_MARC, lang),
+        values=get_marc_data_labels(VALLS.DATABASE_MARC, lang),
         value=VALLS.MARC_DATA_BEING_CONFIGURED_LABEL
-        # default_value=get_marc_data_label_by_id(VALLS.ORIGIN_DATABASE_MARC, lang, VALLS.MARC_DATA_BEING_CONFIGURED)
+        # default_value=get_marc_data_label_by_id(VALLS.DATABASE_MARC, lang, VALLS.MARC_DATA_BEING_CONFIGURED)
     )
     
 
@@ -472,7 +524,7 @@ def option_menu_callback(var, index, mode, key=""):
 
 def update_UI_marc_data_being_configured(window: sg.Window, valls: GUI_Elems_With_Val):
     """Updates the UI of the MARC DAta being configured"""
-    reset_marc_field_field_list(valls.ORIGIN_DATABASE_MARC, valls.MARC_DATA_BEING_CONFIGURED)
+    reset_marc_field_field_list(valls.DATABASE_MARC, valls.MARC_DATA_BEING_CONFIGURED)
     window["MARC_DATA_FIELD"].update(value=valls.MARC_DATA_FIELD)
     window["MARC_DATA_SINGLE_LINE_CODED_DATA"].update(value=valls.MARC_DATA_SINGLE_LINE_CODED_DATA)
     window["MARC_DATA_FILTERING_SUBFIELD"].update(value=valls.MARC_DATA_FILTERING_SUBFIELD)
@@ -482,7 +534,7 @@ def update_UI_marc_data_being_configured(window: sg.Window, valls: GUI_Elems_Wit
 def toggle_UI_elems_for_new_marc_field(active: bool, window: sg.Window):
     """Toggles all elements used to add a new field.
     Takes as argument a boolean"""
-    for elem in [elem for row in window[GUI_Text.PROCESSING_CONFIGURATION_ORIGIN_TAB_TITLE.name].Rows for elem in row]:
+    for elem in [elem for row in window[GUI_Text.PROCESSING_DATABASE_CONFIGURATION_TAB_TITLE.name].Rows for elem in row]:
         if not elem.metadata:
             continue
         if "ADD_NEW_MARC_FIELD" in elem.metadata["class"]:
@@ -541,11 +593,11 @@ while True:
         toggle_UI_elems_for_new_marc_field(False, window)
 
     # --------------- User selected an Origin database ---------------
-    if event == "ORIGIN_DATABASE_MARC" and not is_updating_marc_database:
+    if event == "DATABASE_MARC" and not is_updating_marc_database:
         is_updating_marc_database = True
-        VALLS.ORIGIN_DATABASE_MARC = val["ORIGIN_DATABASE_MARC"]
-        VALLS.MARC_DATA_BEING_CONFIGURED_LABEL = get_marc_data_label_by_id(VALLS.ORIGIN_DATABASE_MARC, lang, VALLS.MARC_DATA_BEING_CONFIGURED)
-        window["MARC_DATA_BEING_CONFIGURED_LABEL"].update(values=get_marc_data_labels(VALLS.ORIGIN_DATABASE_MARC, lang), value=VALLS.MARC_DATA_BEING_CONFIGURED_LABEL)
+        VALLS.DATABASE_MARC = val["DATABASE_MARC"]
+        VALLS.MARC_DATA_BEING_CONFIGURED_LABEL = get_marc_data_label_by_id(VALLS.DATABASE_MARC, lang, VALLS.MARC_DATA_BEING_CONFIGURED)
+        window["MARC_DATA_BEING_CONFIGURED_LABEL"].update(values=get_marc_data_labels(VALLS.DATABASE_MARC, lang), value=VALLS.MARC_DATA_BEING_CONFIGURED_LABEL)
         VALLS.update_marc_data_being_configured(VALLS.MARC_DATA_BEING_CONFIGURED_LABEL, lang)
         update_UI_marc_data_being_configured(window, VALLS)
         is_updating_marc_database = False
@@ -569,7 +621,7 @@ while True:
             VALLS.default_marc_field_being_configured()
         else:
             toggle_UI_elems_for_new_marc_field(False, window)
-            VALLS.update_marc_field_being_configured(VALLS.ORIGIN_DATABASE_MARC, VALLS.MARC_DATA_BEING_CONFIGURED, VALLS.MARC_DATA_FIELD)
+            VALLS.update_marc_field_being_configured(VALLS.DATABASE_MARC, VALLS.MARC_DATA_BEING_CONFIGURED, VALLS.MARC_DATA_FIELD)
         update_UI_marc_data_being_configured(window, VALLS)
         # DO NOT FORGET TO REENABLE THE TRACING
         window["MARC_DATA_FIELD"].TKStringVar.trace("w", option_menu_callback)

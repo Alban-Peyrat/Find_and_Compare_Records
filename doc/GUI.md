@@ -4,6 +4,10 @@ In an element without value, text comes from GUI_Text.ELEM.value[lang], key come
 In an element with value, text comes from ELEMS_WITH_VAL.ELEM, key is the ELEM attribute as a string
 
 Add save buttons names must start with `SAVE_` and only them
+In the screens definition, the values key contains all environment variables that are present in this screen
+If there are tabs inside the screens, environment variables specific to a tab should be in the tabs[{nameOfTheTab}] key.
+
+Tab groups inside a screen must have as a key the screen name + `_TABS`
 
 All elements in the PROCESSING_CONFIGURATION must have a metadate with the key `class` containging a list of :
 
