@@ -1,1773 +1,2013 @@
 {
-    "ORIGIN_DATABASE":{
-        "id":{
-            "label":{
-                "eng":"Database ID",
-                "fre":"ID base de données"
+    "ORIGIN_DATABASE": {
+        "id": {
+            "label": {
+                "eng": "Database ID",
+                "fre": "ID base de donn\u00e9es"
             },
-            "fields":[
+            "fields": [
                 {
-                    "tag":"001",
-                    "single_line_coded_data":false,
-                    "filtering_subfield":"",
-                    "subfields":[],
-                    "positions":[]
+                    "tag": "001",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "",
+                    "subfields": "",
+                    "positions": ""
                 }
             ]
         },
-        "ppn":{
-            "label":{
-                "eng":"PPN",
-                "fre":"PPN"
+        "ppn": {
+            "label": {
+                "eng": "PPN",
+                "fre": "PPN"
             },
-            "fields":[
+            "fields": [
                 {
-                    "tag":"009",
-                    "single_line_coded_data":false,
-                    "filtering_subfield":"",
-                    "subfields":[],
-                    "positions":[]
+                    "tag": "009",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "",
+                    "subfields": "",
+                    "positions": ""
                 }
             ]
         },
-        "general_processing_data_dates":{
-            "label":{
-                "eng":"Dates from general processing data",
-                "fre":"Dates (données générales de traitement)"
+        "general_processing_data_dates": {
+            "label": {
+                "eng": "Dates from general processing data",
+                "fre": "Dates (donn\u00e9es g\u00e9n\u00e9rales de traitement)"
             },
-            "fields":[
+            "fields": [
                 {
-                    "tag":"100",
-                    "single_line_coded_data":true,
-                    "filtering_subfield":"",
-                    "subfields":[],
-                    "positions":["8", "9-12", "13-16"]
+                    "tag": "100",
+                    "single_line_coded_data": true,
+                    "filtering_subfield": "",
+                    "subfields": [],
+                    "positions": [
+                        "8",
+                        "9-12",
+                        "13-16"
+                    ]
                 }
             ]
         },
-        "erroneous_isbn":{
-            "label":{
-                "eng":"Erroneous ISBN",
-                "fre": "ISBN erroné"
+        "erroneous_isbn": {
+            "label": {
+                "eng": "Erroneous ISBN",
+                "fre": "ISBN erron\u00e9"
             },
-            "fields":[
+            "fields": [
                 {
-                    "tag":"010",
-                    "single_line_coded_data":false,
-                    "filtering_subfield":"",
-                    "subfields":["z"],
-                    "positions":[]
+                    "tag": "010",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "",
+                    "subfields": [
+                        "z"
+                    ],
+                    "positions": []
                 }
             ]
         },
-        "title":{
-            "label":{
-                "eng":"Title",
+        "title": {
+            "label": {
+                "eng": "Title",
                 "fre": "Titre"
             },
-            "fields":[
+            "fields": [
                 {
-                    "tag":"200",
-                    "single_line_coded_data":false,
-                    "filtering_subfield":"",
-                    "subfields":["a", "d", "e", "h", "i", "v"],
-                    "positions":[]
+                    "tag": "200",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "",
+                    "subfields": [
+                        "a",
+                        "d",
+                        "e",
+                        "h",
+                        "i",
+                        "v"
+                    ],
+                    "positions": []
                 }
             ]
         },
-        "publishers_name":{
-            "label":{
-                "eng":"Publishers name",
-                "fre":"Éditeurs"
+        "publishers_name": {
+            "label": {
+                "eng": "Publishers name",
+                "fre": "\u00c9diteurs"
             },
-            "fields":[
+            "fields": [
                 {
-                    "tag":"210",
-                    "single_line_coded_data":false,
-                    "filtering_subfield":"",
-                    "subfields":["c"],
-                    "positions":[]
+                    "tag": "210",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "",
+                    "subfields": [
+                        "c"
+                    ],
+                    "positions": []
                 },
                 {
-                    "tag":"214",
-                    "single_line_coded_data":false,
-                    "filtering_subfield":"",
-                    "subfields":["c"],
-                    "positions":[]
+                    "tag": "214",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "",
+                    "subfields": [
+                        "c"
+                    ],
+                    "positions": []
                 }
             ]
         },
-        "edition_note":{
-            "label":{
-                "eng":"Notes about edition",
-                "fre":"Notes d'édition"
+        "edition_note": {
+            "label": {
+                "eng": "Notes about edition",
+                "fre": "Notes d'\u00e9dition"
             },
-            "fields":[
+            "fields": [
                 {
-                    "tag":"305",
-                    "single_line_coded_data":false,
-                    "filtering_subfield":"",
-                    "subfields":["a"],
-                    "positions":[]
+                    "tag": "305",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "",
+                    "subfields": [
+                        "a"
+                    ],
+                    "positions": []
                 }
             ]
         },
-        "publication_dates":{
-            "label":{
+        "publication_dates": {
+            "label": {
                 "eng": "Publication date",
                 "fre": "Dates de publications"
             },
-            "fields":[
+            "fields": [
                 {
-                    "tag":"210",
-                    "single_line_coded_data":false,
-                    "filtering_subfield":"",
-                    "subfields":["d"],
-                    "positions":[]
+                    "tag": "210",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "",
+                    "subfields": [
+                        "d"
+                    ],
+                    "positions": []
                 },
                 {
-                    "tag":"214",
-                    "single_line_coded_data":false,
-                    "filtering_subfield":"",
-                    "subfields":["d"],
-                    "positions":[]
+                    "tag": "214",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "",
+                    "subfields": [
+                        "d"
+                    ],
+                    "positions": []
                 }
             ]
         },
-        "physical_desription":{
-            "label":{
-                "eng":"Physical description",
-                "fre":"Description physique"
+        "physical_desription": {
+            "label": {
+                "eng": "Physical description",
+                "fre": "Description physique"
             },
-            "fields":[
+            "fields": [
                 {
-                    "tag":"215",
-                    "single_line_coded_data":false,
-                    "filtering_subfield":"",
-                    "subfields":["a"],
-                    "positions":[]
+                    "tag": "215",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "",
+                    "subfields": [
+                        "a"
+                    ],
+                    "positions": []
                 }
             ]
         },
-        "other_edition_in_other_medium_bibliographic_id":{
-            "label":{
-                "eng":"Bibliographic IDs of other edition in other medium",
-                "fre":"IDs de notice des autres éditions sur autre support"
+        "other_edition_in_other_medium_bibliographic_id": {
+            "label": {
+                "eng": "Bibliographic IDs of other edition in other medium",
+                "fre": "IDs de notice des autres \u00e9ditions sur autre support"
             },
-            "fields":[
+            "fields": [
                 {
-                    "tag":"452",
-                    "single_line_coded_data":false,
-                    "filtering_subfield":"",
-                    "subfields":["9"],
-                    "positions":[]
+                    "tag": "452",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "",
+                    "subfields": [
+                        "9"
+                    ],
+                    "positions": []
                 }
             ]
         },
-        "other_database_id":{
-            "label":{
-                "eng":"IDs in other database",
-                "fre":"IDs dans d'autres bases de données"
+        "other_database_id": {
+            "label": {
+                "eng": "IDs in other database",
+                "fre": "IDs dans d'autres bases de donn\u00e9es"
             },
-            "fields":[
+            "fields": [
                 {
-                    "tag":"035",
-                    "single_line_coded_data":false,
-                    "filtering_subfield":"",
-                    "subfields":["a"],
-                    "positions":[]
+                    "tag": "035",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "",
+                    "subfields": [
+                        "a"
+                    ],
+                    "positions": []
                 }
             ]
         },
-        "items":{
-            "label":{
-                "eng":"Items",
-                "fre":"Exemplaires"
+        "items": {
+            "label": {
+                "eng": "Items",
+                "fre": "Exemplaires"
             },
-            "fields":[
+            "fields": [
                 {
-                    "tag":"995",
-                    "single_line_coded_data":false,
-                    "filtering_subfield":"",
-                    "subfields":[],
-                    "positions":[]
+                    "tag": "995",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "",
+                    "subfields": [],
+                    "positions": []
                 }
             ]
         },
-        "items_barcode":{
-            "label":{
-                "eng":"Items barcode",
-                "fre":"Code-barre des exemplaires"
+        "items_barcode": {
+            "label": {
+                "eng": "Items barcode",
+                "fre": "Code-barre des exemplaires"
             },
-            "fields":[
+            "fields": [
                 {
-                    "tag":"995",
-                    "single_line_coded_data":false,
-                    "filtering_subfield":"",
-                    "subfields":["f"],
-                    "positions":[]
+                    "tag": "995",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "",
+                    "subfields": [
+                        "f"
+                    ],
+                    "positions": []
                 }
             ]
         }
     },
-    "TARGET_DATABASE":{
-        "id":{
-            "label":{
-                "eng":"PPN",
-                "fre":"PPN"
+    "TARGET_DATABASE": {
+        "id": {
+            "label": {
+                "eng": "PPN",
+                "fre": "PPN"
             },
-            "fields":[
+            "fields": [
                 {
-                    "tag":"001",
-                    "single_line_coded_data":false,
-                    "filtering_subfield":"",
-                    "subfields":[],
-                    "positions":[]
+                    "tag": "001",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "",
+                    "subfields": [],
+                    "positions": []
                 }
             ]
         },
-        "ppn":{
-            "label":{
-                "eng":"PPN",
-                "fre":"PPN"
+        "ppn": {
+            "label": {
+                "eng": "PPN",
+                "fre": "PPN"
             },
-            "fields":[
+            "fields": [
                 {
-                    "tag":"001",
-                    "single_line_coded_data":false,
-                    "filtering_subfield":"",
-                    "subfields":[],
-                    "positions":[]
+                    "tag": "001",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "",
+                    "subfields": [],
+                    "positions": []
                 }
             ]
         },
-        "general_processing_data_dates":{
-            "label":{
-                "eng":"Dates from general processing data",
-                "fre":"Dates (données générales de traitement)"
+        "general_processing_data_dates": {
+            "label": {
+                "eng": "Dates from general processing data",
+                "fre": "Dates (donn\u00e9es g\u00e9n\u00e9rales de traitement)"
             },
-            "fields":[
+            "fields": [
                 {
-                    "tag":"100",
-                    "single_line_coded_data":true,
-                    "filtering_subfield":"",
-                    "subfields":[],
-                    "positions":["8", "9-12", "13-16"]
+                    "tag": "100",
+                    "single_line_coded_data": true,
+                    "filtering_subfield": "",
+                    "subfields": [],
+                    "positions": [
+                        "8",
+                        "9-12",
+                        "13-16"
+                    ]
                 }
             ]
         },
-        "erroneous_isbn":{
-            "label":{
-                "eng":"Erroneous ISBN",
-                "fre": "ISBN erroné"
+        "erroneous_isbn": {
+            "label": {
+                "eng": "Erroneous ISBN",
+                "fre": "ISBN erron\u00e9"
             },
-            "fields":[
+            "fields": [
                 {
-                    "tag":"010",
-                    "single_line_coded_data":false,
-                    "filtering_subfield":"",
-                    "subfields":["z"],
-                    "positions":[]
+                    "tag": "010",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "",
+                    "subfields": [
+                        "z"
+                    ],
+                    "positions": []
                 }
             ]
         },
-        "title":{
-            "label":{
-                "eng":"Title",
+        "title": {
+            "label": {
+                "eng": "Title",
                 "fre": "Titre"
             },
-            "fields":[
+            "fields": [
                 {
-                    "tag":"200",
-                    "single_line_coded_data":false,
-                    "filtering_subfield":"",
-                    "subfields":["a", "d", "e", "h", "i", "v"],
-                    "positions":[]
+                    "tag": "200",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "",
+                    "subfields": [
+                        "a",
+                        "d",
+                        "e",
+                        "h",
+                        "i",
+                        "v"
+                    ],
+                    "positions": []
                 }
             ]
         },
-        "publishers_name":{
-            "label":{
-                "eng":"Publishers name",
-                "fre":"Éditeurs"
+        "publishers_name": {
+            "label": {
+                "eng": "Publishers name",
+                "fre": "\u00c9diteurs"
             },
-            "fields":[
+            "fields": [
                 {
-                    "tag":"210",
-                    "single_line_coded_data":false,
-                    "filtering_subfield":"",
-                    "subfields":["c"],
-                    "positions":[]
+                    "tag": "210",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "",
+                    "subfields": [
+                        "c"
+                    ],
+                    "positions": []
                 },
                 {
-                    "tag":"214",
-                    "single_line_coded_data":false,
-                    "filtering_subfield":"",
-                    "subfields":["c"],
-                    "positions":[]
+                    "tag": "214",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "",
+                    "subfields": [
+                        "c"
+                    ],
+                    "positions": []
                 }
             ]
         },
-        "edition_note":{
-            "label":{
-                "eng":"Notes about edition",
-                "fre":"Notes d'édition"
+        "edition_note": {
+            "label": {
+                "eng": "Notes about edition",
+                "fre": "Notes d'\u00e9dition"
             },
-            "fields":[
+            "fields": [
                 {
-                    "tag":"305",
-                    "single_line_coded_data":false,
-                    "filtering_subfield":"",
-                    "subfields":["a"],
-                    "positions":[]
+                    "tag": "305",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "",
+                    "subfields": [
+                        "a"
+                    ],
+                    "positions": []
                 }
             ]
         },
-        "publication_dates":{
-            "label":{
+        "publication_dates": {
+            "label": {
                 "eng": "Publication date",
                 "fre": "Dates de publications"
             },
-            "fields":[
+            "fields": [
                 {
-                    "tag":"210",
-                    "single_line_coded_data":false,
-                    "filtering_subfield":"",
-                    "subfields":["d"],
-                    "positions":[]
+                    "tag": "210",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "",
+                    "subfields": [
+                        "d"
+                    ],
+                    "positions": []
                 },
                 {
-                    "tag":"214",
-                    "single_line_coded_data":false,
-                    "filtering_subfield":"",
-                    "subfields":["d"],
-                    "positions":[]
+                    "tag": "214",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "",
+                    "subfields": [
+                        "d"
+                    ],
+                    "positions": []
                 }
             ]
         },
-        "physical_desription":{
-            "label":{
-                "eng":"Physical description",
-                "fre":"Description physique"
+        "physical_desription": {
+            "label": {
+                "eng": "Physical description",
+                "fre": "Description physique"
             },
-            "fields":[
+            "fields": [
                 {
-                    "tag":"215",
-                    "single_line_coded_data":false,
-                    "filtering_subfield":"",
-                    "subfields":["a"],
-                    "positions":[]
+                    "tag": "215",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "",
+                    "subfields": [
+                        "a"
+                    ],
+                    "positions": []
                 }
             ]
         },
-        "other_edition_in_other_medium_bibliographic_id":{
-            "label":{
-                "eng":"Bibliographic IDs of other edition in other medium",
-                "fre":"IDs de notice des autres éditions sur autre support"
+        "other_edition_in_other_medium_bibliographic_id": {
+            "label": {
+                "eng": "Bibliographic IDs of other edition in other medium",
+                "fre": "IDs de notice des autres \u00e9ditions sur autre support"
             },
-            "fields":[
+            "fields": [
                 {
-                    "tag":"452",
-                    "single_line_coded_data":false,
-                    "filtering_subfield":"",
-                    "subfields":["0"],
-                    "positions":[]
+                    "tag": "452",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "",
+                    "subfields": [
+                        "0"
+                    ],
+                    "positions": []
                 }
             ]
         },
-        "other_database_id":{
-            "label":{
-                "eng":"IDs in other database",
-                "fre":"IDs dans d'autres bases de données"
+        "other_database_id": {
+            "label": {
+                "eng": "IDs in other database",
+                "fre": "IDs dans d'autres bases de donn\u00e9es"
             },
-            "fields":[
+            "fields": [
                 {
-                    "tag":"035",
-                    "single_line_coded_data":false,
-                    "filtering_subfield":"1",
-                    "subfields":["a"],
-                    "positions":[]
+                    "tag": "035",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "1",
+                    "subfields": [
+                        "a"
+                    ],
+                    "positions": []
                 }
             ]
         },
-        "items":{
-            "label":{
-                "eng":"Items",
-                "fre":"Exemplaires"
+        "items": {
+            "label": {
+                "eng": "Items",
+                "fre": "Exemplaires"
             },
-            "fields":[
+            "fields": [
                 {
-                    "tag":"915",
-                    "single_line_coded_data":false,
-                    "filtering_subfield":"5",
-                    "subfields":[],
-                    "positions":[]
+                    "tag": "915",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "5",
+                    "subfields": [],
+                    "positions": []
                 },
                 {
-                    "tag":"916",
-                    "single_line_coded_data":false,
-                    "filtering_subfield":"5",
-                    "subfields":[],
-                    "positions":[]
+                    "tag": "916",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "5",
+                    "subfields": [],
+                    "positions": []
                 },
                 {
-                    "tag":"917",
-                    "single_line_coded_data":false,
-                    "filtering_subfield":"5",
-                    "subfields":[],
-                    "positions":[]
+                    "tag": "917",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "5",
+                    "subfields": [],
+                    "positions": []
                 },
                 {
-                    "tag":"919",
-                    "single_line_coded_data":false,
-                    "filtering_subfield":"5",
-                    "subfields":[],
-                    "positions":[]
+                    "tag": "919",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "5",
+                    "subfields": [],
+                    "positions": []
                 },
                 {
-                    "tag":"920",
-                    "single_line_coded_data":false,
-                    "filtering_subfield":"5",
-                    "subfields":[],
-                    "positions":[]
+                    "tag": "920",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "5",
+                    "subfields": [],
+                    "positions": []
                 },
                 {
-                    "tag":"930",
-                    "single_line_coded_data":false,
-                    "filtering_subfield":"5",
-                    "subfields":[],
-                    "positions":[]
+                    "tag": "930",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "5",
+                    "subfields": [],
+                    "positions": []
                 },
                 {
-                    "tag":"931",
-                    "single_line_coded_data":false,
-                    "filtering_subfield":"5",
-                    "subfields":[],
-                    "positions":[]
+                    "tag": "931",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "5",
+                    "subfields": [],
+                    "positions": []
                 },
                 {
-                    "tag":"932",
-                    "single_line_coded_data":false,
-                    "filtering_subfield":"5",
-                    "subfields":[],
-                    "positions":[]
+                    "tag": "932",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "5",
+                    "subfields": [],
+                    "positions": []
                 },
                 {
-                    "tag":"955",
-                    "single_line_coded_data":false,
-                    "filtering_subfield":"5",
-                    "subfields":[],
-                    "positions":[]
+                    "tag": "955",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "5",
+                    "subfields": [],
+                    "positions": []
                 },
                 {
-                    "tag":"956",
-                    "single_line_coded_data":false,
-                    "filtering_subfield":"5",
-                    "subfields":[],
-                    "positions":[]
+                    "tag": "956",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "5",
+                    "subfields": [],
+                    "positions": []
                 },
                 {
-                    "tag":"957",
-                    "single_line_coded_data":false,
-                    "filtering_subfield":"5",
-                    "subfields":[],
-                    "positions":[]
+                    "tag": "957",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "5",
+                    "subfields": [],
+                    "positions": []
                 },
                 {
-                    "tag":"958",
-                    "single_line_coded_data":false,
-                    "filtering_subfield":"5",
-                    "subfields":[],
-                    "positions":[]
+                    "tag": "958",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "5",
+                    "subfields": [],
+                    "positions": []
                 },
                 {
-                    "tag":"990",
-                    "single_line_coded_data":false,
-                    "filtering_subfield":"5",
-                    "subfields":[],
-                    "positions":[]
+                    "tag": "990",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "5",
+                    "subfields": [],
+                    "positions": []
                 },
                 {
-                    "tag":"991",
-                    "single_line_coded_data":false,
-                    "filtering_subfield":"5",
-                    "subfields":[],
-                    "positions":[]
+                    "tag": "991",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "5",
+                    "subfields": [],
+                    "positions": []
                 },
                 {
-                    "tag":"992",
-                    "single_line_coded_data":false,
-                    "filtering_subfield":"5",
-                    "subfields":[],
-                    "positions":[]
+                    "tag": "992",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "5",
+                    "subfields": [],
+                    "positions": []
                 },
                 {
-                    "tag":"316",
-                    "single_line_coded_data":false,
-                    "filtering_subfield":"5",
-                    "subfields":[],
-                    "positions":[]
+                    "tag": "316",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "5",
+                    "subfields": [],
+                    "positions": []
                 },
                 {
-                    "tag":"317",
-                    "single_line_coded_data":false,
-                    "filtering_subfield":"5",
-                    "subfields":[],
-                    "positions":[]
+                    "tag": "317",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "5",
+                    "subfields": [],
+                    "positions": []
                 },
                 {
-                    "tag":"318",
-                    "single_line_coded_data":false,
-                    "filtering_subfield":"5",
-                    "subfields":[],
-                    "positions":[]
+                    "tag": "318",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "5",
+                    "subfields": [],
+                    "positions": []
                 },
                 {
-                    "tag":"319",
-                    "single_line_coded_data":false,
-                    "filtering_subfield":"5",
-                    "subfields":[],
-                    "positions":[]
+                    "tag": "319",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "5",
+                    "subfields": [],
+                    "positions": []
                 },
                 {
-                    "tag":"971",
-                    "single_line_coded_data":false,
-                    "filtering_subfield":"5",
-                    "subfields":[],
-                    "positions":[]
+                    "tag": "971",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "5",
+                    "subfields": [],
+                    "positions": []
                 },
                 {
-                    "tag":"702",
-                    "single_line_coded_data":false,
-                    "filtering_subfield":"5",
-                    "subfields":[],
-                    "positions":[]
+                    "tag": "702",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "5",
+                    "subfields": [],
+                    "positions": []
                 },
                 {
-                    "tag":"703",
-                    "single_line_coded_data":false,
-                    "filtering_subfield":"5",
-                    "subfields":[],
-                    "positions":[]
+                    "tag": "703",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "5",
+                    "subfields": [],
+                    "positions": []
                 },
                 {
-                    "tag":"712",
-                    "single_line_coded_data":false,
-                    "filtering_subfield":"5",
-                    "subfields":[],
-                    "positions":[]
+                    "tag": "712",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "5",
+                    "subfields": [],
+                    "positions": []
                 },
                 {
-                    "tag":"713",
-                    "single_line_coded_data":false,
-                    "filtering_subfield":"5",
-                    "subfields":[],
-                    "positions":[]
+                    "tag": "713",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "5",
+                    "subfields": [],
+                    "positions": []
                 },
                 {
-                    "tag":"722",
-                    "single_line_coded_data":false,
-                    "filtering_subfield":"5",
-                    "subfields":[],
-                    "positions":[]
+                    "tag": "722",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "5",
+                    "subfields": [],
+                    "positions": []
                 },
                 {
-                    "tag":"723",
-                    "single_line_coded_data":false,
-                    "filtering_subfield":"5",
-                    "subfields":[],
-                    "positions":[]
+                    "tag": "723",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "5",
+                    "subfields": [],
+                    "positions": []
                 },
                 {
-                    "tag":"856",
-                    "single_line_coded_data":false,
-                    "filtering_subfield":"5",
-                    "subfields":[],
-                    "positions":[]
+                    "tag": "856",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "5",
+                    "subfields": [],
+                    "positions": []
                 },
                 {
-                    "tag":"940",
-                    "single_line_coded_data":false,
-                    "filtering_subfield":"5",
-                    "subfields":[],
-                    "positions":[]
+                    "tag": "940",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "5",
+                    "subfields": [],
+                    "positions": []
                 },
                 {
-                    "tag":"941",
-                    "single_line_coded_data":false,
-                    "filtering_subfield":"5",
-                    "subfields":[],
-                    "positions":[]
+                    "tag": "941",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "5",
+                    "subfields": [],
+                    "positions": []
                 }
             ]
         },
-        "items_barcode":{
-            "label":{
-                "eng":"Items barcode",
-                "fre":"Code-barre des exemplaires"
+        "items_barcode": {
+            "label": {
+                "eng": "Items barcode",
+                "fre": "Code-barre des exemplaires"
             },
-            "fields":[
+            "fields": [
                 {
-                    "tag":"915",
-                    "single_line_coded_data":false,
-                    "filtering_subfield":"5",
-                    "subfields":["b"],
-                    "positions":[]
+                    "tag": "915",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "5",
+                    "subfields": [
+                        "b"
+                    ],
+                    "positions": []
                 }
             ]
         }
     },
-    "KOHA_ARCHIRES":{
-        "id":{
-            "label":{
-                "eng":"Biblionumber",
-                "fre":"Biblionumber"
+    "KOHA_ARCHIRES": {
+        "id": {
+            "label": {
+                "eng": "Biblionumber",
+                "fre": "Biblionumber"
             },
-            "fields":[
+            "fields": [
                 {
-                    "tag":"001",
-                    "single_line_coded_data":false,
-                    "filtering_subfield":"",
-                    "subfields":[],
-                    "positions":[]
+                    "tag": "001",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "",
+                    "subfields": [],
+                    "positions": []
                 }
             ]
         },
-        "ppn":{
-            "label":{
-                "eng":"PPN",
-                "fre":"PPN"
+        "ppn": {
+            "label": {
+                "eng": "PPN",
+                "fre": "PPN"
             },
-            "fields":[
+            "fields": [
                 {
-                    "tag":"009",
-                    "single_line_coded_data":false,
-                    "filtering_subfield":"",
-                    "subfields":[],
-                    "positions":[]
+                    "tag": "009",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "",
+                    "subfields": [],
+                    "positions": []
                 }
             ]
         },
-        "general_processing_data_dates":{
-            "label":{
-                "eng":"Dates from general processing data",
-                "fre":"Dates (données générales de traitement)"
+        "general_processing_data_dates": {
+            "label": {
+                "eng": "Dates from general processing data",
+                "fre": "Dates (donn\u00e9es g\u00e9n\u00e9rales de traitement)"
             },
-            "fields":[
+            "fields": [
                 {
-                    "tag":"100",
-                    "single_line_coded_data":true,
-                    "filtering_subfield":"",
-                    "subfields":[],
-                    "positions":["8", "9-12", "13-16"]
+                    "tag": "100",
+                    "single_line_coded_data": true,
+                    "filtering_subfield": "",
+                    "subfields": [],
+                    "positions": [
+                        "8",
+                        "9-12",
+                        "13-16"
+                    ]
                 }
             ]
         },
-        "erroneous_isbn":{
-            "label":{
-                "eng":"Erroneous ISBN",
-                "fre": "ISBN erroné"
+        "erroneous_isbn": {
+            "label": {
+                "eng": "Erroneous ISBN",
+                "fre": "ISBN erron\u00e9"
             },
-            "fields":[
+            "fields": [
                 {
-                    "tag":"010",
-                    "single_line_coded_data":false,
-                    "filtering_subfield":"",
-                    "subfields":["z"],
-                    "positions":[]
+                    "tag": "010",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "",
+                    "subfields": [
+                        "z"
+                    ],
+                    "positions": []
                 }
             ]
         },
-        "title":{
-            "label":{
-                "eng":"Title",
+        "title": {
+            "label": {
+                "eng": "Title",
                 "fre": "Titre"
             },
-            "fields":[
+            "fields": [
                 {
-                    "tag":"200",
-                    "single_line_coded_data":false,
-                    "filtering_subfield":"",
-                    "subfields":["a", "d", "e", "h", "i", "v"],
-                    "positions":[]
+                    "tag": "200",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "",
+                    "subfields": [
+                        "a",
+                        "d",
+                        "e",
+                        "h",
+                        "i",
+                        "v"
+                    ],
+                    "positions": []
                 }
             ]
         },
-        "publishers_name":{
-            "label":{
-                "eng":"Publishers name",
-                "fre":"Éditeurs"
+        "publishers_name": {
+            "label": {
+                "eng": "Publishers name",
+                "fre": "\u00c9diteurs"
             },
-            "fields":[
+            "fields": [
                 {
-                    "tag":"210",
-                    "single_line_coded_data":false,
-                    "filtering_subfield":"",
-                    "subfields":["c"],
-                    "positions":[]
+                    "tag": "210",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "",
+                    "subfields": [
+                        "c"
+                    ],
+                    "positions": []
                 },
                 {
-                    "tag":"214",
-                    "single_line_coded_data":false,
-                    "filtering_subfield":"",
-                    "subfields":["c"],
-                    "positions":[]
+                    "tag": "214",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "",
+                    "subfields": [
+                        "c"
+                    ],
+                    "positions": []
                 }
             ]
         },
-        "edition_note":{
-            "label":{
-                "eng":"Notes about edition",
-                "fre":"Notes d'édition"
+        "edition_note": {
+            "label": {
+                "eng": "Notes about edition",
+                "fre": "Notes d'\u00e9dition"
             },
-            "fields":[
+            "fields": [
                 {
-                    "tag":"305",
-                    "single_line_coded_data":false,
-                    "filtering_subfield":"",
-                    "subfields":["a"],
-                    "positions":[]
+                    "tag": "305",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "",
+                    "subfields": [
+                        "a"
+                    ],
+                    "positions": []
                 }
             ]
         },
-        "publication_dates":{
-            "label":{
+        "publication_dates": {
+            "label": {
                 "eng": "Publication date",
                 "fre": "Dates de publications"
             },
-            "fields":[
+            "fields": [
                 {
-                    "tag":"210",
-                    "single_line_coded_data":false,
-                    "filtering_subfield":"",
-                    "subfields":["d"],
-                    "positions":[]
+                    "tag": "210",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "",
+                    "subfields": [
+                        "d"
+                    ],
+                    "positions": []
                 },
                 {
-                    "tag":"214",
-                    "single_line_coded_data":false,
-                    "filtering_subfield":"",
-                    "subfields":["d"],
-                    "positions":[]
+                    "tag": "214",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "",
+                    "subfields": [
+                        "d"
+                    ],
+                    "positions": []
                 }
             ]
         },
-        "physical_desription":{
-            "label":{
-                "eng":"Physical description",
-                "fre":"Description physique"
+        "physical_desription": {
+            "label": {
+                "eng": "Physical description",
+                "fre": "Description physique"
             },
-            "fields":[
+            "fields": [
                 {
-                    "tag":"215",
-                    "single_line_coded_data":false,
-                    "filtering_subfield":"",
-                    "subfields":["a"],
-                    "positions":[]
+                    "tag": "215",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "",
+                    "subfields": [
+                        "a"
+                    ],
+                    "positions": []
                 }
             ]
         },
-        "other_edition_in_other_medium_bibliographic_id":{
-            "label":{
-                "eng":"Bibliographic IDs of other edition in other medium",
-                "fre":"IDs de notice des autres éditions sur autre support"
+        "other_edition_in_other_medium_bibliographic_id": {
+            "label": {
+                "eng": "Bibliographic IDs of other edition in other medium",
+                "fre": "IDs de notice des autres \u00e9ditions sur autre support"
             },
-            "fields":[
+            "fields": [
                 {
-                    "tag":"452",
-                    "single_line_coded_data":false,
-                    "filtering_subfield":"",
-                    "subfields":["9"],
-                    "positions":[]
+                    "tag": "452",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "",
+                    "subfields": [
+                        "9"
+                    ],
+                    "positions": []
                 }
             ]
         },
-        "other_database_id":{
-            "label":{
-                "eng":"IDs in other database",
-                "fre":"IDs dans d'autres bases de données"
+        "other_database_id": {
+            "label": {
+                "eng": "IDs in other database",
+                "fre": "IDs dans d'autres bases de donn\u00e9es"
             },
-            "fields":[
+            "fields": [
                 {
-                    "tag":"035",
-                    "single_line_coded_data":false,
-                    "filtering_subfield":"",
-                    "subfields":["a"],
-                    "positions":[]
+                    "tag": "035",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "",
+                    "subfields": [
+                        "a"
+                    ],
+                    "positions": []
                 }
             ]
         },
-        "items":{
-            "label":{
-                "eng":"Items",
-                "fre":"Exemplaires"
+        "items": {
+            "label": {
+                "eng": "Items",
+                "fre": "Exemplaires"
             },
-            "fields":[
+            "fields": [
                 {
-                    "tag":"995",
-                    "single_line_coded_data":false,
-                    "filtering_subfield":"",
-                    "subfields":[],
-                    "positions":[]
+                    "tag": "995",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "",
+                    "subfields": [],
+                    "positions": []
                 }
             ]
         },
-        "items_barcode":{
-            "label":{
-                "eng":"Items barcode",
-                "fre":"Code-barre des exemplaires"
+        "items_barcode": {
+            "label": {
+                "eng": "Items barcode",
+                "fre": "Code-barre des exemplaires"
             },
-            "fields":[
+            "fields": [
                 {
-                    "tag":"995",
-                    "single_line_coded_data":false,
-                    "filtering_subfield":"",
-                    "subfields":["f"],
-                    "positions":[]
+                    "tag": "995",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "",
+                    "subfields": [
+                        "f"
+                    ],
+                    "positions": []
                 }
             ]
         }
     },
-    "SUDOC":{
-        "id":{
-            "label":{
-                "eng":"PPN",
-                "fre":"PPN"
+    "SUDOC": {
+        "id": {
+            "label": {
+                "eng": "PPN",
+                "fre": "PPN"
             },
-            "fields":[
+            "fields": [
                 {
-                    "tag":"001",
-                    "single_line_coded_data":false,
-                    "filtering_subfield":"",
-                    "subfields":[],
-                    "positions":[]
+                    "tag": "001",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "",
+                    "subfields": [],
+                    "positions": []
                 }
             ]
         },
-        "ppn":{
-            "label":{
-                "eng":"PPN",
-                "fre":"PPN"
+        "ppn": {
+            "label": {
+                "eng": "PPN",
+                "fre": "PPN"
             },
-            "fields":[
+            "fields": [
                 {
-                    "tag":"001",
-                    "single_line_coded_data":false,
-                    "filtering_subfield":"",
-                    "subfields":[],
-                    "positions":[]
+                    "tag": "001",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "",
+                    "subfields": [],
+                    "positions": []
                 }
             ]
         },
-        "general_processing_data_dates":{
-            "label":{
-                "eng":"Dates from general processing data",
-                "fre":"Dates (données générales de traitement)"
+        "general_processing_data_dates": {
+            "label": {
+                "eng": "Dates from general processing data",
+                "fre": "Dates (donn\u00e9es g\u00e9n\u00e9rales de traitement)"
             },
-            "fields":[
+            "fields": [
                 {
-                    "tag":"100",
-                    "single_line_coded_data":true,
-                    "filtering_subfield":"",
-                    "subfields":[],
-                    "positions":["8", "9-12", "13-16"]
+                    "tag": "100",
+                    "single_line_coded_data": true,
+                    "filtering_subfield": "",
+                    "subfields": [],
+                    "positions": [
+                        "8",
+                        "9-12",
+                        "13-16"
+                    ]
                 }
             ]
         },
-        "erroneous_isbn":{
-            "label":{
-                "eng":"Erroneous ISBN",
-                "fre": "ISBN erroné"
+        "erroneous_isbn": {
+            "label": {
+                "eng": "Erroneous ISBN",
+                "fre": "ISBN erron\u00e9"
             },
-            "fields":[
+            "fields": [
                 {
-                    "tag":"010",
-                    "single_line_coded_data":false,
-                    "filtering_subfield":"",
-                    "subfields":["z"],
-                    "positions":[]
+                    "tag": "010",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "",
+                    "subfields": [
+                        "z"
+                    ],
+                    "positions": []
                 }
             ]
         },
-        "title":{
-            "label":{
-                "eng":"Title",
+        "title": {
+            "label": {
+                "eng": "Title",
                 "fre": "Titre"
             },
-            "fields":[
+            "fields": [
                 {
-                    "tag":"200",
-                    "single_line_coded_data":false,
-                    "filtering_subfield":"",
-                    "subfields":["a", "d", "e", "h", "i", "v"],
-                    "positions":[]
+                    "tag": "200",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "",
+                    "subfields": [
+                        "a",
+                        "d",
+                        "e",
+                        "h",
+                        "i",
+                        "v"
+                    ],
+                    "positions": []
                 }
             ]
         },
-        "publishers_name":{
-            "label":{
-                "eng":"Publishers name",
-                "fre":"Éditeurs"
+        "publishers_name": {
+            "label": {
+                "eng": "Publishers name",
+                "fre": "\u00c9diteurs"
             },
-            "fields":[
+            "fields": [
                 {
-                    "tag":"210",
-                    "single_line_coded_data":false,
-                    "filtering_subfield":"",
-                    "subfields":["c"],
-                    "positions":[]
+                    "tag": "210",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "",
+                    "subfields": [
+                        "c"
+                    ],
+                    "positions": []
                 },
                 {
-                    "tag":"214",
-                    "single_line_coded_data":false,
-                    "filtering_subfield":"",
-                    "subfields":["c"],
-                    "positions":[]
+                    "tag": "214",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "",
+                    "subfields": [
+                        "c"
+                    ],
+                    "positions": []
                 }
             ]
         },
-        "edition_note":{
-            "label":{
-                "eng":"Notes about edition",
-                "fre":"Notes d'édition"
+        "edition_note": {
+            "label": {
+                "eng": "Notes about edition",
+                "fre": "Notes d'\u00e9dition"
             },
-            "fields":[
+            "fields": [
                 {
-                    "tag":"305",
-                    "single_line_coded_data":false,
-                    "filtering_subfield":"",
-                    "subfields":["a"],
-                    "positions":[]
+                    "tag": "305",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "",
+                    "subfields": [
+                        "a"
+                    ],
+                    "positions": []
                 }
             ]
         },
-        "publication_dates":{
-            "label":{
+        "publication_dates": {
+            "label": {
                 "eng": "Publication date",
                 "fre": "Dates de publications"
             },
-            "fields":[
+            "fields": [
                 {
-                    "tag":"210",
-                    "single_line_coded_data":false,
-                    "filtering_subfield":"",
-                    "subfields":["d"],
-                    "positions":[]
+                    "tag": "210",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "",
+                    "subfields": [
+                        "d"
+                    ],
+                    "positions": []
                 },
                 {
-                    "tag":"214",
-                    "single_line_coded_data":false,
-                    "filtering_subfield":"",
-                    "subfields":["d"],
-                    "positions":[]
+                    "tag": "214",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "",
+                    "subfields": [
+                        "d"
+                    ],
+                    "positions": []
                 }
             ]
         },
-        "physical_desription":{
-            "label":{
-                "eng":"Physical description",
-                "fre":"Description physique"
+        "physical_desription": {
+            "label": {
+                "eng": "Physical description",
+                "fre": "Description physique"
             },
-            "fields":[
+            "fields": [
                 {
-                    "tag":"215",
-                    "single_line_coded_data":false,
-                    "filtering_subfield":"",
-                    "subfields":["a"],
-                    "positions":[]
+                    "tag": "215",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "",
+                    "subfields": [
+                        "a"
+                    ],
+                    "positions": []
                 }
             ]
         },
-        "other_edition_in_other_medium_bibliographic_id":{
-            "label":{
-                "eng":"Bibliographic IDs of other edition in other medium",
-                "fre":"IDs de notice des autres éditions sur autre support"
+        "other_edition_in_other_medium_bibliographic_id": {
+            "label": {
+                "eng": "Bibliographic IDs of other edition in other medium",
+                "fre": "IDs de notice des autres \u00e9ditions sur autre support"
             },
-            "fields":[
+            "fields": [
                 {
-                    "tag":"452",
-                    "single_line_coded_data":false,
-                    "filtering_subfield":"",
-                    "subfields":["0"],
-                    "positions":[]
+                    "tag": "452",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "",
+                    "subfields": [
+                        "0"
+                    ],
+                    "positions": []
                 }
             ]
         },
-        "other_database_id":{
-            "label":{
-                "eng":"IDs in other database",
-                "fre":"IDs dans d'autres bases de données"
+        "other_database_id": {
+            "label": {
+                "eng": "IDs in other database",
+                "fre": "IDs dans d'autres bases de donn\u00e9es"
             },
-            "fields":[
+            "fields": [
                 {
-                    "tag":"035",
-                    "single_line_coded_data":false,
-                    "filtering_subfield":"1",
-                    "subfields":["a"],
-                    "positions":[]
+                    "tag": "035",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "1",
+                    "subfields": [
+                        "a"
+                    ],
+                    "positions": []
                 }
             ]
         },
-        "items":{
-            "label":{
-                "eng":"Items",
-                "fre":"Exemplaires"
+        "items": {
+            "label": {
+                "eng": "Items",
+                "fre": "Exemplaires"
             },
-            "fields":[
+            "fields": [
                 {
-                    "tag":"915",
-                    "single_line_coded_data":false,
-                    "filtering_subfield":"5",
-                    "subfields":[],
-                    "positions":[]
+                    "tag": "915",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "5",
+                    "subfields": [],
+                    "positions": []
                 },
                 {
-                    "tag":"916",
-                    "single_line_coded_data":false,
-                    "filtering_subfield":"5",
-                    "subfields":[],
-                    "positions":[]
+                    "tag": "916",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "5",
+                    "subfields": [],
+                    "positions": []
                 },
                 {
-                    "tag":"917",
-                    "single_line_coded_data":false,
-                    "filtering_subfield":"5",
-                    "subfields":[],
-                    "positions":[]
+                    "tag": "917",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "5",
+                    "subfields": [],
+                    "positions": []
                 },
                 {
-                    "tag":"919",
-                    "single_line_coded_data":false,
-                    "filtering_subfield":"5",
-                    "subfields":[],
-                    "positions":[]
+                    "tag": "919",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "5",
+                    "subfields": [],
+                    "positions": []
                 },
                 {
-                    "tag":"920",
-                    "single_line_coded_data":false,
-                    "filtering_subfield":"5",
-                    "subfields":[],
-                    "positions":[]
+                    "tag": "920",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "5",
+                    "subfields": [],
+                    "positions": []
                 },
                 {
-                    "tag":"930",
-                    "single_line_coded_data":false,
-                    "filtering_subfield":"5",
-                    "subfields":[],
-                    "positions":[]
+                    "tag": "930",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "5",
+                    "subfields": [],
+                    "positions": []
                 },
                 {
-                    "tag":"931",
-                    "single_line_coded_data":false,
-                    "filtering_subfield":"5",
-                    "subfields":[],
-                    "positions":[]
+                    "tag": "931",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "5",
+                    "subfields": [],
+                    "positions": []
                 },
                 {
-                    "tag":"932",
-                    "single_line_coded_data":false,
-                    "filtering_subfield":"5",
-                    "subfields":[],
-                    "positions":[]
+                    "tag": "932",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "5",
+                    "subfields": [],
+                    "positions": []
                 },
                 {
-                    "tag":"955",
-                    "single_line_coded_data":false,
-                    "filtering_subfield":"5",
-                    "subfields":[],
-                    "positions":[]
+                    "tag": "955",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "5",
+                    "subfields": [],
+                    "positions": []
                 },
                 {
-                    "tag":"956",
-                    "single_line_coded_data":false,
-                    "filtering_subfield":"5",
-                    "subfields":[],
-                    "positions":[]
+                    "tag": "956",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "5",
+                    "subfields": [],
+                    "positions": []
                 },
                 {
-                    "tag":"957",
-                    "single_line_coded_data":false,
-                    "filtering_subfield":"5",
-                    "subfields":[],
-                    "positions":[]
+                    "tag": "957",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "5",
+                    "subfields": [],
+                    "positions": []
                 },
                 {
-                    "tag":"958",
-                    "single_line_coded_data":false,
-                    "filtering_subfield":"5",
-                    "subfields":[],
-                    "positions":[]
+                    "tag": "958",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "5",
+                    "subfields": [],
+                    "positions": []
                 },
                 {
-                    "tag":"990",
-                    "single_line_coded_data":false,
-                    "filtering_subfield":"5",
-                    "subfields":[],
-                    "positions":[]
+                    "tag": "990",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "5",
+                    "subfields": [],
+                    "positions": []
                 },
                 {
-                    "tag":"991",
-                    "single_line_coded_data":false,
-                    "filtering_subfield":"5",
-                    "subfields":[],
-                    "positions":[]
+                    "tag": "991",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "5",
+                    "subfields": [],
+                    "positions": []
                 },
                 {
-                    "tag":"992",
-                    "single_line_coded_data":false,
-                    "filtering_subfield":"5",
-                    "subfields":[],
-                    "positions":[]
+                    "tag": "992",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "5",
+                    "subfields": [],
+                    "positions": []
                 },
                 {
-                    "tag":"316",
-                    "single_line_coded_data":false,
-                    "filtering_subfield":"5",
-                    "subfields":[],
-                    "positions":[]
+                    "tag": "316",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "5",
+                    "subfields": [],
+                    "positions": []
                 },
                 {
-                    "tag":"317",
-                    "single_line_coded_data":false,
-                    "filtering_subfield":"5",
-                    "subfields":[],
-                    "positions":[]
+                    "tag": "317",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "5",
+                    "subfields": [],
+                    "positions": []
                 },
                 {
-                    "tag":"318",
-                    "single_line_coded_data":false,
-                    "filtering_subfield":"5",
-                    "subfields":[],
-                    "positions":[]
+                    "tag": "318",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "5",
+                    "subfields": [],
+                    "positions": []
                 },
                 {
-                    "tag":"319",
-                    "single_line_coded_data":false,
-                    "filtering_subfield":"5",
-                    "subfields":[],
-                    "positions":[]
+                    "tag": "319",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "5",
+                    "subfields": [],
+                    "positions": []
                 },
                 {
-                    "tag":"971",
-                    "single_line_coded_data":false,
-                    "filtering_subfield":"5",
-                    "subfields":[],
-                    "positions":[]
+                    "tag": "971",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "5",
+                    "subfields": [],
+                    "positions": []
                 },
                 {
-                    "tag":"702",
-                    "single_line_coded_data":false,
-                    "filtering_subfield":"5",
-                    "subfields":[],
-                    "positions":[]
+                    "tag": "702",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "5",
+                    "subfields": [],
+                    "positions": []
                 },
                 {
-                    "tag":"703",
-                    "single_line_coded_data":false,
-                    "filtering_subfield":"5",
-                    "subfields":[],
-                    "positions":[]
+                    "tag": "703",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "5",
+                    "subfields": [],
+                    "positions": []
                 },
                 {
-                    "tag":"712",
-                    "single_line_coded_data":false,
-                    "filtering_subfield":"5",
-                    "subfields":[],
-                    "positions":[]
+                    "tag": "712",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "5",
+                    "subfields": [],
+                    "positions": []
                 },
                 {
-                    "tag":"713",
-                    "single_line_coded_data":false,
-                    "filtering_subfield":"5",
-                    "subfields":[],
-                    "positions":[]
+                    "tag": "713",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "5",
+                    "subfields": [],
+                    "positions": []
                 },
                 {
-                    "tag":"722",
-                    "single_line_coded_data":false,
-                    "filtering_subfield":"5",
-                    "subfields":[],
-                    "positions":[]
+                    "tag": "722",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "5",
+                    "subfields": [],
+                    "positions": []
                 },
                 {
-                    "tag":"723",
-                    "single_line_coded_data":false,
-                    "filtering_subfield":"5",
-                    "subfields":[],
-                    "positions":[]
+                    "tag": "723",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "5",
+                    "subfields": [],
+                    "positions": []
                 },
                 {
-                    "tag":"856",
-                    "single_line_coded_data":false,
-                    "filtering_subfield":"5",
-                    "subfields":[],
-                    "positions":[]
+                    "tag": "856",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "5",
+                    "subfields": [],
+                    "positions": []
                 },
                 {
-                    "tag":"940",
-                    "single_line_coded_data":false,
-                    "filtering_subfield":"5",
-                    "subfields":[],
-                    "positions":[]
+                    "tag": "940",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "5",
+                    "subfields": [],
+                    "positions": []
                 },
                 {
-                    "tag":"941",
-                    "single_line_coded_data":false,
-                    "filtering_subfield":"5",
-                    "subfields":[],
-                    "positions":[]
+                    "tag": "941",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "5",
+                    "subfields": [],
+                    "positions": []
                 }
             ]
         },
-        "items_barcode":{
-            "label":{
-                "eng":"Items barcode",
-                "fre":"Code-barre des exemplaires"
+        "items_barcode": {
+            "label": {
+                "eng": "Items barcode",
+                "fre": "Code-barre des exemplaires"
             },
-            "fields":[
+            "fields": [
                 {
-                    "tag":"915",
-                    "single_line_coded_data":false,
-                    "filtering_subfield":"5",
-                    "subfields":["b"],
-                    "positions":[]
+                    "tag": "915",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "5",
+                    "subfields": [
+                        "b"
+                    ],
+                    "positions": []
                 }
             ]
         }
     },
-    "DEBUG_SUDOC_XML":{
-        "id":{
-            "label":"ID",
-            "fields":[
+    "DEBUG_SUDOC_XML": {
+        "id": {
+            "label": "ID",
+            "fields": [
                 {
-                    "tag":"001",
-                    "single_line_coded_data":false,
-                    "filtering_subfield":"",
-                    "subfields":[],
-                    "positions":[]
+                    "tag": "001",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "",
+                    "subfields": [],
+                    "positions": []
                 }
             ]
         },
-        "ppn":{
-            "label":"PPN",
-            "fields":[
+        "ppn": {
+            "label": "PPN",
+            "fields": [
                 {
-                    "tag":"001",
-                    "single_line_coded_data":false,
-                    "filtering_subfield":"",
-                    "subfields":[],
-                    "positions":[]
+                    "tag": "001",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "",
+                    "subfields": [],
+                    "positions": []
                 }
             ]
         },
-        "general_processing_data_dates":{
-            "label":"Dates from general prcessing data",
-            "fields":[
+        "general_processing_data_dates": {
+            "label": "Dates from general prcessing data",
+            "fields": [
                 {
-                    "tag":"100",
-                    "single_line_coded_data":true,
-                    "filtering_subfield":"",
-                    "subfields":[],
-                    "positions":["8", "9-12", "13-16"]
+                    "tag": "100",
+                    "single_line_coded_data": true,
+                    "filtering_subfield": "",
+                    "subfields": [],
+                    "positions": [
+                        "8",
+                        "9-12",
+                        "13-16"
+                    ]
                 }
             ]
         },
-        "erroneous_isbn":{
-            "label":"Erroneous ISBN",
-            "fields":[
+        "erroneous_isbn": {
+            "label": "Erroneous ISBN",
+            "fields": [
                 {
-                    "tag":"010",
-                    "single_line_coded_data":false,
-                    "filtering_subfield":"",
-                    "subfields":["z"],
-                    "positions":[]
+                    "tag": "010",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "",
+                    "subfields": [
+                        "z"
+                    ],
+                    "positions": []
                 }
             ]
         },
-        "title":{
-            "label":"Title",
-            "fields":[
+        "title": {
+            "label": "Title",
+            "fields": [
                 {
-                    "tag":"200",
-                    "single_line_coded_data":false,
-                    "filtering_subfield":"",
-                    "subfields":["a", "d", "e", "h", "i", "v"],
-                    "positions":[]
+                    "tag": "200",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "",
+                    "subfields": [
+                        "a",
+                        "d",
+                        "e",
+                        "h",
+                        "i",
+                        "v"
+                    ],
+                    "positions": []
                 },
                 {
-                    "tag":"503",
-                    "single_line_coded_data":false,
-                    "filtering_subfield":"",
-                    "subfields":["a", "d", "e", "h", "i", "v"],
-                    "positions":[]
+                    "tag": "503",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "",
+                    "subfields": [
+                        "a",
+                        "d",
+                        "e",
+                        "h",
+                        "i",
+                        "v"
+                    ],
+                    "positions": []
                 }
             ]
         },
-        "publishers_name":{
-            "label":"Publishers name",
-            "fields":[
+        "publishers_name": {
+            "label": "Publishers name",
+            "fields": [
                 {
-                    "tag":"210",
-                    "single_line_coded_data":false,
-                    "filtering_subfield":"",
-                    "subfields":["c"],
-                    "positions":[]
+                    "tag": "210",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "",
+                    "subfields": [
+                        "c"
+                    ],
+                    "positions": []
                 },
                 {
-                    "tag":"214",
-                    "single_line_coded_data":false,
-                    "filtering_subfield":"",
-                    "subfields":["c"],
-                    "positions":[]
+                    "tag": "214",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "",
+                    "subfields": [
+                        "c"
+                    ],
+                    "positions": []
                 }
             ]
         },
-        "edition_note":{
-            "label":"Note about edition",
-            "fields":[
+        "edition_note": {
+            "label": "Note about edition",
+            "fields": [
                 {
-                    "tag":"305",
-                    "single_line_coded_data":false,
-                    "filtering_subfield":"",
-                    "subfields":["a"],
-                    "positions":[]
+                    "tag": "305",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "",
+                    "subfields": [
+                        "a"
+                    ],
+                    "positions": []
                 }
             ]
         },
-        "publication_dates":{
-            "label":"Publication date",
-            "fields":[
+        "publication_dates": {
+            "label": "Publication date",
+            "fields": [
                 {
-                    "tag":"210",
-                    "single_line_coded_data":false,
-                    "filtering_subfield":"",
-                    "subfields":["d"],
-                    "positions":[]
+                    "tag": "210",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "",
+                    "subfields": [
+                        "d"
+                    ],
+                    "positions": []
                 },
                 {
-                    "tag":"214",
-                    "single_line_coded_data":false,
-                    "filtering_subfield":"",
-                    "subfields":["d"],
-                    "positions":[]
+                    "tag": "214",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "",
+                    "subfields": [
+                        "d"
+                    ],
+                    "positions": []
                 }
             ]
         },
-        "physical_desription":{
-            "label":"Physical description",
-            "fields":[
+        "physical_desription": {
+            "label": "Physical description",
+            "fields": [
                 {
-                    "tag":"215",
-                    "single_line_coded_data":false,
-                    "filtering_subfield":"",
-                    "subfields":["a"],
-                    "positions":[]
+                    "tag": "215",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "",
+                    "subfields": [
+                        "a"
+                    ],
+                    "positions": []
                 }
             ]
         },
-        "other_edition_in_other_medium_bibliographic_id":{
-            "label":"Bibliographic IDs of other edition in other medium",
-            "fields":[
+        "other_edition_in_other_medium_bibliographic_id": {
+            "label": "Bibliographic IDs of other edition in other medium",
+            "fields": [
                 {
-                    "tag":"452",
-                    "single_line_coded_data":false,
-                    "filtering_subfield":"",
-                    "subfields":["9"],
-                    "positions":[]
+                    "tag": "452",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "",
+                    "subfields": [
+                        "9"
+                    ],
+                    "positions": []
                 }
             ]
         },
-        "other_database_id":{
-            "label":"IDs in other database",
-            "fields":[
+        "other_database_id": {
+            "label": "IDs in other database",
+            "fields": [
                 {
-                    "tag":"035",
-                    "single_line_coded_data":false,
-                    "filtering_subfield":"",
-                    "subfields":["a"],
-                    "positions":[]
+                    "tag": "035",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "",
+                    "subfields": [
+                        "a"
+                    ],
+                    "positions": []
                 }
             ]
         },
-        "items":{
-            "label":"Items",
-            "fields":[
+        "items": {
+            "label": "Items",
+            "fields": [
                 {
-                    "tag":"930",
-                    "single_line_coded_data":false,
-                    "filtering_subfield":"",
-                    "subfields":[],
-                    "positions":[]
+                    "tag": "930",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "",
+                    "subfields": [],
+                    "positions": []
                 }
             ]
         },
-        "items_barcode":{
-            "label":"Items barcode",
-            "fields":[
+        "items_barcode": {
+            "label": "Items barcode",
+            "fields": [
                 {
-                    "tag":"930",
-                    "single_line_coded_data":false,
-                    "filtering_subfield":"5",
-                    "subfields":["a"],
-                    "positions":[]
+                    "tag": "930",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "5",
+                    "subfields": [
+                        "a"
+                    ],
+                    "positions": []
                 }
             ]
         }
     },
-    "DEBUG_SUDOC_PICA":{
-        "id":{
-            "label":"ID",
-            "fields":[
+    "DEBUG_SUDOC_PICA": {
+        "id": {
+            "label": "ID",
+            "fields": [
                 {
-                    "tag":"003@",
-                    "single_line_coded_data":false,
-                    "filtering_subfield":"",
-                    "subfields":[],
-                    "positions":[]
+                    "tag": "003@",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "",
+                    "subfields": [],
+                    "positions": []
                 }
             ]
         },
-        "ppn":{
-            "label":"PPN",
-            "fields":[
+        "ppn": {
+            "label": "PPN",
+            "fields": [
                 {
-                    "tag":"003@",
-                    "single_line_coded_data":false,
-                    "filtering_subfield":"",
-                    "subfields":[],
-                    "positions":[]
+                    "tag": "003@",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "",
+                    "subfields": [],
+                    "positions": []
                 }
             ]
         },
-        "general_processing_data_dates":{
-            "label":"Dates from general prcessing data",
-            "fields":[
+        "general_processing_data_dates": {
+            "label": "Dates from general prcessing data",
+            "fields": [
                 {
-                    "tag":"001B",
-                    "single_line_coded_data":true,
-                    "filtering_subfield":"",
-                    "subfields":["0"],
-                    "positions":["0-8", "9", "10-11"]
+                    "tag": "001B",
+                    "single_line_coded_data": true,
+                    "filtering_subfield": "",
+                    "subfields": [
+                        "0"
+                    ],
+                    "positions": [
+                        "0-8",
+                        "9",
+                        "10-11"
+                    ]
                 }
             ]
         },
-        "erroneous_isbn":{
-            "label":"Erroneous ISBN",
-            "fields":[
+        "erroneous_isbn": {
+            "label": "Erroneous ISBN",
+            "fields": [
                 {
-                    "tag":"209A",
-                    "single_line_coded_data":false,
-                    "filtering_subfield":"",
-                    "subfields":["b"],
-                    "positions":[]
+                    "tag": "209A",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "",
+                    "subfields": [
+                        "b"
+                    ],
+                    "positions": []
                 }
             ]
         },
-        "title":{
-            "label":"Title",
-            "fields":[
+        "title": {
+            "label": "Title",
+            "fields": [
                 {
-                    "tag":"021A",
-                    "single_line_coded_data":false,
-                    "filtering_subfield":"",
-                    "subfields":["a", "d", "e", "h", "i", "v"],
-                    "positions":[]
+                    "tag": "021A",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "",
+                    "subfields": [
+                        "a",
+                        "d",
+                        "e",
+                        "h",
+                        "i",
+                        "v"
+                    ],
+                    "positions": []
                 },
                 {
-                    "tag":"022E",
-                    "single_line_coded_data":false,
-                    "filtering_subfield":"",
-                    "subfields":["a", "d", "e", "h", "i", "v"],
-                    "positions":[]
+                    "tag": "022E",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "",
+                    "subfields": [
+                        "a",
+                        "d",
+                        "e",
+                        "h",
+                        "i",
+                        "v"
+                    ],
+                    "positions": []
                 }
             ]
         },
-        "publishers_name":{
-            "label":"Publishers name",
-            "fields":[
+        "publishers_name": {
+            "label": "Publishers name",
+            "fields": [
                 {
-                    "tag":"046F",
-                    "single_line_coded_data":false,
-                    "filtering_subfield":"",
-                    "subfields":["a"],
-                    "positions":[]
+                    "tag": "046F",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "",
+                    "subfields": [
+                        "a"
+                    ],
+                    "positions": []
                 },
                 {
-                    "tag":"034R",
-                    "single_line_coded_data":false,
-                    "filtering_subfield":"",
-                    "subfields":["c"],
-                    "positions":[]
+                    "tag": "034R",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "",
+                    "subfields": [
+                        "c"
+                    ],
+                    "positions": []
                 }
             ]
         },
-        "edition_note":{
-            "label":"Note about edition",
-            "fields":[
+        "edition_note": {
+            "label": "Note about edition",
+            "fields": [
                 {
-                    "tag":"037A",
-                    "single_line_coded_data":false,
-                    "filtering_subfield":"",
-                    "subfields":["a"],
-                    "positions":[]
+                    "tag": "037A",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "",
+                    "subfields": [
+                        "a"
+                    ],
+                    "positions": []
                 }
             ]
         },
-        "publication_dates":{
-            "label":"Publication date",
-            "fields":[
+        "publication_dates": {
+            "label": "Publication date",
+            "fields": [
                 {
-                    "tag":"046F",
-                    "single_line_coded_data":false,
-                    "filtering_subfield":"",
-                    "subfields":["a"],
-                    "positions":[]
+                    "tag": "046F",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "",
+                    "subfields": [
+                        "a"
+                    ],
+                    "positions": []
                 },
                 {
-                    "tag":"101@",
-                    "single_line_coded_data":false,
-                    "filtering_subfield":"",
-                    "subfields":["b"],
-                    "positions":[]
+                    "tag": "101@",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "",
+                    "subfields": [
+                        "b"
+                    ],
+                    "positions": []
                 }
             ]
         },
-        "physical_desription":{
-            "label":"Physical description",
-            "fields":[
+        "physical_desription": {
+            "label": "Physical description",
+            "fields": [
                 {
-                    "tag":"034R",
-                    "single_line_coded_data":false,
-                    "filtering_subfield":"",
-                    "subfields":["a"],
-                    "positions":[]
+                    "tag": "034R",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "",
+                    "subfields": [
+                        "a"
+                    ],
+                    "positions": []
                 }
             ]
         },
-        "other_edition_in_other_medium_bibliographic_id":{
-            "label":"Bibliographic IDs of other edition in other medium",
-            "fields":[
+        "other_edition_in_other_medium_bibliographic_id": {
+            "label": "Bibliographic IDs of other edition in other medium",
+            "fields": [
                 {
-                    "tag":"003@",
-                    "single_line_coded_data":false,
-                    "filtering_subfield":"",
-                    "subfields":["0"],
-                    "positions":[]
+                    "tag": "003@",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "",
+                    "subfields": [
+                        "0"
+                    ],
+                    "positions": []
                 }
             ]
         },
-        "other_database_id":{
-            "label":"IDs in other database",
-            "fields":[
+        "other_database_id": {
+            "label": "IDs in other database",
+            "fields": [
                 {
-                    "tag":"003O",
-                    "single_line_coded_data":false,
-                    "filtering_subfield":"",
-                    "subfields":["0"],
-                    "positions":[]
+                    "tag": "003O",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "",
+                    "subfields": [
+                        "0"
+                    ],
+                    "positions": []
                 }
             ]
         },
-        "items":{
-            "label":"Items",
-            "fields":[
+        "items": {
+            "label": "Items",
+            "fields": [
                 {
-                    "tag":"028B",
-                    "single_line_coded_data":false,
-                    "filtering_subfield":"",
-                    "subfields":[],
-                    "positions":[]
+                    "tag": "028B",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "",
+                    "subfields": [],
+                    "positions": []
                 }
             ]
         },
-        "items_barcode":{
-            "label":"Items barcode",
-            "fields":[
+        "items_barcode": {
+            "label": "Items barcode",
+            "fields": [
                 {
-                    "tag":"209A",
-                    "single_line_coded_data":false,
-                    "filtering_subfield":"b",
-                    "subfields":["d"],
-                    "positions":[]
+                    "tag": "209A",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "b",
+                    "subfields": [
+                        "d"
+                    ],
+                    "positions": []
                 }
             ]
         }
     },
-    "DEBUG_KOHA":{
-        "id":{
-            "label":"ID",
-            "fields":[
+    "DEBUG_KOHA": {
+        "id": {
+            "label": "ID",
+            "fields": [
                 {
-                    "tag":"001",
-                    "single_line_coded_data":false,
-                    "filtering_subfield":"",
-                    "subfields":[],
-                    "positions":[]
+                    "tag": "001",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "",
+                    "subfields": [],
+                    "positions": []
                 }
             ]
         },
-        "ppn":{
-            "label":"PPN",
-            "fields":[
+        "ppn": {
+            "label": "PPN",
+            "fields": [
                 {
-                    "tag":"009",
-                    "single_line_coded_data":false,
-                    "filtering_subfield":"",
-                    "subfields":[],
-                    "positions":[]
+                    "tag": "009",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "",
+                    "subfields": [],
+                    "positions": []
                 }
             ]
         },
-        "general_processing_data_dates":{
-            "label":"Dates from general prcessing data",
-            "fields":[
+        "general_processing_data_dates": {
+            "label": "Dates from general prcessing data",
+            "fields": [
                 {
-                    "tag":"100",
-                    "single_line_coded_data":true,
-                    "filtering_subfield":"",
-                    "subfields":[],
-                    "positions":["8", "9-12", "13-16"]
+                    "tag": "100",
+                    "single_line_coded_data": true,
+                    "filtering_subfield": "",
+                    "subfields": [],
+                    "positions": [
+                        "8",
+                        "9-12",
+                        "13-16"
+                    ]
                 }
             ]
         },
-        "erroneous_isbn":{
-            "label":"Erroneous ISBN",
-            "fields":[
+        "erroneous_isbn": {
+            "label": "Erroneous ISBN",
+            "fields": [
                 {
-                    "tag":"010",
-                    "single_line_coded_data":false,
-                    "filtering_subfield":"",
-                    "subfields":["z"],
-                    "positions":[]
+                    "tag": "010",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "",
+                    "subfields": [
+                        "z"
+                    ],
+                    "positions": []
                 }
             ]
         },
-        "title":{
-            "label":"Title",
-            "fields":[
+        "title": {
+            "label": "Title",
+            "fields": [
                 {
-                    "tag":"200",
-                    "single_line_coded_data":false,
-                    "filtering_subfield":"",
-                    "subfields":["a", "d", "e", "h", "i", "v"],
-                    "positions":[]
+                    "tag": "200",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "",
+                    "subfields": [
+                        "a",
+                        "d",
+                        "e",
+                        "h",
+                        "i",
+                        "v"
+                    ],
+                    "positions": []
                 },
                 {
-                    "tag":"214",
-                    "single_line_coded_data":false,
-                    "filtering_subfield":"",
-                    "subfields":["a", "d", "e", "h", "i", "v"],
-                    "positions":[]
+                    "tag": "214",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "",
+                    "subfields": [
+                        "a",
+                        "d",
+                        "e",
+                        "h",
+                        "i",
+                        "v"
+                    ],
+                    "positions": []
                 }
             ]
         },
-        "publishers_name":{
-            "label":"Publishers name",
-            "fields":[
+        "publishers_name": {
+            "label": "Publishers name",
+            "fields": [
                 {
-                    "tag":"210",
-                    "single_line_coded_data":false,
-                    "filtering_subfield":"",
-                    "subfields":["c"],
-                    "positions":[]
+                    "tag": "210",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "",
+                    "subfields": [
+                        "c"
+                    ],
+                    "positions": []
                 },
                 {
-                    "tag":"214",
-                    "single_line_coded_data":false,
-                    "filtering_subfield":"",
-                    "subfields":["c"],
-                    "positions":[]
+                    "tag": "214",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "",
+                    "subfields": [
+                        "c"
+                    ],
+                    "positions": []
                 }
             ]
         },
-        "edition_note":{
-            "label":"Note about edition",
-            "fields":[
+        "edition_note": {
+            "label": "Note about edition",
+            "fields": [
                 {
-                    "tag":"305",
-                    "single_line_coded_data":false,
-                    "filtering_subfield":"",
-                    "subfields":["a"],
-                    "positions":[]
+                    "tag": "305",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "",
+                    "subfields": [
+                        "a"
+                    ],
+                    "positions": []
                 }
             ]
         },
-        "publication_dates":{
-            "label":"Publication date",
-            "fields":[
+        "publication_dates": {
+            "label": "Publication date",
+            "fields": [
                 {
-                    "tag":"210",
-                    "single_line_coded_data":false,
-                    "filtering_subfield":"",
-                    "subfields":["d"],
-                    "positions":[]
+                    "tag": "210",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "",
+                    "subfields": [
+                        "d"
+                    ],
+                    "positions": []
                 },
                 {
-                    "tag":"214",
-                    "single_line_coded_data":false,
-                    "filtering_subfield":"",
-                    "subfields":["d"],
-                    "positions":[]
+                    "tag": "214",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "",
+                    "subfields": [
+                        "d"
+                    ],
+                    "positions": []
                 }
             ]
         },
-        "physical_desription":{
-            "label":"Physical description",
-            "fields":[
+        "physical_desription": {
+            "label": "Physical description",
+            "fields": [
                 {
-                    "tag":"215",
-                    "single_line_coded_data":false,
-                    "filtering_subfield":"",
-                    "subfields":["a"],
-                    "positions":[]
+                    "tag": "215",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "",
+                    "subfields": [
+                        "a"
+                    ],
+                    "positions": []
                 }
             ]
         },
-        "other_edition_in_other_medium_bibliographic_id":{
-            "label":"Bibliographic IDs of other edition in other medium",
-            "fields":[
+        "other_edition_in_other_medium_bibliographic_id": {
+            "label": "Bibliographic IDs of other edition in other medium",
+            "fields": [
                 {
-                    "tag":"452",
-                    "single_line_coded_data":false,
-                    "filtering_subfield":"",
-                    "subfields":["9"],
-                    "positions":[]
+                    "tag": "452",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "",
+                    "subfields": [
+                        "9"
+                    ],
+                    "positions": []
                 }
             ]
         },
-        "other_database_id":{
-            "label":"IDs in other database",
-            "fields":[
+        "other_database_id": {
+            "label": "IDs in other database",
+            "fields": [
                 {
-                    "tag":"035",
-                    "single_line_coded_data":false,
-                    "filtering_subfield":"",
-                    "subfields":["a"],
-                    "positions":[]
+                    "tag": "035",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "",
+                    "subfields": [
+                        "a"
+                    ],
+                    "positions": []
                 }
             ]
         },
-        "items":{
-            "label":"Items",
-            "fields":[
+        "items": {
+            "label": "Items",
+            "fields": [
                 {
-                    "tag":"930",
-                    "single_line_coded_data":false,
-                    "filtering_subfield":"",
-                    "subfields":[],
-                    "positions":[]
+                    "tag": "930",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "",
+                    "subfields": [],
+                    "positions": []
                 }
             ]
         },
-        "items_barcode":{
-            "label":"Items barcode",
-            "fields":[
+        "items_barcode": {
+            "label": "Items barcode",
+            "fields": [
                 {
-                    "tag":"930",
-                    "single_line_coded_data":false,
-                    "filtering_subfield":"5",
-                    "subfields":["a"],
-                    "positions":[]
+                    "tag": "930",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "5",
+                    "subfields": [
+                        "a"
+                    ],
+                    "positions": []
                 }
             ]
         }

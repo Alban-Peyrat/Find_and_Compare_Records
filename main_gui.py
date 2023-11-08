@@ -235,6 +235,11 @@ PROCESSING_CONFIGURATION_SCREEN_MAIN_TAB_LAYOUT = [
     ],
     [
         
+    ],
+
+    # ----- Row 9 : Save -----
+    [
+        sg.Button(GUI_Text.SAVE_MAIN_PROCESSING_CONFIGURATION_PARAMETERS.value[lang], key=GUI_Text.SAVE_MAIN_PROCESSING_CONFIGURATION_PARAMETERS.name)
     ]
 ]
 
@@ -306,7 +311,11 @@ PROCESSING_CONFIGURATION_SCREEN_ORIGIN_TAB_LAYOUT = [
             size=(38, None)
         )
     ],
-    
+
+    # ----- SAve button -----
+    [
+        sg.Button(GUI_Text.SAVE_THIS_MARC_FIELD.value[lang], key=GUI_Text.SAVE_THIS_MARC_FIELD.name)
+    ],
 
 ]
 
@@ -334,12 +343,11 @@ PROCESSING_CONFIGURATION_SCREEN_LAYOUT = [
         ])
     ],
 
-    # Submit + Save
+    # Submit
     [
         sg.Push(),
         sg.Button(GUI_Text.START_ANALYSIS.value[lang], key=GUI_Text.START_ANALYSIS.name),
-        sg.Push(),
-        sg.Button(GUI_Text.SAVE_THIS_PROCESSING_CONFIGURATION_TAB_PARAMETERS.value[lang], key=GUI_Text.SAVE_THIS_PROCESSING_CONFIGURATION_TAB_PARAMETERS.name)
+        sg.Push()
     ]
 ]
 
@@ -360,6 +368,25 @@ def save_parameters(screen: GUI_Screens, val: dict):
             new_val = new_val[0]
         dotenv.set_key(DOTENV_FILE, screen_val, new_val)
 
+def save_marc_field(val, lang):
+    db = val["ORIGIN_DATABASE_MARC"]
+    data_id = get_marc_data_id_from_label(db, lang, val["MARC_DATA_BEING_CONFIGURED_LABEL"])
+    this_field = None
+    if val["MARC_DATA_FIELD"] == GUI_Text.MARC_DATA_NEW_FIELD_TEXT.value[lang]:
+        this_field = {"tag":val["MARC_DATA_NEW_FIELD"]}
+        marc_fields_json[db][data_id]["fields"].append(this_field)
+    else:
+        for field in marc_fields_json[db][data_id]["fields"]:
+            if field["tag"] == val["MARC_DATA_FIELD"]:
+                this_field = field
+    this_field["single_line_coded_data"] = val["MARC_DATA_SINGLE_LINE_CODED_DATA"]
+    this_field["filtering_subfield"] = val["MARC_DATA_FILTERING_SUBFIELD"]
+    this_field["subfields"] = val["MARC_DATA_SUBFIELDS"]
+    this_field["positions"] = val["MARC_DATA_POSITIONS"]
+    with open(CURR_DIR + "/marc_fields.json", "w", encoding="utf-8") as f:
+        json.dump(marc_fields_json, f, indent=4)
+    
+
 def switch_languages(window: sg.Window, lang: str):
     """Switches every test element language.
     
@@ -370,10 +397,13 @@ def switch_languages(window: sg.Window, lang: str):
         if elem.name in window.key_dict:
             window[elem.name].update(elem.value[lang])
     # Changes the language of data labels in processing configuration
+    VALLS.MARC_DATA_BEING_CONFIGURED_LABEL = get_marc_data_label_by_id(VALLS.ORIGIN_DATABASE_MARC, lang, VALLS.MARC_DATA_BEING_CONFIGURED)
     window["MARC_DATA_BEING_CONFIGURED_LABEL"].update(
-        values=get_marc_data_labels(VALLS.ORIGIN_DATABASE_MARC, lang)
+        values=get_marc_data_labels(VALLS.ORIGIN_DATABASE_MARC, lang),
+        value=VALLS.MARC_DATA_BEING_CONFIGURED_LABEL
         # default_value=get_marc_data_label_by_id(VALLS.ORIGIN_DATABASE_MARC, lang, VALLS.MARC_DATA_BEING_CONFIGURED)
     )
+    
 
 def open_screen(window: sg.Window, screen: GUI_Screens, lang: str) -> sg.Window:
     """Generic function to generate a screen.
@@ -465,6 +495,7 @@ def toggle_UI_elems_for_new_marc_field(active: bool, window: sg.Window):
         for key in ["MARC_DATA_FILTERING_SUBFIELD", "MARC_DATA_SUBFIELDS", "MARC_DATA_POSITIONS"]:
             window[key].update(value="")
 
+
 # # --------------- Window Definition ---------------
 # # Create the window
 window = None
@@ -497,7 +528,10 @@ while True:
 
     # --------------- Save parameters ---------------
     if (event[0:5] == "SAVE_"):
-        save_parameters(curr_screen, val)
+        if event == "SAVE_THIS_MARC_FIELD":
+            save_marc_field(val, lang)
+        else:
+            save_parameters(curr_screen, val)
 
     # --------------- Continue to processign configuration ---------------
     if event == GUI_Text.GO_TO_PROCESSING_CONFIGURATION.name:

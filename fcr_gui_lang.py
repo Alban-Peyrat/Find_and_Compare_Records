@@ -74,9 +74,9 @@ class GUI_Text(Enum):
         "eng": "Origin database URL",
         "fre": "URL de la base de données d'origine"
     }
-    SAVE_THIS_PROCESSING_CONFIGURATION_TAB_PARAMETERS = {
-        "eng": "Save these tab settings",
-        "fre": "Sauvegarder les paramètres de cet onglet" 
+    SAVE_MAIN_PROCESSING_CONFIGURATION_PARAMETERS = {
+        "eng": "Save main processing configuration settings",
+        "fre": "Sauvegarder les paramètres principaux de ce traitement" 
     }
     TARGET_DATABASE_URL = {
         "eng": "Target database URL",
@@ -129,4 +129,8 @@ class GUI_Text(Enum):
     MARC_DATA_ADD_FIELD_TEXT = {
         "eng": "Field",
         "fre": "Champ"
+    }
+    SAVE_THIS_MARC_FIELD = {
+        "eng": "Save this MARC field",
+        "fre": "Sauvegarder ce champ MARC" 
     }
