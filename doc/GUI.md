@@ -12,3 +12,5 @@ All elements in the PROCESSING_CONFIGURATION must have a metadate with the key `
 * _They are used to oly display relevent fields_
 
 Elements to add new field must have the `` class in metadata
+
+In order to remove a field in a MARC data, you have to manually delete it in the JSON file
