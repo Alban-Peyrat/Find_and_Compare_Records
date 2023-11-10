@@ -233,8 +233,12 @@ def main(es: fcr.Execution_Settings):
 
             # |||| AR362 to del
             temp = rec.target_database_data.data[fcr.FCR_Mapped_Fields.GENERAL_PROCESSING_DATA_DATES]
-            result['SUDOC_DATE_1'] = temp[0][1]
-            result['SUDOC_DATE_2'] = temp[0][2]
+            if len(temp) < 1:
+                result['SUDOC_DATE_1'] = None    
+                result['SUDOC_DATE_2'] = None
+            else:
+                result['SUDOC_DATE_1'] = temp[0][1]
+                result['SUDOC_DATE_2'] = temp[0][2]
             result['SUDOC_214210c'] = rec.target_database_data.data[fcr.FCR_Mapped_Fields.PUBLISHERS_NAME]
             result['SUDOC_200adehiv'] = nettoie_titre(list_as_string(rec.target_database_data.data[fcr.FCR_Mapped_Fields.TITLE][0]))
             result['SUDOC_305'] = list_as_string(rec.target_database_data.data[fcr.FCR_Mapped_Fields.EDITION_NOTES])
@@ -245,6 +249,8 @@ def main(es: fcr.Execution_Settings):
             result["SUDOC_ITEMS"] = rec.target_database_data.data[fcr.FCR_Mapped_Fields.ITEMS]
             # sudoc_record.get_library_items(es.rcr)
             result["SUDOC_HAS_ITEMS"] = len(result["SUDOC_ITEMS"]) > 0
+            if result["SUDOC_NB_LOCAL_SYSTEM_NB"] > 0:
+                result["SUDOC_DIFFERENT_LOCAL_SYSTEM_NB"] = not koha_record.bibnb in result["SUDOC_LOCAL_SYSTEM_NB"]
             result["SUDOC_ITEMS"] = list_as_string(result["SUDOC_ITEMS"])
             result['SUDOC_010z'] = list_as_string(rec.target_database_data.data[fcr.FCR_Mapped_Fields.ERRONEOUS_ISBN])
             # old
@@ -287,6 +293,8 @@ def main(es: fcr.Execution_Settings):
                 logger.debug("{} :: {} :: {}".format(result["MATCH_RECORDS_QUERY"], es.service, "Scores des éditeurs : " + str(result['MATCHING_EDITEUR_SIMILARITE'])))
             else: # Mandatory to prevent an error at the end
                 result['MATCHING_EDITEUR_SIMILARITE'],result['SUDOC_CHOSEN_ED'],result['KOHA_CHOSEN_ED'] = -1, "", ""
+
+            result["SUDOC_DIFFERENT_LOCAL_SYSTEM_NB"] = not koha_record.bibnb in result["SUDOC_LOCAL_SYSTEM_NB"]
 
             # ||| temp output
             result['KOHA_214210c'] = list_as_string(result['KOHA_214210c'])
