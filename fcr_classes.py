@@ -59,15 +59,16 @@ class FCR_Processings(Enum):
 
 class Execution_Settings(object):
     def __init__(self, dir: str):
-        # Load settings file
-        with open(dir + "/settings.json", "r+", encoding="utf-8") as f:
-            settings = json.load(f)
-            self.analysis = settings["ANALYSIS"]
-            self.csv_export_cols = settings["CSV_EXPORT_COLS"]
-            self.report_settings = settings["REPORT_SETTINGS"]
+        # Load csv export file settings
+        with open(dir + "/json_configs/csv_export_cols.json", "r+", encoding="utf-8") as f:
+            self.csv_export_cols = json.load(f)
         
+        # Load analysis settings
+        with open(dir + "/json_configs/analysis.json", "r+", encoding="utf-8") as f:
+            self.analysis = json.load(f)
+
         # Load marc fields
-        with open(dir + "/marc_fields.json", "r+", encoding="utf-8") as f:
+        with open(dir + "/json_configs/marc_fields.json", "r+", encoding="utf-8") as f:
             self.marc_fields_json = json.load(f)
     
     def get_values_from_GUI(self, val: dict):
@@ -75,9 +76,15 @@ class Execution_Settings(object):
         self.file_path = val["FILE_PATH"]
         self.output_path = val["OUTPUT_PATH"]
         self.logs_path = val["LOGS_PATH"]
-        self.koha_url = val["ORIGIN_URL"]
+        self.origin_url = val["ORIGIN_URL"]
+        self.target_url = val["TARGET_URL"]
+        self.processing = FCR_Processings[val["PROCESSING_VAL"]]
+        self.get_operation()
         self.iln = val["ILN"]
         self.rcr = val["RCR"]
+        self.filter1 = val["FILTER1"]
+        self.filter2 = val["FILTER2"]
+        self.filter3 = val["FILTER3"]
     
     def get_values_from_env(self):
         load_dotenv()
@@ -85,15 +92,24 @@ class Execution_Settings(object):
         self.file_path = os.getenv("FILE_PATH")
         self.output_path = os.getenv("OUTPUT_PATH")
         self.logs_path = os.getenv("LOGS_PATH")
-        self.koha_url = os.getenv("ORIGIN_URL")
-        self.ILN = os.getenv("ILN")
-        self.RCR = os.getenv("RCR")
+        self.origin_url = os.getenv("ORIGIN_URL")
+        self.target_url = os.getenv("TARGET_URL")
+        self.processing = FCR_Processings[os.getenv("PROCESSING_VAL")]
+        self.get_operation()
+        self.iln = os.getenv("ILN")
+        self.rcr = os.getenv("RCR")
+        self.filter1 = os.getenv("FILTER1")
+        self.filter2 = os.getenv("FILTER2")
+        self.filter3 = os.getenv("FILTER3")
     
     def generate_files_path(self):
         self.file_path_out_results = self.output_path + "/resultats.txt"
         self.file_path_out_json = self.output_path + "/resultats.json"
         self.file_path_out_csv = self.output_path + "/resultats.csv"
     
+    def get_operation(self):
+        self.operation = PROCESSING_OPERATION_MAPPING[self.processing]
+
     def define_chosen_analysis(self, nb: int):
         self.chosen_analysis = self.analysis[nb]
         
@@ -119,6 +135,10 @@ class Try_Status(Enum):
 class Match_Records_Errors(Enum):
     GENERIC_ERROR = 0
     NOTHING_WAS_FOUND = 1
+
+PROCESSING_OPERATION_MAPPING = {
+    FCR_Processings.BETTER_ITEM:Operations.SEARCH_IN_SUDOC_BY_ISBN
+}
 
 # TRY_OPERATIONS defines for each Operations a lsit of Actions to execute
 # The order in the list is the order of execution

@@ -17,15 +17,9 @@ from scripts.outputing import * # pour éviter de devoir réécrire tous les app
 import scripts.prep_data as prep_data
 import fcr_classes as fcr
 
-# TEMP AR228 
-Matched_record_opration = fcr.Operations.SEARCH_IN_SUDOC_BY_ISBN
-# TEMP AR235
-# MATCH_RECORDS_API = "Koha_SRU" 
-# TEMP AR362
-processing = fcr.FCR_Processings.BETTER_ITEM
-
 def main(es: fcr.Execution_Settings):
-    """Main function."""
+    """Main function.
+    Takes as argument an Execution_Settings instance"""
 
     # Get the original file
     print("Fichier à traiter :", es.file_path)
@@ -35,26 +29,8 @@ def main(es: fcr.Execution_Settings):
         print("Erreur : le fichier n'existe pas")
         exit()
 
-    # Get the analysis to perform
-    # Score = 0 to ignore
-    ANALYSIS_NB = input("\n".join("N°{} : {}".format(str(ii), obj["name"]) for ii, obj in enumerate(es.analysis))
-                    + "\n\nSaisir le numéro de l'analyse : ")
-
-    # Leaves if the analysis id is invalid
-    if ANALYSIS_NB.isnumeric():
-        if int(ANALYSIS_NB) >= 0 and int(ANALYSIS_NB) < len(es.analysis):
-            es.define_chosen_analysis(int(ANALYSIS_NB))
-        else:
-            print("Erreur : l'analyse choisie n'existe pas")
-            exit()
-    else:
-        print("Erreur : il faut indiquer le numéro de l'analyse. A été indiqué :\n" + str(ANALYSIS_NB))
-        exit()
-
     # At this point, everything is OK, loads and initialise all vars
     es.generate_files_path()
-
-    # CSV_EXPORT_COLS = settings["CSV_EXPORT_COLS"] # /!\ All the columns from the orignal doc will be appended at the end
 
     # Setting-up the analysis process
     all_checks = ["TITLE", "PUB", "DATE"]
@@ -74,14 +50,14 @@ def main(es: fcr.Execution_Settings):
     #On initialise le logger
     logs.init_logs(es.logs_path, es.service,'DEBUG') # rajouter la date et heure d'exécution
     logger = logging.getLogger(es.service)
-    logger.info("Fichier en cours de traitement : " + es.file_path)
-    logger.info("URL Koha : " + es.koha_url)
-    logger.info("Analyse choisie : " + es.chosen_analysis["name"])
+    logger.info("File : " + es.file_path)
+    logger.info("Origin database URL : " + es.origin_url)
+    logger.info("Chosen analysis : " + es.chosen_analysis["name"])
 
     # ------------------------------ MAIN FUNCTION ------------------------------
     results = []
     with open(es.file_path, 'r', newline="", encoding="utf-8") as fh:
-        logger.info("--------------- Début du traitement du fichier ---------------")
+        logger.info("--------------- File processing start ---------------")
         
         # Load original file data
         csvdata = csv.DictReader(fh, delimiter=";")
@@ -99,7 +75,7 @@ def main(es: fcr.Execution_Settings):
         f_csv = open(es.file_path_out_csv, 'w', newline="", encoding='utf-8')
         csv_writer = csv.DictWriter(f_csv, extrasaction="ignore", fieldnames=fieldnames_id, delimiter=";")
         generate_csv_output_header(csv_writer, fieldnames_id, fieldnames_names=fieldnames_names)
-        logger.info("Fichier contenant les données en CSV : " + es.file_path_out_csv)
+        logger.info("CSV output file : " + es.file_path_out_csv)
 
         for line in csvdata:
             # Declaration & set-up of record
@@ -111,7 +87,7 @@ def main(es: fcr.Execution_Settings):
 
             # Gets input query and original uid
             rec.extract_from_original_line(CSV_ORIGINAL_COLS)
-            logger.info(f"Traitement de la ligne : ISBN = \"{rec.input_query}\", Koha Bib Nb = \"{rec.original_uid}\"")
+            logger.info(f"Processing new line : ISBN = \"{rec.input_query}\", Koha Bib Nb = \"{rec.original_uid}\"")
 
             # ||| AR358 to del
             result = {}
@@ -126,7 +102,7 @@ def main(es: fcr.Execution_Settings):
 
             # --------------- ORIGIN DATABASE ---------------
             # Get Koha record
-            koha_record = Koha_API_PublicBiblio.Koha_API_PublicBiblio(result["INPUT_KOHA_BIB_NB"], es.koha_url, service=es.service, format="application/marcxml+xml")
+            koha_record = Koha_API_PublicBiblio.Koha_API_PublicBiblio(result["INPUT_KOHA_BIB_NB"], es.origin_url, service=es.service, format="application/marcxml+xml")
             # j'ai rajouté un filter(None) au moment de l'export CSV mais ça pose problème quand même...
             if koha_record.status == 'Error' :
                 result['ERROR'] = True
@@ -138,7 +114,7 @@ def main(es: fcr.Execution_Settings):
             # Successfully got Koha record
             
             # AR362 : UDE
-            rec.get_origin_database_data(processing, koha_record.record_parsed, fcr.Databases.KOHA_PUBLIC_BIBLIO, es)
+            rec.get_origin_database_data(es.processing, koha_record.record_parsed, fcr.Databases.KOHA_PUBLIC_BIBLIO, es)
 
             # |||| AR362 to del
             result['KOHA_BIB_NB'] = list_as_string(rec.origin_database_data.data[fcr.FCR_Mapped_Fields.ID])
@@ -179,7 +155,7 @@ def main(es: fcr.Execution_Settings):
 
 
             # --------------- Match records ---------------
-            rec.get_matched_records_instance(fcr.Matched_Records(Matched_record_opration, rec.input_query, es))     
+            rec.get_matched_records_instance(fcr.Matched_Records(es.operation, rec.input_query, es))     
 
             # ||| AR358 to del |||
             result["MATCH_RECORDS_QUERY"] = rec.query_used
@@ -189,11 +165,11 @@ def main(es: fcr.Execution_Settings):
             if result["MATCH_RECORDS_NB_RES"] > 1:
                 result["ERROR"] = True
                 result["FAKE_ERROR"] = True
-                result['ERROR_MSG'] = "{} : trop de résultats".format(str(Matched_record_opration.name))
+                result['ERROR_MSG'] = "{} : trop de résultats".format(str(es.operation.name))
             if result["MATCH_RECORDS_NB_RES"] == 0:
                 result["ERROR"] = True
                 result["FAKE_ERROR"] = False
-                result['ERROR_MSG'] = "{} : aucun résultat".format(str(Matched_record_opration.name))
+                result['ERROR_MSG'] = "{} : aucun résultat".format(str(es.operation.name))
             if result["MATCH_RECORDS_NB_RES"] == 1: # Only 1 match : gets the PPN
                 result["MATCHED_ID"] = result["MATCH_RECORDS_RES"][0]
             # ||| End of AR358 to del
@@ -213,7 +189,7 @@ def main(es: fcr.Execution_Settings):
             
             # Match records was a success
             results_report.increase_success(fcr.Success.MATCH_RECORD) # report stats
-            logger.debug("{} :: {} :: {}".format(result["MATCH_RECORDS_QUERY"], es.service, "Résultat {} : ".format(str(Matched_record_opration)) + " || ".join(str(result["MATCH_RECORDS_RES"]))))
+            logger.debug("{} :: {} :: {}".format(result["MATCH_RECORDS_QUERY"], es.service, "Résultat {} : ".format(str(es.operation)) + " || ".join(str(result["MATCH_RECORDS_RES"]))))
 
             # --------------- SUDOC ---------------
             # Get Sudoc record
@@ -227,7 +203,7 @@ def main(es: fcr.Execution_Settings):
 
             # Successfully got Sudoc record
             # AR362 : UDE
-            rec.get_target_database_data(processing, sudoc_record.record_parsed, fcr.Databases.ABESXML, es)
+            rec.get_target_database_data(es.processing, sudoc_record.record_parsed, fcr.Databases.ABESXML, es)
 
 
             results_report.increase_success(fcr.Success.GLOBAL) # report stats
@@ -333,24 +309,24 @@ def main(es: fcr.Execution_Settings):
         f_csv.close()
 
     # --------------- END OF MAIN FUNCTION ---------------
-    logger.info("--------------- Fin du traitement du fichier ---------------")
+    logger.info("--------------- File processing ended ---------------")
 
     # ------------------------------ FINAL OUTPUT ------------------------------
     # --------------- JSON FILE ---------------
     with open(es.file_path_out_json, 'w', encoding='utf-8') as f:
         json.dump(results, f, ensure_ascii=False, indent=4)
-    logger.info("Fichier contenant les données en JSON : " + es.file_path_out_json)
+    logger.info("JSON output file : " + es.file_path_out_json)
 
     # --------------- CSV FILE ---------------
-    logger.info("Fichier contenant les données en CSV : " + es.file_path_out_csv)
+    logger.info("CSV output file : " + es.file_path_out_csv)
 
     # --------------- REPORT ---------------
     generate_report(es, results_report)
-    logger.info("Fichier contenant le rapport : " + es.file_path_out_results)
-    logger.info("--------------- Rapport ---------------")
+    logger.info("Report file : " + es.file_path_out_results)
+    logger.info("--------------- Report ---------------")
     generate_report(es, results_report, logger=logger)
 
-    logger.info("--------------- Exécution terminée avec succès ---------------")
+    logger.info("--------------- <(^-^)> <(^-^)> Script fully executed without FATAL errors <(^-^)> <(^-^)> ---------------")
 
 def generate_csv_output_header(csv_writer, fieldnames_id, fieldnames_names=[]):
     """Generates the CSV output file headers.
