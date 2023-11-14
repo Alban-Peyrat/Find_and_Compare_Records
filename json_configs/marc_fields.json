@@ -32,7 +32,7 @@
         },
         "general_processing_data_dates": {
             "label": {
-                "eng": "Dates from general processing data",
+                "eng": "aaa",
                 "fre": "Dates (donn\u00e9es g\u00e9n\u00e9rales de traitement)"
             },
             "fields": [
@@ -46,6 +46,20 @@
                         "9-12",
                         "13-16"
                     ]
+                },
+                {
+                    "tag": "120",
+                    "single_line_coded_data": true,
+                    "filtering_subfield": "",
+                    "subfields": "",
+                    "positions": ""
+                },
+                {
+                    "tag": "120",
+                    "single_line_coded_data": true,
+                    "filtering_subfield": "",
+                    "subfields": "",
+                    "positions": ""
                 }
             ]
         },
@@ -690,8 +704,8 @@
                     "tag": "001",
                     "single_line_coded_data": false,
                     "filtering_subfield": "",
-                    "subfields": [],
-                    "positions": []
+                    "subfields": "",
+                    "positions": ""
                 }
             ]
         },
