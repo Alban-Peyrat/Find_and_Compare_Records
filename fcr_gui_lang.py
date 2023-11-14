@@ -26,8 +26,8 @@ class GUI_Text(Enum):
         "fre": "Configuration principale du traitement"
     }
     PROCESSING_DATABASE_CONFIGURATION_TAB_TITLE = {
-        "eng": "Database MARC fields configuration",
-        "fre": "Configuration des champs MARC BDD"
+        "eng": "Mapping configuration",
+        "fre": "Configuration des mapping"
     }
     PROCESSING_CHOSE_DATABASE_MAPPINGS_TAB_TITLE = {
         "eng": "Chose database mappings",
@@ -94,7 +94,7 @@ class GUI_Text(Enum):
         "eng":"RCR",
         "fre":"RCR"
     }
-    DATABASE_MARC_TEXT = {
+    DATABASE_MAPPING_TEXT = {
         "eng": "Select mapping",
         "fre": "Sélectionner le mapping"
     }
@@ -149,4 +149,20 @@ class GUI_Text(Enum):
     SAVE_CHOSEN_DATABASE_MAPPINGS = {
         "eng": "Save chosen database mappings",
         "fre": "Sauvegarder les mappings de BDD choisis" 
+    }
+    RENAME_DATA = {
+        "eng":"Rename",
+        "fre":"Renommer"
+    }
+    RENAME_DATA_POPUP_TEXT = {
+        "eng":"Enter the new name",
+        "fre":"Entrer le nouveau nom"
+    }
+    SAVE_DATABASE_CONFIGURATION_AS_NEW = {
+        "eng":"Save this mapping as a new one",
+        "fre":"Sauvegarder ce mapping comme un nouveau"
+    }
+    SAVE_DATABASE_CONFIGURATION_AS_NEW_POPUP_TEXT = {
+        "eng":"Enter the new mapping name",
+        "fre":"Entrer le nouveau nom du mapping"
     }
