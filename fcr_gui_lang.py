@@ -150,11 +150,11 @@ class GUI_Text(Enum):
         "eng": "Save chosen database mappings",
         "fre": "Sauvegarder les mappings de BDD choisis" 
     }
-    RENAME_DATA = {
+    SAVE_RENAME_DATA = {
         "eng":"Rename",
         "fre":"Renommer"
     }
-    RENAME_DATA_POPUP_TEXT = {
+    SAVE_RENAME_DATA_POPUP_TEXT = {
         "eng":"Enter the new name",
         "fre":"Entrer le nouveau nom"
     }

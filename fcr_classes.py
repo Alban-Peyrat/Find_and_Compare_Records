@@ -15,6 +15,7 @@ from typing import Dict, List, Tuple, Optional, Union
 import api.abes.Abes_isbn2ppn as isbn2ppn
 import api.abes.Sudoc_SRU as ssru
 import api.koha.Koha_SRU as Koha_SRU
+# from main_gui import GUI_Elems_With_Val()
 
 # -------------------- Execution settings (ES) --------------------
 
@@ -61,47 +62,53 @@ class Execution_Settings(object):
     def __init__(self, dir: str):
         # Load csv export file settings
         with open(dir + "/json_configs/csv_export_cols.json", "r+", encoding="utf-8") as f:
-            self.csv_export_cols = json.load(f)
+            self.csv_export_cols_json = json.load(f)
         
         # Load analysis settings
         with open(dir + "/json_configs/analysis.json", "r+", encoding="utf-8") as f:
-            self.analysis = json.load(f)
+            self.analysis_json = json.load(f)
 
         # Load marc fields
         with open(dir + "/json_configs/marc_fields.json", "r+", encoding="utf-8") as f:
             self.marc_fields_json = json.load(f)
     
-    def get_values_from_GUI(self, val: dict):
-        self.service = val["SERVICE"]
-        self.file_path = val["FILE_PATH"]
-        self.output_path = val["OUTPUT_PATH"]
-        self.logs_path = val["LOGS_PATH"]
-        self.origin_url = val["ORIGIN_URL"]
-        self.target_url = val["TARGET_URL"]
-        self.processing = FCR_Processings[val["PROCESSING_VAL"]]
-        self.get_operation()
-        self.iln = val["ILN"]
-        self.rcr = val["RCR"]
-        self.filter1 = val["FILTER1"]
-        self.filter2 = val["FILTER2"]
-        self.filter3 = val["FILTER3"]
-    
-    def get_values_from_env(self):
+    def load_env_values(self):
         load_dotenv()
+        # General
+        self.lang = os.getenv("SERVICE")
+        if self.lang not in ["eng", "fre"]:
+            self.lang = "eng"
         self.service = os.getenv("SERVICE")
         self.file_path = os.getenv("FILE_PATH")
         self.output_path = os.getenv("OUTPUT_PATH")
         self.logs_path = os.getenv("LOGS_PATH")
-        self.origin_url = os.getenv("ORIGIN_URL")
-        self.target_url = os.getenv("TARGET_URL")
-        self.processing = FCR_Processings[os.getenv("PROCESSING_VAL")]
+        # Processing & operations
+        self.UI_change_processing(os.getenv("PROCESSING_VAL"))
         self.get_operation()
-        self.iln = os.getenv("ILN")
-        self.rcr = os.getenv("RCR")
-        self.filter1 = os.getenv("FILTER1")
-        self.filter2 = os.getenv("FILTER2")
-        self.filter3 = os.getenv("FILTER3")
+        # Database specifics
+        self.origin_url = os.getenv("ORIGIN_URL")
+        self.origin_database_mapping = os.getenv("ORIGIN_DATABASE_MAPPING")
+        self.target_url = os.getenv("TARGET_URL")
+        self.target_database_mapping = os.getenv("TARGET_DATABASE_MAPPING")
+        self.iln = os.getenv("ILN") # Better Item
+        self.rcr = os.getenv("RCR") # Better Item
+        self.filter1 = os.getenv("FILTER1") # Other DB in local DB
+        self.filter2 = os.getenv("FILTER2") # Other DB in local DB
+        self.filter3 = os.getenv("FILTER3") # Other DB in local DB
+        # UI specifics
+        self.UI_curr_database_mapping = self.origin_database_mapping
+        self.UI_curr_data = "id"
+        self.UI_curr_data_label = self.get_data_label_by_id(self.UI_curr_database_mapping, self.UI_curr_data)
+        self.UI_update_curr_data(self.UI_curr_data_label)
+        self.UI_curr_field = self.get_data_field_tags()[0]
+        self.UI_new_field = None
+        self.UI_curr_single_line_coded_data = None
+        self.UI_curr_filtering_subfield = None
+        self.UI_curr_subfields = None
+        self.UI_curr_positions = None
+        self.chosen_analysis = 0
     
+    # ----- Methods for main -----
     def generate_files_path(self):
         self.file_path_out_results = self.output_path + "/resultats.txt"
         self.file_path_out_json = self.output_path + "/resultats.json"
@@ -111,8 +118,215 @@ class Execution_Settings(object):
         self.operation = PROCESSING_OPERATION_MAPPING[self.processing]
 
     def define_chosen_analysis(self, nb: int):
-        self.chosen_analysis = self.analysis[nb]
-        
+        self.chosen_analysis = self.analysis_json[nb]
+    
+    # ----- Methods for UI -----
+    def UI_switch_lang(self):
+        """Switch the two languages"""
+        if self.lang == "eng":
+            self.lang = "fre"
+        else:
+            self.lang = "eng"
+
+    def UI_update_curr_data(self, label=None):
+        """Update the current data 
+        Takes as argument :
+        - label : the data id label in selected language"""
+        if not label:
+            label = self.UI_curr_data_label
+        db = self.UI_curr_database_mapping
+        self.UI_curr_data = self.get_data_id_from_label(db, label)
+        id = self.UI_curr_data
+        self.UI_update_curr_field(self.get_data_field_tags(db, id)[0])
+        self.UI_update_curr_field_subvalues(db, id, self.UI_curr_field)
+
+    def UI_update_curr_data_label(self, id=None):
+        """Update the current data label 
+        Takes as argument :
+        - id : the data id"""
+        if not id:
+            id = self.UI_curr_data
+        self.UI_curr_data_label = self.get_data_label_by_id(id=id)
+
+    def UI_update_curr_field(self, tag: str):
+        """Update the current data label"""
+        self.UI_curr_field = tag
+    
+    def UI_update_curr_field_subvalues(self, db=None, id=None, tag=None):
+        """Update the current field
+        Takes as argument :
+            - db : the database name in marc_fields.json as a string
+            - id : the data id
+            - tag : the MARC tag as a string"""
+        if not db:
+            db = self.UI_curr_database_mapping
+        if not id:
+            id = self.UI_curr_data
+        if not tag:
+            tag = self.UI_curr_field
+        self.UI_curr_single_line_coded_data = self.get_data_field_single_line_coded_data(db, id, tag)
+        self.UI_curr_filtering_subfield = self.get_data_field_filtering_subfield(db, id, tag)
+        self.UI_curr_subfields = self.get_data_field_subfields(db, id, tag)
+        self.UI_curr_positions = self.get_data_field_positions(db, id, tag)
+
+    def UI_reset_curr_field_subvalues(self):
+        """Defaults all values for the current field"""
+        self.UI_curr_single_line_coded_data = False
+        self.UI_curr_filtering_subfield = ""
+        self.UI_curr_subfields = ""
+        self.UI_curr_positions = ""
+
+    def UI_rename_curr_data(self, new_name: str):
+        """Updates the current data label.
+        Takes as argument the new label"""
+        self.UI_curr_data_label = new_name
+
+    def UI_change_curr_database_mapping(self, new_mapping: str):
+        """Updates the current dataabse mapping.
+        Takes as argument the new mappnig"""
+        self.UI_curr_database_mapping = new_mapping
+
+    def UI_change_processing(self, processing_val: str):
+        """Updates the current dataabse mapping.
+        Takes as argument the new val AS A STRING not a FCR_Processings entry"""
+        self.processing_val = processing_val
+        self.processing = FCR_Processings[self.processing_val]
+
+    # ----- Methods for retrieving data from mappings -----
+    def UI_get_mappings_names(self) -> list:
+        """Returns all mappings names as a list"""
+        return list(self.marc_fields_json.keys())
+    
+    def get_data_id_from_label(self, db=None, label=None) -> str:
+        """Returns the data id from marc field based on it's label.
+        Takes as argument :
+            - db : the database name in marc_fields.json as a string
+            - label : the data id label in selected language
+        Returns None if no match was found"""
+        if not db:
+            db = self.UI_curr_database_mapping
+        if not label:
+            label = self.UI_curr_data_label
+        for data in self.marc_fields_json[db]:
+            if self.marc_fields_json[db][data]["label"][self.lang] == label:
+                return data
+        return None
+    
+    def get_data_labels_as_list(self, db=None) -> List[str]:
+        """Returns all data labels from marc field as a list.
+        Takes as argument :
+            - db : the database name in marc_fields.json as a string"""
+        if not db:
+            db = self.UI_curr_database_mapping
+        return [self.marc_fields_json[db][key]["label"][self.lang] for key in self.marc_fields_json[db]]
+
+    def get_data_label_by_id(self, db=None, id=None) -> str:
+        """Returns the label of a data
+        Takes as argument :
+            - db : the database name in marc_fields.json as a string
+            - id : the data id"""
+        if not db:
+            db = self.UI_curr_database_mapping
+        if not id:
+            id = self.UI_curr_data
+        return self.marc_fields_json[db][id]["label"][self.lang]
+
+    def get_data_field_tags(self, db=None, id=None) -> List[str]:
+        """Returns the tags of each field from a data
+        Takes as argument :
+            - db : the database name in marc_fields.json as a string
+            - id : the data id"""
+        if not db:
+            db = self.UI_curr_database_mapping
+        if not id:
+            id = self.UI_curr_data
+        return [field["tag"] for field in self.marc_fields_json[db][id]["fields"]]
+
+    def retrieve_data_from_data_field_subvalues(self, attr:str, db=None, id=None, tag=None):
+        """Mother function of get_marc_data_field + attribute.
+        Takes as argument :
+            - db : the database name in marc_fields.json as a string
+            - id : the data id
+            - tag : the MARC tag as a string
+            - attr : the attribute name (positions, subfields, etc.)"""
+        if not db:
+            db = self.UI_curr_database_mapping
+        if not id:
+            id = self.UI_curr_data
+        if not tag:
+            tag = self.UI_curr_field
+        fields = self.marc_fields_json[db][id]["fields"]
+        for field in fields:
+            if field["tag"] == tag:
+                return field[attr]
+
+    def get_data_field_single_line_coded_data(self, db=None, id=None, tag=None) -> bool:
+        """Returns if the field is a sinngle line coded data
+        Takes as argument :
+            - db : the database name in marc_fields.json as a string
+            - id : the data id
+            - tag : the MARC tag as a string"""
+        if not db:
+            db = self.UI_curr_database_mapping
+        if not id:
+            id = self.UI_curr_data
+        if not tag:
+            tag = self.UI_curr_field
+        return self.retrieve_data_from_data_field_subvalues("single_line_coded_data", db, id, tag)
+
+    def get_data_field_filtering_subfield(self, db=None, id=None, tag=None) -> str:
+        """Returns the filtering subfield of this field
+        Takes as argument :
+            - db : the database name in marc_fields.json as a string
+            - id : the data id
+            - tag : the MARC tag as a string"""
+        if not db:
+            db = self.UI_curr_database_mapping
+        if not id:
+            id = self.UI_curr_data
+        if not tag:
+            tag = self.UI_curr_field
+        return self.retrieve_data_from_data_field_subvalues("filtering_subfield", db, id, tag)
+
+    def get_data_field_subfields(self, db=None, id=None, tag=None) -> str:
+        """Returns the subfields to export for this field
+        Takes as argument :
+            - db : the database name in marc_fields.json as a string
+            - id : the data id
+            - tag : the MARC tag as a string"""
+        if not db:
+            db = self.UI_curr_database_mapping
+        if not id:
+            id = self.UI_curr_data
+        if not tag:
+            tag = self.UI_curr_field
+        return ", ".join(self.retrieve_data_from_data_field_subvalues("subfields", db, id, tag))
+
+    def get_data_field_positions(self, db=None, id=None, tag=None) -> str:
+        """Returns the positions to export for this field
+        Takes as argument :
+            - db : the database name in marc_fields.json as a string
+            - id : the data id
+            - tag : the MARC tag as a string"""
+        if not db:
+            db = self.UI_curr_database_mapping
+        if not id:
+            id = self.UI_curr_data
+        if not tag:
+            tag = self.UI_curr_field
+        return ", ".join(self.retrieve_data_from_data_field_subvalues("positions", db, id, tag))
+
+    # ----- Methods for retrieving data from analysis -----
+    def get_analysis_names_as_list(self):
+        """Returns all analysis names as a list"""
+        return [this["name"] for this in self.analysis_json]
+
+    def get_analysis_index_from_name(self, name: str) -> int:
+        """Returns the index of an analysis.
+        Takes as argument the name of the analysis"""
+        for index, this in enumerate(self.analysis_json):
+            if this["name"] == name:
+                return index
 # -------------------- MATCH RECORDS (MR) --------------------
 
 class Operations(Enum):
