@@ -75,12 +75,7 @@ class Execution_Settings(object):
         self.file_path = val["FILE_PATH"]
         self.output_path = val["OUTPUT_PATH"]
         self.logs_path = val["LOGS_PATH"]
-        self.koha_url = val["KOHA_URL"]
-        self.source_ppn_field = val["SOURCE_PPN_FIELD"]
-        self.source_ppn_subfield = val["SOURCE_PPN_SUBFIELD"]
-        self.koha_report_nb = val["KOHA_REPORT_NB"]
-        self.koha_userid = val["KOHA_USERID"]
-        self.koha_password = val["KOHA_PASSWORD"]
+        self.koha_url = val["ORIGIN_URL"]
         self.iln = val["ILN"]
         self.rcr = val["RCR"]
     
@@ -90,12 +85,7 @@ class Execution_Settings(object):
         self.file_path = os.getenv("FILE_PATH")
         self.output_path = os.getenv("OUTPUT_PATH")
         self.logs_path = os.getenv("LOGS_PATH")
-        self.koha_url = os.getenv("KOHA_URL")
-        self.koha_ppn_field = os.getenv("KOHA_PPN_FIELD")
-        self.koha_ppn_subfield = os.getenv("KOHA_PPN_SUBFIELD")
-        self.koha_report_nb = os.getenv("KOHA_REPORT_NB")
-        self.koha_userid = os.getenv("KOHA_USERID")
-        self.koha_password = os.getenv("KOHA_PASSWORD")
+        self.koha_url = os.getenv("ORIGIN_URL")
         self.ILN = os.getenv("ILN")
         self.RCR = os.getenv("RCR")
     

@@ -123,44 +123,8 @@ def main(es: fcr.Execution_Settings):
             result["INPUT_KOHA_BIB_NB"] = line[CSV_ORIGINAL_COLS[len(line)-1]].rstrip()
             # ||| End of AR358 to del
 
-            # --------------- Match records ---------------
-            rec.get_matched_records_instance(fcr.Matched_Records(Matched_record_opration, rec.input_query, es))     
 
-            # ||| AR358 to del |||
-            result["MATCH_RECORDS_QUERY"] = rec.query_used
-            result["MATCH_RECORDS_NB_RES"] = rec.nb_matched_records
-            result["MATCH_RECORDS_RES"] = rec.matched_records_ids
-            # result["MATCH_RECORDS_RES_RECORDS"] = rec.matched_records
-            if result["MATCH_RECORDS_NB_RES"] > 1:
-                result["ERROR"] = True
-                result["FAKE_ERROR"] = True
-                result['ERROR_MSG'] = "{} : trop de résultats".format(str(Matched_record_opration.name))
-            if result["MATCH_RECORDS_NB_RES"] == 0:
-                result["ERROR"] = True
-                result["FAKE_ERROR"] = False
-                result['ERROR_MSG'] = "{} : aucun résultat".format(str(Matched_record_opration.name))
-            if result["MATCH_RECORDS_NB_RES"] == 1: # Only 1 match : gets the PPN
-                result["MATCHED_ID"] = result["MATCH_RECORDS_RES"][0]
-            # ||| End of AR358 to del
-    
-            # ||| needs to be redone with enhanced match records errors
-            if result["ERROR"]:
-                if result["FAKE_ERROR"]: # report stats
-                    results_report.increase_fail(fcr.Errors.MATCH_RECORD_FAKE)
-                    logger.error("{} :: {} :: {}".format(result["MATCH_RECORDS_QUERY"], es.service, "{} : {}".format(str(result["ERROR_MSG"]), str(result["MATCH_RECORDS_NB_RES"]))))
-                else:
-                    results_report.increase_fail(fcr.Errors.MATCH_RECORD_REAL)
-                    logger.error("{} :: {} :: {}".format(result["INPUT_QUERY"], es.service, str(result["ERROR_MSG"])))
-                
-                # Skip to next line
-                go_next(logger, results, csv_writer, result, False)
-                continue
-            
-            # Match records was a success
-            results_report.increase_success(fcr.Success.MATCH_RECORD) # report stats
-            logger.debug("{} :: {} :: {}".format(result["MATCH_RECORDS_QUERY"], es.service, "Résultat {} : ".format(str(Matched_record_opration)) + " || ".join(str(result["MATCH_RECORDS_RES"]))))
-
-            # --------------- KOHA ---------------
+            # --------------- ORIGIN DATABASE ---------------
             # Get Koha record
             koha_record = Koha_API_PublicBiblio.Koha_API_PublicBiblio(result["INPUT_KOHA_BIB_NB"], es.koha_url, service=es.service, format="application/marcxml+xml")
             # j'ai rajouté un filter(None) au moment de l'export CSV mais ça pose problème quand même...
@@ -210,8 +174,46 @@ def main(es: fcr.Execution_Settings):
             #     result["KOHA_215a_DATES"] += prep_data.get_year(desc_str)
             # result['KOHA_010z'] = koha_record.get_wrong_isbn()
             # |||| END OF AR362 to del
-            logger.debug("{} :: {} :: {}".format(result["MATCH_RECORDS_QUERY"], es.service, "Koha biblionumber : " + result['KOHA_BIB_NB']))
-            logger.debug("{} :: {} :: {}".format(result["MATCH_RECORDS_QUERY"], es.service, "Koha titre nettoyé : " + result['KOHA_200adehiv']))
+            logger.debug("{} :: {} :: {}".format(rec.input_query, es.service, "Koha biblionumber : " + result['KOHA_BIB_NB']))
+            logger.debug("{} :: {} :: {}".format(rec.input_query, es.service, "Koha titre nettoyé : " + result['KOHA_200adehiv']))
+
+
+            # --------------- Match records ---------------
+            rec.get_matched_records_instance(fcr.Matched_Records(Matched_record_opration, rec.input_query, es))     
+
+            # ||| AR358 to del |||
+            result["MATCH_RECORDS_QUERY"] = rec.query_used
+            result["MATCH_RECORDS_NB_RES"] = rec.nb_matched_records
+            result["MATCH_RECORDS_RES"] = rec.matched_records_ids
+            # result["MATCH_RECORDS_RES_RECORDS"] = rec.matched_records
+            if result["MATCH_RECORDS_NB_RES"] > 1:
+                result["ERROR"] = True
+                result["FAKE_ERROR"] = True
+                result['ERROR_MSG'] = "{} : trop de résultats".format(str(Matched_record_opration.name))
+            if result["MATCH_RECORDS_NB_RES"] == 0:
+                result["ERROR"] = True
+                result["FAKE_ERROR"] = False
+                result['ERROR_MSG'] = "{} : aucun résultat".format(str(Matched_record_opration.name))
+            if result["MATCH_RECORDS_NB_RES"] == 1: # Only 1 match : gets the PPN
+                result["MATCHED_ID"] = result["MATCH_RECORDS_RES"][0]
+            # ||| End of AR358 to del
+    
+            # ||| needs to be redone with enhanced match records errors
+            if result["ERROR"]:
+                if result["FAKE_ERROR"]: # report stats
+                    results_report.increase_fail(fcr.Errors.MATCH_RECORD_FAKE)
+                    logger.error("{} :: {} :: {}".format(result["MATCH_RECORDS_QUERY"], es.service, "{} : {}".format(str(result["ERROR_MSG"]), str(result["MATCH_RECORDS_NB_RES"]))))
+                else:
+                    results_report.increase_fail(fcr.Errors.MATCH_RECORD_REAL)
+                    logger.error("{} :: {} :: {}".format(result["INPUT_QUERY"], es.service, str(result["ERROR_MSG"])))
+                
+                # Skip to next line
+                go_next(logger, results, csv_writer, result, False)
+                continue
+            
+            # Match records was a success
+            results_report.increase_success(fcr.Success.MATCH_RECORD) # report stats
+            logger.debug("{} :: {} :: {}".format(result["MATCH_RECORDS_QUERY"], es.service, "Résultat {} : ".format(str(Matched_record_opration)) + " || ".join(str(result["MATCH_RECORDS_RES"]))))
 
             # --------------- SUDOC ---------------
             # Get Sudoc record
