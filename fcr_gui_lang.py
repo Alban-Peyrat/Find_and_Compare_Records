@@ -166,3 +166,23 @@ class GUI_Text(Enum):
         "eng":"Enter the new mapping name",
         "fre":"Entrer le nouveau nom du mapping"
     }
+    CHOSE_ANALYSIS = {
+        "eng":"Chose the analysis",
+        "fre":"Choisir l'analyse"
+    }
+    START_MAIN = {
+        "eng":"Start the main script",
+        "fre":"Lancer le script principal"
+    }
+    FILTER1_TEXT = {
+        "eng":"Filter 1",
+        "fre":"Filtre 1"
+    }
+    FILTER2_TEXT = {
+        "eng":"Filter 2",
+        "fre":"Filtre 2"
+    }
+    FILTER3_TEXT = {
+        "eng":"Filter 3",
+        "fre":"Filtre 3"
+    }

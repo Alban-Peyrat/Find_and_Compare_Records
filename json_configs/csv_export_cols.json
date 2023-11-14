@@ -1,0 +1,212 @@
+[
+    {
+        "id": "INPUT_QUERY",
+        "name": "Requ\u00eate originale",
+        "list": false
+    },
+    {
+        "id": "INPUT_KOHA_BIB_NB",
+        "name": "Biblionumber Export Koha",
+        "list": false
+    },
+    {
+        "id": "ERROR",
+        "name": "Erreur",
+        "list": false
+    },
+    {
+        "id": "FAKE_ERROR",
+        "name": "Fausse erreur",
+        "list": false
+    },
+    {
+        "id": "ERROR_MSG",
+        "name": "Message d'erreur",
+        "list": false
+    },
+    {
+        "id": "FINAL_OK",
+        "name": "Validation globale",
+        "list": false
+    },
+    {
+        "id": "TITLE_OK",
+        "name": "Validation des titres",
+        "list": false
+    },
+    {
+        "id": "PUB_OK",
+        "name": "Validation des \u00e9diteurs",
+        "list": false
+    },
+    {
+        "id": "DATE_OK",
+        "name": "Validation des dates",
+        "list": false
+    },
+    {
+        "id": "MATCH_RECORDS_QUERY",
+        "name": "Requ\u00eate pour correspondances",
+        "list": false
+    },
+    {
+        "id": "MATCH_RECORDS_NB_RES",
+        "name": "Nb de correspondances",
+        "list": false
+    },
+    {
+        "id": "MATCH_RECORDS_RES",
+        "name": "Correspondanecs",
+        "list": true
+    },
+    {
+        "id": "KOHA_BIB_NB",
+        "name": "Biblionumber Koha",
+        "list": false
+    },
+    {
+        "id": "MATCHED_ID",
+        "name": "Identifiant correspondant",
+        "list": false
+    },
+    {
+        "id": "KOHA_PPN",
+        "name": "PPN Koha",
+        "list": false
+    },
+    {
+        "id": "SUDOC_LOCAL_SYSTEM_NB",
+        "name": "Koha bibnb d\u00e9j\u00e0 dans ce PPN",
+        "list": false
+    },
+    {
+        "id": "SUDOC_NB_LOCAL_SYSTEM_NB",
+        "name": "Nb de Koha bibnb d\u00e9j\u00e0 dans ce PPN",
+        "list": false
+    },
+    {
+        "id": "SUDOC_DIFFERENT_LOCAL_SYSTEM_NB",
+        "name": "Bibnb Koha diff\u00e9rent de ceux d\u00e9j\u00e0 dans ce PPN ?",
+        "list": false
+    },
+    {
+        "id": "SUDOC_ITEMS",
+        "name": "Exemplaires pour ce RCR",
+        "list": true
+    },
+    {
+        "id": "SUDOC_HAS_ITEMS",
+        "name": "D\u00e9j\u00e0 des exemplaires pour ce RCR ?",
+        "list": false
+    },
+    {
+        "id": "KOHA_010z",
+        "name": "ISBN erronés Koha",
+        "list": true
+    },
+    {
+        "id": "SUDOC_010z",
+        "name": "ISBN erronés Sudoc",
+        "list": true
+    },
+    {
+        "id": "KOHA_200adehiv",
+        "name": "Clef de titre Koha",
+        "list": false
+    },
+    {
+        "id": "SUDOC_200adehiv",
+        "name": "Clef de titre Sudoc",
+        "list": false
+    },
+    {
+        "id": "KOHA_214210c",
+        "name": "\u00c9diteurs Koha",
+        "list": true
+    },
+    {
+        "id": "SUDOC_214210c",
+        "name": "\u00c9diteurs Sudoc",
+        "list": true
+    },
+    {
+        "id": "KOHA_CHOSEN_ED",
+        "name": "Clef d'\u00e9diteur choisi Koha",
+        "list": false
+    },
+    {
+        "id": "SUDOC_CHOSEN_ED",
+        "name": "Clef d'\u00e9diteur choisi Sudoc",
+        "list": false
+    },
+    {
+        "id": "KOHA_DATE_1",
+        "name": "Date de pub. 1 Koha",
+        "list": false
+    },
+    {
+        "id": "SUDOC_DATE_1",
+        "name": "Date de pub. 1 Sudoc",
+        "list": false
+    },
+    {
+        "id": "KOHA_DATE_2",
+        "name": "Date de pub. 2 Koha",
+        "list": false
+    },
+    {
+        "id": "SUDOC_DATE_2",
+        "name": "Date de pub. 2 Sudoc",
+        "list": false
+    },
+    {
+        "id": "KOHA_305",
+        "name": "Note edition Koha",
+        "list": true
+    },
+    {
+        "id": "SUDOC_305",
+        "name": "Note edition Sudoc",
+        "list": true
+    },
+    {
+        "id": "KOHA_214210a_DATES",
+        "name": "Date de pub 210/4 Koha",
+        "list": true
+    },
+    {
+        "id": "KOHA_215a_DATES",
+        "name": "Date de pub 215a Koha",
+        "list": true
+    },
+    {
+        "id": "MATCHING_TITRE_SIMILARITE",
+        "name": "Score de similarit\u00e9 des titres",
+        "list": false
+    },
+    {
+        "id": "MATCHING_TITRE_APPARTENANCE",
+        "name": "Score d'appartenance des titres",
+        "list": false
+    },
+    {
+        "id": "MATCHING_TITRE_INVERSION",
+        "name": "Score d'inversion des titres",
+        "list": false
+    },
+    {
+        "id": "MATCHING_TITRE_INVERSION_APPARTENANCE",
+        "name": "Score d'inversion appartenance des titres",
+        "list": false
+    },
+    {
+        "id": "MATCHING_EDITEUR_SIMILARITE",
+        "name": "Score de similarit\u00e9 des \u00e9diteurs choisis",
+        "list": false
+    },
+    {
+        "id": "MATCHING_DATE_PUB",
+        "name": "Correspondance des dates de publications",
+        "list": false
+    }
+]

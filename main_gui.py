@@ -25,12 +25,12 @@ sg.theme_add_new(theme_name, theme)
 sg.theme(theme_name)
 
 # Load existing settings
-settings = {}
-with open(CURR_DIR + "/settings.json", "r+", encoding="utf-8") as f:
-    settings = json.load(f)
 marc_fields_json = {}
-with open(CURR_DIR + "/marc_fields.json", "r+", encoding="utf-8") as f:
+with open(CURR_DIR + "/json_configs/marc_fields.json", "r+", encoding="utf-8") as f:
     marc_fields_json = json.load(f)
+analysis = []
+with open(CURR_DIR + "/json_configs/analysis.json", "r+", encoding="utf-8") as f:
+    analysis = json.load(f)
 
 lang = os.getenv("LANG")
 if lang not in ["eng", "fre"]:
@@ -79,6 +79,14 @@ def get_marc_data_field_subfields(db: str, id: str, tag:str) -> str:
 def get_marc_data_field_positions(db: str, id: str, tag:str) -> str:
     return ", ".join(retrieve_data_from_marc_data_field_field(db, id, tag, "positions"))
 
+def get_analysis_names_as_list():
+    return [this["name"] for this in analysis]
+
+def get_analysis_index_from_name(name: str):
+    for index, this in enumerate(analysis):
+        if this["name"] == name:
+            return index
+
 # --------------- UI variables ---------------
 
 class GUI_Elems_With_Val(object):
@@ -101,11 +109,15 @@ class GUI_Elems_With_Val(object):
         self.MARC_DATA_FILTERING_SUBFIELD = None
         self.MARC_DATA_SUBFIELDS = None
         self.MARC_DATA_POSITIONS = None
+        self.CHOSEN_ANALYSIS = 0
         self.update_marc_data_being_configured(self.MARC_DATA_BEING_CONFIGURED_LABEL, lang)
 
         # Processings Specifics
         self.ILN = os.getenv("ILN") # Better_Item
         self.RCR = os.getenv("RCR") # Better_Item
+        self.FILTER1 = os.getenv("FILTER1")
+        self.FILTER2 = os.getenv("FILTER2")
+        self.FILTER3 = os.getenv("FILTER3")
     
     def update_marc_data_being_configured(self, label: str, lang: str):
         """ 
@@ -135,6 +147,10 @@ class GUI_Elems_With_Val(object):
     def change_current_database_mapping(self, new_mapping: str):
         self.DATABASE_MAPPING = new_mapping
 
+    def set_chosen_analysis(self, nb: int):
+        """Updates the chosen analysis. Takes as argument the integer of the analysis"""
+        self.CHOSEN_ANALYSIS = nb
+
 VALLS = GUI_Elems_With_Val()
 
 class GUI_Screens(Enum):
@@ -158,7 +174,10 @@ class GUI_Screens(Enum):
                         "ORIGIN_URL",
                         "TARGET_URL",
                         "ILN",
-                        "RCR"
+                        "RCR",
+                        "FILTER1",
+                        "FILTER2",
+                        "FILTER3"
                     ]
                 },
             },
@@ -241,27 +260,32 @@ PROCESSING_CONFIGURATION_SCREEN_MAIN_TAB_LAYOUT = [
     # ----- Row 3-4 -----
     # Target database URL
     [
-        sg.Text(f"{GUI_Text.TARGET_DATABASE_URL.value[lang]} :", k=GUI_Text.TARGET_DATABASE_URL.name, metadata={"class":["PROCESSING_CONFIGURATION_MAIN"]})
+        sg.Text(f"{GUI_Text.TARGET_DATABASE_URL.value[lang]} :", k=GUI_Text.TARGET_DATABASE_URL.name, metadata={"class":["PROCESSING_CONFIGURATION_MAIN", fcr.FCR_Processings.OTHER_DB_IN_LOCAL_DB.name]})
     ],
     [
-        sg.Input(key="TARGET_URL", default_text=VALLS.TARGET_URL, size=(80, None), metadata={"class":["PROCESSING_CONFIGURATION_MAIN"]})
+        sg.Input(key="TARGET_URL", default_text=VALLS.TARGET_URL, size=(80, None), metadata={"class":["PROCESSING_CONFIGURATION_MAIN", fcr.FCR_Processings.OTHER_DB_IN_LOCAL_DB.name]})
     ],
 
     # ----- Row 5-6 -----
-    # Sudoc ILN + RCR
+    # Sudoc ILN + RCR (filter1-2)
     [
         sg.Text(f"{GUI_Text.ILN_TEXT.value[lang]} :", k=GUI_Text.ILN_TEXT.name, metadata={"class":["PROCESSING_CONFIGURATION_MAIN", fcr.FCR_Processings.BETTER_ITEM.name]}),
-        sg.Input(key="ILN", default_text=VALLS.ILN, size=(4, None), metadata={"class":["PROCESSING_CONFIGURATION_MAIN", fcr.FCR_Processings.BETTER_ITEM.name]})
+        sg.Input(key="ILN", default_text=VALLS.ILN, size=(4, None), metadata={"class":["PROCESSING_CONFIGURATION_MAIN", fcr.FCR_Processings.BETTER_ITEM.name]}),
+        sg.Text(f"{GUI_Text.FILTER1_TEXT.value[lang]} :", k=GUI_Text.FILTER1_TEXT.name, metadata={"class":["PROCESSING_CONFIGURATION_MAIN", fcr.FCR_Processings.OTHER_DB_IN_LOCAL_DB.name]}),
+        sg.Input(key="FILTER1", default_text=VALLS.FILTER1, size=(4, None), metadata={"class":["PROCESSING_CONFIGURATION_MAIN", fcr.FCR_Processings.OTHER_DB_IN_LOCAL_DB.name]})
     ],
     [
         sg.Text(f"{GUI_Text.RCR_TEXT.value[lang]} :", k=GUI_Text.RCR_TEXT.name, metadata={"class":["PROCESSING_CONFIGURATION_MAIN", fcr.FCR_Processings.BETTER_ITEM.name]}),
-        sg.Input(key="RCR", default_text=VALLS.RCR, size=(10, None), metadata={"class":["PROCESSING_CONFIGURATION_MAIN", fcr.FCR_Processings.BETTER_ITEM.name]})
+        sg.Input(key="RCR", default_text=VALLS.RCR, size=(10, None), metadata={"class":["PROCESSING_CONFIGURATION_MAIN", fcr.FCR_Processings.BETTER_ITEM.name]}),
+        sg.Text(f"{GUI_Text.FILTER2_TEXT.value[lang]} :", k=GUI_Text.FILTER2_TEXT.name, metadata={"class":["PROCESSING_CONFIGURATION_MAIN", fcr.FCR_Processings.OTHER_DB_IN_LOCAL_DB.name]}),
+        sg.Input(key="FILTER2", default_text=VALLS.FILTER2, size=(4, None), metadata={"class":["PROCESSING_CONFIGURATION_MAIN", fcr.FCR_Processings.OTHER_DB_IN_LOCAL_DB.name]})
     ],
 
     # ----- Row 7-8 -----
     # 3rd filter parameter
     [
-        
+        sg.Text(f"{GUI_Text.FILTER3_TEXT.value[lang]} :", k=GUI_Text.FILTER3_TEXT.name, metadata={"class":["PROCESSING_CONFIGURATION_MAIN", fcr.FCR_Processings.OTHER_DB_IN_LOCAL_DB.name]}),
+        sg.Input(key="FILTER3", default_text=VALLS.FILTER3, size=(4, None), metadata={"class":["PROCESSING_CONFIGURATION_MAIN", fcr.FCR_Processings.OTHER_DB_IN_LOCAL_DB.name]})
     ],
     [
         
@@ -411,6 +435,8 @@ GLOBAL_LAYOUT = [[
     sg.Column(PROCESSING_CONFIGURATION_SCREEN_LAYOUT, key=GUI_Screens.PROCESSING_CONFIGURATION_SCREEN.name)
 ]]
 
+
+
 # --------------- UI Function def ---------------
 def save_parameters(screen: GUI_Screens, val: dict):
     """Saves the parameters of the screen.
@@ -445,14 +471,14 @@ def save_marc_field(val, lang):
     this_field["filtering_subfield"] = val["MARC_DATA_FILTERING_SUBFIELD"]
     this_field["subfields"] = val["MARC_DATA_SUBFIELDS"]
     this_field["positions"] = val["MARC_DATA_POSITIONS"]
-    with open(CURR_DIR + "/marc_fields.json", "w", encoding="utf-8") as f:
+    with open(CURR_DIR + "/json_configs/marc_fields.json", "w", encoding="utf-8") as f:
         json.dump(marc_fields_json, f, indent=4)
     
 def save_data_rename(new_name: str, val: dict, lang: str, valls: GUI_Elems_With_Val, window: sg.Window):
     db = val["DATABASE_MAPPING"]
     data_id = get_marc_data_id_from_label(db, lang, val["MARC_DATA_BEING_CONFIGURED_LABEL"])
     marc_fields_json[db][data_id]["label"][lang] = new_name
-    with open(CURR_DIR + "/marc_fields.json", "w", encoding="utf-8") as f:
+    with open(CURR_DIR + "/json_configs/marc_fields.json", "w", encoding="utf-8") as f:
         json.dump(marc_fields_json, f, indent=4)
     # Change the label inside VALLS
     valls.rename_data_being_configured(new_name)
@@ -465,7 +491,7 @@ def save_mapping_as_new(new_name: str, val: dict, valls:GUI_Elems_With_Val, wind
     db = val["DATABASE_MAPPING"]
     new_mapping = marc_fields_json[db]
     marc_fields_json[new_name] = new_mapping
-    with open(CURR_DIR + "/marc_fields.json", "w", encoding="utf-8") as f:
+    with open(CURR_DIR + "/json_configs/marc_fields.json", "w", encoding="utf-8") as f:
         json.dump(marc_fields_json, f, indent=4)
     # Change the value inside VALLS
     valls.change_current_database_mapping(new_name)
@@ -592,6 +618,25 @@ def toggle_UI_elems_for_new_marc_field(active: bool, window: sg.Window):
         for key in ["MARC_DATA_FILTERING_SUBFIELD", "MARC_DATA_SUBFIELDS", "MARC_DATA_POSITIONS"]:
             window[key].update(value="")
 
+def ask_chosen_analysis(lang: str):
+    """Last popup, starts the main script"""
+    list_val = get_analysis_names_as_list()
+    window = sg.Window(GUI_Text.CHOSE_ANALYSIS.value[lang],
+        [
+            [
+                sg.Text(GUI_Text.CHOSE_ANALYSIS.value[lang])
+            ],
+            [
+                sg.OptionMenu(values=list_val, key="CHOSEN_ANALYSIS", default_value=list_val[0])],
+            [
+                sg.Button(GUI_Text.START_MAIN.value[lang], key=GUI_Text.START_MAIN.name)
+            ]
+    ])
+    while True:
+        event, val = window.read()
+        if event == GUI_Text.START_MAIN.name:
+            window.close()
+            return get_analysis_index_from_name(val["CHOSEN_ANALYSIS"])
 
 # # --------------- Window Definition ---------------
 # # Create the window
@@ -608,11 +653,10 @@ is_updating_marc_database = False
 # # Display and interact with the Window
 while True:
     event, val = window.read()
-    print(event)#debug
+    # print(event)#debug
 
     # --------------- User left ---------------
     if event == sg.WIN_CLOSED or event == 'Cancel': # if user closes window or clicks cancel
-        print("Application quittée par l'usager")
         exit()
 
     # --------------- Updates language ---------------
@@ -685,10 +729,10 @@ while True:
     # --------------- Close the window && execute main ---------------
     if event == GUI_Text.START_ANALYSIS.name:
         window.close()
-
         execution_settings = fcr.Execution_Settings(CURR_DIR)
         execution_settings.get_values_from_GUI(val)
+        execution_settings.define_chosen_analysis(ask_chosen_analysis(lang))
 
         # Launch the main script
-        print("Exécution du script principal")
+        print("Switching to main")
         main.main(execution_settings)
