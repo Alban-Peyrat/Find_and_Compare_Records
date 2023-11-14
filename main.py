@@ -66,7 +66,7 @@ def main(es: fcr.Execution_Settings):
         # Create CSV output file
         # Defines headers
         fieldnames_id, fieldnames_names = [], []
-        for col in es.csv_export_cols:
+        for col in es.csv_export_cols_json:
             fieldnames_id.append(col["id"])
             fieldnames_names.append(col["name"])
         fieldnames_id += CSV_ORIGINAL_COLS

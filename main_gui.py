@@ -24,183 +24,11 @@ sg.set_options(font=font, icon=CURR_DIR + "/theme/logo.ico", window_location=win
 sg.theme_add_new(theme_name, theme)
 sg.theme(theme_name)
 
-# Load existing settings
-marc_fields_json = {}
-with open(CURR_DIR + "/json_configs/marc_fields.json", "r+", encoding="utf-8") as f:
-    marc_fields_json = json.load(f)
-analysis = []
-with open(CURR_DIR + "/json_configs/analysis.json", "r+", encoding="utf-8") as f:
-    analysis = json.load(f)
-LANG = os.getenv("LANG")
-if LANG not in ["eng", "fre"]:
-    LANG = "fre"
+# Sets up an execution Settings instance
+VALLS = fcr.Execution_Settings(CURR_DIR)
+VALLS.load_env_values()
+
 curr_screen = None
-
-# --------------- Data retrieveing function def ---------------
-
-def get_marc_data_id_from_label(db:str, label:str) -> str:
-    """Returns the data id from marc field based on it's label.
-    Takes as argument :
-        - db : the database name in marc_fields.json as a string
-        - label : the data id label in selected language
-    Returns None if no match was found"""
-    for data in marc_fields_json[db]:
-        if marc_fields_json[db][data]["label"][LANG] == label:
-            return data
-    return None
-
-def get_marc_data_labels(db: str) -> List[str]:
-    """Returns all data labels from marc field as a list.
-    Takes as argument :
-        - db : the database name in marc_fields.json as a string"""
-    return [marc_fields_json[db][key]["label"][LANG] for key in marc_fields_json[db]]
-
-def get_marc_data_label_by_id(db: str, id: str) -> str:
-    """Returns the label of a data
-    Takes as argument :
-        - db : the database name in marc_fields.json as a string
-        - id : the data id"""
-    return marc_fields_json[db][id]["label"][LANG]
-
-def retrieve_data_from_marc_data_field_field(db: str, id: str, tag: str, attr:str):
-    """Mother function of get_marc_data_field + attribute.
-    Takes as argument :
-        - db : the database name in marc_fields.json as a string
-        - id : the data id
-        - tag : the MARC tag as a string
-        - attr : the attribute name (positions, subfields, etc.)"""
-    fields = marc_fields_json[db][id]["fields"]
-    for field in fields:
-        if field["tag"] == tag:
-            return field[attr]
-
-def get_marc_data_fields_tag(db: str, id: str) -> List[str]:
-    """Returns the tags of each field from a data
-    Takes as argument :
-        - db : the database name in marc_fields.json as a string
-        - id : the data id"""
-    return [field["tag"] for field in marc_fields_json[db][id]["fields"]]
-
-def get_marc_data_field_single_line_coded_data(db: str, id: str, tag:str) -> bool:
-    """Returns if the field is a sinngle line coded data
-    Takes as argument :
-        - db : the database name in marc_fields.json as a string
-        - id : the data id
-        - tag : the MARC tag as a string"""
-    return retrieve_data_from_marc_data_field_field(db, id, tag, "single_line_coded_data")
-
-def get_marc_data_field_filtering_subfield(db: str, id: str, tag:str) -> str:
-    """Returns the filtering subfield of this field
-    Takes as argument :
-        - db : the database name in marc_fields.json as a string
-        - id : the data id
-        - tag : the MARC tag as a string"""
-    return retrieve_data_from_marc_data_field_field(db, id, tag, "filtering_subfield")
-
-def get_marc_data_field_subfields(db: str, id: str, tag:str) -> str:
-    """Returns the subfields to export for this field
-    Takes as argument :
-        - db : the database name in marc_fields.json as a string
-        - id : the data id
-        - tag : the MARC tag as a string"""
-    return ", ".join(retrieve_data_from_marc_data_field_field(db, id, tag, "subfields"))
-
-def get_marc_data_field_positions(db: str, id: str, tag:str) -> str:
-    """Returns the positions to export for this field
-    Takes as argument :
-        - db : the database name in marc_fields.json as a string
-        - id : the data id
-        - tag : the MARC tag as a string"""
-    return ", ".join(retrieve_data_from_marc_data_field_field(db, id, tag, "positions"))
-
-def get_analysis_names_as_list():
-    """Returns all analysis names as a list"""
-    return [this["name"] for this in analysis]
-
-def get_analysis_index_from_name(name: str) -> int:
-    """Returns the index of an analysis.
-    Takes as argument the name of the analysis"""
-    for index, this in enumerate(analysis):
-        if this["name"] == name:
-            return index
-
-# --------------- UI variables ---------------
-
-class GUI_Elems_With_Val(object):
-    """Class holding all settings in the UI"""
-    def __init__(self):
-        self.SERVICE = os.getenv("SERVICE")
-        self.FILE_PATH = os.getenv("FILE_PATH")
-        self.OUTPUT_PATH = os.getenv("OUTPUT_PATH")
-        self.LOGS_PATH = os.getenv("LOGS_PATH")
-        self.PROCESSING_VAL = os.getenv("PROCESSING_VAL")
-        self.ORIGIN_URL = os.getenv("ORIGIN_URL")
-        self.TARGET_URL = os.getenv("TARGET_URL")
-        self.ORIGIN_DATABASE_MAPPING = os.getenv("ORIGIN_DATABASE_MAPPING")
-        self.TARGET_DATABASE_MAPPING = os.getenv("TARGET_DATABASE_MAPPING")
-        self.DATABASE_MAPPING = self.ORIGIN_DATABASE_MAPPING
-        self.MARC_DATA_BEING_CONFIGURED = "id"
-        self.MARC_DATA_BEING_CONFIGURED_LABEL = get_marc_data_label_by_id(self.DATABASE_MAPPING, self.MARC_DATA_BEING_CONFIGURED)
-        self.MARC_DATA_FIELD = None
-        self.MARC_DATA_NEW_FIELD = None
-        self.MARC_DATA_SINGLE_LINE_CODED_DATA = None
-        self.MARC_DATA_FILTERING_SUBFIELD = None
-        self.MARC_DATA_SUBFIELDS = None
-        self.MARC_DATA_POSITIONS = None
-        self.CHOSEN_ANALYSIS = 0
-        self.update_marc_data_being_configured(self.MARC_DATA_BEING_CONFIGURED_LABEL)
-        # Processings Specifics
-        self.ILN = os.getenv("ILN") # Better_Item
-        self.RCR = os.getenv("RCR") # Better_Item
-        self.FILTER1 = os.getenv("FILTER1")
-        self.FILTER2 = os.getenv("FILTER2")
-        self.FILTER3 = os.getenv("FILTER3")
-    
-    def update_marc_data_being_configured(self, label: str):
-        """Update the current data 
-        Takes as argument :
-        - label : the data id label in selected language"""
-        db = self.DATABASE_MAPPING
-        self.MARC_DATA_BEING_CONFIGURED = get_marc_data_id_from_label(db, label)
-        id = self.MARC_DATA_BEING_CONFIGURED
-        self.MARC_DATA_FIELD = get_marc_data_fields_tag(db, id)[0]
-        self.update_marc_field_being_configured(db, id, self.MARC_DATA_FIELD)
-
-    def update_marc_field_being_configured(self, db: str, id: str, tag: str):
-        """Update the current field
-        Takes as argument :
-            - db : the database name in marc_fields.json as a string
-            - id : the data id
-            - tag : the MARC tag as a string"""
-        self.MARC_DATA_SINGLE_LINE_CODED_DATA = get_marc_data_field_single_line_coded_data(db, id, tag)
-        self.MARC_DATA_FILTERING_SUBFIELD = get_marc_data_field_filtering_subfield(db, id, tag)
-        self.MARC_DATA_SUBFIELDS = get_marc_data_field_subfields(db, id, tag)
-        self.MARC_DATA_POSITIONS = get_marc_data_field_positions(db, id, tag)
-
-    def default_marc_field_being_configured(self):
-        """Defaults all values for the current field"""
-        self.MARC_DATA_SINGLE_LINE_CODED_DATA = False
-        self.MARC_DATA_FILTERING_SUBFIELD = ""
-        self.MARC_DATA_SUBFIELDS = ""
-        self.MARC_DATA_POSITIONS = ""
-    
-    def rename_data_being_configured(self, new_name: str):
-        """Updates the current data label.
-        Takes as argument the new label"""
-        self.MARC_DATA_BEING_CONFIGURED_LABEL = new_name
-    
-    def change_current_database_mapping(self, new_mapping: str):
-        """Updates the current dataabse mapping.
-        Takes as argument the new mappnig"""
-        self.DATABASE_MAPPING = new_mapping
-
-    def set_chosen_analysis(self, nb: int):
-        """Updates the chosen analysis
-        Takes as argument the integer of the analysis"""
-        self.CHOSEN_ANALYSIS = nb
-
-VALLS = GUI_Elems_With_Val()
-
 class GUI_Screens(Enum):
     MAIN_SCREEN = {
         "values":[
@@ -252,46 +80,46 @@ MAIN_SCREEN_LAYOUT = [
     # LANG
     [  
         sg.Push(), # to align right
-        sg.Button(GUI_Text.CHOSE_LANG.value[LANG], k=GUI_Text.CHOSE_LANG.name)
+        sg.Button(GUI_Text.CHOSE_LANG.value[VALLS.lang], k=GUI_Text.CHOSE_LANG.name)
     ],
     
     # Title
     [
         sg.Push(),
-        sg.Text(GUI_Text.MAIN_SCREEN_WINDOW_TITLE.value[LANG], justification='center', font=("Verdana", 26), k=GUI_Text.MAIN_SCREEN_WINDOW_TITLE.name),
+        sg.Text(GUI_Text.MAIN_SCREEN_WINDOW_TITLE.value[VALLS.lang], justification='center', font=("Verdana", 26), k=GUI_Text.MAIN_SCREEN_WINDOW_TITLE.name),
         sg.Push()
     ],
 
     # Processing
     [
-        sg.Text(f"{GUI_Text.PROCESSING.value[LANG]} :", k=GUI_Text.PROCESSING.name),
-        sg.OptionMenu([processing.name for processing in fcr.FCR_Processings], size=(30, 5), key="PROCESSING_VAL", default_value=VALLS.PROCESSING_VAL)
+        sg.Text(f"{GUI_Text.PROCESSING.value[VALLS.lang]} :", k=GUI_Text.PROCESSING.name),
+        sg.OptionMenu([processing.name for processing in fcr.FCR_Processings], size=(30, 5), key="PROCESSING_VAL", default_value=VALLS.processing_val)
     ],
 
     # Original file path
-    [sg.Text(f"{GUI_Text.FILE_TO_ANALYZE.value[LANG]} :", k=GUI_Text.FILE_TO_ANALYZE.name)],
-    [sg.Input(key="FILE_PATH", default_text=VALLS.FILE_PATH, size=(80, None)), sg.FileBrowse()],
+    [sg.Text(f"{GUI_Text.FILE_TO_ANALYZE.value[VALLS.lang]} :", k=GUI_Text.FILE_TO_ANALYZE.name)],
+    [sg.Input(key="FILE_PATH", default_text=VALLS.file_path, size=(80, None)), sg.FileBrowse()],
 
     # Output folder
-    [sg.Text(f"{GUI_Text.OUTPUT_FOLDER.value[LANG]} :", k=GUI_Text.OUTPUT_FOLDER.name)],
-    [sg.Input(key="OUTPUT_PATH", default_text=VALLS.OUTPUT_PATH, size=(80, None)), sg.FolderBrowse()],
+    [sg.Text(f"{GUI_Text.OUTPUT_FOLDER.value[VALLS.lang]} :", k=GUI_Text.OUTPUT_FOLDER.name)],
+    [sg.Input(key="OUTPUT_PATH", default_text=VALLS.output_path, size=(80, None)), sg.FolderBrowse()],
 
     # Service name
     [
-        sg.Text(f"{GUI_Text.SERVICE_NAME.value[LANG]} :", k=GUI_Text.SERVICE_NAME.name),
-        sg.Input(key="SERVICE", default_text=VALLS.SERVICE, size=(40, None))
+        sg.Text(f"{GUI_Text.SERVICE_NAME.value[VALLS.lang]} :", k=GUI_Text.SERVICE_NAME.name),
+        sg.Input(key="SERVICE", default_text=VALLS.service, size=(40, None))
     ],
 
     # Logs path
-    [sg.Text(f"{GUI_Text.LOG_FOLDER.value[LANG]} :", k=GUI_Text.LOG_FOLDER.name)],
-    [sg.Input(key="LOGS_PATH", default_text=VALLS.LOGS_PATH, size=(80, None)), sg.FolderBrowse()],
+    [sg.Text(f"{GUI_Text.LOG_FOLDER.value[VALLS.lang]} :", k=GUI_Text.LOG_FOLDER.name)],
+    [sg.Input(key="LOGS_PATH", default_text=VALLS.logs_path, size=(80, None)), sg.FolderBrowse()],
 
     # Submit + Save
     [
         sg.Push(),
-        sg.Button(GUI_Text.GO_TO_PROCESSING_CONFIGURATION.value[LANG], key=GUI_Text.GO_TO_PROCESSING_CONFIGURATION.name),
+        sg.Button(GUI_Text.GO_TO_PROCESSING_CONFIGURATION.value[VALLS.lang], key=GUI_Text.GO_TO_PROCESSING_CONFIGURATION.name),
         sg.Push(),
-        sg.Button(GUI_Text.SAVE_EXECUTION_PARAMETERS.value[LANG], key=GUI_Text.SAVE_EXECUTION_PARAMETERS.name)
+        sg.Button(GUI_Text.SAVE_EXECUTION_PARAMETERS.value[VALLS.lang], key=GUI_Text.SAVE_EXECUTION_PARAMETERS.name)
     ]
 ]
 
@@ -299,41 +127,41 @@ PROCESSING_CONFIGURATION_SCREEN_MAIN_TAB_LAYOUT = [
     # ----- Row 1-2 -----
     # Origin database URL
     [
-        sg.Text(f"{GUI_Text.ORIGIGN_DATABASE_URL.value[LANG]} :", k=GUI_Text.ORIGIGN_DATABASE_URL.name, metadata={"class":["PROCESSING_CONFIGURATION_MAIN", fcr.FCR_Processings.BETTER_ITEM.name]})
+        sg.Text(f"{GUI_Text.ORIGIGN_DATABASE_URL.value[VALLS.lang]} :", k=GUI_Text.ORIGIGN_DATABASE_URL.name, metadata={"class":["PROCESSING_CONFIGURATION_MAIN", fcr.FCR_Processings.BETTER_ITEM.name]})
     ],
     [
-        sg.Input(key="ORIGIN_URL", default_text=VALLS.ORIGIN_URL, size=(80, None), metadata={"class":["PROCESSING_CONFIGURATION_MAIN", fcr.FCR_Processings.BETTER_ITEM.name]})
+        sg.Input(key="ORIGIN_URL", default_text=VALLS.origin_url, size=(80, None), metadata={"class":["PROCESSING_CONFIGURATION_MAIN", fcr.FCR_Processings.BETTER_ITEM.name]})
     ],
 
     # ----- Row 3-4 -----
     # Target database URL
     [
-        sg.Text(f"{GUI_Text.TARGET_DATABASE_URL.value[LANG]} :", k=GUI_Text.TARGET_DATABASE_URL.name, metadata={"class":["PROCESSING_CONFIGURATION_MAIN", fcr.FCR_Processings.OTHER_DB_IN_LOCAL_DB.name]})
+        sg.Text(f"{GUI_Text.TARGET_DATABASE_URL.value[VALLS.lang]} :", k=GUI_Text.TARGET_DATABASE_URL.name, metadata={"class":["PROCESSING_CONFIGURATION_MAIN", fcr.FCR_Processings.OTHER_DB_IN_LOCAL_DB.name]})
     ],
     [
-        sg.Input(key="TARGET_URL", default_text=VALLS.TARGET_URL, size=(80, None), metadata={"class":["PROCESSING_CONFIGURATION_MAIN", fcr.FCR_Processings.OTHER_DB_IN_LOCAL_DB.name]})
+        sg.Input(key="TARGET_URL", default_text=VALLS.target_url, size=(80, None), metadata={"class":["PROCESSING_CONFIGURATION_MAIN", fcr.FCR_Processings.OTHER_DB_IN_LOCAL_DB.name]})
     ],
 
     # ----- Row 5-6 -----
     # Sudoc ILN + RCR (filter1-2)
     [
-        sg.Text(f"{GUI_Text.ILN_TEXT.value[LANG]} :", k=GUI_Text.ILN_TEXT.name, metadata={"class":["PROCESSING_CONFIGURATION_MAIN", fcr.FCR_Processings.BETTER_ITEM.name]}),
-        sg.Input(key="ILN", default_text=VALLS.ILN, size=(4, None), metadata={"class":["PROCESSING_CONFIGURATION_MAIN", fcr.FCR_Processings.BETTER_ITEM.name]}),
-        sg.Text(f"{GUI_Text.FILTER1_TEXT.value[LANG]} :", k=GUI_Text.FILTER1_TEXT.name, metadata={"class":["PROCESSING_CONFIGURATION_MAIN", fcr.FCR_Processings.OTHER_DB_IN_LOCAL_DB.name]}),
-        sg.Input(key="FILTER1", default_text=VALLS.FILTER1, size=(4, None), metadata={"class":["PROCESSING_CONFIGURATION_MAIN", fcr.FCR_Processings.OTHER_DB_IN_LOCAL_DB.name]})
+        sg.Text(f"{GUI_Text.ILN_TEXT.value[VALLS.lang]} :", k=GUI_Text.ILN_TEXT.name, metadata={"class":["PROCESSING_CONFIGURATION_MAIN", fcr.FCR_Processings.BETTER_ITEM.name]}),
+        sg.Input(key="ILN", default_text=VALLS.iln, size=(4, None), metadata={"class":["PROCESSING_CONFIGURATION_MAIN", fcr.FCR_Processings.BETTER_ITEM.name]}),
+        sg.Text(f"{GUI_Text.FILTER1_TEXT.value[VALLS.lang]} :", k=GUI_Text.FILTER1_TEXT.name, metadata={"class":["PROCESSING_CONFIGURATION_MAIN", fcr.FCR_Processings.OTHER_DB_IN_LOCAL_DB.name]}),
+        sg.Input(key="FILTER1", default_text=VALLS.filter1, size=(4, None), metadata={"class":["PROCESSING_CONFIGURATION_MAIN", fcr.FCR_Processings.OTHER_DB_IN_LOCAL_DB.name]})
     ],
     [
-        sg.Text(f"{GUI_Text.RCR_TEXT.value[LANG]} :", k=GUI_Text.RCR_TEXT.name, metadata={"class":["PROCESSING_CONFIGURATION_MAIN", fcr.FCR_Processings.BETTER_ITEM.name]}),
-        sg.Input(key="RCR", default_text=VALLS.RCR, size=(10, None), metadata={"class":["PROCESSING_CONFIGURATION_MAIN", fcr.FCR_Processings.BETTER_ITEM.name]}),
-        sg.Text(f"{GUI_Text.FILTER2_TEXT.value[LANG]} :", k=GUI_Text.FILTER2_TEXT.name, metadata={"class":["PROCESSING_CONFIGURATION_MAIN", fcr.FCR_Processings.OTHER_DB_IN_LOCAL_DB.name]}),
-        sg.Input(key="FILTER2", default_text=VALLS.FILTER2, size=(4, None), metadata={"class":["PROCESSING_CONFIGURATION_MAIN", fcr.FCR_Processings.OTHER_DB_IN_LOCAL_DB.name]})
+        sg.Text(f"{GUI_Text.RCR_TEXT.value[VALLS.lang]} :", k=GUI_Text.RCR_TEXT.name, metadata={"class":["PROCESSING_CONFIGURATION_MAIN", fcr.FCR_Processings.BETTER_ITEM.name]}),
+        sg.Input(key="RCR", default_text=VALLS.rcr, size=(10, None), metadata={"class":["PROCESSING_CONFIGURATION_MAIN", fcr.FCR_Processings.BETTER_ITEM.name]}),
+        sg.Text(f"{GUI_Text.FILTER2_TEXT.value[VALLS.lang]} :", k=GUI_Text.FILTER2_TEXT.name, metadata={"class":["PROCESSING_CONFIGURATION_MAIN", fcr.FCR_Processings.OTHER_DB_IN_LOCAL_DB.name]}),
+        sg.Input(key="FILTER2", default_text=VALLS.filter2, size=(4, None), metadata={"class":["PROCESSING_CONFIGURATION_MAIN", fcr.FCR_Processings.OTHER_DB_IN_LOCAL_DB.name]})
     ],
 
     # ----- Row 7-8 -----
     # 3rd filter parameter
     [
-        sg.Text(f"{GUI_Text.FILTER3_TEXT.value[LANG]} :", k=GUI_Text.FILTER3_TEXT.name, metadata={"class":["PROCESSING_CONFIGURATION_MAIN", fcr.FCR_Processings.OTHER_DB_IN_LOCAL_DB.name]}),
-        sg.Input(key="FILTER3", default_text=VALLS.FILTER3, size=(4, None), metadata={"class":["PROCESSING_CONFIGURATION_MAIN", fcr.FCR_Processings.OTHER_DB_IN_LOCAL_DB.name]})
+        sg.Text(f"{GUI_Text.FILTER3_TEXT.value[VALLS.lang]} :", k=GUI_Text.FILTER3_TEXT.name, metadata={"class":["PROCESSING_CONFIGURATION_MAIN", fcr.FCR_Processings.OTHER_DB_IN_LOCAL_DB.name]}),
+        sg.Input(key="FILTER3", default_text=VALLS.filter3, size=(4, None), metadata={"class":["PROCESSING_CONFIGURATION_MAIN", fcr.FCR_Processings.OTHER_DB_IN_LOCAL_DB.name]})
     ],
     [
         
@@ -341,39 +169,39 @@ PROCESSING_CONFIGURATION_SCREEN_MAIN_TAB_LAYOUT = [
 
     # ----- Row 9 : Save -----
     [
-        sg.Button(GUI_Text.SAVE_MAIN_PROCESSING_CONFIGURATION_PARAMETERS.value[LANG], key=GUI_Text.SAVE_MAIN_PROCESSING_CONFIGURATION_PARAMETERS.name)
+        sg.Button(GUI_Text.SAVE_MAIN_PROCESSING_CONFIGURATION_PARAMETERS.value[VALLS.lang], key=GUI_Text.SAVE_MAIN_PROCESSING_CONFIGURATION_PARAMETERS.name)
     ]
 ]
 
 PROCESSING_DATABASE_CONFIGURATION_TAB_TITLE_TAB_LAYOUT = [
     # ----- Database -----
     [
-        sg.Text(f"{GUI_Text.DATABASE_MAPPING_TEXT.value[LANG]} :", k=GUI_Text.DATABASE_MAPPING_TEXT.name),
-        sg.OptionMenu(list(marc_fields_json.keys()), size=(30, 5), key="DATABASE_MAPPING", default_value=VALLS.DATABASE_MAPPING),
+        sg.Text(f"{GUI_Text.DATABASE_MAPPING_TEXT.value[VALLS.lang]} :", k=GUI_Text.DATABASE_MAPPING_TEXT.name),
+        sg.OptionMenu(VALLS.UI_get_mappings_names(), size=(30, 5), key="DATABASE_MAPPING", default_value=VALLS.UI_curr_database_mapping),
         sg.Push(),
-        sg.Button(GUI_Text.SAVE_DATABASE_CONFIGURATION_AS_NEW.value[LANG], key=GUI_Text.SAVE_DATABASE_CONFIGURATION_AS_NEW.name)
+        sg.Button(GUI_Text.SAVE_DATABASE_CONFIGURATION_AS_NEW.value[VALLS.lang], key=GUI_Text.SAVE_DATABASE_CONFIGURATION_AS_NEW.name)
     ],
 
     # ----- Data -----
     [
-        sg.Text(f"{GUI_Text.MARC_DATA_TO_CONFIGURE.value[LANG]} :", k=GUI_Text.MARC_DATA_TO_CONFIGURE.name),
+        sg.Text(f"{GUI_Text.MARC_DATA_TO_CONFIGURE.value[VALLS.lang]} :", k=GUI_Text.MARC_DATA_TO_CONFIGURE.name),
         sg.OptionMenu(
-            get_marc_data_labels(VALLS.DATABASE_MAPPING),
+            VALLS.get_data_labels_as_list(),
             size=(60, 5), key="MARC_DATA_BEING_CONFIGURED_LABEL",
-            default_value=get_marc_data_label_by_id(VALLS.DATABASE_MAPPING, VALLS.MARC_DATA_BEING_CONFIGURED)
+            default_value=VALLS.get_data_label_by_id()
         ),
-        sg.Button(GUI_Text.RENAME_DATA.value[LANG], key=GUI_Text.RENAME_DATA.name)
+        sg.Button(GUI_Text.SAVE_RENAME_DATA.value[VALLS.lang], key=GUI_Text.SAVE_RENAME_DATA.name)
 
     ],
 
     # ----- Field -----
     [
-        sg.Text(f"{GUI_Text.MARC_DATA_FIELDS_TEXT.value[LANG]} :", k=GUI_Text.MARC_DATA_FIELDS_TEXT.name),
+        sg.Text(f"{GUI_Text.MARC_DATA_FIELDS_TEXT.value[VALLS.lang]} :", k=GUI_Text.MARC_DATA_FIELDS_TEXT.name),
         sg.OptionMenu(
-            get_marc_data_fields_tag(VALLS.DATABASE_MAPPING, VALLS.MARC_DATA_BEING_CONFIGURED) + [GUI_Text.MARC_DATA_NEW_FIELD_TEXT.value[LANG]],
-            size=(30, 5), key="MARC_DATA_FIELD", default_value=VALLS.MARC_DATA_FIELD
+            VALLS.get_data_field_tags() + [GUI_Text.MARC_DATA_NEW_FIELD_TEXT.value[VALLS.lang]],
+            size=(30, 5), key="MARC_DATA_FIELD", default_value=VALLS.UI_curr_field
         ),
-        sg.Text(f"{GUI_Text.MARC_DATA_ADD_FIELD_TEXT.value[LANG]} :", k=GUI_Text.MARC_DATA_ADD_FIELD_TEXT.name, metadata={"class":["ADD_NEW_MARC_FIELD"]}),
+        sg.Text(f"{GUI_Text.MARC_DATA_ADD_FIELD_TEXT.value[VALLS.lang]} :", k=GUI_Text.MARC_DATA_ADD_FIELD_TEXT.name, metadata={"class":["ADD_NEW_MARC_FIELD"]}),
         sg.Input(key="MARC_DATA_NEW_FIELD",
             default_text="",
             size=(5, None),
@@ -383,9 +211,9 @@ PROCESSING_DATABASE_CONFIGURATION_TAB_TITLE_TAB_LAYOUT = [
 
     # ----- Single line coded data -----
     [
-        sg.Text(f"{GUI_Text.MARC_DATA_SINGLE_LINE_CODED_DATA_TEXT.value[LANG]} ?", k=GUI_Text.MARC_DATA_SINGLE_LINE_CODED_DATA_TEXT.name),
-        sg.Checkbox(GUI_Text.YES.value[LANG],
-            default=get_marc_data_field_single_line_coded_data(VALLS.DATABASE_MAPPING, VALLS.MARC_DATA_BEING_CONFIGURED, VALLS.MARC_DATA_FIELD),
+        sg.Text(f"{GUI_Text.MARC_DATA_SINGLE_LINE_CODED_DATA_TEXT.value[VALLS.lang]} ?", k=GUI_Text.MARC_DATA_SINGLE_LINE_CODED_DATA_TEXT.name),
+        sg.Checkbox(GUI_Text.YES.value[VALLS.lang],
+            default=VALLS.get_data_field_single_line_coded_data(),
             k='MARC_DATA_SINGLE_LINE_CODED_DATA',
             enable_events=True
         )
@@ -393,34 +221,34 @@ PROCESSING_DATABASE_CONFIGURATION_TAB_TITLE_TAB_LAYOUT = [
 
     # ----- Filtering subfield -----
     [
-        sg.Text(f"{GUI_Text.MARC_DATA_FILTERING_SUBFIELD_TEXT.value[LANG]} :", k=GUI_Text.MARC_DATA_FILTERING_SUBFIELD_TEXT.name),
+        sg.Text(f"{GUI_Text.MARC_DATA_FILTERING_SUBFIELD_TEXT.value[VALLS.lang]} :", k=GUI_Text.MARC_DATA_FILTERING_SUBFIELD_TEXT.name),
         sg.Input(key="MARC_DATA_FILTERING_SUBFIELD",
-            default_text=get_marc_data_field_filtering_subfield(VALLS.DATABASE_MAPPING, VALLS.MARC_DATA_BEING_CONFIGURED, VALLS.MARC_DATA_FIELD),
+            default_text=VALLS.get_data_field_filtering_subfield(),
             size=(2, None)
         )
     ],
 
     # ----- Subfields -----
     [
-        sg.Text(f"{GUI_Text.MARC_DATA_SUBFIELDS_TEXT.value[LANG]} :", k=GUI_Text.MARC_DATA_SUBFIELDS_TEXT.name),
+        sg.Text(f"{GUI_Text.MARC_DATA_SUBFIELDS_TEXT.value[VALLS.lang]} :", k=GUI_Text.MARC_DATA_SUBFIELDS_TEXT.name),
         sg.Input(key="MARC_DATA_SUBFIELDS",
-            default_text=get_marc_data_field_subfields(VALLS.DATABASE_MAPPING, VALLS.MARC_DATA_BEING_CONFIGURED, VALLS.MARC_DATA_FIELD),
+            default_text=VALLS.get_data_field_subfields(),
             size=(38, None)
         )
     ],
 
     # ----- Positions -----
     [
-        sg.Text(f"{GUI_Text.MARC_DATA_POSITIONS_TEXT.value[LANG]} :", k=GUI_Text.MARC_DATA_POSITIONS_TEXT.name),
+        sg.Text(f"{GUI_Text.MARC_DATA_POSITIONS_TEXT.value[VALLS.lang]} :", k=GUI_Text.MARC_DATA_POSITIONS_TEXT.name),
         sg.Input(key="MARC_DATA_POSITIONS",
-            default_text=get_marc_data_field_positions(VALLS.DATABASE_MAPPING, VALLS.MARC_DATA_BEING_CONFIGURED, VALLS.MARC_DATA_FIELD),
+            default_text=VALLS.get_data_field_positions(),
             size=(38, None)
         )
     ],
 
     # ----- SAve button -----
     [
-        sg.Button(GUI_Text.SAVE_THIS_MARC_FIELD.value[LANG], key=GUI_Text.SAVE_THIS_MARC_FIELD.name)
+        sg.Button(GUI_Text.SAVE_THIS_MARC_FIELD.value[VALLS.lang], key=GUI_Text.SAVE_THIS_MARC_FIELD.name)
     ],
 
 ]
@@ -428,19 +256,19 @@ PROCESSING_DATABASE_CONFIGURATION_TAB_TITLE_TAB_LAYOUT = [
 PROCESSING_CHOSE_DATABASE_MAPPINGS_TAB_LAYOUT = [
     # ----- Origin Database -----
     [
-        sg.Text(f"{GUI_Text.CHOSE_ORIGIN_DATABASE_TEXT.value[LANG]} :", k=GUI_Text.CHOSE_ORIGIN_DATABASE_TEXT.name),
-        sg.OptionMenu(list(marc_fields_json.keys()), size=(30, 5), key="ORIGIN_DATABASE_MAPPING", default_value=VALLS.ORIGIN_DATABASE_MAPPING)
+        sg.Text(f"{GUI_Text.CHOSE_ORIGIN_DATABASE_TEXT.value[VALLS.lang]} :", k=GUI_Text.CHOSE_ORIGIN_DATABASE_TEXT.name),
+        sg.OptionMenu(VALLS.UI_get_mappings_names(), size=(30, 5), key="ORIGIN_DATABASE_MAPPING", default_value=VALLS.origin_database_mapping)
     ],
 
     # ----- Origin Database -----
     [
-        sg.Text(f"{GUI_Text.CHOSE_TARGET_DATABASE_TEXT.value[LANG]} :", k=GUI_Text.CHOSE_TARGET_DATABASE_TEXT.name),
-        sg.OptionMenu(list(marc_fields_json.keys()), size=(30, 5), key="TARGET_DATABASE_MAPPING", default_value=VALLS.TARGET_DATABASE_MAPPING)
+        sg.Text(f"{GUI_Text.CHOSE_TARGET_DATABASE_TEXT.value[VALLS.lang]} :", k=GUI_Text.CHOSE_TARGET_DATABASE_TEXT.name),
+        sg.OptionMenu(VALLS.UI_get_mappings_names(), size=(30, 5), key="TARGET_DATABASE_MAPPING", default_value=VALLS.target_database_mapping)
     ],
 
     # ----- SAve button -----
     [
-        sg.Button(GUI_Text.SAVE_CHOSEN_DATABASE_MAPPINGS.value[LANG], key=GUI_Text.SAVE_CHOSEN_DATABASE_MAPPINGS.name)
+        sg.Button(GUI_Text.SAVE_CHOSEN_DATABASE_MAPPINGS.value[VALLS.lang], key=GUI_Text.SAVE_CHOSEN_DATABASE_MAPPINGS.name)
     ],
 
 ]
@@ -449,13 +277,13 @@ PROCESSING_CONFIGURATION_SCREEN_LAYOUT = [
     # Title
     [
         sg.Push(),
-        sg.Text(GUI_Text.PROCESSING_CONFIGURATION_WINDOW_TITLE.value[LANG], justification='center', font=("Verdana", 26), k=GUI_Text.PROCESSING_CONFIGURATION_WINDOW_TITLE.name),
+        sg.Text(GUI_Text.PROCESSING_CONFIGURATION_WINDOW_TITLE.value[VALLS.lang], justification='center', font=("Verdana", 26), k=GUI_Text.PROCESSING_CONFIGURATION_WINDOW_TITLE.name),
         sg.Push()
     ],
     # Chosen processing
     [
         sg.Push(),
-        sg.Text(VALLS.PROCESSING_VAL, justification='center', font=("Verdana", 22), k="-display_chosen_processing_in_processing_configuration_screen-"),
+        sg.Text(VALLS.processing_val, justification='center', font=("Verdana", 22), k="-display_chosen_processing_in_processing_configuration_screen-"),
         sg.Push()
     ],
 
@@ -463,9 +291,9 @@ PROCESSING_CONFIGURATION_SCREEN_LAYOUT = [
     [
         sg.TabGroup(k="PROCESSING_CONFIGURATION_SCREEN_TABS", layout=[
             [
-                sg.Tab(GUI_Text.PROCESSING_CONFIGURATION_MAIN_TAB_TITLE.value[LANG], PROCESSING_CONFIGURATION_SCREEN_MAIN_TAB_LAYOUT, k=GUI_Text.PROCESSING_CONFIGURATION_MAIN_TAB_TITLE.name),
-                sg.Tab(GUI_Text.PROCESSING_DATABASE_CONFIGURATION_TAB_TITLE.value[LANG], PROCESSING_DATABASE_CONFIGURATION_TAB_TITLE_TAB_LAYOUT, k=GUI_Text.PROCESSING_DATABASE_CONFIGURATION_TAB_TITLE.name),
-                sg.Tab(GUI_Text.PROCESSING_CHOSE_DATABASE_MAPPINGS_TAB_TITLE.value[LANG], PROCESSING_CHOSE_DATABASE_MAPPINGS_TAB_LAYOUT, k=GUI_Text.PROCESSING_CHOSE_DATABASE_MAPPINGS_TAB_TITLE.name)
+                sg.Tab(GUI_Text.PROCESSING_CONFIGURATION_MAIN_TAB_TITLE.value[VALLS.lang], PROCESSING_CONFIGURATION_SCREEN_MAIN_TAB_LAYOUT, k=GUI_Text.PROCESSING_CONFIGURATION_MAIN_TAB_TITLE.name),
+                sg.Tab(GUI_Text.PROCESSING_DATABASE_CONFIGURATION_TAB_TITLE.value[VALLS.lang], PROCESSING_DATABASE_CONFIGURATION_TAB_TITLE_TAB_LAYOUT, k=GUI_Text.PROCESSING_DATABASE_CONFIGURATION_TAB_TITLE.name),
+                sg.Tab(GUI_Text.PROCESSING_CHOSE_DATABASE_MAPPINGS_TAB_TITLE.value[VALLS.lang], PROCESSING_CHOSE_DATABASE_MAPPINGS_TAB_LAYOUT, k=GUI_Text.PROCESSING_CHOSE_DATABASE_MAPPINGS_TAB_TITLE.name)
             ]
         ])
     ],
@@ -473,7 +301,7 @@ PROCESSING_CONFIGURATION_SCREEN_LAYOUT = [
     # Submit
     [
         sg.Push(),
-        sg.Button(GUI_Text.START_ANALYSIS.value[LANG], key=GUI_Text.START_ANALYSIS.name),
+        sg.Button(GUI_Text.START_ANALYSIS.value[VALLS.lang], key=GUI_Text.START_ANALYSIS.name),
         sg.Push()
     ]
 ]
@@ -483,8 +311,6 @@ GLOBAL_LAYOUT = [[
     sg.Column(PROCESSING_CONFIGURATION_SCREEN_LAYOUT, key=GUI_Screens.PROCESSING_CONFIGURATION_SCREEN.name)
 ]]
 
-
-
 # --------------- UI Function def ---------------
 def save_parameters(screen: GUI_Screens, val: dict):
     """Saves the parameters of the screen.
@@ -492,7 +318,7 @@ def save_parameters(screen: GUI_Screens, val: dict):
     Takes as parameters :
         - screen :the current screen
         - val : all values of the window"""
-    dotenv.set_key(DOTENV_FILE, "LANG", LANG)
+    dotenv.set_key(DOTENV_FILE, "LANG", VALLS.lang)
     val_list = []
     if screen.value["tabs"]:
         for tab in screen.value["tabs"]:
@@ -511,49 +337,58 @@ def save_marc_field(val: dict):
     Takes as arguments :
         - val : all values of the window"""
     db = val["DATABASE_MAPPING"]
-    data_id = get_marc_data_id_from_label(db, val["MARC_DATA_BEING_CONFIGURED_LABEL"])
+    data_id = VALLS.get_data_id_from_label(db, val["MARC_DATA_BEING_CONFIGURED_LABEL"])
     this_field = None
-    if val["MARC_DATA_FIELD"] == GUI_Text.MARC_DATA_NEW_FIELD_TEXT.value[LANG]:
+    if val["MARC_DATA_FIELD"] == GUI_Text.MARC_DATA_NEW_FIELD_TEXT.value[VALLS.lang]:
         this_field = {"tag":val["MARC_DATA_NEW_FIELD"]}
-        marc_fields_json[db][data_id]["fields"].append(this_field)
+        VALLS.marc_fields_json[db][data_id]["fields"].append(this_field)
     else:
-        for field in marc_fields_json[db][data_id]["fields"]:
+        for field in VALLS.marc_fields_json[db][data_id]["fields"]:
             if field["tag"] == val["MARC_DATA_FIELD"]:
                 this_field = field
     this_field["single_line_coded_data"] = val["MARC_DATA_SINGLE_LINE_CODED_DATA"]
     this_field["filtering_subfield"] = val["MARC_DATA_FILTERING_SUBFIELD"]
-    this_field["subfields"] = val["MARC_DATA_SUBFIELDS"]
-    this_field["positions"] = val["MARC_DATA_POSITIONS"]
+    this_field["subfields"] = val["MARC_DATA_SUBFIELDS"].split(",")
+    this_field["positions"] = val["MARC_DATA_POSITIONS"].split(",")
     with open(CURR_DIR + "/json_configs/marc_fields.json", "w", encoding="utf-8") as f:
-        json.dump(marc_fields_json, f, indent=4)
-    window["MARC_DATA_FIELD"].update(values=get_marc_data_fields_tag(VALLS.DATABASE_MAPPING, VALLS.MARC_DATA_BEING_CONFIGURED) + [GUI_Text.MARC_DATA_NEW_FIELD_TEXT.value[LANG]], value=val["MARC_DATA_NEW_FIELD"])
+        json.dump(VALLS.marc_fields_json, f, indent=4)
+    window["MARC_DATA_FIELD"].update(values=VALLS.get_data_field_tags() + [GUI_Text.MARC_DATA_NEW_FIELD_TEXT.value[VALLS.lang]], value=val["MARC_DATA_NEW_FIELD"])
     
 def save_data_rename(new_name: str, val: dict, window: sg.Window):
-    """Saves the new name for this data in the current language"""
+    """Saves the new name for this data in the current language
+    Takes as arguments :
+        - new_name : the new name
+        - val : all values of the window
+        - window : the curent window"""
     db = val["DATABASE_MAPPING"]
-    data_id = get_marc_data_id_from_label(db, val["MARC_DATA_BEING_CONFIGURED_LABEL"])
-    marc_fields_json[db][data_id]["label"][LANG] = new_name
+    data_id = VALLS.get_data_id_from_label(db, val["MARC_DATA_BEING_CONFIGURED_LABEL"])
+    VALLS.marc_fields_json[db][data_id]["label"][VALLS.lang] = new_name
     with open(CURR_DIR + "/json_configs/marc_fields.json", "w", encoding="utf-8") as f:
-        json.dump(marc_fields_json, f, indent=4)
+        json.dump(VALLS.marc_fields_json, f, indent=4)
     # Change the label inside VALLS
-    VALLS.rename_data_being_configured(new_name)
+    VALLS.UI_rename_curr_data(new_name)
     # Change the label in the UI
     remove_TKString_trace("MARC_DATA_BEING_CONFIGURED_LABEL", window)
-    window["MARC_DATA_BEING_CONFIGURED_LABEL"].update(values=get_marc_data_labels(VALLS.DATABASE_MAPPING), value=new_name)
+    window["MARC_DATA_BEING_CONFIGURED_LABEL"].update(values=VALLS.get_data_labels_as_list(), value=new_name)
     add_TKString_trace("MARC_DATA_BEING_CONFIGURED_LABEL", window)
 
 def save_mapping_as_new(new_name: str, val: dict, window: sg.Window):
+    """Saves a new mapping based on the current one
+    Takes as arguments :
+        - new_name : the new name
+        - val : all values of the window
+        - window : the curent window"""
     db = val["DATABASE_MAPPING"]
-    new_mapping = marc_fields_json[db]
-    marc_fields_json[new_name] = new_mapping
+    new_mapping = VALLS.marc_fields_json[db]
+    VALLS.marc_fields_json[new_name] = new_mapping
     with open(CURR_DIR + "/json_configs/marc_fields.json", "w", encoding="utf-8") as f:
-        json.dump(marc_fields_json, f, indent=4)
+        json.dump(VALLS.marc_fields_json, f, indent=4)
     # Change the value inside VALLS
-    VALLS.change_current_database_mapping(new_name)
+    VALLS.UI_change_curr_database_mapping(new_name)
     # Update the UI
-    window["DATABASE_MAPPING"].update(values=list(marc_fields_json.keys()), value=VALLS.DATABASE_MAPPING)
-    window["ORIGIN_DATABASE_MAPPING"].update(values=list(marc_fields_json.keys()), value=VALLS.ORIGIN_DATABASE_MAPPING)
-    window["TARGET_DATABASE_MAPPING"].update(values=list(marc_fields_json.keys()), value=VALLS.TARGET_DATABASE_MAPPING)
+    window["DATABASE_MAPPING"].update(values=VALLS.UI_get_mappings_names(), value=VALLS.UI_curr_database_mapping)
+    window["ORIGIN_DATABASE_MAPPING"].update(values=VALLS.UI_get_mappings_names(), value=VALLS.origin_database_mapping)
+    window["TARGET_DATABASE_MAPPING"].update(values=VALLS.UI_get_mappings_names(), value=VALLS.target_database_mapping)
 
 
 def switch_languages(window: sg.Window):
@@ -563,23 +398,25 @@ def switch_languages(window: sg.Window):
         - window : the window element"""
     for elem in GUI_Text:
         if elem.name in window.key_dict:
-            window[elem.name].update(elem.value[LANG])
+            window[elem.name].update(elem.value[VALLS.lang])
     # Changes the language of data labels in processing configuration
-    VALLS.MARC_DATA_BEING_CONFIGURED_LABEL = get_marc_data_label_by_id(VALLS.DATABASE_MAPPING, VALLS.MARC_DATA_BEING_CONFIGURED)
+    VALLS.UI_update_curr_data_label()
     window["MARC_DATA_BEING_CONFIGURED_LABEL"].update(
-        values=get_marc_data_labels(VALLS.DATABASE_MAPPING),
-        value=VALLS.MARC_DATA_BEING_CONFIGURED_LABEL
+        values=VALLS.get_data_labels_as_list(),
+        value=VALLS.UI_curr_data_label
     ) 
 
 def open_screen(window: sg.Window, screen: GUI_Screens) -> sg.Window:
     """Generic function to generate a screen.
     
-    Takes as argument the wanted screen entry in GUI_Screen"""
+    Takes as arguments :
+        - window : the current window
+        - screen : the wanted screen entry in GUI_Screen"""
     screen_name = None
     if screen == GUI_Screens.MAIN_SCREEN:
-        screen_name = GUI_Text[screen.name + "_NAME"].value[LANG]
+        screen_name = GUI_Text[screen.name + "_NAME"].value[VALLS.lang]
     if screen == GUI_Screens.PROCESSING_CONFIGURATION_SCREEN:
-        screen_name = GUI_Text[screen.name + "_NAME"].value[LANG]
+        screen_name = GUI_Text[screen.name + "_NAME"].value[VALLS.lang]
     if not window:
         window = sg.Window(screen_name, GLOBAL_LAYOUT, finalize=True)
         toggle_screen_visibility(window, screen)
@@ -589,7 +426,10 @@ def open_screen(window: sg.Window, screen: GUI_Screens) -> sg.Window:
         toggle_screen_visibility(window, screen)
 
 def toggle_screen_visibility(window: sg.Window, wanted_screen: GUI_Screens):
-    """Display the wanetd screen and hides the other ones"""
+    """Display the wanetd screen and hides the other ones
+    Takes as arguments :
+        - window : the current window
+        - screen : the wanted screen entry in GUI_Screen"""
     for screen in GUI_Screens:
         if screen != wanted_screen:
             window[screen.name].update(visible=False)
@@ -601,24 +441,27 @@ def toggle_screen_visibility(window: sg.Window, wanted_screen: GUI_Screens):
             if not elem.metadata:
                 continue
             elif (
-                    VALLS.PROCESSING_VAL in elem.metadata["class"]
+                    VALLS.processing_val in elem.metadata["class"]
                     and "PROCESSING_CONFIGURATION_MAIN" in elem.metadata["class"]
                 ):
                 elem.update(visible=True)
             else:
                 elem.update(visible=False)
 
-def reset_marc_field_field_list(db: str, id: str):
-    """Resets the seelct UI for the marc field"""
-    new_list = get_marc_data_fields_tag(db, id)
-    new_list += [GUI_Text.MARC_DATA_NEW_FIELD_TEXT.value[LANG]]
-    # window["MARC_DATA_FIELD"].update(values=new_list)
+def reset_marc_field_field_list():
+    """Resets the seelct UI for the current marc field"""
+    new_list = VALLS.get_data_field_tags()
+    new_list += [GUI_Text.MARC_DATA_NEW_FIELD_TEXT.value[VALLS.lang]]
     window["MARC_DATA_FIELD"].update(values=new_list, value=new_list[0])
     
 
 def get_option_menu_PYSimpleGUI_key_by_TKStringVar_name(window: sg.Window, var_name: str) -> str:
     """Returns the PySimpleGUI key associated with this TKStringVar.
-    Only used for OptionMenu callbacks"""
+    Only used for OptionMenu callbacks.
+    
+    Takes as argument :
+        - window : the current window
+        - var_name : the tkinter control variable"""
     for elem in window.key_dict:
         if type(window[elem]) != sg.OptionMenu:
             continue
@@ -626,8 +469,7 @@ def get_option_menu_PYSimpleGUI_key_by_TKStringVar_name(window: sg.Window, var_n
             return elem
 
 def option_menu_callback(var, index, mode, key=""):
-    """
-    For OptionMenu
+    """Enables event for Option Menus
     var - tkinter control variable.
     index - index of var, '' if var is not a list.
     mode - 'w' for 'write' here.
@@ -647,17 +489,17 @@ def add_TKString_trace(key:str, window: sg.Window):
     window[key].TKStringVar.trace("w", option_menu_callback)
 
 def update_UI_marc_data_being_configured(window: sg.Window):
-    """Updates the UI of the MARC DAta being configured"""
-    reset_marc_field_field_list(VALLS.DATABASE_MAPPING, VALLS.MARC_DATA_BEING_CONFIGURED)
-    window["MARC_DATA_FIELD"].update(value=VALLS.MARC_DATA_FIELD)
-    window["MARC_DATA_SINGLE_LINE_CODED_DATA"].update(value=VALLS.MARC_DATA_SINGLE_LINE_CODED_DATA)
-    window["MARC_DATA_FILTERING_SUBFIELD"].update(value=VALLS.MARC_DATA_FILTERING_SUBFIELD)
-    window["MARC_DATA_SUBFIELDS"].update(value=VALLS.MARC_DATA_SUBFIELDS)
-    window["MARC_DATA_POSITIONS"].update(value=VALLS.MARC_DATA_POSITIONS)
+    """Updates the UI of the MARC DAta being configured. Takes as argument the current window"""
+    reset_marc_field_field_list()
+    window["MARC_DATA_FIELD"].update(value=VALLS.UI_curr_field)
+    window["MARC_DATA_SINGLE_LINE_CODED_DATA"].update(value=VALLS.UI_curr_single_line_coded_data)
+    window["MARC_DATA_FILTERING_SUBFIELD"].update(value=VALLS.UI_curr_filtering_subfield)
+    window["MARC_DATA_SUBFIELDS"].update(value=VALLS.UI_curr_subfields)
+    window["MARC_DATA_POSITIONS"].update(value=VALLS.UI_curr_positions)
 
 def toggle_UI_elems_for_new_marc_field(active: bool, window: sg.Window):
     """Toggles all elements used to add a new field.
-    Takes as argument a boolean"""
+    Takes as argument a boolean and the current window"""
     for elem in [elem for row in window[GUI_Text.PROCESSING_DATABASE_CONFIGURATION_TAB_TITLE.name].Rows for elem in row]:
         if not elem.metadata:
             continue
@@ -666,30 +508,30 @@ def toggle_UI_elems_for_new_marc_field(active: bool, window: sg.Window):
 
     # If new marc fields, sets to default values infos
     if active:
-        VALLS.default_marc_field_being_configured()
+        VALLS.UI_reset_curr_field_subvalues()
         window["MARC_DATA_SINGLE_LINE_CODED_DATA"].update(value=False)
         for key in ["MARC_DATA_FILTERING_SUBFIELD", "MARC_DATA_SUBFIELDS", "MARC_DATA_POSITIONS"]:
             window[key].update(value="")
 
 def ask_chosen_analysis():
     """Last popup, starts the main script"""
-    list_val = get_analysis_names_as_list()
-    window = sg.Window(GUI_Text.CHOSE_ANALYSIS.value[LANG],
+    list_val = VALLS.get_analysis_names_as_list()
+    window = sg.Window(GUI_Text.CHOSE_ANALYSIS.value[VALLS.lang],
         [
             [
-                sg.Text(GUI_Text.CHOSE_ANALYSIS.value[LANG])
+                sg.Text(GUI_Text.CHOSE_ANALYSIS.value[VALLS.lang])
             ],
             [
                 sg.OptionMenu(values=list_val, key="CHOSEN_ANALYSIS", default_value=list_val[0])],
             [
-                sg.Button(GUI_Text.START_MAIN.value[LANG], key=GUI_Text.START_MAIN.name)
+                sg.Button(GUI_Text.START_MAIN.value[VALLS.lang], key=GUI_Text.START_MAIN.name)
             ]
     ])
     while True:
         event, val = window.read()
         if event == GUI_Text.START_MAIN.name:
             window.close()
-            return get_analysis_index_from_name(val["CHOSEN_ANALYSIS"])
+            return VALLS.get_analysis_index_from_name(val["CHOSEN_ANALYSIS"])
 
 # # --------------- Window Definition ---------------
 # # Create the window
@@ -714,40 +556,49 @@ while True:
 
     # --------------- Updates language ---------------
     if event == GUI_Text.CHOSE_LANG.name:
-        if LANG == "eng":
-            LANG = "fre"
-        else:
-            LANG = "eng"
+        VALLS.UI_switch_lang()
         switch_languages(window)
 
     # --------------- Save parameters ---------------
     if (event[0:5] == "SAVE_"):
-        if event == "SAVE_THIS_MARC_FIELD":
+        new_name = None
+        # ------- Save Marc Field -------
+        if event == GUI_Text.SAVE_THIS_MARC_FIELD.name:
             save_marc_field(val)
+        # ------- Save Rename Data -------
+        elif event == GUI_Text.SAVE_RENAME_DATA.name:
+            new_name = sg.popup_get_text(GUI_Text.SAVE_RENAME_DATA_POPUP_TEXT.value[VALLS.lang] + f" ({VALLS.UI_curr_data}) :")
+            if new_name != None:
+                save_data_rename(new_name, val, window)
+        # ------- Save New Mapping -------
+        elif event == GUI_Text.SAVE_DATABASE_CONFIGURATION_AS_NEW.name:
+            new_name = sg.popup_get_text(GUI_Text.SAVE_DATABASE_CONFIGURATION_AS_NEW_POPUP_TEXT.value[VALLS.lang] + " :")
+            if new_name != None:
+                save_mapping_as_new(new_name, val, window) 
         else:
             save_parameters(curr_screen, val)
 
     # --------------- Continue to processign configuration ---------------
     if event == GUI_Text.GO_TO_PROCESSING_CONFIGURATION.name:
         curr_screen = GUI_Screens.PROCESSING_CONFIGURATION_SCREEN
-        VALLS.PROCESSING_VAL = val["PROCESSING_VAL"]
+        VALLS.UI_change_processing(val["PROCESSING_VAL"])
         open_screen(window, curr_screen)
         toggle_UI_elems_for_new_marc_field(False, window)
 
     # --------------- User selected a mapping ---------------
     if event == "DATABASE_MAPPING" and not is_updating_marc_database:
         is_updating_marc_database = True
-        VALLS.DATABASE_MAPPING = val["DATABASE_MAPPING"]
-        VALLS.MARC_DATA_BEING_CONFIGURED_LABEL = get_marc_data_label_by_id(VALLS.DATABASE_MAPPING, VALLS.MARC_DATA_BEING_CONFIGURED)
-        window["MARC_DATA_BEING_CONFIGURED_LABEL"].update(values=get_marc_data_labels(VALLS.DATABASE_MAPPING), value=VALLS.MARC_DATA_BEING_CONFIGURED_LABEL)
-        VALLS.update_marc_data_being_configured(VALLS.MARC_DATA_BEING_CONFIGURED_LABEL)
+        VALLS.UI_change_curr_database_mapping(val["DATABASE_MAPPING"])
+        VALLS.UI_update_curr_data_label()
+        window["MARC_DATA_BEING_CONFIGURED_LABEL"].update(values=VALLS.get_data_labels_as_list(), value=VALLS.UI_curr_data_label)
+        VALLS.UI_update_curr_data()
         update_UI_marc_data_being_configured(window)
         is_updating_marc_database = False
 
     # --------------- User selected a MARC data ---------------
     if event == "MARC_DATA_BEING_CONFIGURED_LABEL":
-        VALLS.MARC_DATA_BEING_CONFIGURED_LABEL = val["MARC_DATA_BEING_CONFIGURED_LABEL"]
-        VALLS.update_marc_data_being_configured(VALLS.MARC_DATA_BEING_CONFIGURED_LABEL)
+        VALLS.UI_update_curr_data(val["MARC_DATA_BEING_CONFIGURED_LABEL"])
+        VALLS.UI_update_curr_data_label()
         update_UI_marc_data_being_configured(window)
 
     # --------------- User selected a MARC field for a data ---------------
@@ -755,37 +606,22 @@ while True:
         # MUST REMOVE THIS TRACE ELSE IT WILL INFINITELY LOOP
         remove_TKString_trace("MARC_DATA_FIELD", window)
         # trace is removed
-        VALLS.MARC_DATA_FIELD = val["MARC_DATA_FIELD"]
-        if VALLS.MARC_DATA_FIELD == GUI_Text.MARC_DATA_NEW_FIELD_TEXT.value[LANG]:
+        VALLS.UI_update_curr_field(val["MARC_DATA_FIELD"])
+        if VALLS.UI_curr_field == GUI_Text.MARC_DATA_NEW_FIELD_TEXT.value[VALLS.lang]:
             toggle_UI_elems_for_new_marc_field(True, window)
-            VALLS.default_marc_field_being_configured()
+            VALLS.UI_reset_curr_field_subvalues()
         else:
             toggle_UI_elems_for_new_marc_field(False, window)
-            VALLS.update_marc_field_being_configured(VALLS.DATABASE_MAPPING, VALLS.MARC_DATA_BEING_CONFIGURED, VALLS.MARC_DATA_FIELD)
+            VALLS.UI_update_curr_field_subvalues()
         update_UI_marc_data_being_configured(window)
         # DO NOT FORGET TO REENABLE THE TRACING
         add_TKString_trace("MARC_DATA_FIELD", window)
 
-    # --------------- User wants to rename data ---------------
-    new_name = None
-    if event == GUI_Text.RENAME_DATA.name:
-        new_name = sg.popup_get_text(GUI_Text.RENAME_DATA_POPUP_TEXT.value[LANG] + f" ({VALLS.MARC_DATA_BEING_CONFIGURED}) :")
-        if new_name != None:
-            save_data_rename(new_name, val, window)   
-
-    # --------------- User wants to save new mapping ---------------
-    if event == GUI_Text.SAVE_DATABASE_CONFIGURATION_AS_NEW.name:
-        new_name = sg.popup_get_text(GUI_Text.SAVE_DATABASE_CONFIGURATION_AS_NEW_POPUP_TEXT.value[LANG] + " :")
-        if new_name != None:
-            save_mapping_as_new(new_name, val, window) 
-
     # --------------- Close the window && execute main ---------------
     if event == GUI_Text.START_ANALYSIS.name:
         window.close()
-        execution_settings = fcr.Execution_Settings(CURR_DIR)
-        execution_settings.get_values_from_GUI(val)
-        execution_settings.define_chosen_analysis(ask_chosen_analysis())
+        VALLS.define_chosen_analysis(ask_chosen_analysis())
 
         # Launch the main script
         print("Switching to main")
-        main.main(execution_settings)
+        main.main(VALLS)
