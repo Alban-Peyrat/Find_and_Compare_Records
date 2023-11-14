@@ -374,6 +374,10 @@ def go_next(logger, results, csv_writer, result, success):
     log_fin_traitement(logger, result, success)
     results.append(result)
 
+def delete_control_char(txt: str) -> str:
+    """Returns the string without control characters"""
+    return re.sub(r"[\x00-\x1F]", " ", str(txt))
+
 def list_as_string(this_list: list) -> str:
     """Returns the list as a string :
         - "" if the lsit is empty
@@ -384,10 +388,10 @@ def list_as_string(this_list: list) -> str:
     if len(this_list) == 0:
         return ""
     elif len(this_list) == 1:
-        return str(this_list[0])
+        return delete_control_char(str(this_list[0]))
     else:
         if type(this_list) != list:
-            return str(this_list)
+            return delete_control_char(str(this_list))
         non_empty_elements = []
         for elem in this_list:
             if elem:
@@ -395,6 +399,6 @@ def list_as_string(this_list: list) -> str:
         if len(non_empty_elements) == 0:
             return ""
         elif len(non_empty_elements) == 1:
-            return str(non_empty_elements[0])
+            return delete_control_char(str(non_empty_elements[0]))
         else:
-            return str(non_empty_elements)
+            return delete_control_char(str(non_empty_elements))
