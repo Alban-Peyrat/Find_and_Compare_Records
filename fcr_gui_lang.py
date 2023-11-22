@@ -27,11 +27,11 @@ class GUI_Text(Enum):
     }
     PROCESSING_DATABASE_CONFIGURATION_TAB_TITLE = {
         "eng": "Mapping configuration",
-        "fre": "Configuration des mapping"
+        "fre": "Configuration des mappings"
     }
     PROCESSING_CHOSE_DATABASE_MAPPINGS_TAB_TITLE = {
         "eng": "Chose database mappings",
-        "fre": "Choisir les mappings de BDD"
+        "fre": "Choix des mappings de BDD"
     }
     # As this is to switch languages, english must be in french
     CHOSE_LANG = {
@@ -112,7 +112,7 @@ class GUI_Text(Enum):
     }
     MARC_DATA_SINGLE_LINE_CODED_DATA_TEXT = {
         "eng": "Is single line coded data",
-        "fre": "Est une donnée codé en une ligne"
+        "fre": "Est une donnée codée en une ligne"
     }
     YES = {
         "eng": "Yes",
