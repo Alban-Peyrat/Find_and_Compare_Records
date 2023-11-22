@@ -9,7 +9,7 @@ Pour ce faire :
 
 ## Étape 1 : configuration principale
 
-![Écran principal de _Find and Compare Records_](./doc/img/FR/UI_main_screen.png)
+![Écran principal de _Find and Compare Records_](./img/UI_main_screen.png)
 
 _Le bouton en haut à droite permet de changer la langue de l'interface du entre le français et l'anglais._
 
@@ -17,7 +17,7 @@ Cet écran permet de configurer les paramètres généraux de l'application à s
 
 * Le traitement qui sera exécuté _(au 22/11/2023, seul `BETTER_ITEM` est supporté)_
 * Les chemins d'accès :
-  * Au fichier à analyser
+  * Au fichier à analyser _([voir plus d'informations sur ce fichier](./input_file.md))_
   * Au dossier qui contiendra les fichiers de résultats
   * Au dossier qui contiendra le fichier des journaux
 * Le nom du service (qui sert uniquement pour les journaux, notamment pour nommer le fichier)
@@ -38,9 +38,9 @@ Une fois la configuration de tous les onglets terminée, le bouton _Lancer l'ana
 
 ### Onglet _Configuration principale du traitement_
 
-![Écran de configuration du traitement, onglet de configuration principale pour `BETTER_ITEM`](./doc/img/FR/UI_processing_conf_main_tab_better_item.png)
+![Écran de configuration du traitement, onglet de configuration principale pour `BETTER_ITEM`](./img/UI_processing_conf_main_tab_better_item.png)
 
-![Écran de configuration du traitement, onglet de configuration principale pour `OTHER_DB_IN_LOCAL_DB`](./doc/img/FR/UI_processing_conf_main_tab_other_db_in_local_db.png)
+![Écran de configuration du traitement, onglet de configuration principale pour `OTHER_DB_IN_LOCAL_DB`](./img/UI_processing_conf_main_tab_other_db_in_local_db.png)
 
 Cet onglet n'affiche pas les mêmes options selon le traitement choisi :
 
@@ -55,25 +55,25 @@ Le bouton _Sauvegarder les paramètres principaux de ce traitement_ permet de sa
 
 ### Onglet _Configuration des mappings_
 
-![Écran de configuration du traitement, onglet de configuration des mappings](./doc/img/FR/UI_processing_conf_db_conf_tab.png)
+![Écran de configuration du traitement, onglet de configuration des mappings](./img/UI_processing_conf_db_conf_tab.png)
 
 Cet onglet est le plus complexe mais également celui qui, une fois sauvegardée, n'a plus besoin d'être reconfiguré.
 
 Il permet de configurer via une interface quelles données seront récupérées dans les notices bibliographiques (configurées dans le fichier `json_configs/marc_fields.json`).
-Pour plus d'informations sur comment configurer ces mappings, se référer à [la documentation sur l'extracteur de données universel](./doc/universal_data_extractor.md).
+Pour plus d'informations sur comment configurer ces mappings, se référer à [la documentation sur l'extracteur de données universel](../../../doc/universal_data_extractor.md).
 
 Dans un premier temps, il est nécessaire de sélectionner le mapping que l'on souhaite modifier.
 Il est possible de créer un nouveau mapping à l'aide du bouton _Sauvegarder ce mapping comme un nouveau_, qui copiera l'ensemble des données actuellement configurées pour le mapping actuellement sélectionné vers le nouveau.
 Le bouton ouvrira une boîte de dialogue vous demandant de renseigner le nom du nouveau mapping, il faudra ensuite valider avec `Ok` pour procéder à la sauvegarde.
 
-![Boîte de dialogue pour enregistrer le nouveau mapping](./doc/img/FR/UI_save_new_mapping.png)
+![Boîte de dialogue pour enregistrer le nouveau mapping](./img/UI_save_new_mapping.png)
 
 Dans un second temps, il est nécessaire de choisir la donnée à configurer.
 Il est possible de renommer cette donnée pour la langue actuelle avec le bouton _Renommer_.
 Le bouton ouvrira une boîte de dialogue vous demandant de renseigner le nouveau nom de la donnée, il faudra ensuite valider avec `Ok` pour procéder à la sauvegarde.
 Pour s'assurer de la donnée qui est en cours d'édition, entre parenthèses se trouve l'identifiant de la donnée.
 
-![Boîte de dialogue pour enregistrer le nouveau nom de la donnée](./doc/img/FR/UI_save_new_data_name.png)
+![Boîte de dialogue pour enregistrer le nouveau nom de la donnée](./img/UI_save_new_data_name.png)
 
 Dans un troisième temps, il est nécessaire de choisir le champ UNIMARC à configurer.
 Pour chaque champ, quatre données sont à remplir (ou non) :
@@ -90,14 +90,14 @@ Pour chaque champ, quatre données sont à remplir (ou non) :
 Pour ajouter des nouveaux champs, sélectionner le champ `Ajouter un nouveau champ`, qui fera apparaître une nouvelle donnée à remplir à côté de lui.
 Renseignez dedans le numéro du champ voulu.
 
-![Configuration d'un nouveau champ](./doc/img/FR/UI_add_new_field.png)
+![Configuration d'un nouveau champ](./img/UI_add_new_field.png)
 
 Pour sauvegarder la modification effectuée sur le champ, cliquez sur le bouton _Sauvegarder ce champ MARC_.
 Cette opération est nécessaire __pour chaque champ__, sinon les données ne seront pas sauvegardées.
 
 ### Onglet _Choix des mappings de BDD_
 
-![Écran de configuration du traitement, onglet de choix des mappings de base de données](./doc/img/FR/UI_processing_conf_chose_mapping_tab.png)
+![Écran de configuration du traitement, onglet de choix des mappings de base de données](./img/UI_processing_conf_chose_mapping_tab.png)
 
 Cet onglet est le plus simple puisqu'il suffit de choisir le mapping que l'on souhaite attribuer à la base de donnée d'origine et à la base de donnée de destination.
 
@@ -105,7 +105,7 @@ Le bouton _Sauvegarder les mappings de BDD choisis_ permet de sauvegarder les pa
 
 ## Étape 3 : choisir l'analyse
 
-![Fenêtre de choix de l'analyse](./doc/img/FR/UI_chose_analysis.png)
+![Fenêtre de choix de l'analyse](./img/UI_chose_analysis.png)
 
 Cette dernière fenêtre permet de choisir l'analyse voulue parmis celles définies dans le fichier `json_configs/analysis.json`.
 
