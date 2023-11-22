@@ -15,7 +15,7 @@ _Le bouton en haut à droite permet de changer la langue de l'interface du entre
 
 Cet écran permet de configurer les paramètres généraux de l'application à savoir :
 
-* Le traitement qui sera exécuté _(au 22/11/2023, seul `BETTER_ITEM` est supporté)_
+* Le traitement qui sera exécuté _(au 22/11/2023, seul `BETTER_ITEM` est supporté)_ _([voir plus d'informations sur les traitements disponibles](./processings.md))_
 * Les chemins d'accès :
   * Au fichier à analyser _([voir plus d'informations sur ce fichier](./input_file.md))_
   * Au dossier qui contiendra les fichiers de résultats
