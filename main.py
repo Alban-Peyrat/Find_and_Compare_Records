@@ -272,7 +272,8 @@ def main(es: fcr.Execution_Settings):
             else: # Mandatory to prevent an error at the end
                 result['MATCHING_EDITEUR_SIMILARITE'],result['SUDOC_CHOSEN_ED'],result['KOHA_CHOSEN_ED'] = -1, "", ""
 
-            result["SUDOC_DIFFERENT_LOCAL_SYSTEM_NB"] = not koha_record.bibnb in result["SUDOC_LOCAL_SYSTEM_NB"]
+            if result["SUDOC_NB_LOCAL_SYSTEM_NB"] > 0:
+                result["SUDOC_DIFFERENT_LOCAL_SYSTEM_NB"] = not koha_record.bibnb in result["SUDOC_LOCAL_SYSTEM_NB"]
 
             # ||| temp output
             result['KOHA_214210c'] = list_as_string(result['KOHA_214210c'])
