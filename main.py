@@ -164,9 +164,9 @@ def main(es: fcr.Execution_Settings):
             results_report.increase_success(fcr.Success.MATCH_RECORD) # report stats
             logger.debug("{} :: {} :: {}".format(result["MATCH_RECORDS_QUERY"], es.service, "Résultat {} : ".format(str(es.operation)) + " || ".join(str(result["MATCH_RECORDS_RES"]))))
 
-            # Analyze multiple matches
+            # --------------- FOR EACH MATCHED RECORDS ---------------
             for matched_id in rec.matched_records_ids:
-                this_result = result
+                this_result = result.copy()
                 this_result["MATCHED_ID"] = matched_id
                 # --------------- SUDOC ---------------
                 # Get Sudoc record
