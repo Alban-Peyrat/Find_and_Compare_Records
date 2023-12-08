@@ -215,6 +215,26 @@ class Execution_Settings(object):
         self.processing_val = processing_val
         self.processing = FCR_Processings[self.processing_val]
 
+    def UI_update_main_screen_values(self, val:dict):
+        """Updates all data from the UI inside this instance"""
+        self.service = val["SERVICE"]
+        self.file_path = val["FILE_PATH"]
+        self.output_path = val["OUTPUT_PATH"]
+        self.logs_path = val["LOGS_PATH"]
+        self.UI_change_processing(val["PROCESSING_VAL"])
+
+    def UI_update_processing_configuration_values(self, val:dict):
+        """Updates all data from the UI inside this instance"""
+        self.origin_url = val["ORIGIN_URL"]
+        self.target_url = val["TARGET_URL"]
+        self.iln = val["ILN"]
+        self.rcr = val["RCR"]
+        self.filter1 = val["FILTER1"]
+        self.filter2 = val["FILTER2"]
+        self.filter3 = val["FILTER3"]
+        self.origin_database_mapping = val["ORIGIN_DATABASE_MAPPING"]
+        self.target_database_mapping = val["TARGET_DATABASE_MAPPING"]
+
     # ----- Methods for retrieving data from mappings -----
     def UI_get_mappings_names(self) -> list:
         """Returns all mappings names as a list"""

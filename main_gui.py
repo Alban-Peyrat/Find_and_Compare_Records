@@ -580,8 +580,8 @@ while True:
 
     # --------------- Continue to processign configuration ---------------
     if event == GUI_Text.GO_TO_PROCESSING_CONFIGURATION.name:
+        VALLS.UI_update_main_screen_values(val)
         curr_screen = GUI_Screens.PROCESSING_CONFIGURATION_SCREEN
-        VALLS.UI_change_processing(val["PROCESSING_VAL"])
         open_screen(window, curr_screen)
         toggle_UI_elems_for_new_marc_field(False, window)
 
@@ -619,6 +619,7 @@ while True:
 
     # --------------- Close the window && execute main ---------------
     if event == GUI_Text.START_ANALYSIS.name:
+        VALLS.UI_update_processing_configuration_values(val)
         window.close()
         VALLS.define_chosen_analysis(ask_chosen_analysis())
 

@@ -8,6 +8,7 @@ Do not hesitate to check [`PySimpleGUI` demos](https://github.com/PySimpleGUI/Py
   * Anothre name in upper case using underscore as spaces
 * Add to the `load_env_values()` method of the `Execution_Settings` class in `fcr_classes.py` a new property to handle this element
 * If it is a environment variable that can be saved, add it's name to the `values` key of the screen and / or tab it appears in inside the `GUI_Screens` enum
+* __Do not forget to update `UI_update_main_screen_values()` & `UI_update_processing_configuration_values()` methods of `Execution_Settings()`__
 
 ## Add a text element
 

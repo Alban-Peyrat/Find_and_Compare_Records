@@ -219,7 +219,7 @@ def main(es: fcr.Execution_Settings):
                 logger.debug(f"{rec.query_used} :: {es.service} :: Title scores : Simple ratio = {this_record.title_ratio}, Partial ratio = {this_record.title_partial_ratio}, Token sort ratio = {this_record.title_token_sort_ratio}, Token set ratio = {this_record.title_token_set_ratio}")
                 logger.debug(f"{rec.query_used} :: {es.service} :: Dates matched ? {this_record.dates_matched}")
                 logger.debug(f"{rec.query_used} :: {es.service} :: Publishers score = {this_record.publishers_score} (using \"{this_record.chosen_publisher}\" and \"{this_record.chosen_compared_publisher}\")")
-                logger.debug(f"{rec.query_used} :: {es.service} :: Record ID included ? {this_record.local_id_in_compared_record.name}")
+                logger.debug(f"{rec.query_used} :: {es.service} :: Record ID included = {this_record.local_id_in_compared_record.name}")
 
                 # Titles
                 # |||AR358 to del
