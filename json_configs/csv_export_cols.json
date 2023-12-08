@@ -15,11 +15,6 @@
         "list": false
     },
     {
-        "id": "FAKE_ERROR",
-        "name": "Fausse erreur",
-        "list": false
-    },
-    {
         "id": "ERROR_MSG",
         "name": "Message d'erreur",
         "list": false
