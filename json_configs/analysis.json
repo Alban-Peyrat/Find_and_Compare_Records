@@ -1,17 +1,17 @@
 [
     {
-        "name": "Aucune analyse",
-        "TITLE_MIN_SCORE": 0,
-        "NB_TITLE_OK": 0,
-        "PUBLISHER_MIN_SCORE": 0,
-        "USE_DATE": false
-    },
-    {
         "name": "Titre 80 (3/4), Editeurs 80, Dates",
         "TITLE_MIN_SCORE": 80,
         "NB_TITLE_OK": 3,
         "PUBLISHER_MIN_SCORE": 80,
         "USE_DATE": true
+    },
+    {
+        "name": "Aucune analyse",
+        "TITLE_MIN_SCORE": 0,
+        "NB_TITLE_OK": 0,
+        "PUBLISHER_MIN_SCORE": 0,
+        "USE_DATE": false
     },
     {
         "name": "Titre 90",

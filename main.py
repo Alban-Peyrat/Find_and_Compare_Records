@@ -12,10 +12,9 @@ import scripts.logs as logs
 # import api.abes.Abes_isbn2ppn as Abes_isbn2ppn
 import api.abes.AbesXml as AbesXml
 import api.koha.Koha_API_PublicBiblio as Koha_API_PublicBiblio
-from analysis import * # pour éviter de devoir réécrire tous les appels de fonctions
 from scripts.outputing import * # pour éviter de devoir réécrire tous les appels de fonctions
-import scripts.prep_data as prep_data
 import fcr_classes as fcr
+import fcr_func as fcf
 
 def main(es: fcr.Execution_Settings):
     """Main function.
@@ -116,23 +115,23 @@ def main(es: fcr.Execution_Settings):
             rec.get_origin_database_data(es.processing, koha_record.record_parsed, fcr.Databases.KOHA_PUBLIC_BIBLIO, es)
 
             # |||| AR362 to del
-            result['KOHA_BIB_NB'] = list_as_string(rec.origin_database_data.data[fcr.FCR_Mapped_Fields.ID])
+            result['KOHA_BIB_NB'] = fcf.list_as_string(rec.origin_database_data.data[fcr.FCR_Mapped_Fields.ID])
             temp = rec.origin_database_data.data[fcr.FCR_Mapped_Fields.GENERAL_PROCESSING_DATA_DATES]
-            result['KOHA_DATE_1'] = temp[0][1]
-            result['KOHA_DATE_2'] = temp[0][2]
+            result['KOHA_DATE_1'] = temp[0][0]
+            result['KOHA_DATE_2'] = temp[0][1]
             result['KOHA_214210c'] = rec.origin_database_data.data[fcr.FCR_Mapped_Fields.PUBLISHERS_NAME]
-            result['KOHA_200adehiv'] = nettoie_titre(list_as_string(rec.origin_database_data.data[fcr.FCR_Mapped_Fields.TITLE][0]))
-            result['KOHA_305'] = list_as_string(rec.origin_database_data.data[fcr.FCR_Mapped_Fields.EDITION_NOTES])
-            result["KOHA_PPN"] = list_as_string(rec.origin_database_data.data[fcr.FCR_Mapped_Fields.PPN])
+            result['KOHA_200adehiv'] = fcf.nettoie_titre(fcf.list_as_string(rec.origin_database_data.data[fcr.FCR_Mapped_Fields.TITLE][0]))
+            result['KOHA_305'] = fcf.list_as_string(rec.origin_database_data.data[fcr.FCR_Mapped_Fields.EDITION_NOTES])
+            result["KOHA_PPN"] = fcf.list_as_string(rec.origin_database_data.data[fcr.FCR_Mapped_Fields.PPN])
             result["KOHA_214210a_DATES"] = []
             for date_str in rec.origin_database_data.data[fcr.FCR_Mapped_Fields.PUBLICATION_DATES]:
-                result["KOHA_214210a_DATES"] += prep_data.get_year(date_str)
-            result["KOHA_214210a_DATES"] = list_as_string(result["KOHA_214210a_DATES"])
+                result["KOHA_214210a_DATES"] += fcf.get_year(date_str)
+            result["KOHA_214210a_DATES"] = fcf.list_as_string(result["KOHA_214210a_DATES"])
             result["KOHA_215a_DATES"] = []    
             for desc_str in rec.origin_database_data.data[fcr.FCR_Mapped_Fields.PHYSICAL_DESCRIPTION]: #AR259
-                result["KOHA_215a_DATES"] += prep_data.get_year(desc_str)
-            result["KOHA_215a_DATES"] = list_as_string(result["KOHA_215a_DATES"])
-            result['KOHA_010z'] = list_as_string(rec.origin_database_data.data[fcr.FCR_Mapped_Fields.ERRONEOUS_ISBN])
+                result["KOHA_215a_DATES"] += fcf.get_year(desc_str)
+            result["KOHA_215a_DATES"] = fcf.list_as_string(result["KOHA_215a_DATES"])
+            result['KOHA_010z'] = fcf.list_as_string(rec.origin_database_data.data[fcr.FCR_Mapped_Fields.ERRONEOUS_ISBN])
             # |||| END OF AR362 to del
             logger.debug("{} :: {} :: {}".format(rec.input_query, es.service, "Koha biblionumber : " + result['KOHA_BIB_NB']))
             logger.debug("{} :: {} :: {}".format(rec.input_query, es.service, "Koha titre nettoyé : " + result['KOHA_200adehiv']))
@@ -181,92 +180,80 @@ def main(es: fcr.Execution_Settings):
                 # Successfully got Sudoc record
                 # AR362 : UDE
                 rec.get_target_database_data(es.processing, matched_id, sudoc_record.record_parsed, fcr.Databases.ABESXML, es)
+                this_record:fcr.Database_Record = rec.target_database_data[matched_id] # for the IDE
 
                 results_report.increase_success(fcr.Success.GLOBAL) # report stats
 
                 # |||| AR362 to del
-                temp_rec_data = rec.target_database_data[matched_id].data
+                temp_rec:fcr.Database_Record = rec.target_database_data[matched_id]
+                temp_rec_data = temp_rec.data
                 temp = temp_rec_data[fcr.FCR_Mapped_Fields.GENERAL_PROCESSING_DATA_DATES]
                 if len(temp) < 1:
                     this_result['SUDOC_DATE_1'] = None    
                     this_result['SUDOC_DATE_2'] = None
                 else:
-                    this_result['SUDOC_DATE_1'] = temp[0][1]
-                    this_result['SUDOC_DATE_2'] = temp[0][2]
+                    this_result['SUDOC_DATE_1'] = temp[0][0]
+                    this_result['SUDOC_DATE_2'] = temp[0][1]
                 this_result['SUDOC_214210c'] = temp_rec_data[fcr.FCR_Mapped_Fields.PUBLISHERS_NAME]
-                this_result['SUDOC_200adehiv'] = nettoie_titre(list_as_string(temp_rec_data[fcr.FCR_Mapped_Fields.TITLE][0]))
-                this_result['SUDOC_305'] = list_as_string(temp_rec_data[fcr.FCR_Mapped_Fields.EDITION_NOTES])
+                this_result['SUDOC_200adehiv'] = fcf.nettoie_titre(fcf.list_as_string(temp_rec_data[fcr.FCR_Mapped_Fields.TITLE][0]))
+                this_result['SUDOC_305'] = fcf.list_as_string(temp_rec_data[fcr.FCR_Mapped_Fields.EDITION_NOTES])
                 this_result["SUDOC_LOCAL_SYSTEM_NB"] = temp_rec_data[fcr.FCR_Mapped_Fields.OTHER_DB_ID]
                 # sudoc_record.get_local_system_nb(es.iln)
                 this_result["SUDOC_NB_LOCAL_SYSTEM_NB"] = len(this_result["SUDOC_LOCAL_SYSTEM_NB"])
-                this_result["SUDOC_LOCAL_SYSTEM_NB"] = list_as_string(this_result["SUDOC_LOCAL_SYSTEM_NB"])
+                this_result["SUDOC_LOCAL_SYSTEM_NB"] = fcf.list_as_string(this_result["SUDOC_LOCAL_SYSTEM_NB"])
                 this_result["SUDOC_ITEMS"] = temp_rec_data[fcr.FCR_Mapped_Fields.ITEMS]
                 # sudoc_record.get_library_items(es.rcr)
                 this_result["SUDOC_HAS_ITEMS"] = len(this_result["SUDOC_ITEMS"]) > 0
                 if this_result["SUDOC_NB_LOCAL_SYSTEM_NB"] > 0:
                     this_result["SUDOC_DIFFERENT_LOCAL_SYSTEM_NB"] = not koha_record.bibnb in this_result["SUDOC_LOCAL_SYSTEM_NB"]
-                this_result["SUDOC_ITEMS"] = list_as_string(this_result["SUDOC_ITEMS"])
-                this_result['SUDOC_010z'] = list_as_string(temp_rec_data[fcr.FCR_Mapped_Fields.ERRONEOUS_ISBN])
+                this_result["SUDOC_ITEMS"] = fcf.list_as_string(this_result["SUDOC_ITEMS"])
+                this_result['SUDOC_010z'] = fcf.list_as_string(temp_rec_data[fcr.FCR_Mapped_Fields.ERRONEOUS_ISBN])
                 # |||| END OF AR362 to del
                 logger.debug("{} :: {} :: {}".format(this_result["MATCH_RECORDS_QUERY"], es.service, "PPN : " + this_result["MATCHED_ID"]))
                 logger.debug("{} :: {} :: {}".format(this_result["MATCH_RECORDS_QUERY"], es.service, "Sudoc titre nettoyé : " + this_result['SUDOC_200adehiv']))
 
                 # --------------- MATCHING PROCESS ---------------
+
+                # Garder les logs dans main
+                this_record.compare_to(rec.origin_database_data)
+                logger.debug(f"{rec.query_used} :: {es.service} :: Title scores : Simple ratio = {this_record.title_ratio}, Partial ratio = {this_record.title_partial_ratio}, Token sort ratio = {this_record.title_token_sort_ratio}, Token set ratio = {this_record.title_token_set_ratio}")
+                logger.debug(f"{rec.query_used} :: {es.service} :: Dates matched ? {this_record.dates_matched}")
+                logger.debug(f"{rec.query_used} :: {es.service} :: Publishers score = {this_record.publishers_score} (using \"{this_record.chosen_publisher}\" and \"{this_record.chosen_compared_publisher}\")")
+                logger.debug(f"{rec.query_used} :: {es.service} :: Record ID included ? {this_record.local_id_in_compared_record.name}")
+
                 # Titles
-                this_result['MATCHING_TITRE_SIMILARITE'] = fuzz.ratio(this_result['SUDOC_200adehiv'].lower(),this_result['KOHA_200adehiv'].lower())
-                this_result['MATCHING_TITRE_APPARTENANCE'] = fuzz.partial_ratio(this_result['SUDOC_200adehiv'].lower(),this_result['KOHA_200adehiv'].lower())
-                this_result['MATCHING_TITRE_INVERSION'] = fuzz.token_sort_ratio(this_result['SUDOC_200adehiv'],this_result['KOHA_200adehiv'])
-                this_result['MATCHING_TITRE_INVERSION_APPARTENANCE'] = fuzz.token_set_ratio(this_result['SUDOC_200adehiv'],this_result['KOHA_200adehiv'])
-                logger.debug("{} :: {} :: {}".format(this_result["MATCH_RECORDS_QUERY"], es.service, "Score des titres : "
-                                            + "Similarité : " + str(this_result['MATCHING_TITRE_SIMILARITE'])
-                                            + " || Appartenance : " + str(this_result['MATCHING_TITRE_APPARTENANCE'])
-                                            + " || Inversion : " + str(this_result['MATCHING_TITRE_INVERSION'])
-                                            + " || Inversion appartenance : " + str(this_result['MATCHING_TITRE_INVERSION_APPARTENANCE'])
-                                            ))
+                # |||AR358 to del
+                this_result['MATCHING_TITRE_SIMILARITE'] = temp_rec.title_ratio
+                this_result['MATCHING_TITRE_APPARTENANCE'] = temp_rec.title_partial_ratio
+                this_result['MATCHING_TITRE_INVERSION'] = temp_rec.title_token_sort_ratio
+                this_result['MATCHING_TITRE_INVERSION_APPARTENANCE'] = temp_rec.title_token_set_ratio
 
                 # Dates
-                this_result['MATCHING_DATE_PUB'] = teste_date_pub((this_result['SUDOC_DATE_1'],this_result['SUDOC_DATE_2']),(this_result['KOHA_DATE_1'],this_result['KOHA_DATE_2']))
-                logger.debug("{} :: {} :: {}".format(this_result["MATCH_RECORDS_QUERY"], es.service, "Correspondance des dates : " + str(this_result['MATCHING_DATE_PUB'])))
+                this_result['MATCHING_DATE_PUB'] = this_record.dates_matched
 
                 # Publishers
-                if len(this_result['SUDOC_214210c']) > 0 and len(this_result['KOHA_214210c']) > 0 : 
-                    this_result['MATCHING_EDITEUR_SIMILARITE'],this_result['SUDOC_CHOSEN_ED'],this_result['KOHA_CHOSEN_ED'] = teste_editeur(this_result['SUDOC_214210c'], this_result['KOHA_214210c'])
-                    logger.debug("{} :: {} :: {}".format(this_result["MATCH_RECORDS_QUERY"], es.service, "Scores des éditeurs : " + str(this_result['MATCHING_EDITEUR_SIMILARITE'])))
-                else: # Mandatory to prevent an error at the end
-                    this_result['MATCHING_EDITEUR_SIMILARITE'],this_result['SUDOC_CHOSEN_ED'],this_result['KOHA_CHOSEN_ED'] = -1, "", ""
+                this_result['MATCHING_EDITEUR_SIMILARITE'] = this_record.publishers_score
+                this_result['SUDOC_CHOSEN_ED'] = this_record.chosen_publisher
+                this_result['KOHA_CHOSEN_ED'] = this_record.chosen_compared_publisher
 
-                if this_result["SUDOC_NB_LOCAL_SYSTEM_NB"] > 0:
-                    this_result["SUDOC_DIFFERENT_LOCAL_SYSTEM_NB"] = not koha_record.bibnb in this_result["SUDOC_LOCAL_SYSTEM_NB"]
+                this_result["SUDOC_LOCAL_SYSTEM_NB"] = this_record.list_of_other_db_id
+                this_result["SUDOC_NB_LOCAL_SYSTEM_NB"] = this_record.nb_other_db_id
+                this_result["SUDOC_DIFFERENT_LOCAL_SYSTEM_NB"] = this_record.local_id_in_compared_record.name
 
-                # ||| temp output
-                this_result['KOHA_214210c'] = list_as_string(this_result['KOHA_214210c'])
-                this_result['SUDOC_214210c'] = list_as_string(this_result['SUDOC_214210c'])
-                # ||| END OF temp output
-
-                # --------------- ANALYSIS PROCESS ---------------
+                this_result['KOHA_214210c'] = fcf.list_as_string(this_result['KOHA_214210c'])
+                this_result['SUDOC_214210c'] = fcf.list_as_string(this_result['SUDOC_214210c'])
+                
                 # Global validation
-                # "" if 0 checks are asked, OK if all checks are OK, else, nb of OK
-                if len(results_list) == 0:
-                    this_result["FINAL_OK"] = ""
-                else:
-                    sum_of_results = 0
-                    for check in results_list:
-                        this_result[check+"_OK"] = analysis_checks(es.chosen_analysis, check, this_result)
-                        if this_result[check + "_OK"] == True:
-                            sum_of_results += 1
-                    if sum_of_results == len(results_list):
-                        this_result["FINAL_OK"] = "OK"
-                    else:
-                        this_result["FINAL_OK"] = sum_of_results
+                this_result["FINAL_OK"] = this_record.total_checks.name
+                this_result["NB_OK_CHECKS"] = this_record.passed_check_nb
+                this_result["TITLE_OK"] = this_record.checks[fcr.Analysis_Checks.TITLE]
+                this_result["PUBLISHER_OK"] = this_record.checks[fcr.Analysis_Checks.PUBLISHER]
+                this_result["DATE_OK"] = this_record.checks[fcr.Analysis_Checks.DATE]          
+                # ||| END OF |||AR358 to del
 
-                # Adds "" to skipped checks
-                for check in all_checks:
-                    if not check + "_OK" in this_result:
-                        this_result[check + "_OK"] = ""
 
                 # --------------- END OF THIS LINE ---------------
-                logger.debug("{} :: {} :: {}".format(this_result["MATCH_RECORDS_QUERY"], es.service,
-                    "Résultat : {} (titres : {}, éditeurs : {}, dates : {})".format(str(this_result["FINAL_OK"]), str(this_result["TITLE_OK"]), str(this_result["PUB_OK"]), str(this_result["DATE_OK"]))))
+                logger.debug(f"{rec.query_used} :: {es.service} :: Results : {this_record.total_checks.name} (titles : {this_record.checks[fcr.Analysis_Checks.TITLE]}, publishers : {this_record.checks[fcr.Analysis_Checks.PUBLISHER]}, dates : {this_record.checks[fcr.Analysis_Checks.DATE]})")
                 go_next(logger, results, csv_writer, this_result, True)
 
         # Closes CSV file
@@ -313,32 +300,3 @@ def go_next(logger, results, csv_writer, result, success):
     csv_writer.writerow(result)
     log_fin_traitement(logger, result, success)
     results.append(result)
-
-def delete_control_char(txt: str) -> str:
-    """Returns the string without control characters"""
-    return re.sub(r"[\x00-\x1F]", " ", str(txt))
-
-def list_as_string(this_list: list) -> str:
-    """Returns the list as a string :
-        - "" if the lsit is empty
-        - the first element as a string if there's only one element
-        - if after removing empty elements there is only one element, thsi element as a string
-        - the lsit a string if there are multiple elements.
-    Takes as argument a list"""
-    if len(this_list) == 0:
-        return ""
-    elif len(this_list) == 1:
-        return delete_control_char(str(this_list[0]))
-    else:
-        if type(this_list) != list:
-            return delete_control_char(str(this_list))
-        non_empty_elements = []
-        for elem in this_list:
-            if elem:
-                non_empty_elements.append(elem)
-        if len(non_empty_elements) == 0:
-            return ""
-        elif len(non_empty_elements) == 1:
-            return delete_control_char(str(non_empty_elements[0]))
-        else:
-            return delete_control_char(str(non_empty_elements))

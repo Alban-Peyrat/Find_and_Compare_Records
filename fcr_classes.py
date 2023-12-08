@@ -9,6 +9,10 @@ import xml.etree.ElementTree as ET
 import pymarc
 import re
 from typing import Dict, List, Tuple, Optional, Union
+from fuzzywuzzy import fuzz
+
+# Internal imports
+import fcr_func as fcf
 
 # ----- Match Records imports -----
 # Internal imports
@@ -57,6 +61,17 @@ class FCR_Processings(Enum):
         FCR_Mapped_Fields.ITEMS: FCR_Processing_Data_Target.TARGET
         }
     OTHER_DB_IN_LOCAL_DB = {}
+
+class Analysis_Checks(Enum):
+    TITLE = 0
+    PUBLISHER = 1
+    DATE = 2
+
+class Analysis_Final_Results(Enum):
+    UNKNOWN = 0
+    NO_CHECK = 1
+    TOTAL_MATCH = 2
+    PARTIAL_MATCH = 3
 
 class Execution_Settings(object):
     def __init__(self, dir: str):
@@ -119,6 +134,13 @@ class Execution_Settings(object):
 
     def define_chosen_analysis(self, nb: int):
         self.chosen_analysis = self.analysis_json[nb]
+        self.chosen_analysis_checks = {}
+        if self.chosen_analysis["TITLE_MIN_SCORE"] > 0:
+            self.chosen_analysis_checks[Analysis_Checks.TITLE] = None
+        if self.chosen_analysis["PUBLISHER_MIN_SCORE"] > 0:
+            self.chosen_analysis_checks[Analysis_Checks.PUBLISHER] = None
+        if self.chosen_analysis["USE_DATE"]:
+            self.chosen_analysis_checks[Analysis_Checks.DATE] = None
     
     # ----- Methods for UI -----
     def UI_switch_lang(self):
@@ -327,6 +349,7 @@ class Execution_Settings(object):
         for index, this in enumerate(self.analysis_json):
             if this["name"] == name:
                 return index
+
 # -------------------- MATCH RECORDS (MR) --------------------
 
 class Operations(Enum):
@@ -1020,6 +1043,13 @@ class Universal_Data_Extractor(object):
 
 # -------------------- MAIN --------------------
 
+class Other_Database_Id_In_Target(Enum):
+    UNKNOWN = 0
+    NO_OTHER_DB_ID = 1
+    THIS_ID_INCLUDED = 2
+    ONLY_THIS_OTHER_DB_ID = 3
+    THIS_ID_NOT_INCLUDED = 4
+
 class Original_Record(object):
     def __init__(self, line: dict):
         self.error = None
@@ -1077,6 +1107,120 @@ class Database_Record(object):
                     self.data[data] = self.ude.get_by_mapped_field_name(data, filter_value)
                 else:
                     self.data[data] = self.ude.get_by_mapped_field_name(data)
+        self.chosen_analysis = es.chosen_analysis
+        self.chosen_analysis_checks = es.chosen_analysis_checks
+
+    def __compare_titles(self, compared_to):
+        """Compares the titles and sets their keys"""
+        self.compared_title_key = fcf.nettoie_titre(fcf.list_as_string(compared_to.data[FCR_Mapped_Fields.TITLE][0]))
+        self.title_key = fcf.nettoie_titre(fcf.list_as_string(self.data[FCR_Mapped_Fields.TITLE][0]))
+        self.title_ratio = fuzz.ratio(self.title_key, self.compared_title_key)
+        self.title_partial_ratio = fuzz.partial_ratio(self.title_key, self.compared_title_key)
+        self.title_token_sort_ratio = fuzz.token_sort_ratio(self.title_key, self.compared_title_key)
+        self.title_token_set_ratio = fuzz.token_set_ratio(self.title_key, self.compared_title_key)
+    
+    def __compare_dates(self, compared_to) -> None:
+        """Compares if one of the record dates matches on one of the compared record."""
+        self.dates_matched = False
+        # Merge dates lists
+        this_dates = []
+        for dates in self.data[FCR_Mapped_Fields.GENERAL_PROCESSING_DATA_DATES]:
+            this_dates.extend(dates)
+        compared_dates = []
+        for dates in compared_to.data[FCR_Mapped_Fields.GENERAL_PROCESSING_DATA_DATES]:
+            compared_dates.extend(dates)
+        for date in this_dates:
+            if date in compared_dates and date != "    ": # excludes empty dates
+                self.dates_matched = True
+                return
+    
+    def __compare_publishers(self, compared_to) -> None:
+        """Compares every publishers in this record with every publishers in comapred record"""
+        self.publishers_score = -1
+        self.chosen_publisher = ""
+        self.chosen_compared_publisher = ""
+        # I fboth don't have results, comparison can't be done
+        if len(self.data[FCR_Mapped_Fields.PUBLISHERS_NAME]) == 0 or len(compared_to.data[FCR_Mapped_Fields.PUBLISHERS_NAME]) == 0:
+            return
+        for publisher in self.data[FCR_Mapped_Fields.PUBLISHERS_NAME]:
+            publisher = fcf.clean_publisher(publisher)
+            for compared_publisher in compared_to.data[FCR_Mapped_Fields.PUBLISHERS_NAME]:
+                compared_publisher = fcf.clean_publisher(compared_publisher)
+                ratio = fuzz.ratio(publisher, compared_publisher)
+                if ratio > self.publishers_score:
+                    self.publishers_score = ratio
+                    self.chosen_publisher = publisher
+                    self.chosen_compared_publisher = compared_publisher
+
+    def __compare_other_db_id(self, compared_to):
+        """Checks if this record id is in the comapred other database IDs"""
+        self.local_id_in_compared_record = Other_Database_Id_In_Target.UNKNOWN
+        self.list_of_other_db_id = self.data[FCR_Mapped_Fields.OTHER_DB_ID]
+        self.nb_other_db_id = len(self.list_of_other_db_id)
+        id = fcf.list_as_string(compared_to.data[FCR_Mapped_Fields.ID])
+        if self.nb_other_db_id == 0:
+            self.local_id_in_compared_record = Other_Database_Id_In_Target.NO_OTHER_DB_ID
+        elif self.nb_other_db_id == 1 and id in self.list_of_other_db_id:
+            self.local_id_in_compared_record = Other_Database_Id_In_Target.ONLY_THIS_OTHER_DB_ID
+        elif self.nb_other_db_id > 1 and id in self.list_of_other_db_id:
+            self.local_id_in_compared_record = Other_Database_Id_In_Target.THIS_ID_INCLUDED
+        elif id not in self.list_of_other_db_id:
+            self.local_id_in_compared_record = Other_Database_Id_In_Target.THIS_ID_NOT_INCLUDED
+
+    def __analysis_check_title(self):
+        self.check_title_nb_valids = 0
+        # for each matching score, checks if it's high enough
+        title_score_list = [
+            self.title_ratio,
+            self.title_partial_ratio,
+            self.title_token_sort_ratio,
+            self.title_token_set_ratio
+            ]
+        for title_score in title_score_list:
+            if title_score >= self.chosen_analysis["TITLE_MIN_SCORE"]:
+                self.check_title_nb_valids += 1
+        self.checks[Analysis_Checks.TITLE] = (self.check_title_nb_valids >= self.chosen_analysis["NB_TITLE_OK"])
+
+    def __analysis_checks(self, check):
+        """Launches the check for the provided analysis"""
+        # Titles
+        if check == Analysis_Checks.TITLE:
+            self.__analysis_check_title()
+        # Publishers
+        elif check == Analysis_Checks.PUBLISHER:
+            self.checks[Analysis_Checks.PUBLISHER] = (self.publishers_score >= self.chosen_analysis["PUBLISHER_MIN_SCORE"])
+        # Dates
+        elif check == Analysis_Checks.DATE:
+            self.checks[Analysis_Checks.DATE] = self.dates_matched
+
+    def __finalize_analysis(self):
+        """Summarizes all checks"""
+        self.total_checks = Analysis_Final_Results.UNKNOWN
+        self.passed_check_nb = 0
+        self.checks = {}
+        for check in Analysis_Checks:
+            self.checks[check] = None
+        if len(self.chosen_analysis_checks) == 0:
+            self.total_checks = Analysis_Final_Results.NO_CHECK
+        else:
+            for check in self.chosen_analysis_checks:
+                self.__analysis_checks(check)
+                if self.checks[check] == True:
+                    self.passed_check_nb += 1
+            if self.passed_check_nb == len(self.chosen_analysis_checks):
+                self.total_checks = Analysis_Final_Results.TOTAL_MATCH
+            else:
+                self.total_checks = Analysis_Final_Results.PARTIAL_MATCH
+
+    def compare_to(self, compared_to):
+        """Execute the analysis processs
+        Takes as argument:
+        - compared_to {Database_Record instance} : the record from origin database"""
+        self.__compare_titles(compared_to)
+        self.__compare_dates(compared_to)
+        self.__compare_publishers(compared_to)
+        self.__compare_other_db_id(compared_to)
+        self.__finalize_analysis()
 
 # Used in report class
 class Success(Enum):

@@ -25,12 +25,17 @@
         "list": false
     },
     {
+        "id": "NB_OK_CHECKS",
+        "name": "Nombre de validation réussies",
+        "list": false
+    },
+    {
         "id": "TITLE_OK",
         "name": "Validation des titres",
         "list": false
     },
     {
-        "id": "PUB_OK",
+        "id": "PUBLISHER_OK",
         "name": "Validation des \u00e9diteurs",
         "list": false
     },
