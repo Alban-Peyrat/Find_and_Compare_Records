@@ -72,6 +72,7 @@ class Analysis_Final_Results(Enum):
     NO_CHECK = 1
     TOTAL_MATCH = 2
     PARTIAL_MATCH = 3
+    NO_MATCH = 4
 
 class Execution_Settings(object):
     def __init__(self, dir: str):
@@ -1209,8 +1210,10 @@ class Database_Record(object):
                     self.passed_check_nb += 1
             if self.passed_check_nb == len(self.chosen_analysis_checks):
                 self.total_checks = Analysis_Final_Results.TOTAL_MATCH
-            else:
+            elif self.passed_check_nb > 0:
                 self.total_checks = Analysis_Final_Results.PARTIAL_MATCH
+            else:
+                self.total_checks = Analysis_Final_Results.NO_MATCH
 
     def compare_to(self, compared_to):
         """Execute the analysis processs
