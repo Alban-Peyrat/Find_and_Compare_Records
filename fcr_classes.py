@@ -1025,6 +1025,7 @@ class Original_Record(object):
         self.error = None
         self.error_message = None
         self.original_line = line
+        self.target_database_data = {}
     
     def extract_from_original_line(self, headers: List[str]):
         """Extract the first column of the file as the input query and
@@ -1045,9 +1046,9 @@ class Original_Record(object):
         """Extract data from the origin database record"""
         self.origin_database_data = Database_Record(processing, record, database, False, es)
 
-    def get_target_database_data(self, processing: FCR_Processings, record: ET.ElementTree | dict | pymarc.record.Record, database: Databases, es: Execution_Settings):
+    def get_target_database_data(self, processing: FCR_Processings, id:str, record: ET.ElementTree | dict | pymarc.record.Record, database: Databases, es: Execution_Settings):
         """Extract data from the origin database record"""
-        self.target_database_data = Database_Record(processing, record, database, True, es)
+        self.target_database_data[id] = Database_Record(processing, record, database, True, es)
 
 class Database_Record(object):
     """Contains extracted data from the record.
@@ -1084,8 +1085,7 @@ class Success(Enum):
 
 # Used in report class
 class Errors(Enum):
-    MATCH_RECORD_FAKE = 0
-    MATCH_RECORD_REAL = 1
+    MATCH_RECORD = 1
     KOHA = 2
     SUDOC = 3
 

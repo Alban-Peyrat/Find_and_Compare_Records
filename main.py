@@ -92,7 +92,6 @@ def main(es: fcr.Execution_Settings):
             # ||| AR358 to del
             result = {}
             result['ERROR'] = False
-            result['FAKE_ERROR'] = False
             result['ERROR_MSG'] = ''
             result.update(line)
             result["INPUT_QUERY"] = line[CSV_ORIGINAL_COLS[0]]
@@ -134,21 +133,6 @@ def main(es: fcr.Execution_Settings):
                 result["KOHA_215a_DATES"] += prep_data.get_year(desc_str)
             result["KOHA_215a_DATES"] = list_as_string(result["KOHA_215a_DATES"])
             result['KOHA_010z'] = list_as_string(rec.origin_database_data.data[fcr.FCR_Mapped_Fields.ERRONEOUS_ISBN])
-            # old
-            # result['KOHA_BIB_NB'] = koha_record.bibnb
-            # result['KOHA_Leader'] = koha_record.get_leader()
-            # result['KOHA_100a'], result['KOHA_DATE_TYPE'],result['KOHA_DATE_1'],result['KOHA_DATE_2'] = koha_record.get_dates_pub()
-            # result['KOHA_214210c'] = koha_record.get_editeurs()
-            # result['KOHA_200adehiv'] = nettoie_titre(koha_record.get_title_info())
-            # result['KOHA_305'] = koha_record.get_note_edition()
-            # result["KOHA_PPN"] = koha_record.get_ppn(es.source_ppn_field, es.source_ppn_subfield)
-            # result["KOHA_214210a_DATES"] = []
-            # for date_str in koha_record.get_dates_from_21X():
-            #     result["KOHA_214210a_DATES"] += prep_data.get_year(date_str)
-            # result["KOHA_215a_DATES"] = []    
-            # for desc_str in koha_record.get_desc(): #AR259
-            #     result["KOHA_215a_DATES"] += prep_data.get_year(desc_str)
-            # result['KOHA_010z'] = koha_record.get_wrong_isbn()
             # |||| END OF AR362 to del
             logger.debug("{} :: {} :: {}".format(rec.input_query, es.service, "Koha biblionumber : " + result['KOHA_BIB_NB']))
             logger.debug("{} :: {} :: {}".format(rec.input_query, es.service, "Koha titre nettoyé : " + result['KOHA_200adehiv']))
@@ -162,26 +146,15 @@ def main(es: fcr.Execution_Settings):
             result["MATCH_RECORDS_NB_RES"] = rec.nb_matched_records
             result["MATCH_RECORDS_RES"] = rec.matched_records_ids
             # result["MATCH_RECORDS_RES_RECORDS"] = rec.matched_records
-            if result["MATCH_RECORDS_NB_RES"] > 1:
-                result["ERROR"] = True
-                result["FAKE_ERROR"] = True
-                result['ERROR_MSG'] = "{} : trop de résultats".format(str(es.operation.name))
             if result["MATCH_RECORDS_NB_RES"] == 0:
                 result["ERROR"] = True
-                result["FAKE_ERROR"] = False
                 result['ERROR_MSG'] = "{} : aucun résultat".format(str(es.operation.name))
-            if result["MATCH_RECORDS_NB_RES"] == 1: # Only 1 match : gets the PPN
-                result["MATCHED_ID"] = result["MATCH_RECORDS_RES"][0]
             # ||| End of AR358 to del
     
             # ||| needs to be redone with enhanced match records errors
             if result["ERROR"]:
-                if result["FAKE_ERROR"]: # report stats
-                    results_report.increase_fail(fcr.Errors.MATCH_RECORD_FAKE)
-                    logger.error("{} :: {} :: {}".format(result["MATCH_RECORDS_QUERY"], es.service, "{} : {}".format(str(result["ERROR_MSG"]), str(result["MATCH_RECORDS_NB_RES"]))))
-                else:
-                    results_report.increase_fail(fcr.Errors.MATCH_RECORD_REAL)
-                    logger.error("{} :: {} :: {}".format(result["INPUT_QUERY"], es.service, str(result["ERROR_MSG"])))
+                results_report.increase_fail(fcr.Errors.MATCH_RECORD)
+                logger.error("{} :: {} :: {}".format(result["INPUT_QUERY"], es.service, str(result["ERROR_MSG"])))
                 
                 # Skip to next line
                 go_next(logger, results, csv_writer, result, False)
@@ -191,120 +164,110 @@ def main(es: fcr.Execution_Settings):
             results_report.increase_success(fcr.Success.MATCH_RECORD) # report stats
             logger.debug("{} :: {} :: {}".format(result["MATCH_RECORDS_QUERY"], es.service, "Résultat {} : ".format(str(es.operation)) + " || ".join(str(result["MATCH_RECORDS_RES"]))))
 
-            # --------------- SUDOC ---------------
-            # Get Sudoc record
-            sudoc_record = AbesXml.AbesXml(result["MATCHED_ID"],service=es.service)
-            if sudoc_record.status == 'Error':
-                result['ERROR'] = True
-                result['ERROR_MSG'] = sudoc_record.error_msg
-                results_report.increase_fail(fcr.Errors.SUDOC) # report stats
-                go_next(logger, results, csv_writer, result, False)
-                continue # skip to next line
+            # Analyze multiple matches
+            for matched_id in rec.matched_records_ids:
+                this_result = result
+                this_result["MATCHED_ID"] = matched_id
+                # --------------- SUDOC ---------------
+                # Get Sudoc record
+                sudoc_record = AbesXml.AbesXml(matched_id,service=es.service)
+                if sudoc_record.status == 'Error':
+                    this_result['ERROR'] = True
+                    this_result['ERROR_MSG'] = sudoc_record.error_msg
+                    results_report.increase_fail(fcr.Errors.SUDOC) # report stats
+                    go_next(logger, results, csv_writer, this_result, False)
+                    continue # skip to next line
 
-            # Successfully got Sudoc record
-            # AR362 : UDE
-            rec.get_target_database_data(es.processing, sudoc_record.record_parsed, fcr.Databases.ABESXML, es)
+                # Successfully got Sudoc record
+                # AR362 : UDE
+                rec.get_target_database_data(es.processing, matched_id, sudoc_record.record_parsed, fcr.Databases.ABESXML, es)
 
+                results_report.increase_success(fcr.Success.GLOBAL) # report stats
 
-            results_report.increase_success(fcr.Success.GLOBAL) # report stats
-
-
-            # |||| AR362 to del
-            temp = rec.target_database_data.data[fcr.FCR_Mapped_Fields.GENERAL_PROCESSING_DATA_DATES]
-            if len(temp) < 1:
-                result['SUDOC_DATE_1'] = None    
-                result['SUDOC_DATE_2'] = None
-            else:
-                result['SUDOC_DATE_1'] = temp[0][1]
-                result['SUDOC_DATE_2'] = temp[0][2]
-            result['SUDOC_214210c'] = rec.target_database_data.data[fcr.FCR_Mapped_Fields.PUBLISHERS_NAME]
-            result['SUDOC_200adehiv'] = nettoie_titre(list_as_string(rec.target_database_data.data[fcr.FCR_Mapped_Fields.TITLE][0]))
-            result['SUDOC_305'] = list_as_string(rec.target_database_data.data[fcr.FCR_Mapped_Fields.EDITION_NOTES])
-            result["SUDOC_LOCAL_SYSTEM_NB"] = rec.target_database_data.data[fcr.FCR_Mapped_Fields.OTHER_DB_ID]
-            # sudoc_record.get_local_system_nb(es.iln)
-            result["SUDOC_NB_LOCAL_SYSTEM_NB"] = len(result["SUDOC_LOCAL_SYSTEM_NB"])
-            result["SUDOC_LOCAL_SYSTEM_NB"] = list_as_string(result["SUDOC_LOCAL_SYSTEM_NB"])
-            result["SUDOC_ITEMS"] = rec.target_database_data.data[fcr.FCR_Mapped_Fields.ITEMS]
-            # sudoc_record.get_library_items(es.rcr)
-            result["SUDOC_HAS_ITEMS"] = len(result["SUDOC_ITEMS"]) > 0
-            if result["SUDOC_NB_LOCAL_SYSTEM_NB"] > 0:
-                result["SUDOC_DIFFERENT_LOCAL_SYSTEM_NB"] = not koha_record.bibnb in result["SUDOC_LOCAL_SYSTEM_NB"]
-            result["SUDOC_ITEMS"] = list_as_string(result["SUDOC_ITEMS"])
-            result['SUDOC_010z'] = list_as_string(rec.target_database_data.data[fcr.FCR_Mapped_Fields.ERRONEOUS_ISBN])
-            # old
-            # result['SUDOC_Leader'] = sudoc_record.get_leader()
-            # result['SUDOC_100a'],result['SUDOC_DATE_TYPE'],result['SUDOC_DATE_1'],result['SUDOC_DATE_2'] = sudoc_record.get_dates_pub()
-            # result['SUDOC_214210c'] = sudoc_record.get_editeurs()
-            # result['SUDOC_200adehiv'] = nettoie_titre(sudoc_record.get_title_info())
-            # result['SUDOC_305'] = sudoc_record.get_note_edition()
-            # result["SUDOC_LOCAL_SYSTEM_NB"] = sudoc_record.get_local_system_nb(es.iln)
-            # result["SUDOC_NB_LOCAL_SYSTEM_NB"] = len(result["SUDOC_LOCAL_SYSTEM_NB"])
-            # if result["SUDOC_NB_LOCAL_SYSTEM_NB"] > 0:
-            #     result["SUDOC_DIFFERENT_LOCAL_SYSTEM_NB"] = not koha_record.bibnb in result["SUDOC_LOCAL_SYSTEM_NB"]
-            # result["SUDOC_ITEMS"] = sudoc_record.get_library_items(es.rcr)
-            # result["SUDOC_HAS_ITEMS"] = len(result["SUDOC_ITEMS"]) > 0
-            # result['SUDOC_010z'] = sudoc_record.get_wrong_isbn()
-            # |||| END OF AR362 to del
-            logger.debug("{} :: {} :: {}".format(result["MATCH_RECORDS_QUERY"], es.service, "PPN : " + result["MATCHED_ID"]))
-            logger.debug("{} :: {} :: {}".format(result["MATCH_RECORDS_QUERY"], es.service, "Sudoc titre nettoyé : " + result['SUDOC_200adehiv']))
-
-            # --------------- MATCHING PROCESS ---------------
-            # Titles
-            result['MATCHING_TITRE_SIMILARITE'] = fuzz.ratio(result['SUDOC_200adehiv'].lower(),result['KOHA_200adehiv'].lower())
-            result['MATCHING_TITRE_APPARTENANCE'] = fuzz.partial_ratio(result['SUDOC_200adehiv'].lower(),result['KOHA_200adehiv'].lower())
-            result['MATCHING_TITRE_INVERSION'] = fuzz.token_sort_ratio(result['SUDOC_200adehiv'],result['KOHA_200adehiv'])
-            result['MATCHING_TITRE_INVERSION_APPARTENANCE'] = fuzz.token_set_ratio(result['SUDOC_200adehiv'],result['KOHA_200adehiv'])
-            logger.debug("{} :: {} :: {}".format(result["MATCH_RECORDS_QUERY"], es.service, "Score des titres : "
-                                        + "Similarité : " + str(result['MATCHING_TITRE_SIMILARITE'])
-                                        + " || Appartenance : " + str(result['MATCHING_TITRE_APPARTENANCE'])
-                                        + " || Inversion : " + str(result['MATCHING_TITRE_INVERSION'])
-                                        + " || Inversion appartenance : " + str(result['MATCHING_TITRE_INVERSION_APPARTENANCE'])
-                                        ))
-
-            # Dates
-            result['MATCHING_DATE_PUB'] = teste_date_pub((result['SUDOC_DATE_1'],result['SUDOC_DATE_2']),(result['KOHA_DATE_1'],result['KOHA_DATE_2']))
-            logger.debug("{} :: {} :: {}".format(result["MATCH_RECORDS_QUERY"], es.service, "Correspondance des dates : " + str(result['MATCHING_DATE_PUB'])))
-
-            # Publishers
-            if len(result['SUDOC_214210c']) > 0 and len(result['KOHA_214210c']) > 0 : 
-                result['MATCHING_EDITEUR_SIMILARITE'],result['SUDOC_CHOSEN_ED'],result['KOHA_CHOSEN_ED'] = teste_editeur(result['SUDOC_214210c'], result['KOHA_214210c'])
-                logger.debug("{} :: {} :: {}".format(result["MATCH_RECORDS_QUERY"], es.service, "Scores des éditeurs : " + str(result['MATCHING_EDITEUR_SIMILARITE'])))
-            else: # Mandatory to prevent an error at the end
-                result['MATCHING_EDITEUR_SIMILARITE'],result['SUDOC_CHOSEN_ED'],result['KOHA_CHOSEN_ED'] = -1, "", ""
-
-            if result["SUDOC_NB_LOCAL_SYSTEM_NB"] > 0:
-                result["SUDOC_DIFFERENT_LOCAL_SYSTEM_NB"] = not koha_record.bibnb in result["SUDOC_LOCAL_SYSTEM_NB"]
-
-            # ||| temp output
-            result['KOHA_214210c'] = list_as_string(result['KOHA_214210c'])
-            result['SUDOC_214210c'] = list_as_string(result['SUDOC_214210c'])
-            # ||| END OF temp output
-
-            # --------------- ANALYSIS PROCESS ---------------
-            # Global validation
-            # "" if 0 checks are asked, OK if all checks are OK, else, nb of OK
-            if len(results_list) == 0:
-                result["FINAL_OK"] = ""
-            else:
-                sum_of_results = 0
-                for check in results_list:
-                    result[check+"_OK"] = analysis_checks(es.chosen_analysis, check, result)
-                    if result[check + "_OK"] == True:
-                        sum_of_results += 1
-                if sum_of_results == len(results_list):
-                    result["FINAL_OK"] = "OK"
+                # |||| AR362 to del
+                temp_rec_data = rec.target_database_data[matched_id].data
+                temp = temp_rec_data[fcr.FCR_Mapped_Fields.GENERAL_PROCESSING_DATA_DATES]
+                if len(temp) < 1:
+                    this_result['SUDOC_DATE_1'] = None    
+                    this_result['SUDOC_DATE_2'] = None
                 else:
-                    result["FINAL_OK"] = sum_of_results
+                    this_result['SUDOC_DATE_1'] = temp[0][1]
+                    this_result['SUDOC_DATE_2'] = temp[0][2]
+                this_result['SUDOC_214210c'] = temp_rec_data[fcr.FCR_Mapped_Fields.PUBLISHERS_NAME]
+                this_result['SUDOC_200adehiv'] = nettoie_titre(list_as_string(temp_rec_data[fcr.FCR_Mapped_Fields.TITLE][0]))
+                this_result['SUDOC_305'] = list_as_string(temp_rec_data[fcr.FCR_Mapped_Fields.EDITION_NOTES])
+                this_result["SUDOC_LOCAL_SYSTEM_NB"] = temp_rec_data[fcr.FCR_Mapped_Fields.OTHER_DB_ID]
+                # sudoc_record.get_local_system_nb(es.iln)
+                this_result["SUDOC_NB_LOCAL_SYSTEM_NB"] = len(this_result["SUDOC_LOCAL_SYSTEM_NB"])
+                this_result["SUDOC_LOCAL_SYSTEM_NB"] = list_as_string(this_result["SUDOC_LOCAL_SYSTEM_NB"])
+                this_result["SUDOC_ITEMS"] = temp_rec_data[fcr.FCR_Mapped_Fields.ITEMS]
+                # sudoc_record.get_library_items(es.rcr)
+                this_result["SUDOC_HAS_ITEMS"] = len(this_result["SUDOC_ITEMS"]) > 0
+                if this_result["SUDOC_NB_LOCAL_SYSTEM_NB"] > 0:
+                    this_result["SUDOC_DIFFERENT_LOCAL_SYSTEM_NB"] = not koha_record.bibnb in this_result["SUDOC_LOCAL_SYSTEM_NB"]
+                this_result["SUDOC_ITEMS"] = list_as_string(this_result["SUDOC_ITEMS"])
+                this_result['SUDOC_010z'] = list_as_string(temp_rec_data[fcr.FCR_Mapped_Fields.ERRONEOUS_ISBN])
+                # |||| END OF AR362 to del
+                logger.debug("{} :: {} :: {}".format(this_result["MATCH_RECORDS_QUERY"], es.service, "PPN : " + this_result["MATCHED_ID"]))
+                logger.debug("{} :: {} :: {}".format(this_result["MATCH_RECORDS_QUERY"], es.service, "Sudoc titre nettoyé : " + this_result['SUDOC_200adehiv']))
 
-            # Adds "" to skipped checks
-            for check in all_checks:
-                if not check + "_OK" in result:
-                    result[check + "_OK"] = ""
+                # --------------- MATCHING PROCESS ---------------
+                # Titles
+                this_result['MATCHING_TITRE_SIMILARITE'] = fuzz.ratio(this_result['SUDOC_200adehiv'].lower(),this_result['KOHA_200adehiv'].lower())
+                this_result['MATCHING_TITRE_APPARTENANCE'] = fuzz.partial_ratio(this_result['SUDOC_200adehiv'].lower(),this_result['KOHA_200adehiv'].lower())
+                this_result['MATCHING_TITRE_INVERSION'] = fuzz.token_sort_ratio(this_result['SUDOC_200adehiv'],this_result['KOHA_200adehiv'])
+                this_result['MATCHING_TITRE_INVERSION_APPARTENANCE'] = fuzz.token_set_ratio(this_result['SUDOC_200adehiv'],this_result['KOHA_200adehiv'])
+                logger.debug("{} :: {} :: {}".format(this_result["MATCH_RECORDS_QUERY"], es.service, "Score des titres : "
+                                            + "Similarité : " + str(this_result['MATCHING_TITRE_SIMILARITE'])
+                                            + " || Appartenance : " + str(this_result['MATCHING_TITRE_APPARTENANCE'])
+                                            + " || Inversion : " + str(this_result['MATCHING_TITRE_INVERSION'])
+                                            + " || Inversion appartenance : " + str(this_result['MATCHING_TITRE_INVERSION_APPARTENANCE'])
+                                            ))
 
-            # --------------- END OF THIS LINE ---------------
-            logger.debug("{} :: {} :: {}".format(result["MATCH_RECORDS_QUERY"], es.service,
-                "Résultat : {} (titres : {}, éditeurs : {}, dates : {})".format(str(result["FINAL_OK"]), str(result["TITLE_OK"]), str(result["PUB_OK"]), str(result["DATE_OK"]))))
-            go_next(logger, results, csv_writer, result, True)
+                # Dates
+                this_result['MATCHING_DATE_PUB'] = teste_date_pub((this_result['SUDOC_DATE_1'],this_result['SUDOC_DATE_2']),(this_result['KOHA_DATE_1'],this_result['KOHA_DATE_2']))
+                logger.debug("{} :: {} :: {}".format(this_result["MATCH_RECORDS_QUERY"], es.service, "Correspondance des dates : " + str(this_result['MATCHING_DATE_PUB'])))
+
+                # Publishers
+                if len(this_result['SUDOC_214210c']) > 0 and len(this_result['KOHA_214210c']) > 0 : 
+                    this_result['MATCHING_EDITEUR_SIMILARITE'],this_result['SUDOC_CHOSEN_ED'],this_result['KOHA_CHOSEN_ED'] = teste_editeur(this_result['SUDOC_214210c'], this_result['KOHA_214210c'])
+                    logger.debug("{} :: {} :: {}".format(this_result["MATCH_RECORDS_QUERY"], es.service, "Scores des éditeurs : " + str(this_result['MATCHING_EDITEUR_SIMILARITE'])))
+                else: # Mandatory to prevent an error at the end
+                    this_result['MATCHING_EDITEUR_SIMILARITE'],this_result['SUDOC_CHOSEN_ED'],this_result['KOHA_CHOSEN_ED'] = -1, "", ""
+
+                if this_result["SUDOC_NB_LOCAL_SYSTEM_NB"] > 0:
+                    this_result["SUDOC_DIFFERENT_LOCAL_SYSTEM_NB"] = not koha_record.bibnb in this_result["SUDOC_LOCAL_SYSTEM_NB"]
+
+                # ||| temp output
+                this_result['KOHA_214210c'] = list_as_string(this_result['KOHA_214210c'])
+                this_result['SUDOC_214210c'] = list_as_string(this_result['SUDOC_214210c'])
+                # ||| END OF temp output
+
+                # --------------- ANALYSIS PROCESS ---------------
+                # Global validation
+                # "" if 0 checks are asked, OK if all checks are OK, else, nb of OK
+                if len(results_list) == 0:
+                    this_result["FINAL_OK"] = ""
+                else:
+                    sum_of_results = 0
+                    for check in results_list:
+                        this_result[check+"_OK"] = analysis_checks(es.chosen_analysis, check, this_result)
+                        if this_result[check + "_OK"] == True:
+                            sum_of_results += 1
+                    if sum_of_results == len(results_list):
+                        this_result["FINAL_OK"] = "OK"
+                    else:
+                        this_result["FINAL_OK"] = sum_of_results
+
+                # Adds "" to skipped checks
+                for check in all_checks:
+                    if not check + "_OK" in this_result:
+                        this_result[check + "_OK"] = ""
+
+                # --------------- END OF THIS LINE ---------------
+                logger.debug("{} :: {} :: {}".format(this_result["MATCH_RECORDS_QUERY"], es.service,
+                    "Résultat : {} (titres : {}, éditeurs : {}, dates : {})".format(str(this_result["FINAL_OK"]), str(this_result["TITLE_OK"]), str(this_result["PUB_OK"]), str(this_result["DATE_OK"]))))
+                go_next(logger, results, csv_writer, this_result, True)
 
         # Closes CSV file
         f_csv.close()
