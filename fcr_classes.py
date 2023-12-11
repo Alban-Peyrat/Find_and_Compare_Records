@@ -20,166 +20,6 @@ import api.abes.Abes_id2ppn as id2ppn
 import api.abes.Sudoc_SRU as ssru
 import api.koha.Koha_SRU as Koha_SRU
 
-# # -------------------- Enums --------------------
-
-# # ---------- Execution settings (ES) ----------
-# class FCR_Mapped_Fields(Enum):
-#     LEADER = "Leader"
-#     ID = "id"
-#     PPN = "ppn"
-#     GENERAL_PROCESSING_DATA_DATES = "general_processing_data_dates"
-#     ERRONEOUS_ISBN = "erroneous_isbn"
-#     TITLE = "title"
-#     PUBLISHERS_NAME = "publishers_name"
-#     EDITION_NOTES = "edition_note"
-#     PUBLICATION_DATES = "publication_dates"
-#     PHYSICAL_DESCRIPTION = "physical_desription"
-#     OTHER_ED_IN_OTHER_MEDIUM_BIBG_ID = "other_edition_in_other_medium_bibliographic_id"
-#     OTHER_DB_ID = "other_database_id"
-#     ITEMS = "items"
-#     ITEMS_BARCODE = "items_barcode"
-
-# class FCR_Processing_Data_Target(Enum):
-#     ORIGIN = 0
-#     TARGET = 1
-#     BOTH = 2
-
-# class FCR_Processings(Enum):
-#     BETTER_ITEM = {
-#         FCR_Mapped_Fields.LEADER: FCR_Processing_Data_Target.BOTH,
-#         FCR_Mapped_Fields.ID: FCR_Processing_Data_Target.BOTH,
-#         FCR_Mapped_Fields.PPN: FCR_Processing_Data_Target.ORIGIN,
-#         FCR_Mapped_Fields.GENERAL_PROCESSING_DATA_DATES: FCR_Processing_Data_Target.BOTH,
-#         FCR_Mapped_Fields.ERRONEOUS_ISBN: FCR_Processing_Data_Target.BOTH,
-#         FCR_Mapped_Fields.TITLE: FCR_Processing_Data_Target.BOTH,
-#         FCR_Mapped_Fields.PUBLISHERS_NAME: FCR_Processing_Data_Target.BOTH,
-#         FCR_Mapped_Fields.EDITION_NOTES: FCR_Processing_Data_Target.BOTH,
-#         FCR_Mapped_Fields.PUBLICATION_DATES: FCR_Processing_Data_Target.BOTH,
-#         FCR_Mapped_Fields.PHYSICAL_DESCRIPTION: FCR_Processing_Data_Target.ORIGIN,
-#         FCR_Mapped_Fields.OTHER_DB_ID: FCR_Processing_Data_Target.TARGET,
-#         FCR_Mapped_Fields.ITEMS_BARCODE: FCR_Processing_Data_Target.TARGET,
-#         FCR_Mapped_Fields.ITEMS: FCR_Processing_Data_Target.TARGET
-#         }
-#     OTHER_DB_IN_LOCAL_DB = {}
-
-# class Analysis_Checks(Enum):
-#     TITLE = 0
-#     PUBLISHER = 1
-#     DATE = 2
-
-# class Analysis_Final_Results(Enum):
-#     UNKNOWN = 0
-#     NO_CHECK = 1
-#     TOTAL_MATCH = 2
-#     PARTIAL_MATCH = 3
-#     NO_MATCH = 4
-
-# # ---------- MATCH RECORDS (MR) ----------
-# class Operations(Enum):
-#     SEARCH_IN_SUDOC_BY_ISBN = 0
-#     SEARCH_IN_KOHA = 1
-#     SEARCH_IN_SUDOC_BY_ISBN_ONLY_ISBN2PPN = 2
-#     SEARCH_IN_SUDOC_BY_ISBN_ONLY_SRU = 3
-#     # SEARCH_IN_ISO2701_FILE = 4
-
-# class Actions(Enum):
-#     ISBN2PPN = 0
-#     ISBN2PPN_MODIFIED_ISBN = 1
-#     SRU_SUDOC_ISBN = 2
-
-# class Try_Status(Enum):
-#     UNKNWON = 0
-#     SUCCESS = 1
-#     ERROR = 2
-
-# class Match_Records_Errors(Enum):
-#     GENERIC_ERROR = 0
-#     NOTHING_WAS_FOUND = 1
-
-# PROCESSING_OPERATION_MAPPING = {
-#     FCR_Processings.BETTER_ITEM:Operations.SEARCH_IN_SUDOC_BY_ISBN
-# }
-
-# # TRY_OPERATIONS defines for each Operations a lsit of Actions to execute
-# # The order in the list is the order of execution
-# class Try_Operations(Enum):
-#     SEARCH_IN_SUDOC_BY_ISBN = [
-#         Actions.ISBN2PPN,
-#         Actions.ISBN2PPN_MODIFIED_ISBN,
-#         Actions.SRU_SUDOC_ISBN
-#     ]
-#     SEARCH_IN_SUDOC_BY_ISBN_ONLY_ISBN2PPN = [
-#         Actions.ISBN2PPN,
-#         Actions.ISBN2PPN_MODIFIED_ISBN
-#     ]
-#     SEARCH_IN_SUDOC_BY_ISBN_ONLY_SRU = [
-#         Actions.SRU_SUDOC_ISBN
-#     ]
-
-# class Match_Records_Error_Messages(Enum):
-#     GENERIC_ERROR = "Generic error"
-#     NOTHING_WAS_FOUND = "Nothing was found"
-
-# # ---------- UNIVERSAL DATA EXTRACTOR (UDE) ----------
-# class Databases(Enum):
-#     """List of databases and their filter field"""
-#     ABESXML = {
-#         FCR_Mapped_Fields.OTHER_DB_ID:"ILN",
-#         FCR_Mapped_Fields.ITEMS:"RCR",
-#         FCR_Mapped_Fields.ITEMS_BARCODE:"RCR"
-#     }
-#     SUDOC_SRU = {}
-#     KOHA_PUBLIC_BIBLIO = {}
-#     KOHA_SRU = {}
-#     LOCAL = {}
-
-# class Record_Formats(Enum):
-#     """List of supported record formats"""
-#     UNKNOWN = 0
-#     JSON_DICT = 1
-#     ET_ELEMENT = 2
-#     PYMARC_RECORD = 3
-
-# class Xml_Namespaces(Enum):
-#     """List of supported XML namespaces"""
-#     MARC = "marc"
-#     ZS2_0 = "zs2.0"
-#     ZS1_1 = "zs1.1"
-#     ZS1_2 = "zs1.2"
-#     SRW = "srw"
-#     ZR = "zr"
-#     MG = "mg"
-#     PPXML = "ppxml"
-
-# XML_NS = {
-#     "marc": "http://www.loc.gov/MARC21/slim",
-#     "zs2.0": "http://docs.oasis-open.org/ns/search-ws/sruResponse",
-#     "zs1.1": "http://www.loc.gov/zing/srw/",
-#     "zs1.2": "http://www.loc.gov/zing/srw/",
-#     "srw":"http://www.loc.gov/zing/srw/",
-#     "zr":"http://explain.z3950.org/dtd/2.0/",
-#     "mg":"info:srw/extension/5/metadata-grouping-v1.0",
-#     "ppxml":"http://www.oclcpica.org/xmlns/ppxml-1.0"
-# }
-
-# # ---------- MAIN ----------
-# class Other_Database_Id_In_Target(Enum):
-#     UNKNOWN = 0
-#     NO_OTHER_DB_ID = 1
-#     THIS_ID_INCLUDED = 2
-#     ONLY_THIS_OTHER_DB_ID = 3
-#     THIS_ID_NOT_INCLUDED = 4
-
-# # ---------- REPORT ----------
-# class Success(Enum):
-#     MATCH_RECORD = 0
-#     GLOBAL = 1
-
-# class Errors(Enum):
-#     MATCH_RECORD = 1
-#     KOHA = 2
-#     SUDOC = 3
-
 # -------------------- Execution settings (ES) --------------------
 
 class Execution_Settings(object):
@@ -231,6 +71,7 @@ class Execution_Settings(object):
         self.UI_curr_subfields = None
         self.UI_curr_positions = None
         self.chosen_analysis = 0
+        self.define_chosen_analysis(0)
     
     # ----- Methods for main -----
     def generate_files_path(self):
@@ -671,7 +512,7 @@ class Matched_Records(object):
     
     Takes as argument :
         - operation {Operations Instance} (defaults to SEARCH_IN_SUDOC_BY_ISBN)"""
-    def __init__(self, operation: Operations, query: str, es: Execution_Settings):
+    def __init__(self, operation: Operations, query: str, local_record:Database_Record, es: Execution_Settings):
         self.error = None
         self.error_msg = None
         self.tries = []
@@ -685,10 +526,10 @@ class Matched_Records(object):
             self.operation = operation
 
         self.query = query
+        self.local_record = local_record
+        self.es = es
 
         # Calls the operation
-        # if self.operation == Operations.SEARCH_IN_SUDOC_BY_ISBN:
-        #     return self.search_in_sudoc_by_isbn()
         self.execute_operation()
 
     def execute_operation(self):
@@ -720,6 +561,7 @@ class Matched_Records(object):
 
     def request_action(self, action: Actions, thisTry: Request_Try):
         """Makes the request for this specific action and returns a list of IDs as a result"""
+        # Actions based on the same connector are siilar, do not forget to udate all of them
 
         # Action SRU SUdoc ISBN
         if action == Actions.SRU_SUDOC_ISBN:
@@ -744,9 +586,6 @@ class Matched_Records(object):
                 thisTry.add_returned_records(res.get_records())
 
         # Action isbn2ppn
-        # /!\ THIS PART IS ALSO USED IN Actions.ISBN2PPN_MODIFIED_PPN DO NOT FORGET TO UPDATE
-        # THE OTHER ONE IF NECESSARY
-        # Sinon je mets des fonction communes du genre : Abes_ISBN2PNN_get_error or something
         elif action == Actions.ISBN2PPN:
             i2p = id2ppn.Abes_id2ppn(webservice=id2ppn.Webservice.ISBN, useJson=True)
             res = i2p.get_matching_ppn(self.query)
@@ -771,6 +610,16 @@ class Matched_Records(object):
             # Same thing as Action ISBN2PPN
             i2p = id2ppn.Abes_id2ppn(useJson=True)
             res = i2p.get_matching_ppn(self.query)
+            thisTry.define_used_query(res.get_id_used())
+            if res.status != id2ppn.Id2ppn_Status.SUCCESS:
+                thisTry.error_occured(res.get_error_msg())
+            else:
+                thisTry.add_returned_ids(res.get_results(merge=True))
+
+        # Action SRU SUdoc EAN
+        elif action == Actions.EAN2PPN:
+            i2p = id2ppn.Abes_id2ppn(webservice=id2ppn.Webservice.EAN, useJson=True)
+            res = i2p.get_matching_ppn(self.query) # rempalcer par self.local_record.data.ean[0]
             thisTry.define_used_query(res.get_id_used())
             if res.status != id2ppn.Id2ppn_Status.SUCCESS:
                 thisTry.error_occured(res.get_error_msg())

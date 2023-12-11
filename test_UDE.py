@@ -1,12 +1,13 @@
 import fcr_classes as fcr
 import json
+import os
 import xml.etree.ElementTree as ET
 import pymarc
 
 # Needs the marc feild 
 # generic execution settings
-es = fcr.Execution_Settings()
-es.get_values_from_env()
+es = fcr.Execution_Settings(os.path.dirname(__file__))
+es.load_env_values()
 
 # Load records
 with open("./test_files/ABESXML.xml", mode="r+", encoding="utf-8") as f:
