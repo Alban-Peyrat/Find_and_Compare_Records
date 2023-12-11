@@ -137,7 +137,7 @@ def main(es: fcr.Execution_Settings):
 
 
             # --------------- Match records ---------------
-            rec.get_matched_records_instance(fcr.Matched_Records(es.operation, rec.input_query, es))     
+            rec.get_matched_records_instance(fcr.Matched_Records(es.operation, rec.input_query, rec.origin_database_data, es))     
 
             # ||| AR358 to del |||
             result["MATCH_RECORDS_QUERY"] = rec.query_used

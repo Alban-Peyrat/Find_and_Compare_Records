@@ -3,8 +3,6 @@
 # External import
 from enum import Enum
 
-# -------------------- Enums --------------------
-
 # ---------- Execution settings (ES) ----------
 class FCR_Mapped_Fields(Enum):
     LEADER = "Leader"
@@ -63,12 +61,17 @@ class Operations(Enum):
     SEARCH_IN_KOHA = 1
     SEARCH_IN_SUDOC_BY_ISBN_ONLY_ISBN2PPN = 2
     SEARCH_IN_SUDOC_BY_ISBN_ONLY_SRU = 3
+    SEARCH_IN_SUDOC_DVD = 4
     # SEARCH_IN_ISO2701_FILE = 4
 
 class Actions(Enum):
     ISBN2PPN = 0
     ISBN2PPN_MODIFIED_ISBN = 1
     SRU_SUDOC_ISBN = 2
+    EAN2PPN = 3
+    SRU_SUDOC_MTI_AUT_EDI_APU = 4
+    SRU_SUDOC_MTI_AUT_APU = 5
+    SRU_SUDOC_MTI_AUT = 6
 
 class Try_Status(Enum):
     UNKNWON = 0
@@ -98,6 +101,13 @@ class Try_Operations(Enum):
     SEARCH_IN_SUDOC_BY_ISBN_ONLY_SRU = [
         Actions.SRU_SUDOC_ISBN
     ]
+    SEARCH_IN_SUDOC_DVD = [
+        Actions.EAN2PPN,
+        Actions.SRU_SUDOC_MTI_AUT_EDI_APU,
+        Actions.SRU_SUDOC_MTI_AUT_APU,
+        Actions.SRU_SUDOC_MTI_AUT
+    ]
+    
 
 class Match_Records_Error_Messages(Enum):
     GENERIC_ERROR = "Generic error"
