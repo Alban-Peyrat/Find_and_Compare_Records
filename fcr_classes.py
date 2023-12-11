@@ -695,9 +695,11 @@ class Marc_Fields_Mapping(object):
         self.marc_fields_json = es.marc_fields_json[name]
         self.id = Marc_Fields_Data(self.marc_fields_json[FCR_Mapped_Fields.ID.value])
         self.ppn = Marc_Fields_Data(self.marc_fields_json[FCR_Mapped_Fields.PPN.value])
+        self.ean = Marc_Fields_Data(self.marc_fields_json[FCR_Mapped_Fields.EAN.value])
         self.general_processing_data_dates = Marc_Fields_Data(self.marc_fields_json[FCR_Mapped_Fields.GENERAL_PROCESSING_DATA_DATES.value])
         self.erroneous_isbn = Marc_Fields_Data(self.marc_fields_json[FCR_Mapped_Fields.ERRONEOUS_ISBN.value])
         self.title = Marc_Fields_Data(self.marc_fields_json[FCR_Mapped_Fields.TITLE.value])
+        self.authors = Marc_Fields_Data(self.marc_fields_json[FCR_Mapped_Fields.AUTHORS.value])
         self.publishers_name = Marc_Fields_Data(self.marc_fields_json[FCR_Mapped_Fields.PUBLISHERS_NAME.value])
         self.edition_note = Marc_Fields_Data(self.marc_fields_json[FCR_Mapped_Fields.EDITION_NOTES.value])
         self.publication_dates = Marc_Fields_Data(self.marc_fields_json[FCR_Mapped_Fields.PUBLICATION_DATES.value])
@@ -912,12 +914,16 @@ class Universal_Data_Extractor(object):
             return self.get_id(filter_value)
         elif mapped_field == FCR_Mapped_Fields.PPN:
             return self.get_ppn(filter_value)
+        elif mapped_field == FCR_Mapped_Fields.EAN:
+            return self.get_ean(filter_value)
         elif mapped_field == FCR_Mapped_Fields.GENERAL_PROCESSING_DATA_DATES:
             return self.get_general_processing_data_dates(filter_value)
         elif mapped_field == FCR_Mapped_Fields.ERRONEOUS_ISBN:
             return self.get_erroneous_ISBN(filter_value)
         elif mapped_field == FCR_Mapped_Fields.TITLE:
             return self.get_title(filter_value)
+        elif mapped_field == FCR_Mapped_Fields.AUTHORS:
+            return self.get_authors(filter_value)
         elif mapped_field == FCR_Mapped_Fields.PUBLISHERS_NAME:
             return self.get_publishers_name(filter_value)
         elif mapped_field == FCR_Mapped_Fields.EDITION_NOTES:
@@ -968,7 +974,14 @@ class Universal_Data_Extractor(object):
         
         Takes filter_value as argument if mapped to have a filtering subfield."""
         return self.extract_list_of_strings(self.marc_fields_mapping.title, filter_value)
-    
+
+    def get_authors(self, filter_value: Optional[str] = "") -> List[str]:
+        """Return all fields mapped as authors as a list of strings
+        Each subfield is separated by a space
+        
+        Takes filter_value as argument if mapped to have a filtering subfield."""
+        return self.extract_list_of_strings(self.marc_fields_mapping.authors, filter_value)
+
     def get_general_processing_data_dates(self, filter_value: Optional[str] = "") -> List[List[str]]:
         """Return all publication dates from the general processign data as a list (usually of list containing :
             - Type of date
@@ -991,6 +1004,12 @@ class Universal_Data_Extractor(object):
 
         Takes filter_value as argument if mapped to have a filtering subfield."""
         return self.extract_list_of_ids(self.marc_fields_mapping.ppn, filter_value)
+
+    def get_ean(self, filter_value: Optional[str] = "") -> List[str]:
+        """Return all EAN as a list of str, without duplicates.
+
+        Takes filter_value as argument if mapped to have a filtering subfield."""
+        return self.extract_list_of_ids(self.marc_fields_mapping.ean, filter_value)
 
     def get_edition_notes(self, filter_value: Optional[str] = "") -> List[str]:
         """Return all fields mapped as edition notes as a list of strings
