@@ -30,6 +30,21 @@
                 }
             ]
         },
+        "ean": {
+            "label": {
+                "eng": "EAN",
+                "fre": "EAN"
+            },
+            "fields": [
+                {
+                    "tag": "073",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "",
+                    "subfields": ["a"],
+                    "positions": ""
+                }
+            ]
+        },
         "general_processing_data_dates": {
             "label": {
                 "eng": "Dates (general processing data)",
@@ -96,6 +111,24 @@
                         "h",
                         "i",
                         "v"
+                    ],
+                    "positions": []
+                }
+            ]
+        },
+        "authors": {
+            "label": {
+                "eng": "Authors",
+                "fre": "Auteurs"
+            },
+            "fields": [
+                {
+                    "tag": "700",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "",
+                    "subfields": [
+                        "a",
+                        "b"
                     ],
                     "positions": []
                 }
@@ -285,6 +318,21 @@
                 }
             ]
         },
+        "ean": {
+            "label": {
+                "eng": "EAN",
+                "fre": "EAN"
+            },
+            "fields": [
+                {
+                    "tag": "073",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "",
+                    "subfields": ["a"],
+                    "positions": ""
+                }
+            ]
+        },
         "general_processing_data_dates": {
             "label": {
                 "eng": "Dates from general processing data",
@@ -337,6 +385,24 @@
                         "h",
                         "i",
                         "v"
+                    ],
+                    "positions": []
+                }
+            ]
+        },
+        "authors": {
+            "label": {
+                "eng": "Authors",
+                "fre": "Auteurs"
+            },
+            "fields": [
+                {
+                    "tag": "700",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "",
+                    "subfields": [
+                        "a",
+                        "b"
                     ],
                     "positions": []
                 }
@@ -722,6 +788,21 @@
                 }
             ]
         },
+        "ean": {
+            "label": {
+                "eng": "EAN",
+                "fre": "EAN"
+            },
+            "fields": [
+                {
+                    "tag": "073",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "",
+                    "subfields": ["a"],
+                    "positions": ""
+                }
+            ]
+        },
         "general_processing_data_dates": {
             "label": {
                 "eng": "Dates from general processing data",
@@ -774,6 +855,24 @@
                         "h",
                         "i",
                         "v"
+                    ],
+                    "positions": []
+                }
+            ]
+        },
+        "authors": {
+            "label": {
+                "eng": "Authors",
+                "fre": "Auteurs"
+            },
+            "fields": [
+                {
+                    "tag": "700",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "",
+                    "subfields": [
+                        "a",
+                        "b"
                     ],
                     "positions": []
                 }
@@ -963,6 +1062,21 @@
                 }
             ]
         },
+        "ean": {
+            "label": {
+                "eng": "EAN",
+                "fre": "EAN"
+            },
+            "fields": [
+                {
+                    "tag": "073",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "",
+                    "subfields": ["a"],
+                    "positions": ""
+                }
+            ]
+        },
         "general_processing_data_dates": {
             "label": {
                 "eng": "Dates from general processing data",
@@ -1015,6 +1129,24 @@
                         "h",
                         "i",
                         "v"
+                    ],
+                    "positions": []
+                }
+            ]
+        },
+        "authors": {
+            "label": {
+                "eng": "Authors",
+                "fre": "Auteurs"
+            },
+            "fields": [
+                {
+                    "tag": "700",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "",
+                    "subfields": [
+                        "a",
+                        "b"
                     ],
                     "positions": []
                 }

@@ -19,6 +19,8 @@ class FCR_Mapped_Fields(Enum):
     OTHER_DB_ID = "other_database_id"
     ITEMS = "items"
     ITEMS_BARCODE = "items_barcode"
+    EAN = "ean"
+    AUTHORS = "authors"
 
 class FCR_Processing_Data_Target(Enum):
     ORIGIN = 0
