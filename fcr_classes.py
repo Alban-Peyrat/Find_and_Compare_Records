@@ -16,7 +16,7 @@ import fcr_func as fcf
 
 # ----- Match Records imports -----
 # Internal imports
-import api.abes.Abes_isbn2ppn as isbn2ppn
+import api.abes.Abes_id2ppn as id2ppn
 import api.abes.Sudoc_SRU as ssru
 import api.koha.Koha_SRU as Koha_SRU
 # from main_gui import GUI_Elems_With_Val()
@@ -539,10 +539,10 @@ class Matched_Records(object):
         # THE OTHER ONE IF NECESSARY
         # Sinon je mets des fonction communes du genre : Abes_ISBN2PNN_get_error or something
         elif action == Actions.ISBN2PPN:
-            i2p = isbn2ppn.Abes_isbn2ppn(useJson=True)
+            i2p = id2ppn.Abes_id2ppn(webservice=id2ppn.Webservice.ISBN, useJson=True)
             res = i2p.get_matching_ppn(self.query)
-            thisTry.define_used_query(res.get_isbn_used())
-            if res.status != isbn2ppn.Isbn2ppn_Status.SUCCESS:
+            thisTry.define_used_query(res.get_id_used())
+            if res.status != id2ppn.Id2ppn_Status.SUCCESS:
                 thisTry.error_occured(res.get_error_msg())
             else:
                 thisTry.add_returned_ids(res.get_results(merge=True))
@@ -553,17 +553,17 @@ class Matched_Records(object):
             # Converting the ISBN to 10<->13
             if len(self.query) == 13:
                 new_query = self.query[3:-1]
-                new_query += isbn2ppn.compute_isbn_10_check_digit(list(str(new_query)))
+                new_query += id2ppn.compute_isbn_10_check_digit(list(str(new_query)))
             elif len(self.query) == 10:
                 # Doesn't consider 979[...] as the original issue should only concern old ISBN
                 new_query = "978" + self.query[:-1]
-                new_query += isbn2ppn.compute_isbn_13_check_digit(list(str(new_query)))
+                new_query += id2ppn.compute_isbn_13_check_digit(list(str(new_query)))
             
             # Same thing as Action ISBN2PPN
-            i2p = isbn2ppn.Abes_isbn2ppn(useJson=True)
+            i2p = id2ppn.Abes_id2ppn(useJson=True)
             res = i2p.get_matching_ppn(self.query)
-            thisTry.define_used_query(res.get_isbn_used())
-            if res.status != isbn2ppn.Isbn2ppn_Status.SUCCESS:
+            thisTry.define_used_query(res.get_id_used())
+            if res.status != id2ppn.Id2ppn_Status.SUCCESS:
                 thisTry.error_occured(res.get_error_msg())
             else:
                 thisTry.add_returned_ids(res.get_results(merge=True))

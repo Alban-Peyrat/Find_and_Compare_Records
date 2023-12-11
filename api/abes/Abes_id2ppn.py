@@ -12,17 +12,17 @@ import re
 
 # --------------- Enums ---------------
 
-class Isbn2ppn_Status(Enum):
+class Id2ppn_Status(Enum):
     UNKNOWN = "Unknown"
     SUCCESS = "Success"
     ERROR = "Error"
 
-class Isbn2ppn_Errors(Enum):
+class Id2ppn_Errors(Enum):
     INVALID_ISBN = "ISBN is invalid"
     INVALID_CHECK_ISBN = "ISBN has an invalid check"
     HTTP_GENERIC_ERROR = "Unknown ISBN or unavailable service"
     GENERIC_EXCEPTION = "Generic exception, check logs for more details"
-    UNKNOWN_ISBN = "Unknown ISBN"
+    UNKNOWN_ID = "Unknown ID"
     UNAVAILABLE_SERVICE = "Unavaible service"
     NO_ERROR = "No error"
 
@@ -31,6 +31,17 @@ class Isbn_Validity(Enum):
     INVALID_ISBN = 1
     INVALID_CHECK_ISBN = 2
     SKIPPED = 4
+
+class Webservice(Enum):
+    ISBN = "isbn"
+    ISSN = "issn"
+    EAN = "ean"
+    FRBN = "frbn"
+    OCN = "ocn"
+    DNB = "dnb"
+    UCATB = "ucatb"
+    FRCAIRN = "frcairninfo"
+    SPRINGERLN = "springerln"
 
 # --------------- Function definition ---------------
 
@@ -91,91 +102,16 @@ def compute_isbn_13_check_digit(chars):
         check = "0"
     return str(check)
 
-# --------------- Launcher Class ---------------
-
-class Abes_isbn2ppn(object):
-    """Abes_isbn2ppn
-    =======
-    A set of function wich handle data returned by Abes webservice isbn2ppn
-    https://documentation.abes.fr/sudoc/manuels/administration/aidewebservices/index.html#isbn2ppn
-    On init take as argument :
-        - an ISBN
-        - (optional) {bool} useJson ? (else XML)"""
-
-    def __init__(self, service='Abes_isbn2ppn', useJson=True):
-        self.endpoint = "https://www.sudoc.fr/services/isbn2ppn/"
-        self.logger = logging.getLogger(service)
-        self.service = service
-        if useJson:
-            self.format = "text/json"
-        else:
-            self.format = "application/xml"
-
-    def get_matching_ppn(self, isbn: str, check_isbn_validity=True):
-        status = Isbn2ppn_Status.UNKNOWN
-        error = Isbn2ppn_Errors.NO_ERROR
-        HTTP_status_code = 0
-        input_isbn = str(isbn)
-        isbn = str(isbn)
-        isbn_validity = Isbn_Validity.SKIPPED
-
-        if check_isbn_validity:
-            isbn_validity, input_isbn, isbn = validate_isbn(str(isbn))
-        
-        # If ISBN invalid, returns
-        if isbn_validity != Isbn_Validity.VALID and isbn_validity != Isbn_Validity.SKIPPED:
-            # isbn2ppn can take wrong ISBN formats, so this filters them out
-            status = Isbn2ppn_Status.ERROR
-            error = Isbn2ppn_Errors[isbn_validity.name]
-            self.logger.error(f"{input_isbn} :: Abes_isbn2ppn ISBN Validity :: {error.value}")
-            return Isbn2ppn_Result(status, error, self.format, input_isbn, isbn, isbn_validity=isbn_validity)
-
-        # Requests
-        url =  f"{self.endpoint}{isbn}"
-        headers = {"accept":self.format}
-        try:
-            r = requests.get(url, headers=headers)
-            r.raise_for_status()  
-        # HTTP errors (analysis later)
-        except requests.exceptions.HTTPError:
-            status = Isbn2ppn_Status.ERROR
-            error = Isbn2ppn_Errors.HTTP_GENERIC_ERROR
-            HTTP_status_code = r.status_code
-            # If the error is that no PPN were found for this ISBN
-            if status == Isbn2ppn_Status.ERROR and error == Isbn2ppn_Errors.HTTP_GENERIC_ERROR and HTTP_status_code == 404:
-                try:
-                    real_error_msg = json.loads(r.text)
-                    if real_error_msg["sudoc"]["error"] == f"Aucune notice n'est associée à cette valeur {isbn}":
-                        error = Isbn2ppn_Errors.UNKNOWN_ISBN
-                except:
-                    error = Isbn2ppn_Errors.UNAVAILABLE_SERVICE
-                self.logger.error(f"{input_isbn} :: Abes_isbn2ppn Request :: {error.value}")
-                return Isbn2ppn_Result(status, error, self.format, input_isbn, isbn, isbn_validity=isbn_validity, url=url, HTTP_status_code=HTTP_status_code)
-            self.logger.error(f"{input_isbn} :: Abes_isbn2ppn Request :: HTTP Status: {HTTP_status_code} || URL: {r.url} || Response: {r.text}")
-            return Isbn2ppn_Result(status, error, self.format, input_isbn, isbn, isbn_validity=isbn_validity, url=url, HTTP_status_code=HTTP_status_code)
-        # Generic error
-        except requests.exceptions.RequestException as generic_error:
-            status = Isbn2ppn_Status.ERROR
-            error = Isbn2ppn_Errors.GENERIC_EXCEPTION
-            self.logger.error(f"{input_isbn} :: Abes_isbn2ppn Request :: {error.value} || URL: {url} || {generic_error}")
-            return Isbn2ppn_Result(status, error, self.format, input_isbn, isbn, isbn_validity=isbn_validity, url=url, HTTP_status_code=HTTP_status_code)
-        # Success
-        else:
-            status = Isbn2ppn_Status.SUCCESS
-            result = r.content.decode('utf-8')
-            self.logger.debug(f"{input_isbn} :: Abes_isbn2ppn Request :: Success")
-            return Isbn2ppn_Result(status, error, self.format, input_isbn, isbn, isbn_validity=isbn_validity, url=url, HTTP_status_code=HTTP_status_code, result=result)
-
 # --------------- Result Class ---------------
 
-class Isbn2ppn_Result(object):
-    def __init__(self, status: Isbn2ppn_Status, error: Isbn2ppn_Errors, format: str, input_isbn: str, isbn: str, isbn_validity=Isbn_Validity.SKIPPED, url=None, HTTP_status_code=0, result=None):
+class Id2ppn_Result(object):
+    def __init__(self, status: Id2ppn_Status, error: Id2ppn_Errors, format: str, id: str, mod_id: str, isbn_validity=Isbn_Validity.SKIPPED, url=None, HTTP_status_code=0, result=None):
         self.status = status.value
         self.error = error
         self.error_msg = error.value
         self.format = format
-        self.input_isbn = input_isbn
-        self.isbn = isbn
+        self.id = id
+        self.mod_id = mod_id
         self.isbn_validity = isbn_validity
         self.url = url
         self.HTTP_status_code = HTTP_status_code
@@ -193,16 +129,16 @@ class Isbn2ppn_Result(object):
         """Return the error message as a string."""
         return self.error_msg
 
-    def get_isbn_used(self):
-        """Return the ISBN without separators as a string."""
-        return self.isbn
+    def get_id_used(self):
+        """Return the ID used (ex : ISBN without separators) as a string."""
+        return self.mod_id
 
     def get_nb_results(self):
         """Returns the number of results as a tuple of integers :
             - total results
             - results with holdings
             - results without holding"""
-        if self.status != Isbn2ppn_Status.SUCCESS.value:
+        if self.status != Id2ppn_Status.SUCCESS.value:
             return 0, 0, 0
         if self.format == "text/json":
             res = []
@@ -231,7 +167,7 @@ class Isbn2ppn_Result(object):
         res = []
         res_no_hold = []
 
-        if self.status != Isbn2ppn_Status.SUCCESS.value:
+        if self.status != Id2ppn_Status.SUCCESS.value:
             return res, res_no_hold
 
         if self.format == "text/json":
@@ -261,3 +197,89 @@ class Isbn2ppn_Result(object):
             return res + res_no_hold
         else:
             return res, res_no_hold 
+
+
+# --------------- Launcher Class ---------------
+
+class Abes_id2ppn(object):
+    """Abes_id2ppn
+    =======
+    A set of function wich handle data returned by Abes webservices to get a PPN from IDs
+    https://documentation.abes.fr/sudoc/manuels/administration/aidewebservices/index.html#IdentifiantSudoc
+    https://documentation.abes.fr/sudoc/manuels/administration/aidewebservices/index.html#IdentifiantSudocExterne
+    On init take as argument :
+        - a Webservice entry, defaults to ISBN
+        - (optional) {bool} useJson ? (else XML)"""
+
+    def __init__(self, webservice:Webservice=Webservice.ISBN, useJson:bool=True, service:str='Abes_isbn2ppn'):
+        self.webservice = webservice
+        # If webservice is provided as a string
+        if type(self.webservice) == str:
+            if self.webservice in [w.value for w in Webservice]:
+                self.webservice = next(w for w in Webservice if w.value == self.webservice)
+        # Defaults webservice to isbn2ppn if incorrect data is provided
+        if type(self.webservice) != Webservice:
+            self.webservice = Webservice.ISBN
+        self.endpoint = f"https://www.sudoc.fr/services/{self.webservice.value}2ppn/"
+        self.logger = logging.getLogger(service)
+        self.service = service
+        if useJson:
+            self.format = "text/json"
+        else:
+            self.format = "application/xml"
+
+    def get_matching_ppn(self, id: str, check_isbn_validity=True) -> Id2ppn_Result:
+        """Calls the webservice"""
+        status = Id2ppn_Status.UNKNOWN
+        error = Id2ppn_Errors.NO_ERROR
+        HTTP_status_code = 0
+        id = str(id)
+        mod_id = id
+        isbn_validity = Isbn_Validity.SKIPPED
+        # do not check ISBN validity unless it's isbn2ppn
+        if check_isbn_validity and self.webservice == Webservice.ISBN:
+            isbn_validity, id, mod_id = validate_isbn(mod_id)
+        
+        # If ISBN invalid, returns
+        if isbn_validity != Isbn_Validity.VALID and isbn_validity != Isbn_Validity.SKIPPED:
+            # isbn2ppn can take wrong ISBN formats, so this filters them out
+            status = Id2ppn_Status.ERROR
+            error = Id2ppn_Errors[isbn_validity.name]
+            self.logger.error(f"{id} :: Abes_id2ppn ISBN Validity :: {error.value}")
+            return Id2ppn_Result(status, error, self.format, id, mod_id, isbn_validity=isbn_validity)
+
+        # Requests
+        url =  f"{self.endpoint}{mod_id}"
+        headers = {"accept":self.format}
+        try:
+            r = requests.get(url, headers=headers)
+            r.raise_for_status()  
+        # HTTP errors (analysis later)
+        except requests.exceptions.HTTPError:
+            status = Id2ppn_Status.ERROR
+            error = Id2ppn_Errors.HTTP_GENERIC_ERROR
+            HTTP_status_code = r.status_code
+            # If the error is that no PPN were found for this id
+            if status == Id2ppn_Status.ERROR and error == Id2ppn_Errors.HTTP_GENERIC_ERROR and HTTP_status_code == 404:
+                try:
+                    real_error_msg = json.loads(r.text)
+                    if real_error_msg["sudoc"]["error"] == f"No record was found for this {mod_id}":
+                        error = Id2ppn_Errors.UNKNOWN_ID
+                except:
+                    error = Id2ppn_Errors.UNAVAILABLE_SERVICE
+                self.logger.error(f"{id} :: Abes_id2ppn Request :: {error.value}")
+                return Id2ppn_Result(status, error, self.format, id, mod_id, isbn_validity=isbn_validity, url=url, HTTP_status_code=HTTP_status_code)
+            self.logger.error(f"{id} :: Abes_id2ppn Request :: HTTP Status: {HTTP_status_code} || URL: {r.url} || Response: {r.text}")
+            return Id2ppn_Result(status, error, self.format, id, mod_id, isbn_validity=isbn_validity, url=url, HTTP_status_code=HTTP_status_code)
+        # Generic error
+        except requests.exceptions.RequestException as generic_error:
+            status = Id2ppn_Status.ERROR
+            error = Id2ppn_Errors.GENERIC_EXCEPTION
+            self.logger.error(f"{id} :: Abes_id2ppn Request :: {error.value} || URL: {url} || {generic_error}")
+            return Id2ppn_Result(status, error, self.format, id, mod_id, isbn_validity=isbn_validity, url=url, HTTP_status_code=HTTP_status_code)
+        # Success
+        else:
+            status = Id2ppn_Status.SUCCESS
+            result = r.content.decode('utf-8')
+            self.logger.debug(f"{id} :: Abes_id2ppn Request :: Success")
+            return Id2ppn_Result(status, error, self.format, id, mod_id, isbn_validity=isbn_validity, url=url, HTTP_status_code=HTTP_status_code, result=result)
