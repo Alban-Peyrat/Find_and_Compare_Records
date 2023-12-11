@@ -18,9 +18,9 @@ Sudoc PICA XML is not supported
 
 # Add data to extract :
 
+* In `fcr_enum.py`, add an entry in `FCR_Mapped_Fields`
+* In `marc_fields.json`, add an object in each mapping
 * In `fcr_classes.py` :
-  * Add an entry in `FCR_Mapped_Fields`
-  * Add the object in `marc_fields.json`
   * Add a property in `Marc_Fields_Mapping` by assigning it is value in `load_mapping`
   * Add a `get_` function in `Universal_Data_Extractor`
   * Add a case in `Universal_Data_Extractor.get_by_mapped_field_name()`

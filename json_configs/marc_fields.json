@@ -220,6 +220,23 @@
                 }
             ]
         },
+        "contents_notes": {
+            "label": {
+                "eng": "Contents notes",
+                "fre": "Notes de contenu"
+            },
+            "fields": [
+                {
+                    "tag": "327",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "",
+                    "subfields": [
+                        "a"
+                    ],
+                    "positions": []
+                }
+            ]
+        },
         "other_edition_in_other_medium_bibliographic_id": {
             "label": {
                 "eng": "Bibliographic IDs of other edition in other medium",
@@ -485,6 +502,23 @@
             "fields": [
                 {
                     "tag": "215",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "",
+                    "subfields": [
+                        "a"
+                    ],
+                    "positions": []
+                }
+            ]
+        },
+        "contents_notes": {
+            "label": {
+                "eng": "Contents notes",
+                "fre": "Notes de contenu"
+            },
+            "fields": [
+                {
+                    "tag": "327",
                     "single_line_coded_data": false,
                     "filtering_subfield": "",
                     "subfields": [
@@ -964,6 +998,23 @@
                 }
             ]
         },
+        "contents_notes": {
+            "label": {
+                "eng": "Contents notes",
+                "fre": "Notes de contenu"
+            },
+            "fields": [
+                {
+                    "tag": "327",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "",
+                    "subfields": [
+                        "a"
+                    ],
+                    "positions": []
+                }
+            ]
+        },
         "other_edition_in_other_medium_bibliographic_id": {
             "label": {
                 "eng": "Bibliographic IDs of other edition in other medium",
@@ -1229,6 +1280,23 @@
             "fields": [
                 {
                     "tag": "215",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "",
+                    "subfields": [
+                        "a"
+                    ],
+                    "positions": []
+                }
+            ]
+        },
+        "contents_notes": {
+            "label": {
+                "eng": "Contents notes",
+                "fre": "Notes de contenu"
+            },
+            "fields": [
+                {
+                    "tag": "327",
                     "single_line_coded_data": false,
                     "filtering_subfield": "",
                     "subfields": [
