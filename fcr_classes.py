@@ -703,6 +703,7 @@ class Marc_Fields_Mapping(object):
         self.publishers_name = Marc_Fields_Data(self.marc_fields_json[FCR_Mapped_Fields.PUBLISHERS_NAME.value])
         self.edition_note = Marc_Fields_Data(self.marc_fields_json[FCR_Mapped_Fields.EDITION_NOTES.value])
         self.publication_dates = Marc_Fields_Data(self.marc_fields_json[FCR_Mapped_Fields.PUBLICATION_DATES.value])
+        self.contents_notes = Marc_Fields_Data(self.marc_fields_json[FCR_Mapped_Fields.CONTENTS_NOTES.value])
         self.physical_desription = Marc_Fields_Data(self.marc_fields_json[FCR_Mapped_Fields.PHYSICAL_DESCRIPTION.value])
         self.other_edition_in_other_medium_bibliographic_id = Marc_Fields_Data(self.marc_fields_json[FCR_Mapped_Fields.OTHER_ED_IN_OTHER_MEDIUM_BIBG_ID.value])
         self.other_database_id = Marc_Fields_Data(self.marc_fields_json[FCR_Mapped_Fields.OTHER_DB_ID.value])
@@ -929,9 +930,11 @@ class Universal_Data_Extractor(object):
         elif mapped_field == FCR_Mapped_Fields.EDITION_NOTES:
             return self.get_edition_notes(filter_value)
         elif mapped_field == FCR_Mapped_Fields.PUBLICATION_DATES:
-            return self.get_publication_dates(filter_value)    
+            return self.get_publication_dates(filter_value)
         elif mapped_field == FCR_Mapped_Fields.PHYSICAL_DESCRIPTION:
-            return self.get_physical_description(filter_value)
+            return self.get_physical_description(filter_value)    
+        elif mapped_field == FCR_Mapped_Fields.CONTENTS_NOTES:
+            return self.get_contents_notes(filter_value)
         elif mapped_field == FCR_Mapped_Fields.GENERAL_PROCESSING_DATA_DATES:
             return self.get_general_processing_data_dates(filter_value)
         elif mapped_field == FCR_Mapped_Fields.OTHER_ED_IN_OTHER_MEDIUM_BIBG_ID:
@@ -1031,6 +1034,13 @@ class Universal_Data_Extractor(object):
         
         Takes filter_value as argument if mapped to have a filtering subfield."""
         return self.extract_list_of_strings(self.marc_fields_mapping.physical_desription, filter_value)
+    
+    def get_contents_notes(self, filter_value: Optional[str] = "") -> List[str]:
+        """Return all fields mapped as contents notes as a list of strings
+        Each subfield is separated by a space
+        
+        Takes filter_value as argument if mapped to have a filtering subfield."""
+        return self.extract_list_of_strings(self.marc_fields_mapping.contents_notes, filter_value)
 
     def get_erroneous_ISBN(self, filter_value: Optional[str] = "") -> List[str]:
         """Return all erroneous ISBN as a list of str, without duplicates.

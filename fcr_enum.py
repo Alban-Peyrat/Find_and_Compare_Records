@@ -15,6 +15,7 @@ class FCR_Mapped_Fields(Enum):
     EDITION_NOTES = "edition_note"
     PUBLICATION_DATES = "publication_dates"
     PHYSICAL_DESCRIPTION = "physical_desription"
+    CONTENTS_NOTES = "contents_notes"
     OTHER_ED_IN_OTHER_MEDIUM_BIBG_ID = "other_edition_in_other_medium_bibliographic_id"
     OTHER_DB_ID = "other_database_id"
     ITEMS = "items"
