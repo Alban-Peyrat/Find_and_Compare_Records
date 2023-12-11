@@ -3,7 +3,6 @@
 # External import
 import os
 from dotenv import load_dotenv
-from enum import Enum
 import json
 import xml.etree.ElementTree as ET
 import pymarc
@@ -13,66 +12,175 @@ from fuzzywuzzy import fuzz
 
 # Internal imports
 import fcr_func as fcf
+from fcr_enum import *
 
 # ----- Match Records imports -----
 # Internal imports
 import api.abes.Abes_id2ppn as id2ppn
 import api.abes.Sudoc_SRU as ssru
 import api.koha.Koha_SRU as Koha_SRU
-# from main_gui import GUI_Elems_With_Val()
+
+# # -------------------- Enums --------------------
+
+# # ---------- Execution settings (ES) ----------
+# class FCR_Mapped_Fields(Enum):
+#     LEADER = "Leader"
+#     ID = "id"
+#     PPN = "ppn"
+#     GENERAL_PROCESSING_DATA_DATES = "general_processing_data_dates"
+#     ERRONEOUS_ISBN = "erroneous_isbn"
+#     TITLE = "title"
+#     PUBLISHERS_NAME = "publishers_name"
+#     EDITION_NOTES = "edition_note"
+#     PUBLICATION_DATES = "publication_dates"
+#     PHYSICAL_DESCRIPTION = "physical_desription"
+#     OTHER_ED_IN_OTHER_MEDIUM_BIBG_ID = "other_edition_in_other_medium_bibliographic_id"
+#     OTHER_DB_ID = "other_database_id"
+#     ITEMS = "items"
+#     ITEMS_BARCODE = "items_barcode"
+
+# class FCR_Processing_Data_Target(Enum):
+#     ORIGIN = 0
+#     TARGET = 1
+#     BOTH = 2
+
+# class FCR_Processings(Enum):
+#     BETTER_ITEM = {
+#         FCR_Mapped_Fields.LEADER: FCR_Processing_Data_Target.BOTH,
+#         FCR_Mapped_Fields.ID: FCR_Processing_Data_Target.BOTH,
+#         FCR_Mapped_Fields.PPN: FCR_Processing_Data_Target.ORIGIN,
+#         FCR_Mapped_Fields.GENERAL_PROCESSING_DATA_DATES: FCR_Processing_Data_Target.BOTH,
+#         FCR_Mapped_Fields.ERRONEOUS_ISBN: FCR_Processing_Data_Target.BOTH,
+#         FCR_Mapped_Fields.TITLE: FCR_Processing_Data_Target.BOTH,
+#         FCR_Mapped_Fields.PUBLISHERS_NAME: FCR_Processing_Data_Target.BOTH,
+#         FCR_Mapped_Fields.EDITION_NOTES: FCR_Processing_Data_Target.BOTH,
+#         FCR_Mapped_Fields.PUBLICATION_DATES: FCR_Processing_Data_Target.BOTH,
+#         FCR_Mapped_Fields.PHYSICAL_DESCRIPTION: FCR_Processing_Data_Target.ORIGIN,
+#         FCR_Mapped_Fields.OTHER_DB_ID: FCR_Processing_Data_Target.TARGET,
+#         FCR_Mapped_Fields.ITEMS_BARCODE: FCR_Processing_Data_Target.TARGET,
+#         FCR_Mapped_Fields.ITEMS: FCR_Processing_Data_Target.TARGET
+#         }
+#     OTHER_DB_IN_LOCAL_DB = {}
+
+# class Analysis_Checks(Enum):
+#     TITLE = 0
+#     PUBLISHER = 1
+#     DATE = 2
+
+# class Analysis_Final_Results(Enum):
+#     UNKNOWN = 0
+#     NO_CHECK = 1
+#     TOTAL_MATCH = 2
+#     PARTIAL_MATCH = 3
+#     NO_MATCH = 4
+
+# # ---------- MATCH RECORDS (MR) ----------
+# class Operations(Enum):
+#     SEARCH_IN_SUDOC_BY_ISBN = 0
+#     SEARCH_IN_KOHA = 1
+#     SEARCH_IN_SUDOC_BY_ISBN_ONLY_ISBN2PPN = 2
+#     SEARCH_IN_SUDOC_BY_ISBN_ONLY_SRU = 3
+#     # SEARCH_IN_ISO2701_FILE = 4
+
+# class Actions(Enum):
+#     ISBN2PPN = 0
+#     ISBN2PPN_MODIFIED_ISBN = 1
+#     SRU_SUDOC_ISBN = 2
+
+# class Try_Status(Enum):
+#     UNKNWON = 0
+#     SUCCESS = 1
+#     ERROR = 2
+
+# class Match_Records_Errors(Enum):
+#     GENERIC_ERROR = 0
+#     NOTHING_WAS_FOUND = 1
+
+# PROCESSING_OPERATION_MAPPING = {
+#     FCR_Processings.BETTER_ITEM:Operations.SEARCH_IN_SUDOC_BY_ISBN
+# }
+
+# # TRY_OPERATIONS defines for each Operations a lsit of Actions to execute
+# # The order in the list is the order of execution
+# class Try_Operations(Enum):
+#     SEARCH_IN_SUDOC_BY_ISBN = [
+#         Actions.ISBN2PPN,
+#         Actions.ISBN2PPN_MODIFIED_ISBN,
+#         Actions.SRU_SUDOC_ISBN
+#     ]
+#     SEARCH_IN_SUDOC_BY_ISBN_ONLY_ISBN2PPN = [
+#         Actions.ISBN2PPN,
+#         Actions.ISBN2PPN_MODIFIED_ISBN
+#     ]
+#     SEARCH_IN_SUDOC_BY_ISBN_ONLY_SRU = [
+#         Actions.SRU_SUDOC_ISBN
+#     ]
+
+# class Match_Records_Error_Messages(Enum):
+#     GENERIC_ERROR = "Generic error"
+#     NOTHING_WAS_FOUND = "Nothing was found"
+
+# # ---------- UNIVERSAL DATA EXTRACTOR (UDE) ----------
+# class Databases(Enum):
+#     """List of databases and their filter field"""
+#     ABESXML = {
+#         FCR_Mapped_Fields.OTHER_DB_ID:"ILN",
+#         FCR_Mapped_Fields.ITEMS:"RCR",
+#         FCR_Mapped_Fields.ITEMS_BARCODE:"RCR"
+#     }
+#     SUDOC_SRU = {}
+#     KOHA_PUBLIC_BIBLIO = {}
+#     KOHA_SRU = {}
+#     LOCAL = {}
+
+# class Record_Formats(Enum):
+#     """List of supported record formats"""
+#     UNKNOWN = 0
+#     JSON_DICT = 1
+#     ET_ELEMENT = 2
+#     PYMARC_RECORD = 3
+
+# class Xml_Namespaces(Enum):
+#     """List of supported XML namespaces"""
+#     MARC = "marc"
+#     ZS2_0 = "zs2.0"
+#     ZS1_1 = "zs1.1"
+#     ZS1_2 = "zs1.2"
+#     SRW = "srw"
+#     ZR = "zr"
+#     MG = "mg"
+#     PPXML = "ppxml"
+
+# XML_NS = {
+#     "marc": "http://www.loc.gov/MARC21/slim",
+#     "zs2.0": "http://docs.oasis-open.org/ns/search-ws/sruResponse",
+#     "zs1.1": "http://www.loc.gov/zing/srw/",
+#     "zs1.2": "http://www.loc.gov/zing/srw/",
+#     "srw":"http://www.loc.gov/zing/srw/",
+#     "zr":"http://explain.z3950.org/dtd/2.0/",
+#     "mg":"info:srw/extension/5/metadata-grouping-v1.0",
+#     "ppxml":"http://www.oclcpica.org/xmlns/ppxml-1.0"
+# }
+
+# # ---------- MAIN ----------
+# class Other_Database_Id_In_Target(Enum):
+#     UNKNOWN = 0
+#     NO_OTHER_DB_ID = 1
+#     THIS_ID_INCLUDED = 2
+#     ONLY_THIS_OTHER_DB_ID = 3
+#     THIS_ID_NOT_INCLUDED = 4
+
+# # ---------- REPORT ----------
+# class Success(Enum):
+#     MATCH_RECORD = 0
+#     GLOBAL = 1
+
+# class Errors(Enum):
+#     MATCH_RECORD = 1
+#     KOHA = 2
+#     SUDOC = 3
 
 # -------------------- Execution settings (ES) --------------------
-
-class FCR_Mapped_Fields(Enum):
-    LEADER = "Leader"
-    ID = "id"
-    PPN = "ppn"
-    GENERAL_PROCESSING_DATA_DATES = "general_processing_data_dates"
-    ERRONEOUS_ISBN = "erroneous_isbn"
-    TITLE = "title"
-    PUBLISHERS_NAME = "publishers_name"
-    EDITION_NOTES = "edition_note"
-    PUBLICATION_DATES = "publication_dates"
-    PHYSICAL_DESCRIPTION = "physical_desription"
-    OTHER_ED_IN_OTHER_MEDIUM_BIBG_ID = "other_edition_in_other_medium_bibliographic_id"
-    OTHER_DB_ID = "other_database_id"
-    ITEMS = "items"
-    ITEMS_BARCODE = "items_barcode"
-
-class FCR_Processing_Data_Target(Enum):
-    ORIGIN = 0
-    TARGET = 1
-    BOTH = 2
-
-class FCR_Processings(Enum):
-    BETTER_ITEM = {
-        FCR_Mapped_Fields.LEADER: FCR_Processing_Data_Target.BOTH,
-        FCR_Mapped_Fields.ID: FCR_Processing_Data_Target.BOTH,
-        FCR_Mapped_Fields.PPN: FCR_Processing_Data_Target.ORIGIN,
-        FCR_Mapped_Fields.GENERAL_PROCESSING_DATA_DATES: FCR_Processing_Data_Target.BOTH,
-        FCR_Mapped_Fields.ERRONEOUS_ISBN: FCR_Processing_Data_Target.BOTH,
-        FCR_Mapped_Fields.TITLE: FCR_Processing_Data_Target.BOTH,
-        FCR_Mapped_Fields.PUBLISHERS_NAME: FCR_Processing_Data_Target.BOTH,
-        FCR_Mapped_Fields.EDITION_NOTES: FCR_Processing_Data_Target.BOTH,
-        FCR_Mapped_Fields.PUBLICATION_DATES: FCR_Processing_Data_Target.BOTH,
-        FCR_Mapped_Fields.PHYSICAL_DESCRIPTION: FCR_Processing_Data_Target.ORIGIN,
-        FCR_Mapped_Fields.OTHER_DB_ID: FCR_Processing_Data_Target.TARGET,
-        FCR_Mapped_Fields.ITEMS_BARCODE: FCR_Processing_Data_Target.TARGET,
-        FCR_Mapped_Fields.ITEMS: FCR_Processing_Data_Target.TARGET
-        }
-    OTHER_DB_IN_LOCAL_DB = {}
-
-class Analysis_Checks(Enum):
-    TITLE = 0
-    PUBLISHER = 1
-    DATE = 2
-
-class Analysis_Final_Results(Enum):
-    UNKNOWN = 0
-    NO_CHECK = 1
-    TOTAL_MATCH = 2
-    PARTIAL_MATCH = 3
-    NO_MATCH = 4
 
 class Execution_Settings(object):
     def __init__(self, dir: str):
@@ -371,52 +479,153 @@ class Execution_Settings(object):
             if this["name"] == name:
                 return index
 
+# -------------------- DATABASE RECORD (DBR) --------------------
+
+class Database_Record(object):
+    """Contains extracted data from the record.
+    The data property contains every mapped data for the chosen processing"""
+    def __init__(self, processing: FCR_Processings, record: ET.ElementTree | dict | pymarc.record.Record, database: Databases, is_target_db: bool, es: Execution_Settings):
+        self.processing = processing
+        self.record = record
+        self.database = database
+        self.is_target_db = is_target_db
+        self.ude = Universal_Data_Extractor(self.record, self.database, self.is_target_db, es)
+        self.data = {}
+        for data in processing.value:
+            if (
+                (processing.value[data] == FCR_Processing_Data_Target.BOTH)
+                or (self.is_target_db and processing.value[data] == FCR_Processing_Data_Target.TARGET)
+                or (not self.is_target_db and processing.value[data] == FCR_Processing_Data_Target.ORIGIN)
+            ):
+                if data in self.database.value:
+                    #temp
+                    filter_value = ""
+                    if self.database.value[data] == "RCR":
+                        filter_value = es.rcr
+                    if self.database.value[data] == "ILN":
+                        filter_value = es.iln
+                    #temp
+                    self.data[data] = self.ude.get_by_mapped_field_name(data, filter_value)
+                else:
+                    self.data[data] = self.ude.get_by_mapped_field_name(data)
+        self.chosen_analysis = es.chosen_analysis
+        self.chosen_analysis_checks = es.chosen_analysis_checks
+
+    def __compare_titles(self, compared_to):
+        """Compares the titles and sets their keys"""
+        self.compared_title_key = fcf.nettoie_titre(fcf.list_as_string(compared_to.data[FCR_Mapped_Fields.TITLE][0]))
+        self.title_key = fcf.nettoie_titre(fcf.list_as_string(self.data[FCR_Mapped_Fields.TITLE][0]))
+        self.title_ratio = fuzz.ratio(self.title_key, self.compared_title_key)
+        self.title_partial_ratio = fuzz.partial_ratio(self.title_key, self.compared_title_key)
+        self.title_token_sort_ratio = fuzz.token_sort_ratio(self.title_key, self.compared_title_key)
+        self.title_token_set_ratio = fuzz.token_set_ratio(self.title_key, self.compared_title_key)
+    
+    def __compare_dates(self, compared_to) -> None:
+        """Compares if one of the record dates matches on one of the compared record."""
+        self.dates_matched = False
+        # Merge dates lists
+        this_dates = []
+        for dates in self.data[FCR_Mapped_Fields.GENERAL_PROCESSING_DATA_DATES]:
+            this_dates.extend(dates)
+        compared_dates = []
+        for dates in compared_to.data[FCR_Mapped_Fields.GENERAL_PROCESSING_DATA_DATES]:
+            compared_dates.extend(dates)
+        for date in this_dates:
+            if date in compared_dates and date != "    ": # excludes empty dates
+                self.dates_matched = True
+                return
+    
+    def __compare_publishers(self, compared_to) -> None:
+        """Compares every publishers in this record with every publishers in comapred record"""
+        self.publishers_score = -1
+        self.chosen_publisher = ""
+        self.chosen_compared_publisher = ""
+        # I fboth don't have results, comparison can't be done
+        if len(self.data[FCR_Mapped_Fields.PUBLISHERS_NAME]) == 0 or len(compared_to.data[FCR_Mapped_Fields.PUBLISHERS_NAME]) == 0:
+            return
+        for publisher in self.data[FCR_Mapped_Fields.PUBLISHERS_NAME]:
+            publisher = fcf.clean_publisher(publisher)
+            for compared_publisher in compared_to.data[FCR_Mapped_Fields.PUBLISHERS_NAME]:
+                compared_publisher = fcf.clean_publisher(compared_publisher)
+                ratio = fuzz.ratio(publisher, compared_publisher)
+                if ratio > self.publishers_score:
+                    self.publishers_score = ratio
+                    self.chosen_publisher = publisher
+                    self.chosen_compared_publisher = compared_publisher
+
+    def __compare_other_db_id(self, compared_to):
+        """Checks if this record id is in the comapred other database IDs"""
+        self.local_id_in_compared_record = Other_Database_Id_In_Target.UNKNOWN
+        self.list_of_other_db_id = self.data[FCR_Mapped_Fields.OTHER_DB_ID]
+        self.nb_other_db_id = len(self.list_of_other_db_id)
+        id = fcf.list_as_string(compared_to.data[FCR_Mapped_Fields.ID])
+        if self.nb_other_db_id == 0:
+            self.local_id_in_compared_record = Other_Database_Id_In_Target.NO_OTHER_DB_ID
+        elif self.nb_other_db_id == 1 and id in self.list_of_other_db_id:
+            self.local_id_in_compared_record = Other_Database_Id_In_Target.ONLY_THIS_OTHER_DB_ID
+        elif self.nb_other_db_id > 1 and id in self.list_of_other_db_id:
+            self.local_id_in_compared_record = Other_Database_Id_In_Target.THIS_ID_INCLUDED
+        elif id not in self.list_of_other_db_id:
+            self.local_id_in_compared_record = Other_Database_Id_In_Target.THIS_ID_NOT_INCLUDED
+
+    def __analysis_check_title(self):
+        self.check_title_nb_valids = 0
+        # for each matching score, checks if it's high enough
+        title_score_list = [
+            self.title_ratio,
+            self.title_partial_ratio,
+            self.title_token_sort_ratio,
+            self.title_token_set_ratio
+            ]
+        for title_score in title_score_list:
+            if title_score >= self.chosen_analysis["TITLE_MIN_SCORE"]:
+                self.check_title_nb_valids += 1
+        self.checks[Analysis_Checks.TITLE] = (self.check_title_nb_valids >= self.chosen_analysis["NB_TITLE_OK"])
+
+    def __analysis_checks(self, check):
+        """Launches the check for the provided analysis"""
+        # Titles
+        if check == Analysis_Checks.TITLE:
+            self.__analysis_check_title()
+        # Publishers
+        elif check == Analysis_Checks.PUBLISHER:
+            self.checks[Analysis_Checks.PUBLISHER] = (self.publishers_score >= self.chosen_analysis["PUBLISHER_MIN_SCORE"])
+        # Dates
+        elif check == Analysis_Checks.DATE:
+            self.checks[Analysis_Checks.DATE] = self.dates_matched
+
+    def __finalize_analysis(self):
+        """Summarizes all checks"""
+        self.total_checks = Analysis_Final_Results.UNKNOWN
+        self.passed_check_nb = 0
+        self.checks = {}
+        for check in Analysis_Checks:
+            self.checks[check] = None
+        if len(self.chosen_analysis_checks) == 0:
+            self.total_checks = Analysis_Final_Results.NO_CHECK
+        else:
+            for check in self.chosen_analysis_checks:
+                self.__analysis_checks(check)
+                if self.checks[check] == True:
+                    self.passed_check_nb += 1
+            if self.passed_check_nb == len(self.chosen_analysis_checks):
+                self.total_checks = Analysis_Final_Results.TOTAL_MATCH
+            elif self.passed_check_nb > 0:
+                self.total_checks = Analysis_Final_Results.PARTIAL_MATCH
+            else:
+                self.total_checks = Analysis_Final_Results.NO_MATCH
+
+    def compare_to(self, compared_to):
+        """Execute the analysis processs
+        Takes as argument:
+        - compared_to {Database_Record instance} : the record from origin database"""
+        self.__compare_titles(compared_to)
+        self.__compare_dates(compared_to)
+        self.__compare_publishers(compared_to)
+        self.__compare_other_db_id(compared_to)
+        self.__finalize_analysis()
+
 # -------------------- MATCH RECORDS (MR) --------------------
-
-class Operations(Enum):
-    SEARCH_IN_SUDOC_BY_ISBN = 0
-    SEARCH_IN_KOHA = 1
-    SEARCH_IN_SUDOC_BY_ISBN_ONLY_ISBN2PPN = 2
-    SEARCH_IN_SUDOC_BY_ISBN_ONLY_SRU = 3
-    # SEARCH_IN_ISO2701_FILE = 4
-
-class Actions(Enum):
-    ISBN2PPN = 0
-    ISBN2PPN_MODIFIED_ISBN = 1
-    SRU_SUDOC_ISBN = 2
-
-class Try_Status(Enum):
-    UNKNWON = 0
-    SUCCESS = 1
-    ERROR = 2
-
-class Match_Records_Errors(Enum):
-    GENERIC_ERROR = 0
-    NOTHING_WAS_FOUND = 1
-
-PROCESSING_OPERATION_MAPPING = {
-    FCR_Processings.BETTER_ITEM:Operations.SEARCH_IN_SUDOC_BY_ISBN
-}
-
-# TRY_OPERATIONS defines for each Operations a lsit of Actions to execute
-# The order in the list is the order of execution
-class Try_Operations(Enum):
-    SEARCH_IN_SUDOC_BY_ISBN = [
-        Actions.ISBN2PPN,
-        Actions.ISBN2PPN_MODIFIED_ISBN,
-        Actions.SRU_SUDOC_ISBN
-    ]
-    SEARCH_IN_SUDOC_BY_ISBN_ONLY_ISBN2PPN = [
-        Actions.ISBN2PPN,
-        Actions.ISBN2PPN_MODIFIED_ISBN
-    ]
-    SEARCH_IN_SUDOC_BY_ISBN_ONLY_SRU = [
-        Actions.SRU_SUDOC_ISBN
-    ]
-
-class Match_Records_Error_Messages(Enum):
-    GENERIC_ERROR = "Generic error"
-    NOTHING_WAS_FOUND = "Nothing was found"
 
 class Request_Try(object):
     """"""
@@ -571,48 +780,6 @@ class Matched_Records(object):
         # Action in Koha SRU
 
 # -------------------- UNIVERSAL DATA EXTRACTOR (UDE) --------------------
-
-class Databases(Enum):
-    """List of databases and their filter field"""
-    ABESXML = {
-        FCR_Mapped_Fields.OTHER_DB_ID:"ILN",
-        FCR_Mapped_Fields.ITEMS:"RCR",
-        FCR_Mapped_Fields.ITEMS_BARCODE:"RCR"
-    }
-    SUDOC_SRU = {}
-    KOHA_PUBLIC_BIBLIO = {}
-    KOHA_SRU = {}
-    LOCAL = {}
-
-class Record_Formats(Enum):
-    """List of supported record formats"""
-    UNKNOWN = 0
-    JSON_DICT = 1
-    ET_ELEMENT = 2
-    PYMARC_RECORD = 3
-
-class Xml_Namespaces(Enum):
-    """List of supported XML namespaces"""
-    MARC = "marc"
-    ZS2_0 = "zs2.0"
-    ZS1_1 = "zs1.1"
-    ZS1_2 = "zs1.2"
-    SRW = "srw"
-    ZR = "zr"
-    MG = "mg"
-    PPXML = "ppxml"
-
-
-XML_NS = {
-    "marc": "http://www.loc.gov/MARC21/slim",
-    "zs2.0": "http://docs.oasis-open.org/ns/search-ws/sruResponse",
-    "zs1.1": "http://www.loc.gov/zing/srw/",
-    "zs1.2": "http://www.loc.gov/zing/srw/",
-    "srw":"http://www.loc.gov/zing/srw/",
-    "zr":"http://explain.z3950.org/dtd/2.0/",
-    "mg":"info:srw/extension/5/metadata-grouping-v1.0",
-    "ppxml":"http://www.oclcpica.org/xmlns/ppxml-1.0"
-}
 
 class Marc_Field(object):
     """Contains the configuration of a field for a data type in the database.
@@ -1064,13 +1231,6 @@ class Universal_Data_Extractor(object):
 
 # -------------------- MAIN --------------------
 
-class Other_Database_Id_In_Target(Enum):
-    UNKNOWN = 0
-    NO_OTHER_DB_ID = 1
-    THIS_ID_INCLUDED = 2
-    ONLY_THIS_OTHER_DB_ID = 3
-    THIS_ID_NOT_INCLUDED = 4
-
 class Original_Record(object):
     def __init__(self, line: dict):
         self.error = None
@@ -1100,161 +1260,6 @@ class Original_Record(object):
     def get_target_database_data(self, processing: FCR_Processings, id:str, record: ET.ElementTree | dict | pymarc.record.Record, database: Databases, es: Execution_Settings):
         """Extract data from the origin database record"""
         self.target_database_data[id] = Database_Record(processing, record, database, True, es)
-
-class Database_Record(object):
-    """Contains extracted data from the record.
-    The data property contains every mapped data for the chosen processing"""
-    def __init__(self, processing: FCR_Processings, record: ET.ElementTree | dict | pymarc.record.Record, database: Databases, is_target_db: bool, es: Execution_Settings):
-        self.processing = processing
-        self.record = record
-        self.database = database
-        self.is_target_db = is_target_db
-        self.ude = Universal_Data_Extractor(self.record, self.database, self.is_target_db, es)
-        self.data = {}
-        for data in processing.value:
-            if (
-                (processing.value[data] == FCR_Processing_Data_Target.BOTH)
-                or (self.is_target_db and processing.value[data] == FCR_Processing_Data_Target.TARGET)
-                or (not self.is_target_db and processing.value[data] == FCR_Processing_Data_Target.ORIGIN)
-            ):
-                if data in self.database.value:
-                    #temp
-                    filter_value = ""
-                    if self.database.value[data] == "RCR":
-                        filter_value = es.rcr
-                    if self.database.value[data] == "ILN":
-                        filter_value = es.iln
-                    #temp
-                    self.data[data] = self.ude.get_by_mapped_field_name(data, filter_value)
-                else:
-                    self.data[data] = self.ude.get_by_mapped_field_name(data)
-        self.chosen_analysis = es.chosen_analysis
-        self.chosen_analysis_checks = es.chosen_analysis_checks
-
-    def __compare_titles(self, compared_to):
-        """Compares the titles and sets their keys"""
-        self.compared_title_key = fcf.nettoie_titre(fcf.list_as_string(compared_to.data[FCR_Mapped_Fields.TITLE][0]))
-        self.title_key = fcf.nettoie_titre(fcf.list_as_string(self.data[FCR_Mapped_Fields.TITLE][0]))
-        self.title_ratio = fuzz.ratio(self.title_key, self.compared_title_key)
-        self.title_partial_ratio = fuzz.partial_ratio(self.title_key, self.compared_title_key)
-        self.title_token_sort_ratio = fuzz.token_sort_ratio(self.title_key, self.compared_title_key)
-        self.title_token_set_ratio = fuzz.token_set_ratio(self.title_key, self.compared_title_key)
-    
-    def __compare_dates(self, compared_to) -> None:
-        """Compares if one of the record dates matches on one of the compared record."""
-        self.dates_matched = False
-        # Merge dates lists
-        this_dates = []
-        for dates in self.data[FCR_Mapped_Fields.GENERAL_PROCESSING_DATA_DATES]:
-            this_dates.extend(dates)
-        compared_dates = []
-        for dates in compared_to.data[FCR_Mapped_Fields.GENERAL_PROCESSING_DATA_DATES]:
-            compared_dates.extend(dates)
-        for date in this_dates:
-            if date in compared_dates and date != "    ": # excludes empty dates
-                self.dates_matched = True
-                return
-    
-    def __compare_publishers(self, compared_to) -> None:
-        """Compares every publishers in this record with every publishers in comapred record"""
-        self.publishers_score = -1
-        self.chosen_publisher = ""
-        self.chosen_compared_publisher = ""
-        # I fboth don't have results, comparison can't be done
-        if len(self.data[FCR_Mapped_Fields.PUBLISHERS_NAME]) == 0 or len(compared_to.data[FCR_Mapped_Fields.PUBLISHERS_NAME]) == 0:
-            return
-        for publisher in self.data[FCR_Mapped_Fields.PUBLISHERS_NAME]:
-            publisher = fcf.clean_publisher(publisher)
-            for compared_publisher in compared_to.data[FCR_Mapped_Fields.PUBLISHERS_NAME]:
-                compared_publisher = fcf.clean_publisher(compared_publisher)
-                ratio = fuzz.ratio(publisher, compared_publisher)
-                if ratio > self.publishers_score:
-                    self.publishers_score = ratio
-                    self.chosen_publisher = publisher
-                    self.chosen_compared_publisher = compared_publisher
-
-    def __compare_other_db_id(self, compared_to):
-        """Checks if this record id is in the comapred other database IDs"""
-        self.local_id_in_compared_record = Other_Database_Id_In_Target.UNKNOWN
-        self.list_of_other_db_id = self.data[FCR_Mapped_Fields.OTHER_DB_ID]
-        self.nb_other_db_id = len(self.list_of_other_db_id)
-        id = fcf.list_as_string(compared_to.data[FCR_Mapped_Fields.ID])
-        if self.nb_other_db_id == 0:
-            self.local_id_in_compared_record = Other_Database_Id_In_Target.NO_OTHER_DB_ID
-        elif self.nb_other_db_id == 1 and id in self.list_of_other_db_id:
-            self.local_id_in_compared_record = Other_Database_Id_In_Target.ONLY_THIS_OTHER_DB_ID
-        elif self.nb_other_db_id > 1 and id in self.list_of_other_db_id:
-            self.local_id_in_compared_record = Other_Database_Id_In_Target.THIS_ID_INCLUDED
-        elif id not in self.list_of_other_db_id:
-            self.local_id_in_compared_record = Other_Database_Id_In_Target.THIS_ID_NOT_INCLUDED
-
-    def __analysis_check_title(self):
-        self.check_title_nb_valids = 0
-        # for each matching score, checks if it's high enough
-        title_score_list = [
-            self.title_ratio,
-            self.title_partial_ratio,
-            self.title_token_sort_ratio,
-            self.title_token_set_ratio
-            ]
-        for title_score in title_score_list:
-            if title_score >= self.chosen_analysis["TITLE_MIN_SCORE"]:
-                self.check_title_nb_valids += 1
-        self.checks[Analysis_Checks.TITLE] = (self.check_title_nb_valids >= self.chosen_analysis["NB_TITLE_OK"])
-
-    def __analysis_checks(self, check):
-        """Launches the check for the provided analysis"""
-        # Titles
-        if check == Analysis_Checks.TITLE:
-            self.__analysis_check_title()
-        # Publishers
-        elif check == Analysis_Checks.PUBLISHER:
-            self.checks[Analysis_Checks.PUBLISHER] = (self.publishers_score >= self.chosen_analysis["PUBLISHER_MIN_SCORE"])
-        # Dates
-        elif check == Analysis_Checks.DATE:
-            self.checks[Analysis_Checks.DATE] = self.dates_matched
-
-    def __finalize_analysis(self):
-        """Summarizes all checks"""
-        self.total_checks = Analysis_Final_Results.UNKNOWN
-        self.passed_check_nb = 0
-        self.checks = {}
-        for check in Analysis_Checks:
-            self.checks[check] = None
-        if len(self.chosen_analysis_checks) == 0:
-            self.total_checks = Analysis_Final_Results.NO_CHECK
-        else:
-            for check in self.chosen_analysis_checks:
-                self.__analysis_checks(check)
-                if self.checks[check] == True:
-                    self.passed_check_nb += 1
-            if self.passed_check_nb == len(self.chosen_analysis_checks):
-                self.total_checks = Analysis_Final_Results.TOTAL_MATCH
-            elif self.passed_check_nb > 0:
-                self.total_checks = Analysis_Final_Results.PARTIAL_MATCH
-            else:
-                self.total_checks = Analysis_Final_Results.NO_MATCH
-
-    def compare_to(self, compared_to):
-        """Execute the analysis processs
-        Takes as argument:
-        - compared_to {Database_Record instance} : the record from origin database"""
-        self.__compare_titles(compared_to)
-        self.__compare_dates(compared_to)
-        self.__compare_publishers(compared_to)
-        self.__compare_other_db_id(compared_to)
-        self.__finalize_analysis()
-
-# Used in report class
-class Success(Enum):
-    MATCH_RECORD = 0
-    GLOBAL = 1
-
-# Used in report class
-class Errors(Enum):
-    MATCH_RECORD = 1
-    KOHA = 2
-    SUDOC = 3
 
 class Report(object):
     def __init__(self):

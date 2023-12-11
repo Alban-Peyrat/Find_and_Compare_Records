@@ -4,7 +4,6 @@
 import os
 import csv
 import logging
-from fuzzywuzzy import fuzz
 import json
 
 # Internal import
