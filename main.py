@@ -14,6 +14,7 @@ import api.koha.Koha_API_PublicBiblio as Koha_API_PublicBiblio
 from scripts.outputing import * # pour éviter de devoir réécrire tous les appels de fonctions
 import fcr_classes as fcr
 import fcr_func as fcf
+import fcr_enum as fce
 
 def main(es: fcr.Execution_Settings):
     """Main function.
@@ -26,6 +27,10 @@ def main(es: fcr.Execution_Settings):
     if not os.path.exists(es.file_path):
         print("Erreur : le fichier n'existe pas")
         exit()
+
+    # Creates output dir if needed
+    if not os.path.exists(es.output_path):
+        os.makedirs(es.output_path)
 
     # At this point, everything is OK, loads and initialise all vars
     es.generate_files_path()
@@ -126,11 +131,14 @@ def main(es: fcr.Execution_Settings):
             for date_str in rec.origin_database_data.data[fcr.FCR_Mapped_Fields.PUBLICATION_DATES]:
                 result["KOHA_214210a_DATES"] += fcf.get_year(date_str)
             result["KOHA_214210a_DATES"] = fcf.list_as_string(result["KOHA_214210a_DATES"])
-            result["KOHA_215a_DATES"] = []    
-            for desc_str in rec.origin_database_data.data[fcr.FCR_Mapped_Fields.PHYSICAL_DESCRIPTION]: #AR259
-                result["KOHA_215a_DATES"] += fcf.get_year(desc_str)
+            result["KOHA_215a_DATES"] = []
+            result['KOHA_010z'] = None
+            # Better_ITEM specifics
+            if es.processing_val == fce.FCR_Processings.BETTER_ITEM.name:
+                result['KOHA_010z'] = fcf.list_as_string(rec.origin_database_data.data[fcr.FCR_Mapped_Fields.ERRONEOUS_ISBN])
+                for desc_str in rec.origin_database_data.data[fcr.FCR_Mapped_Fields.PHYSICAL_DESCRIPTION]: #AR259
+                    result["KOHA_215a_DATES"] += fcf.get_year(desc_str)
             result["KOHA_215a_DATES"] = fcf.list_as_string(result["KOHA_215a_DATES"])
-            result['KOHA_010z'] = fcf.list_as_string(rec.origin_database_data.data[fcr.FCR_Mapped_Fields.ERRONEOUS_ISBN])
             # |||| END OF AR362 to del
             logger.debug("{} :: {} :: {}".format(rec.input_query, es.service, "Koha biblionumber : " + result['KOHA_BIB_NB']))
             logger.debug("{} :: {} :: {}".format(rec.input_query, es.service, "Koha titre nettoyé : " + result['KOHA_200adehiv']))
@@ -206,7 +214,10 @@ def main(es: fcr.Execution_Settings):
                 if this_result["SUDOC_NB_LOCAL_SYSTEM_NB"] > 0:
                     this_result["SUDOC_DIFFERENT_LOCAL_SYSTEM_NB"] = not koha_record.bibnb in this_result["SUDOC_LOCAL_SYSTEM_NB"]
                 this_result["SUDOC_ITEMS"] = fcf.list_as_string(this_result["SUDOC_ITEMS"])
-                this_result['SUDOC_010z'] = fcf.list_as_string(temp_rec_data[fcr.FCR_Mapped_Fields.ERRONEOUS_ISBN])
+                this_result['SUDOC_010z'] = None
+                # Better_ITEM specifics
+                if es.processing_val == fce.FCR_Processings.BETTER_ITEM.name:
+                    this_result['SUDOC_010z'] = fcf.list_as_string(temp_rec_data[fcr.FCR_Mapped_Fields.ERRONEOUS_ISBN])
                 # |||| END OF AR362 to del
                 logger.debug("{} :: {} :: {}".format(this_result["MATCH_RECORDS_QUERY"], es.service, "PPN : " + this_result["MATCHED_ID"]))
                 logger.debug("{} :: {} :: {}".format(this_result["MATCH_RECORDS_QUERY"], es.service, "Sudoc titre nettoyé : " + this_result['SUDOC_200adehiv']))

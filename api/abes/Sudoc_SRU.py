@@ -721,6 +721,12 @@ class SRU_Result_Search(object):
             result = self.fix_angle_brackets()
             result = re.sub("</a>\s*<TR>", "</a></TD></TR>", result)
             result = re.sub("(?<=</TR>)\s*(?=(<srw:record>|<\/srw:records>))", self.closing_tags_fix, result)
+        # Fix srw:query not correcting < and > and failing parsing
+        fix_srw_query_pattern = r"(<srw:query>.*<\/srw:query>)"
+        has_matched = re.search(fix_srw_query_pattern, result)
+        if has_matched:
+            fixed_query = f"<srw:query>{has_matched.group(1)[11:-12].replace('<', '&lt;').replace('>', '&gt;')}</srw:query>"
+            result = re.sub(fix_srw_query_pattern, fixed_query, result)
         self.result_as_parsed_xml = ET.fromstring(result)
 
         # Generate the result property
