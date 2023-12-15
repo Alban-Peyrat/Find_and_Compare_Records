@@ -16,9 +16,7 @@ def prep_string(_str:str, _noise = True, _multiplespaces = True) -> str:
     """
     # remove noise (punctuation) if asked (by default yes)
     if _noise:
-        noise_list = [".", ",", "?", "!", ";","/",":","="]
-        for car in noise_list:
-            _str = _str.replace(car, " ")
+        _str = re.sub(r"\.|\,|\?|\!|\;|\/|\:|\=|\[|\]|\'|\-|\(|\)|\||\"|\<|\>", " ", _str, flags=re.IGNORECASE)
     # replace multiple spaces by ine in string if requested (default yes)
     if _multiplespaces:
         _str = re.sub("\s+", " ", _str).strip()
@@ -96,3 +94,18 @@ def list_as_string(this_list: list) -> str:
             return delete_control_char(str(non_empty_elements[0]))
         else:
             return delete_control_char(str(non_empty_elements))
+
+def delete_CBS_boolean_operators(txt:str) -> str:
+    """Deletes all CBS boolean operators (AND, OR, NOT) in eevry language and return the resukt as a string
+    Based on "All CBS Command" Version 6 (2014-02-11)"""
+    txt = re.sub(r"\b(AND|EN|UND|ET|VE|NOT|NIET|NICHT|NON|DEGIL|SAUF|OR|OF|ORDER|OU|VEYA)\b", "", txt, flags=re.IGNORECASE)
+    return re.sub(r"\s+", " ", txt)
+
+def delete_Sudoc_empty_words(txt:str) -> str:
+    """Deletes all Sudoc empty keywords (index TOUT) to simplify the query"""
+    txt = re.sub(r"\b(A|BIS|DI|IL|OF|THE|AB|BY|DIE|IM|ON|THEIR|ABOUT|C|DONT|IMPR|OU|THIS|ACCORDING|CE|DR|IN|OVER|TO|ACROSS|CETTE|DU|INTO|P|UEBER|AD|CEUX|DURANT|E|PAR|UM|AGAINST|CHEZ|DURANTE|ITS|PER|UND|AINSI|CO|DURCH|J|PLUS|UNDER|AL|COMME|DURING|L|POR|UNE|ALL|COMO|E|LA|POUR|UNLESS|ALLA|CUM|ED|LAS|QU|UNTER|ALLE|D|EIN|LE|QUAE|UPON|ALS|DAL|EINE|LES|QUE|VOM|ALSO|DALL|EINEM|LEUR|R|VON|ALTRE|DALLA|EINER|LEURS|S|VOR|AM|DANS|EINES|LO|SANS|VOS|AMONG|DAS|EL|LOS|SE|VOTRE|AN|DE|EN|M|SELON|VOUS|AND|DEGLI|ES|MES|SES|W|ASI|DEL|ET|MIT|SIC|WAS|AT|DELL|F|N|SINCE|WE|ATQUE|DELLA|FOR|NACH|SIVE|WHITCH|AU|DELLE|FROM|NE|SN|WITH|AUF|DELLO|FUER|NEAR|SO|Y|AUPRES|DEM|G|NEL|SOME|ZU|AUS|DEN|GLI|NO|SOUS|ZUR|AUSSI|DEPUIS|H|NOS|ST|AUX|DER|HIS|NOTRE|SUL|AVEC|DEREN|I|NOUS|SUR|B|DES|IHRE|O|TE|BEI|DESDE|IHRER|ODER|THAT)\b", "", txt, flags=re.IGNORECASE)
+    return re.sub(r"\s+", " ", txt)
+
+def delete_for_sudoc(txt:str) -> str:
+    """Merges deletion func specifics for CBs and Sudoc"""
+    return delete_Sudoc_empty_words(delete_CBS_boolean_operators(txt))

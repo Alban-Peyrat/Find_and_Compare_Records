@@ -127,10 +127,10 @@ PROCESSING_CONFIGURATION_SCREEN_MAIN_TAB_LAYOUT = [
     # ----- Row 1-2 -----
     # Origin database URL
     [
-        sg.Text(f"{GUI_Text.ORIGIGN_DATABASE_URL.value[VALLS.lang]} :", k=GUI_Text.ORIGIGN_DATABASE_URL.name, metadata={"class":["PROCESSING_CONFIGURATION_MAIN", fcr.FCR_Processings.BETTER_ITEM.name]})
+        sg.Text(f"{GUI_Text.ORIGIGN_DATABASE_URL.value[VALLS.lang]} :", k=GUI_Text.ORIGIGN_DATABASE_URL.name, metadata={"class":["PROCESSING_CONFIGURATION_MAIN", fcr.FCR_Processings.BETTER_ITEM.name, fcr.FCR_Processings.BETTER_ITEM_DVD.name]})
     ],
     [
-        sg.Input(key="ORIGIN_URL", default_text=VALLS.origin_url, size=(80, None), metadata={"class":["PROCESSING_CONFIGURATION_MAIN", fcr.FCR_Processings.BETTER_ITEM.name]})
+        sg.Input(key="ORIGIN_URL", default_text=VALLS.origin_url, size=(80, None), metadata={"class":["PROCESSING_CONFIGURATION_MAIN", fcr.FCR_Processings.BETTER_ITEM.name, fcr.FCR_Processings.BETTER_ITEM_DVD.name]})
     ],
 
     # ----- Row 3-4 -----
@@ -145,14 +145,14 @@ PROCESSING_CONFIGURATION_SCREEN_MAIN_TAB_LAYOUT = [
     # ----- Row 5-6 -----
     # Sudoc ILN + RCR (filter1-2)
     [
-        sg.Text(f"{GUI_Text.ILN_TEXT.value[VALLS.lang]} :", k=GUI_Text.ILN_TEXT.name, metadata={"class":["PROCESSING_CONFIGURATION_MAIN", fcr.FCR_Processings.BETTER_ITEM.name]}),
-        sg.Input(key="ILN", default_text=VALLS.iln, size=(4, None), metadata={"class":["PROCESSING_CONFIGURATION_MAIN", fcr.FCR_Processings.BETTER_ITEM.name]}),
+        sg.Text(f"{GUI_Text.ILN_TEXT.value[VALLS.lang]} :", k=GUI_Text.ILN_TEXT.name, metadata={"class":["PROCESSING_CONFIGURATION_MAIN", fcr.FCR_Processings.BETTER_ITEM.name, fcr.FCR_Processings.BETTER_ITEM_DVD.name]}),
+        sg.Input(key="ILN", default_text=VALLS.iln, size=(4, None), metadata={"class":["PROCESSING_CONFIGURATION_MAIN", fcr.FCR_Processings.BETTER_ITEM.name, fcr.FCR_Processings.BETTER_ITEM_DVD.name]}),
         sg.Text(f"{GUI_Text.FILTER1_TEXT.value[VALLS.lang]} :", k=GUI_Text.FILTER1_TEXT.name, metadata={"class":["PROCESSING_CONFIGURATION_MAIN", fcr.FCR_Processings.OTHER_DB_IN_LOCAL_DB.name]}),
         sg.Input(key="FILTER1", default_text=VALLS.filter1, size=(4, None), metadata={"class":["PROCESSING_CONFIGURATION_MAIN", fcr.FCR_Processings.OTHER_DB_IN_LOCAL_DB.name]})
     ],
     [
-        sg.Text(f"{GUI_Text.RCR_TEXT.value[VALLS.lang]} :", k=GUI_Text.RCR_TEXT.name, metadata={"class":["PROCESSING_CONFIGURATION_MAIN", fcr.FCR_Processings.BETTER_ITEM.name]}),
-        sg.Input(key="RCR", default_text=VALLS.rcr, size=(10, None), metadata={"class":["PROCESSING_CONFIGURATION_MAIN", fcr.FCR_Processings.BETTER_ITEM.name]}),
+        sg.Text(f"{GUI_Text.RCR_TEXT.value[VALLS.lang]} :", k=GUI_Text.RCR_TEXT.name, metadata={"class":["PROCESSING_CONFIGURATION_MAIN", fcr.FCR_Processings.BETTER_ITEM.name, fcr.FCR_Processings.BETTER_ITEM_DVD.name]}),
+        sg.Input(key="RCR", default_text=VALLS.rcr, size=(10, None), metadata={"class":["PROCESSING_CONFIGURATION_MAIN", fcr.FCR_Processings.BETTER_ITEM.name, fcr.FCR_Processings.BETTER_ITEM_DVD.name]}),
         sg.Text(f"{GUI_Text.FILTER2_TEXT.value[VALLS.lang]} :", k=GUI_Text.FILTER2_TEXT.name, metadata={"class":["PROCESSING_CONFIGURATION_MAIN", fcr.FCR_Processings.OTHER_DB_IN_LOCAL_DB.name]}),
         sg.Input(key="FILTER2", default_text=VALLS.filter2, size=(4, None), metadata={"class":["PROCESSING_CONFIGURATION_MAIN", fcr.FCR_Processings.OTHER_DB_IN_LOCAL_DB.name]})
     ],

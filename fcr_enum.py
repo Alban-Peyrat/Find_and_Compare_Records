@@ -45,6 +45,22 @@ class FCR_Processings(Enum):
         FCR_Mapped_Fields.ITEMS: FCR_Processing_Data_Target.TARGET
         }
     OTHER_DB_IN_LOCAL_DB = {}
+    BETTER_ITEM_DVD = {
+        FCR_Mapped_Fields.LEADER: FCR_Processing_Data_Target.BOTH,
+        FCR_Mapped_Fields.ID: FCR_Processing_Data_Target.BOTH,
+        FCR_Mapped_Fields.PPN: FCR_Processing_Data_Target.ORIGIN,
+        FCR_Mapped_Fields.GENERAL_PROCESSING_DATA_DATES: FCR_Processing_Data_Target.BOTH,
+        FCR_Mapped_Fields.EAN: FCR_Processing_Data_Target.BOTH,
+        FCR_Mapped_Fields.TITLE: FCR_Processing_Data_Target.BOTH,
+        FCR_Mapped_Fields.AUTHORS: FCR_Processing_Data_Target.BOTH,
+        FCR_Mapped_Fields.PUBLISHERS_NAME: FCR_Processing_Data_Target.BOTH,
+        FCR_Mapped_Fields.EDITION_NOTES: FCR_Processing_Data_Target.BOTH,
+        FCR_Mapped_Fields.PUBLICATION_DATES: FCR_Processing_Data_Target.BOTH,
+        FCR_Mapped_Fields.CONTENTS_NOTES: FCR_Processing_Data_Target.ORIGIN,
+        FCR_Mapped_Fields.OTHER_DB_ID: FCR_Processing_Data_Target.TARGET,
+        FCR_Mapped_Fields.ITEMS_BARCODE: FCR_Processing_Data_Target.TARGET,
+        FCR_Mapped_Fields.ITEMS: FCR_Processing_Data_Target.TARGET    
+    }
 
 class Analysis_Checks(Enum):
     TITLE = 0
@@ -65,16 +81,18 @@ class Operations(Enum):
     SEARCH_IN_SUDOC_BY_ISBN_ONLY_ISBN2PPN = 2
     SEARCH_IN_SUDOC_BY_ISBN_ONLY_SRU = 3
     SEARCH_IN_SUDOC_DVD = 4
-    # SEARCH_IN_ISO2701_FILE = 4
+    # SEARCH_IN_ISO2701_FILE = 5
 
 class Actions(Enum):
     ISBN2PPN = 0
     ISBN2PPN_MODIFIED_ISBN = 1
     SRU_SUDOC_ISBN = 2
     EAN2PPN = 3
-    SRU_SUDOC_MTI_AUT_EDI_APU = 4
-    SRU_SUDOC_MTI_AUT_APU = 5
-    SRU_SUDOC_MTI_AUT = 6
+    SRU_SUDOC_MTI_AUT_EDI_APU_TDO_V = 4
+    SRU_SUDOC_MTI_AUT_APU_TDO_V = 5
+    SRU_SUDOC_TOU_TITLE_AUTHOR_PUBLISHER_DATE_TDO_V = 6
+    SRU_SUDOC_TOU_TITLE_AUTHOR_DATE_TDO_V = 7
+    SRU_SUDOC_TOU_TITLE_AUTHOR_PUBLISHER_TDO_V = 8
 
 class Try_Status(Enum):
     UNKNWON = 0
@@ -84,9 +102,20 @@ class Try_Status(Enum):
 class Match_Records_Errors(Enum):
     GENERIC_ERROR = 0
     NOTHING_WAS_FOUND = 1
+    NO_EAN_WAS_FOUND = 2
+    REQUIRED_DATA_MISSING = 3
+
+class Match_Records_Error_Messages(Enum):
+    # Why tf are there 2 enums for errors
+    GENERIC_ERROR = "Generic error"
+    NOTHING_WAS_FOUND = "Nothing was found"
+    NO_EAN_WAS_FOUND = "Original record has no EAN"
+    REQUIRED_DATA_MISSING = "Original record was missing one of the required data"
+
 
 PROCESSING_OPERATION_MAPPING = {
-    FCR_Processings.BETTER_ITEM:Operations.SEARCH_IN_SUDOC_BY_ISBN
+    FCR_Processings.BETTER_ITEM:Operations.SEARCH_IN_SUDOC_BY_ISBN,
+    FCR_Processings.BETTER_ITEM_DVD:Operations.SEARCH_IN_SUDOC_DVD
 }
 
 # TRY_OPERATIONS defines for each Operations a lsit of Actions to execute
@@ -106,15 +135,13 @@ class Try_Operations(Enum):
     ]
     SEARCH_IN_SUDOC_DVD = [
         Actions.EAN2PPN,
-        Actions.SRU_SUDOC_MTI_AUT_EDI_APU,
-        Actions.SRU_SUDOC_MTI_AUT_APU,
-        Actions.SRU_SUDOC_MTI_AUT
+        Actions.SRU_SUDOC_MTI_AUT_EDI_APU_TDO_V,
+        Actions.SRU_SUDOC_MTI_AUT_APU_TDO_V,
+        Actions.SRU_SUDOC_TOU_TITLE_AUTHOR_PUBLISHER_DATE_TDO_V,
+        Actions.SRU_SUDOC_TOU_TITLE_AUTHOR_PUBLISHER_TDO_V
     ]
     
 
-class Match_Records_Error_Messages(Enum):
-    GENERIC_ERROR = "Generic error"
-    NOTHING_WAS_FOUND = "Nothing was found"
 
 # ---------- UNIVERSAL DATA EXTRACTOR (UDE) ----------
 class Databases(Enum):

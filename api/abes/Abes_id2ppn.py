@@ -106,7 +106,7 @@ def compute_isbn_13_check_digit(chars):
 
 class Id2ppn_Result(object):
     def __init__(self, status: Id2ppn_Status, error: Id2ppn_Errors, format: str, id: str, mod_id: str, isbn_validity=Isbn_Validity.SKIPPED, url=None, HTTP_status_code=0, result=None):
-        self.status = status.value
+        self.status = status
         self.error = error
         self.error_msg = error.value
         self.format = format
@@ -123,7 +123,7 @@ class Id2ppn_Result(object):
 
     def get_status(self):
         """Return the init status as a string."""
-        return self.status
+        return self.status.value
 
     def get_error_msg(self):
         """Return the error message as a string."""
@@ -138,7 +138,7 @@ class Id2ppn_Result(object):
             - total results
             - results with holdings
             - results without holding"""
-        if self.status != Id2ppn_Status.SUCCESS.value:
+        if self.status != Id2ppn_Status.SUCCESS:
             return 0, 0, 0
         if self.format == "text/json":
             res = []
@@ -167,24 +167,24 @@ class Id2ppn_Result(object):
         res = []
         res_no_hold = []
 
-        if self.status != Id2ppn_Status.SUCCESS.value:
+        if self.status != Id2ppn_Status.SUCCESS:
             return res, res_no_hold
 
         if self.format == "text/json":
             rep = json.loads(self.result)["sudoc"]["query"]
             if "result" in rep:
-                for ppn in rep["result"]:
-                    # ahahahah si ya 1 résultat ça renvoie pas une liste :)
-                    if len(rep["result"]) > 1:
+                # Returns an object if only one match
+                if len(rep["result"]) > 1:
+                    for ppn in rep["result"]:
                         res.append(str(ppn["ppn"]))
-                    else:
-                        res.append(str(rep["result"]["ppn"]))
+                else:
+                    res.append(str(rep["result"]["ppn"]))
             if "resultNoHolding" in rep:
-                for ppn in rep["resultNoHolding"]:
-                    if len(rep["resultNoHolding"]) > 1:
+                if len(rep["resultNoHolding"]) > 1:
+                    for ppn in rep["resultNoHolding"]:
                         res_no_hold.append(str(ppn["ppn"]))
-                    else:
-                        res_no_hold.append(str(rep["resultNoHolding"]["ppn"]))
+                else:
+                    res_no_hold.append(str(rep["resultNoHolding"]["ppn"]))
 
         else:
             root = ET.fromstring(self.result)

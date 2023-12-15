@@ -40,7 +40,9 @@
                     "tag": "073",
                     "single_line_coded_data": false,
                     "filtering_subfield": "",
-                    "subfields": ["a"],
+                    "subfields": [
+                        "a"
+                    ],
                     "positions": ""
                 }
             ]
@@ -131,6 +133,69 @@
                         "b"
                     ],
                     "positions": []
+                },
+                {
+                    "tag": "701",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "",
+                    "subfields": [
+                        "a",
+                        "b"
+                    ],
+                    "positions": [
+                        ""
+                    ]
+                },
+                {
+                    "tag": "702",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "",
+                    "subfields": [
+                        "a",
+                        "b"
+                    ],
+                    "positions": [
+                        ""
+                    ]
+                },
+                {
+                    "tag": "710",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "",
+                    "subfields": [
+                        "a",
+                        "b",
+                        "c"
+                    ],
+                    "positions": [
+                        ""
+                    ]
+                },
+                {
+                    "tag": "711",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "",
+                    "subfields": [
+                        "a",
+                        "b",
+                        "c"
+                    ],
+                    "positions": [
+                        ""
+                    ]
+                },
+                {
+                    "tag": "712",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "",
+                    "subfields": [
+                        "a",
+                        "b",
+                        "c"
+                    ],
+                    "positions": [
+                        ""
+                    ]
                 }
             ]
         },
@@ -345,7 +410,9 @@
                     "tag": "073",
                     "single_line_coded_data": false,
                     "filtering_subfield": "",
-                    "subfields": ["a"],
+                    "subfields": [
+                        "a"
+                    ],
                     "positions": ""
                 }
             ]
@@ -422,6 +489,69 @@
                         "b"
                     ],
                     "positions": []
+                },
+                {
+                    "tag": "701",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "",
+                    "subfields": [
+                        "a",
+                        "b"
+                    ],
+                    "positions": [
+                        ""
+                    ]
+                },
+                {
+                    "tag": "702",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "",
+                    "subfields": [
+                        "a",
+                        "b"
+                    ],
+                    "positions": [
+                        ""
+                    ]
+                },
+                {
+                    "tag": "710",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "",
+                    "subfields": [
+                        "a",
+                        "b",
+                        "c"
+                    ],
+                    "positions": [
+                        ""
+                    ]
+                },
+                {
+                    "tag": "711",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "",
+                    "subfields": [
+                        "a",
+                        "b",
+                        "c"
+                    ],
+                    "positions": [
+                        ""
+                    ]
+                },
+                {
+                    "tag": "712",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "",
+                    "subfields": [
+                        "a",
+                        "b",
+                        "c"
+                    ],
+                    "positions": [
+                        ""
+                    ]
                 }
             ]
         },
@@ -832,7 +962,9 @@
                     "tag": "073",
                     "single_line_coded_data": false,
                     "filtering_subfield": "",
-                    "subfields": ["a"],
+                    "subfields": [
+                        "a"
+                    ],
                     "positions": ""
                 }
             ]
@@ -909,6 +1041,69 @@
                         "b"
                     ],
                     "positions": []
+                },
+                {
+                    "tag": "701",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "",
+                    "subfields": [
+                        "a",
+                        "b"
+                    ],
+                    "positions": [
+                        ""
+                    ]
+                },
+                {
+                    "tag": "702",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "",
+                    "subfields": [
+                        "a",
+                        "b"
+                    ],
+                    "positions": [
+                        ""
+                    ]
+                },
+                {
+                    "tag": "710",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "",
+                    "subfields": [
+                        "a",
+                        "b",
+                        "c"
+                    ],
+                    "positions": [
+                        ""
+                    ]
+                },
+                {
+                    "tag": "711",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "",
+                    "subfields": [
+                        "a",
+                        "b",
+                        "c"
+                    ],
+                    "positions": [
+                        ""
+                    ]
+                },
+                {
+                    "tag": "712",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "",
+                    "subfields": [
+                        "a",
+                        "b",
+                        "c"
+                    ],
+                    "positions": [
+                        ""
+                    ]
                 }
             ]
         },
@@ -1123,7 +1318,9 @@
                     "tag": "073",
                     "single_line_coded_data": false,
                     "filtering_subfield": "",
-                    "subfields": ["a"],
+                    "subfields": [
+                        "a"
+                    ],
                     "positions": ""
                 }
             ]
@@ -1200,6 +1397,69 @@
                         "b"
                     ],
                     "positions": []
+                },
+                {
+                    "tag": "701",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "",
+                    "subfields": [
+                        "a",
+                        "b"
+                    ],
+                    "positions": [
+                        ""
+                    ]
+                },
+                {
+                    "tag": "702",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "",
+                    "subfields": [
+                        "a",
+                        "b"
+                    ],
+                    "positions": [
+                        ""
+                    ]
+                },
+                {
+                    "tag": "710",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "",
+                    "subfields": [
+                        "a",
+                        "b",
+                        "c"
+                    ],
+                    "positions": [
+                        ""
+                    ]
+                },
+                {
+                    "tag": "711",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "",
+                    "subfields": [
+                        "a",
+                        "b",
+                        "c"
+                    ],
+                    "positions": [
+                        ""
+                    ]
+                },
+                {
+                    "tag": "712",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "",
+                    "subfields": [
+                        "a",
+                        "b",
+                        "c"
+                    ],
+                    "positions": [
+                        ""
+                    ]
                 }
             ]
         },

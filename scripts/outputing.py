@@ -13,7 +13,7 @@ def log_fin_traitement(logger, result, success):
         msg = "SUCCÈS"
     else:
         msg = "ÉCHEC"
-    logger.info("{} du traitement de la ligne (pas vrai si multiple smatchs) : ISBN = \"{}\", Koha Bib Nb = \"{}\"".format(msg, result["INPUT_QUERY"],result["INPUT_KOHA_BIB_NB"]))
+    logger.info("{} du traitement de la ligne : ISBN = \"{}\", Koha Bib Nb = \"{}\"".format(msg, result["INPUT_QUERY"],result["INPUT_KOHA_BIB_NB"]))
 
 def generate_report(es: fcr.Execution_Settings, results_report: fcr.Report, logger=None):
 # def generate_report(REPORT_SETTINGS, FILES, KOHA_URL, ILN, CHOSEN_ANALYSIS, results_report: bi_classes.report, logger=None):
