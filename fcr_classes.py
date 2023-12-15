@@ -814,19 +814,7 @@ class Matched_Records(object):
                 ssru.Part_Of_Query(
                     ssru.SRU_Indexes.TOU,
                     ssru.SRU_Relations.EQUALS,
-                    title,
-                    ssru.SRU_Boolean_Operators.AND
-                ),
-                ssru.Part_Of_Query(
-                    ssru.SRU_Indexes.TOU,
-                    ssru.SRU_Relations.EQUALS,
-                    author,
-                    ssru.SRU_Boolean_Operators.AND
-                ),
-                ssru.Part_Of_Query(
-                    ssru.SRU_Indexes.TOU,
-                    ssru.SRU_Relations.EQUALS,
-                    publisher,
+                    fcf.delete_duplicate_words(" ".join([title, author, publisher])),
                     ssru.SRU_Boolean_Operators.AND
                 ),
                 f" AND (tou={' or tou='.join([str(num) for num in dates])})",
@@ -867,13 +855,7 @@ class Matched_Records(object):
                 ssru.Part_Of_Query(
                     ssru.SRU_Indexes.TOU,
                     ssru.SRU_Relations.EQUALS,
-                    title,
-                    ssru.SRU_Boolean_Operators.AND
-                ),
-                ssru.Part_Of_Query(
-                    ssru.SRU_Indexes.TOU,
-                    ssru.SRU_Relations.EQUALS,
-                    author,
+                    fcf.delete_duplicate_words(" ".join([title, author])),
                     ssru.SRU_Boolean_Operators.AND
                 ),
                 f" AND (tou={' or tou='.join([str(num) for num in dates])})",
@@ -914,19 +896,7 @@ class Matched_Records(object):
                 ssru.Part_Of_Query(
                     ssru.SRU_Indexes.TOU,
                     ssru.SRU_Relations.EQUALS,
-                    title,
-                    ssru.SRU_Boolean_Operators.AND
-                ),
-                ssru.Part_Of_Query(
-                    ssru.SRU_Indexes.TOU,
-                    ssru.SRU_Relations.EQUALS,
-                    author,
-                    ssru.SRU_Boolean_Operators.AND
-                ),
-                ssru.Part_Of_Query(
-                    ssru.SRU_Indexes.TOU,
-                    ssru.SRU_Relations.EQUALS,
-                    publisher,
+                    fcf.delete_duplicate_words(" ".join([title, author, publisher])),
                     ssru.SRU_Boolean_Operators.AND
                 ),
                 ssru.Part_Of_Query(

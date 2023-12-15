@@ -108,4 +108,12 @@ def delete_Sudoc_empty_words(txt:str) -> str:
 
 def delete_for_sudoc(txt:str) -> str:
     """Merges deletion func specifics for CBs and Sudoc"""
-    return delete_Sudoc_empty_words(delete_CBS_boolean_operators(txt))
+    return delete_duplicate_words(delete_Sudoc_empty_words(delete_CBS_boolean_operators(txt)))
+
+def delete_duplicate_words(txt:str) -> str:
+    """Returns the strig withotu duplicates BUT DOES NOT KEEP  THE WORD ORDER"""
+    unique_words = set()
+    for word in txt.split():
+        if word not in unique_words:
+            unique_words.add(word)
+    return " ".join(unique_words)
