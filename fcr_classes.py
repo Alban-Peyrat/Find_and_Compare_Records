@@ -3,6 +3,7 @@
 # External import
 import os
 from dotenv import load_dotenv
+import logging
 import json
 import xml.etree.ElementTree as ET
 import pymarc
@@ -11,6 +12,7 @@ from typing import Dict, List, Tuple, Optional, Union
 from fuzzywuzzy import fuzz
 
 # Internal imports
+import scripts.logs as logs
 import fcr_func as fcf
 from fcr_enum import *
 
@@ -92,6 +94,26 @@ class Execution_Settings(object):
         if self.chosen_analysis["USE_DATE"]:
             self.chosen_analysis_checks[Analysis_Checks.DATE] = None
     
+    def init_logger(self):
+        """Init the logger"""
+        logs.init_logs(self.logs_path, self.service,'DEBUG')
+        self.logger = logging.getLogger(self.service)
+        self.logger.info("File : " + self.file_path)
+        self.logger.info("Origin database URL : " + self.origin_url)
+        self.logger.info("Chosen analysis : " + self.chosen_analysis["name"])
+
+    def log_debug(self, msg:str):
+        """Log a debug statement logging first the service then the message"""
+        self.logger.debug(f"{self.service} :: {msg}")
+
+    def log_big_info(self, msg:str):
+        """Logs a info statement encapsuled between ----"""
+        self.logger.info(f"--------------- {msg} ---------------")
+
+    def log_error(self, msg:str):
+        """Log a error statement logging first the service then the message"""
+        self.logger.error(f"{self.service} :: {msg}")
+
     # ----- Methods for UI -----
     def UI_switch_lang(self):
         """Switch the two languages"""

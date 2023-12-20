@@ -7,8 +7,6 @@ import logging
 import json
 
 # Internal import
-import scripts.logs as logs
-# import api.abes.Abes_isbn2ppn as Abes_isbn2ppn
 import api.abes.AbesXml as AbesXml
 import api.koha.Koha_API_PublicBiblio as Koha_API_PublicBiblio
 from scripts.outputing import * # pour éviter de devoir réécrire tous les appels de fonctions
@@ -47,17 +45,13 @@ def main(es: fcr.Execution_Settings):
     results_report = fcr.Report()
     # ----------------- Fin de AR220 : a edit
 
-    #On initialise le logger
-    logs.init_logs(es.logs_path, es.service,'DEBUG') # rajouter la date et heure d'exécution
-    logger = logging.getLogger(es.service)
-    logger.info("File : " + es.file_path)
-    logger.info("Origin database URL : " + es.origin_url)
-    logger.info("Chosen analysis : " + es.chosen_analysis["name"])
+    # Init logger
+    es.init_logger()
 
     # ------------------------------ MAIN FUNCTION ------------------------------
     results = []
     with open(es.file_path, 'r', newline="", encoding="utf-8") as fh:
-        logger.info("--------------- File processing start ---------------")
+        es.log_big_info("File processing start")
         
         # Load original file data
         csvdata = csv.DictReader(fh, delimiter=";")
@@ -75,7 +69,7 @@ def main(es: fcr.Execution_Settings):
         f_csv = open(es.file_path_out_csv, 'w', newline="", encoding='utf-8')
         csv_writer = csv.DictWriter(f_csv, extrasaction="ignore", fieldnames=fieldnames_id, delimiter=";")
         generate_csv_output_header(csv_writer, fieldnames_id, fieldnames_names=fieldnames_names)
-        logger.info("CSV output file : " + es.file_path_out_csv)
+        es.logger.info("CSV output file : " + es.file_path_out_csv)
 
         for line in csvdata:
             # Declaration & set-up of record
@@ -87,7 +81,7 @@ def main(es: fcr.Execution_Settings):
 
             # Gets input query and original uid
             rec.extract_from_original_line(CSV_ORIGINAL_COLS)
-            logger.info(f"Processing new line : ISBN = \"{rec.input_query}\", Koha Bib Nb = \"{rec.original_uid}\"")
+            es.logger.info(f"--- Processing new line : input query = \"{rec.input_query}\", origin database ID = \"{rec.original_uid}\"")
 
             # --------------- ORIGIN DATABASE ---------------
             # Get Koha record
@@ -96,32 +90,33 @@ def main(es: fcr.Execution_Settings):
             if koha_record.status == 'Error' :
                 rec.trigger_error("Koha_API_PublicBiblio : " + koha_record.error_msg)
                 results_report.increase_fail(fcr.Errors.KOHA) # report stats
-                go_next(logger, results, csv_writer, rec.output.to_retro_CSV(), False)
+                go_next(es.logger, results, csv_writer, rec.output.to_retro_CSV(), False)
                 continue # skip to next line
             
             # Successfully got Koha record
             # AR362 : UDE
             rec.get_origin_database_data(es.processing, koha_record.record_parsed, fcr.Databases.KOHA_PUBLIC_BIBLIO, es)
-            logger.debug("{} :: {} :: {}".format(rec.input_query, es.service, "Koha biblionumber : " + rec.origin_database_data.utils.get_id()))
-            logger.debug("{} :: {} :: {}".format(rec.input_query, es.service, "Koha titre nettoyé : " + rec.origin_database_data.utils.get_first_title_as_string()))
+            es.log_debug(f"Origin database ID : {rec.origin_database_data.utils.get_id()}")
+            es.log_debug(f"Origin database cleaned title : {rec.origin_database_data.utils.get_first_title_as_string()}")
 
             # --------------- Match records ---------------
             rec.get_matched_records_instance(fcr.Matched_Records(es.operation, rec.input_query, rec.origin_database_data, es))     
             if rec.nb_matched_records == 0:
-                rec.trigger_error("{} : aucun résultat".format(str(es.operation.name)))
+                rec.trigger_error("{} : no result".format(str(es.operation.name)))
     
             # ||| needs to be redone with enhanced match records errors
             if rec.error:
                 results_report.increase_fail(fcr.Errors.MATCH_RECORD)
-                logger.error("{} :: {} :: {}".format(rec.input_query, es.service, rec.error_message))
+                es.log_error(rec.error_message)
                 
                 # Skip to next line
-                go_next(logger, results, csv_writer, rec.output.to_retro_CSV(), False)
+                go_next(es.logger, results, csv_writer, rec.output.to_retro_CSV(), False)
                 continue
             
             # Match records was a success
             results_report.increase_success(fcr.Success.MATCH_RECORD) # report stats
-            logger.debug("{} :: {} :: {}".format(rec.query_used, es.service, "Résultat {} : ".format(str(es.operation)) + " || ".join(str(rec.matched_records_ids))))
+            es.log_debug(f"Query used for matched record : {rec.query_used}")
+            es.log_debug(f"Result for {es.operation} : {' || '.join(str(rec.matched_records_ids))}")
 
             # --------------- FOR EACH MATCHED RECORDS ---------------
             for matched_id in rec.matched_records_ids:
@@ -132,7 +127,7 @@ def main(es: fcr.Execution_Settings):
                 if sudoc_record.status == 'Error':
                     rec.trigger_error(sudoc_record.error_msg)
                     results_report.increase_fail(fcr.Errors.SUDOC) # report stats
-                    go_next(logger, results, csv_writer, rec.output.to_retro_CSV(), False)
+                    go_next(es.logger, results, csv_writer, rec.output.to_retro_CSV(), False)
                     continue # skip to next line
 
                 # Successfully got Sudoc record
@@ -141,43 +136,43 @@ def main(es: fcr.Execution_Settings):
                 rec.get_target_database_data(es.processing, matched_id, sudoc_record.record_parsed, fcr.Databases.ABESXML, es)
                 target_record:fcr.Database_Record = rec.target_database_data[matched_id] # for the IDE
                 results_report.increase_success(fcr.Success.GLOBAL) # report stats
-                logger.debug("{} :: {} :: {}".format(rec.query_used, es.service, "PPN : " + rec.matched_id))
-                logger.debug("{} :: {} :: {}".format(rec.query_used, es.service, "Sudoc titre nettoyé : " + target_record.utils.get_first_title_as_string()))
+                es.log_debug(f"Target database ID : {rec.matched_id}")
+                es.log_debug(f"Target database cleaned title : {target_record.utils.get_first_title_as_string()}")
 
                 # --------------- MATCHING PROCESS ---------------
                 # Garder les logs dans main
                 target_record.compare_to(rec.origin_database_data)
-                logger.debug(f"{rec.query_used} :: {es.service} :: Title scores : Simple ratio = {target_record.title_ratio}, Partial ratio = {target_record.title_partial_ratio}, Token sort ratio = {target_record.title_token_sort_ratio}, Token set ratio = {target_record.title_token_set_ratio}")
-                logger.debug(f"{rec.query_used} :: {es.service} :: Dates matched ? {target_record.dates_matched}")
-                logger.debug(f"{rec.query_used} :: {es.service} :: Publishers score = {target_record.publishers_score} (using \"{target_record.chosen_publisher}\" and \"{target_record.chosen_compared_publisher}\")")
-                logger.debug(f"{rec.query_used} :: {es.service} :: Record ID included = {target_record.local_id_in_compared_record.name}")
+                es.log_debug(f"Title scores : Simple ratio = {target_record.title_ratio}, Partial ratio = {target_record.title_partial_ratio}, Token sort ratio = {target_record.title_token_sort_ratio}, Token set ratio = {target_record.title_token_set_ratio}")
+                es.log_debug(f"Dates matched ? {target_record.dates_matched}")
+                es.log_debug(f"Publishers score = {target_record.publishers_score} (using \"{target_record.chosen_publisher}\" and \"{target_record.chosen_compared_publisher}\")")
+                es.log_debug(f"Record ID included = {target_record.local_id_in_compared_record.name}")
 
                 # --------------- END OF THIS LINE ---------------
-                logger.debug(f"{rec.query_used} :: {es.service} :: Results : {target_record.total_checks.name} (titles : {target_record.checks[fcr.Analysis_Checks.TITLE]}, publishers : {target_record.checks[fcr.Analysis_Checks.PUBLISHER]}, dates : {target_record.checks[fcr.Analysis_Checks.DATE]})")
-                go_next(logger, results, csv_writer, rec.output.to_retro_CSV(), True)
+                es.log_debug(f"Results : {target_record.total_checks.name} (titles : {target_record.checks[fcr.Analysis_Checks.TITLE]}, publishers : {target_record.checks[fcr.Analysis_Checks.PUBLISHER]}, dates : {target_record.checks[fcr.Analysis_Checks.DATE]})")
+                go_next(es.logger, results, csv_writer, rec.output.to_retro_CSV(), True)
 
         # Closes CSV file
         f_csv.close()
 
     # --------------- END OF MAIN FUNCTION ---------------
-    logger.info("--------------- File processing ended ---------------")
+    es.log_big_info("File processing ended")
 
     # ------------------------------ FINAL OUTPUT ------------------------------
     # --------------- JSON FILE ---------------
     with open(es.file_path_out_json, 'w', encoding='utf-8') as f:
         json.dump(results, f, ensure_ascii=False, indent=4)
-    logger.info("JSON output file : " + es.file_path_out_json)
+    es.logger.info("JSON output file : " + es.file_path_out_json)
 
     # --------------- CSV FILE ---------------
-    logger.info("CSV output file : " + es.file_path_out_csv)
+    es.logger.info("CSV output file : " + es.file_path_out_csv)
 
     # --------------- REPORT ---------------
     generate_report(es, results_report)
-    logger.info("Report file : " + es.file_path_out_results)
-    logger.info("--------------- Report ---------------")
-    generate_report(es, results_report, logger=logger)
+    es.logger.info("Report file : " + es.file_path_out_results)
+    es.log_big_info("Report")
+    generate_report(es, results_report, logger=es.logger)
 
-    logger.info("--------------- <(^-^)> <(^-^)> Script fully executed without FATAL errors <(^-^)> <(^-^)> ---------------")
+    es.log_big_info("<(^-^)> <(^-^)> Script fully executed without FATAL errors <(^-^)> <(^-^)>")
 
 def generate_csv_output_header(csv_writer, fieldnames_id, fieldnames_names=[]):
     """Generates the CSV output file headers.
