@@ -34,6 +34,7 @@ _Some previous changes will be added_
 * Authors data defaults to fields `700`, `701`, `702`, `710`, `711` and `712`
 * Some output functions have been moved to a new `output` property of `Class Original_Record`
 * Internal changes to error management
+* Slight changes to logs, notably only logging once the query used
 
 ### Fixed
 
