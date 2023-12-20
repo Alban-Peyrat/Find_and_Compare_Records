@@ -36,6 +36,10 @@ _Some previous changes will be added_
 * Internal changes to error management
 * Slight changes to logs, notably only logging once the query used
 
+### Deprecated
+
+* `csv_export_cols.json` will be deleted once the old outputmethod to CSV is deleted
+
 ### Fixed
 
 * Changed `id2ppn.py` version to fix incorrect status and incorrect returned value if only one record matched with JSON returned data

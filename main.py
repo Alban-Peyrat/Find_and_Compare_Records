@@ -55,9 +55,11 @@ def main(es: fcr.Execution_Settings):
         
         # Load original file data
         csvdata = csv.DictReader(fh, delimiter=";")
-        CSV_ORIGINAL_COLS = csvdata.fieldnames
+        CSV_ORIGINAL_COLS = csvdata.fieldnames # a del
 
         # Create CSV output file
+        es.csv.create_file(csvdata.fieldnames)
+        # |||| a del
         # Defines headers
         fieldnames_id, fieldnames_names = [], []
         for col in es.csv_export_cols_json:
@@ -69,7 +71,8 @@ def main(es: fcr.Execution_Settings):
         f_csv = open(es.file_path_out_csv, 'w', newline="", encoding='utf-8')
         csv_writer = csv.DictWriter(f_csv, extrasaction="ignore", fieldnames=fieldnames_id, delimiter=";")
         generate_csv_output_header(csv_writer, fieldnames_id, fieldnames_names=fieldnames_names)
-        es.logger.info("CSV output file : " + es.file_path_out_csv)
+        # ||| fin de a del
+        es.logger.info("CSV output file : " + es.csv.file_path)
 
         for line in csvdata:
             # Declaration & set-up of record
@@ -80,7 +83,7 @@ def main(es: fcr.Execution_Settings):
             # 5 = 930$a, 6 = 930$j, 7 = 930$v, 8 = L035$a
 
             # Gets input query and original uid
-            rec.extract_from_original_line(CSV_ORIGINAL_COLS)
+            rec.extract_from_original_line(csvdata.fieldnames)
             es.logger.info(f"--- Processing new line : input query = \"{rec.input_query}\", origin database ID = \"{rec.original_uid}\"")
 
             # --------------- ORIGIN DATABASE ---------------
@@ -91,6 +94,8 @@ def main(es: fcr.Execution_Settings):
                 rec.trigger_error("Koha_API_PublicBiblio : " + koha_record.error_msg)
                 results_report.increase_fail(fcr.Errors.KOHA) # report stats
                 go_next(es.logger, results, csv_writer, rec.output.to_retro_CSV(), False)
+                es.csv.write_line(rec, False)
+                results.append(rec.output.to_retro_CSV())
                 continue # skip to next line
             
             # Successfully got Koha record
@@ -111,6 +116,8 @@ def main(es: fcr.Execution_Settings):
                 
                 # Skip to next line
                 go_next(es.logger, results, csv_writer, rec.output.to_retro_CSV(), False)
+                es.csv.write_line(rec, False)
+                results.append(rec.output.to_retro_CSV())
                 continue
             
             # Match records was a success
@@ -128,6 +135,8 @@ def main(es: fcr.Execution_Settings):
                     rec.trigger_error(sudoc_record.error_msg)
                     results_report.increase_fail(fcr.Errors.SUDOC) # report stats
                     go_next(es.logger, results, csv_writer, rec.output.to_retro_CSV(), False)
+                    es.csv.write_line(rec, False)
+                    results.append(rec.output.to_retro_CSV())
                     continue # skip to next line
 
                 # Successfully got Sudoc record
@@ -150,9 +159,12 @@ def main(es: fcr.Execution_Settings):
                 # --------------- END OF THIS LINE ---------------
                 es.log_debug(f"Results : {target_record.total_checks.name} (titles : {target_record.checks[fcr.Analysis_Checks.TITLE]}, publishers : {target_record.checks[fcr.Analysis_Checks.PUBLISHER]}, dates : {target_record.checks[fcr.Analysis_Checks.DATE]})")
                 go_next(es.logger, results, csv_writer, rec.output.to_retro_CSV(), True)
+                es.csv.write_line(rec, True)
+                results.append(rec.output.to_retro_CSV())
 
         # Closes CSV file
         f_csv.close()
+        es.csv.close_file()
 
     # --------------- END OF MAIN FUNCTION ---------------
     es.log_big_info("File processing ended")
@@ -174,6 +186,7 @@ def main(es: fcr.Execution_Settings):
 
     es.log_big_info("<(^-^)> <(^-^)> Script fully executed without FATAL errors <(^-^)> <(^-^)>")
 
+# |||| A DEL
 def generate_csv_output_header(csv_writer, fieldnames_id, fieldnames_names=[]):
     """Generates the CSV output file headers.
     
@@ -194,4 +207,5 @@ def go_next(logger, results, csv_writer, result, success):
     """Executes all necessary things before continuing to next line"""
     csv_writer.writerow(result)
     log_fin_traitement(logger, result, success)
-    results.append(result)
+    # results.append(result)
+# ||| FIN DE A DEL

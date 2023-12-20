@@ -2,6 +2,7 @@
 
 import fcr_classes as fcr
 
+# |||| A DEL
 def log_fin_traitement(logger, result, success):
     """Log une INFO pour dire que la ligne est terminée.
     Sert à modifier partout le message.
@@ -14,6 +15,7 @@ def log_fin_traitement(logger, result, success):
     else:
         msg = "ÉCHEC"
     logger.info("{} du traitement de la ligne : ISBN = \"{}\", Koha Bib Nb = \"{}\"".format(msg, result["INPUT_QUERY"],result["INPUT_KOHA_BIB_NB"]))
+# |||| fin de A DEL
 
 def generate_report(es: fcr.Execution_Settings, results_report: fcr.Report, logger=None):
 # def generate_report(REPORT_SETTINGS, FILES, KOHA_URL, ILN, CHOSEN_ANALYSIS, results_report: bi_classes.report, logger=None):

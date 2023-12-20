@@ -4,6 +4,7 @@
 import os
 from dotenv import load_dotenv
 import logging
+import csv
 import json
 import xml.etree.ElementTree as ET
 import pymarc
@@ -37,6 +38,9 @@ class Execution_Settings(object):
         # Load marc fields
         with open(dir + "/json_configs/marc_fields.json", "r+", encoding="utf-8") as f:
             self.marc_fields_json = json.load(f)
+        
+        # Set up subclasses
+        self.csv = self.CSV(self)
     
     def load_env_values(self):
         load_dotenv()
@@ -342,6 +346,39 @@ class Execution_Settings(object):
         for index, this in enumerate(self.analysis_json):
             if this["name"] == name:
                 return index
+            
+    # --- CSV methods for other classes / functions ---
+    class CSV:
+        def __init__(self, parent) -> None:
+            self.parent:Execution_Settings = parent
+        
+        def create_file(self, original_file_cols:List[str]):
+            """Create the CSV file and the DictWriter.
+            
+            Takes as argument the list of columns from the original file"""
+            self.file_path = self.parent.file_path_out_csv
+            self.file = open(self.file_path, "w", newline="", encoding='utf-8')
+            self.__define_headers(original_file_cols)
+            self.writer = csv.DictWriter(self.file, extrasaction="ignore", fieldnames=self.headers, delimiter=";")
+            self.writer.writeheader()
+
+        def __define_headers(self, original_file_cols:List[str]):
+            """Defines the headers for the CSV file"""
+            self.headers = original_file_cols
+            # to do
+
+        def write_line(self, rec, success):
+            """Write this record line to the CSV file"""
+            self.writer.writerow(rec.output.to_csv())
+            if success:
+                msg = "SUCCESSFULLY processed"
+            else:
+                msg = "FAILED to process"
+            self.parent.logger.info(f"{msg} line input query = \"{rec.input_query}\", origin database ID = \"{rec.original_uid}\"")
+
+        def close_file(self):
+            """Closes the CSV file"""
+            self.file.close()
 
 # -------------------- DATABASE RECORD (DBR) --------------------
 
@@ -1576,6 +1613,106 @@ class Original_Record(object):
                 # pretty sure I don't need to do that here anymore but eh, this is just for retro output so who cares
                 out['KOHA_214210c'] = fcf.list_as_string(out['KOHA_214210c'])
                 out['SUDOC_214210c'] = fcf.list_as_string(out['SUDOC_214210c'])
+                # Global validation
+                out["FINAL_OK"] = target_record.total_checks.name
+                out["NB_OK_CHECKS"] = target_record.passed_check_nb
+                out["TITLE_OK"] = target_record.checks[Analysis_Checks.TITLE]
+                out["PUBLISHER_OK"] = target_record.checks[Analysis_Checks.PUBLISHER]
+                out["DATE_OK"] = target_record.checks[Analysis_Checks.DATE]  
+                return out
+            except:
+                return out
+        
+        def __special_data(self, out:dict, origin_db=True) -> dict:
+            """Special data with special output methods"""
+            par:Original_Record = self.parent
+            db = "ORIGIN_DB"
+            db_data = par.origin_database_data
+            if not origin_db:
+                db = "TARGET_DB"
+                db_data = par.target_database_data[par.matched_id]
+            # Dates general processing data
+            temp = db_data.data[FCR_Mapped_Fields.GENERAL_PROCESSING_DATA_DATES]
+            out[f"{db}_DATE_1"] = temp[0][0]
+            out[f"{db}_DATE_2"] = temp[0][1]
+            # Title
+            out[f"{db}_{FCR_Mapped_Fields.TITLE}"] = db_data.utils.get_first_title_as_string()
+            # Publication dates
+            out[f"{db}_{FCR_Mapped_Fields.PUBLICATION_DATES}"] = []
+            for date_str in db_data.data[FCR_Mapped_Fields.PUBLICATION_DATES]:
+                out[f"{db}_{FCR_Mapped_Fields.PUBLICATION_DATES}"] += fcf.get_year(date_str)
+            out[f"{db}_{FCR_Mapped_Fields.PUBLICATION_DATES}"] = fcf.list_as_string(out[f"{db}_{FCR_Mapped_Fields.PUBLICATION_DATES}"])
+            return out
+
+        def __special_better_item(self, out:dict, origin_db=True) -> dict:
+            """Special function for BETTER_ITEM, to transform some data form"""
+            par:Original_Record = self.parent
+            db = "ORIGIN_DB"
+            db_data = par.origin_database_data
+            if not origin_db:
+                db = "TARGET_DB"
+                db_data = par.target_database_data[par.matched_id]
+            # Dates in physical description
+            out[f"{db}_{FCR_Mapped_Fields.PHYSICAL_DESCRIPTION}"] = []
+            for desc_str in db_data.data[FCR_Mapped_Fields.PHYSICAL_DESCRIPTION]: #AR259
+                out[f"{db}_{FCR_Mapped_Fields.PHYSICAL_DESCRIPTION}"] += fcf.get_year(desc_str)
+            return out
+        
+        def to_csv(self):
+            """Returns the data as a dict for the CSV export"""
+            par:Original_Record = self.parent
+            out = {}
+            processing_fields:Dict[FCR_Mapped_Fields, FCR_Processing_Data_Target] = par.es.processing.value
+            try:
+                # Errors
+                out["ERROR"] = par.error
+                out["ERROR_MSG"] = par.error_message
+
+                # Data from the original file
+                out.update(par.original_line)
+                out["INPUT_QUERY"] = par.input_query
+                out["ORIGIN_DB_INPUT_ID"] = par.original_uid
+
+                # Origin database record
+                for data in processing_fields:
+                    if processing_fields[data] in [FCR_Processing_Data_Target.BOTH, FCR_Processing_Data_Target.ORIGIN]:
+                        out[f"ORIGIN_DB_{data.name}"] = fcf.list_as_string(par.origin_database_data.data[data])
+                out = self.__special_data(out)
+                if par.es.processing_val == FCR_Processings.BETTER_ITEM.name:
+                    out = self.__special_better_item(out)
+
+                # Match records
+                out["MATCH_RECORDS_QUERY"] = par.query_used
+                out["MATCH_RECORDS_NB_RES"] = par.nb_matched_records
+                out["MATCH_RECORDS_RES"] = fcf.list_as_string(par.matched_records_ids)
+
+                # Matched record
+                out["MATCHED_ID"] = par.matched_id
+
+                # Target database record
+                for data in processing_fields:
+                    if processing_fields[data] in [FCR_Processing_Data_Target.BOTH, FCR_Processing_Data_Target.TARGET]:
+                        out[f"TARGET_DB_{data.name}"] = fcf.list_as_string(par.origin_database_data.data[data])
+                out = self.__special_data(out)
+                if par.es.processing_val == FCR_Processings.BETTER_ITEM.name:
+                    out = self.__special_better_item(out)
+
+                # Analysis
+                target_record:Database_Record = par.target_database_data[par.matched_id] # for the IDE
+                # Title
+                out['MATCHING_TITRE_SIMILARITE'] = target_record.title_ratio
+                out['MATCHING_TITRE_APPARTENANCE'] = target_record.title_partial_ratio
+                out['MATCHING_TITRE_INVERSION'] = target_record.title_token_sort_ratio
+                out['MATCHING_TITRE_INVERSION_APPARTENANCE'] = target_record.title_token_set_ratio
+                # Dates
+                out['MATCHING_DATE_PUB'] = target_record.dates_matched
+                # Publishers
+                out['MATCHING_EDITEUR_SIMILARITE'] = target_record.publishers_score
+                out['TARGET_DB_CHOSEN_ED'] = target_record.chosen_publisher
+                out['ORIGIN_DB_CHOSEN_ED'] = target_record.chosen_compared_publisher
+                # Ids
+                out["TARGET_DB_NB_OTHER_DB_ID"] = target_record.nb_other_db_id
+                out["TARGET_DB_DIFFERENT_LOCAL_SYSTEM_NB"] = target_record.local_id_in_compared_record.name
                 # Global validation
                 out["FINAL_OK"] = target_record.total_checks.name
                 out["NB_OK_CHECKS"] = target_record.passed_check_nb
