@@ -186,9 +186,3 @@ class GUI_Text(Enum):
         "eng":"Filter 3",
         "fre":"Filtre 3"
     }
-
-class CSV_Text(Enum):
-    A = {
-        "eng":"Filter 3",
-        "fre":"Filtre 3"
-    }

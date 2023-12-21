@@ -24,6 +24,7 @@ Sudoc PICA XML is not supported
   * Add a property in `Marc_Fields_Mapping` by assigning it is value in `load_mapping`
   * Add a `get_` function in `Universal_Data_Extractor`
   * Add a case in `Universal_Data_Extractor.get_by_mapped_field_name()`
+* See [output.md](./output.md) to add it to the output
 
 # Add data to extract for a processing
 

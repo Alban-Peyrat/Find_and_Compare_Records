@@ -1,0 +1,258 @@
+{
+    "INPUT_QUERY":{
+        "fre":"Requête originale",
+        "eng":"Input query"
+    },
+    "ORIGIN_DB_INPUT_ID":{
+        "fre":"Identifiant fichier original",
+        "eng":"Original file ID"
+    },
+    "ERROR":{
+        "fre":"Erreur",
+        "eng":"Error"
+    },
+    "ERROR_MSG":{
+        "fre":"Message d'erreur",
+        "eng":"Error message"
+    },
+    "GLOBAL_VALIDATION_RESULT":{
+        "fre":"Validation globale",
+        "eng":"Global validation result"
+    },
+    "GLOBAL_VALIDATION_NB_SUCCESSFUL_CHECKS":{
+        "fre":"Nombre de validations réussies",
+        "eng":"Number of successful checks"
+    },
+    "GLOBAL_VALIDATION_TITLE_CHECK":{
+        "fre":"Validation des titres",
+        "eng":"Title check"
+    },
+    "GLOBAL_VALIDATION_PUBLISHER_CHECK":{
+        "fre":"Validation des éditeurs",
+        "eng":"Publishers check"
+    },
+    "GLOBAL_VALIDATION_DATE_CHECK":{
+        "fre":"Validation des dates",
+        "eng":"Dates check"
+    },
+    "MATCH_RECORDS_QUERY":{
+        "fre":"Requête pour recherche de correspondances",
+        "eng":"Query used to match records"
+    },
+    "MATCH_RECORDS_NB_RESULTS":{
+        "fre":"Nombre de correspondances",
+        "eng":"Number of matches"
+    },
+    "MATCH_RECORDS_RESULTS":{
+        "fre":"Identifiants correspondants",
+        "eng":"Matched IDs"
+    },
+    "ORIGIN_DB_ID":{
+        "fre":"Identifiant BDD d'origine",
+        "eng":"ID origin DB"
+    },
+    "TARGET_DB_ID":{
+        "fre":"Identifiant BDD de destination",
+        "eng":"ID target DB"
+    },
+    "MATCHED_ID":{
+        "fre":"Identifiant correspondant",
+        "eng":"Matched ID"
+    },
+    "ORIGIN_DB_PPN":{
+        "fre":"PPN BDD d'origine",
+        "eng":"PPN origin DB"
+    },
+    "TARGET_DB_PPN":{
+        "fre":"PPN BDD de destination",
+        "eng":"PPN target DB"
+    },
+    "ORIGIN_DB_OTHER_DB_ID":{
+        "fre":"Identifiants dans d'autres bases de données BDD d'origine",
+        "eng":"IDs in other database origin DB"
+    },
+    "TARGET_DB_OTHER_DB_ID":{
+        "fre":"Identifiants dans d'autres bases de données BDD de destination",
+        "eng":"IDs in other database target DB"
+    },
+    "TARGET_DB_NB_OTHER_ID":{
+        "fre":"Nombre d'identifiants d'autres bases de données BDD de destination",
+        "eng":"Number of IDs in other databases target DB"
+    },
+    "IS_ORIGIN_ID_IN_TARGET_OTHER_DB_IDS":{
+        "fre":"Identifiant BDD d'origine compris dans les identfiants d'auters bases de données BDD de destination ?",
+        "eng":"Is origin DB ID in target DB IDs in other databases ?"
+    },
+    "ORIGIN_DB_ITEMS":{
+        "fre":"Exemplaires BDD d'origine",
+        "eng":"Items origin DB"
+    },
+    "TARGET_DB_ITEMS":{
+        "fre":"Exemplaires BDD de destination",
+        "eng":"Items target DB"
+    },
+    "TARGET_DB_HAS_ITEMS":{
+        "fre":"Déjà des exemplaires dans BDD de destination ?",
+        "eng":"Already items in target DB ?"
+    },
+    "ORIGIN_DB_ITEMS_BARCODE":{
+        "fre":"Code-barres d'exemplaires BDD d'origine",
+        "eng":"Items barcodes origin DB"
+    },
+    "TARGET_DB_ITEMS_BARCODE":{
+        "fre":"Code-barres d'exemplaires BDD de destination",
+        "eng":"Items barcodes target DB"
+    },
+    "ORIGIN_DB_ERRONEOUS_ISBN":{
+        "fre":"ISBN erronés BDD d'origine",
+        "eng":"Erroneous ISBN origin DB"
+    },
+    "TARGET_DB_ERRONEOUS_ISBN":{
+        "fre":"ISBN erronés BDD de destination",
+        "eng":"Erroneous ISBN target DB"
+    },
+    "ORIGIN_DB_TITLE":{
+        "fre":"Titre BDD d'origine",
+        "eng":"Title origin DB"
+    },
+    "TARGET_DB_TITLE":{
+        "fre":"Titre BDD de destination",
+        "eng":"Title target DB"
+    },
+    "ORIGIN_DB_TITLE_KEY":{
+        "fre":"Clef de titre BDD d'origine",
+        "eng":"Title key origin DB"
+    },
+    "TARGET_DB_TITLE_KEY":{
+        "fre":"Clef de titre BDD de destination",
+        "eng":"Title key target DB"
+    },
+    "ORIGIN_DB_PUBLISHERS_NAME":{
+        "fre":"Éditeurs BDD d'origine",
+        "eng":"Publishers name origin DB"
+    },
+    "TARGET_DB_PUBLISHERS_NAME":{
+        "fre":"Éditeurs BDD de destination",
+        "eng":"Publishers name target DB"
+    },
+    "ORIGIN_DB_CHOSEN_PUBLISHER":{
+        "fre":"Clef d'éditeur choisi BDD d'origine",
+        "eng":"Chosen publisher key origin DB"
+    },
+    "TARGET_DB_CHOSEN_PUBLISHER":{
+        "fre":"Clef d'éditeur choisi BDD de destination",
+        "eng":"Chosen publisher key target DB"
+    },
+    "ORIGIN_DB_GENERAL_PROCESSING_DATA_DATES":{
+        "fre":"Dates des données générales de traitement BDD d'origine",
+        "eng":"General processing data dates origin DB"
+    },
+    "TARGET_DB_GENERAL_PROCESSING_DATA_DATES":{
+        "fre":"Dates des données générales de traitement BDD de destination",
+        "eng":"General processing data dates target DB"
+    },
+    "ORIGIN_DB_DATE_1":{
+        "fre":"Date de publication 1 BDD d'origine",
+        "eng":"Publication date 1 origin DB"
+    },
+    "TARGET_DB_DATE_1":{
+        "fre":"Date de publication 1 BDD de destination",
+        "eng":"Publication date 1 target DB"
+    },
+    "ORIGIN_DB_DATE_2":{
+        "fre":"Date de publication 2 BDD d'origine",
+        "eng":"Publication date 2 origin DB"
+    },
+    "TARGET_DB_DATE_2":{
+        "fre":"Date de publication 2 BDD de destination",
+        "eng":"Publication date 2 target DB"
+    },
+    "ORIGIN_DB_EDITION_NOTES":{
+        "fre":"Notes d'éditions BDD d'origine",
+        "eng":"Notes about edition origin DB"
+    },
+    "TARGET_DB_EDITION_NOTES":{
+        "fre":"Notes d'éditions BDD de destination",
+        "eng":"Notes about edition target DB"
+    },
+    "ORIGIN_DB_PUBLICATION_DATES":{
+        "fre":"Dates de publication BDD d'origine",
+        "eng":"Publication dates origin DB"
+    },
+    "TARGET_DB_PUBLICATION_DATES":{
+        "fre":"Dates de publication BDD de destination",
+        "eng":"Publication dates target DB"
+    },
+    "ORIGIN_DB_PHYSICAL_DESCRIPTION":{
+        "fre":"Description physique BDD d'origine",
+        "eng":"Physical description origin DB"
+    },
+    "TARGET_DB_PHYSICAL_DESCRIPTION":{
+        "fre":"Description physique BDD de destination",
+        "eng":"Physical description target DB"
+    },
+    "ORIGIN_DB_CONTENTS_NOTES":{
+        "fre":"Notes de contenus BDD d'origine",
+        "eng":"Contents notes origin DB"
+    },
+    "TARGET_DB_CONTENTS_NOTES":{
+        "fre":"Notes de contenus BDD de destination",
+        "eng":"Contents notes target DB"
+    },
+    "ORIGIN_DB_OTHER_ED_IN_OTHER_MEDIUM_BIBG_ID":{
+        "fre":"Identifiants de notices des autres éditions sur autre support BDD d'origine",
+        "eng":"Bibliographic IDs of other editions on other medium origin DB"
+    },
+    "TARGET_DB_OTHER_ED_IN_OTHER_MEDIUM_BIBG_ID":{
+        "fre":"Identifiants de notices des autres éditions sur autre support BDD de destination",
+        "eng":"Bibliographic IDs of other editions on other medium target DB"
+    },
+    "ORIGIN_DB_EAN":{
+        "fre":"EAN BDD d'origine",
+        "eng":"EAN origin DB"
+    },
+    "TARGET_DB_EAN":{
+        "fre":"EAN BDD de destination",
+        "eng":"EAN target DB"
+    },
+    "ORIGIN_DB_AUTHORS":{
+        "fre":"Auteurs BDD d'origine",
+        "eng":"Authors origin DB"
+    },
+    "TARGET_DB_AUTHORS":{
+        "fre":"Auteurs BDD de destination",
+        "eng":"Authors target DB"
+    },
+    "ORIGIN_DB_LEADER":{
+        "fre":"Label BDD d'origine",
+        "eng":"Leader origin DB"
+    },
+    "TARGET_DB_LEADER":{
+        "fre":"Label BDD de destination",
+        "eng":"Leader target DB"
+    },
+    "MATCHING_TITLE_RATIO":{
+        "fre":"Score de similarité des titres",
+        "eng":"Matching title ratio"
+    },
+    "MATCHING_TITLE_PARTIAL_RATIO":{
+        "fre":"Score d'appartenance des titres",
+        "eng":"Matching title partial ratio"
+    },
+    "MATCHING_TITLE_TOKEN_SORT_RATIO":{
+        "fre":"Score d'inversion des titres",
+        "eng":"Matching title token sort ratio"
+    },
+    "MATCHING_TITLE_TOKEN_SET_RATIO":{
+        "fre":"Score d'inversion appartenance des titres",
+        "eng":"Matching title token set ratio"
+    },
+    "MATCHING_DATES_RESULT":{
+        "fre":"Correspondance des dates de publications",
+        "eng":"Matching dates result"
+    },
+    "MATCHING_PUBLISHER_RESULT":{
+        "fre":"Score de similarité des éditeurs choisis",
+        "eng":"Matching publishers result"
+    }
+}

@@ -27,10 +27,12 @@ import api.koha.Koha_SRU as Koha_SRU
 
 class Execution_Settings(object):
     def __init__(self, dir: str):
+        # || A del
         # Load csv export file settings
         with open(dir + "/json_configs/csv_export_cols.json", "r+", encoding="utf-8") as f:
             self.csv_export_cols_json = json.load(f)
-        
+        # ||| FIN de a DEL
+
         # Load analysis settings
         with open(dir + "/json_configs/analysis.json", "r+", encoding="utf-8") as f:
             self.analysis_json = json.load(f)
@@ -358,14 +360,67 @@ class Execution_Settings(object):
             Takes as argument the list of columns from the original file"""
             self.file_path = self.parent.file_path_out_csv
             self.file = open(self.file_path, "w", newline="", encoding='utf-8')
+            with open(os.getenv("CSV_OUTPUT_JSON_CONFIG_PATH"), "r+", encoding="utf-8") as f:
+                self.csv_cols = json.load(f)
             self.__define_headers(original_file_cols)
             self.writer = csv.DictWriter(self.file, extrasaction="ignore", fieldnames=self.headers, delimiter=";")
-            self.writer.writeheader()
+            self.writer.writerow(self.headers)
 
         def __define_headers(self, original_file_cols:List[str]):
             """Defines the headers for the CSV file"""
-            self.headers = original_file_cols
-            # to do
+            self.headers = {}
+            par:Execution_Settings = self.parent
+            # Common columns     
+            for col in [
+                    CSV_Cols.ERROR,
+                    CSV_Cols.ERROR_MSG,
+                    CSV_Cols.INPUT_QUERY,
+                    CSV_Cols.ORIGIN_DB_INPUT_ID,
+                    CSV_Cols.MATCH_RECORDS_QUERY,
+                    CSV_Cols.MATCH_RECORDS_NB_RESULTS,
+                    CSV_Cols.MATCH_RECORDS_RESULTS,
+                    CSV_Cols.MATCHED_ID,
+                    CSV_Cols.MATCHING_TITLE_RATIO,
+                    CSV_Cols.MATCHING_TITLE_PARTIAL_RATIO,
+                    CSV_Cols.MATCHING_TITLE_TOKEN_SORT_RATIO,
+                    CSV_Cols.MATCHING_TITLE_TOKEN_SET_RATIO,
+                    CSV_Cols.MATCHING_DATES_RESULT,
+                    CSV_Cols.MATCHING_PUBLISHER_RESULT,
+                    CSV_Cols.ORIGIN_DB_CHOSEN_PUBLISHER,
+                    CSV_Cols.TARGET_DB_CHOSEN_PUBLISHER,
+                    CSV_Cols.TARGET_DB_NB_OTHER_ID,
+                    CSV_Cols.IS_ORIGIN_ID_IN_TARGET_OTHER_DB_IDS,
+                    CSV_Cols.GLOBAL_VALIDATION_RESULT,
+                    CSV_Cols.GLOBAL_VALIDATION_NB_SUCCESSFUL_CHECKS,
+                    CSV_Cols.GLOBAL_VALIDATION_TITLE_CHECK,
+                    CSV_Cols.GLOBAL_VALIDATION_PUBLISHER_CHECK,
+                    CSV_Cols.GLOBAL_VALIDATION_DATE_CHECK,
+                    # special data
+                    CSV_Cols.ORIGIN_DB_DATE_1,
+                    CSV_Cols.TARGET_DB_DATE_1,
+                    CSV_Cols.ORIGIN_DB_DATE_2,
+                    CSV_Cols.TARGET_DB_DATE_2,
+                    CSV_Cols.ORIGIN_DB_TITLE_KEY,
+                    CSV_Cols.TARGET_DB_TITLE_KEY
+                ]:
+                self.headers[col.name] = self.csv_cols[col.name][par.lang]
+            # Special processing cols
+            if par.processing_val == FCR_Processings.BETTER_ITEM.name:
+                self.headers[CSV_Cols.TARGET_DB_HAS_ITEMS.name] = self.csv_cols[CSV_Cols.TARGET_DB_HAS_ITEMS.name][par.lang]
+            # Columns from records
+            processing_fields:Dict[FCR_Mapped_Fields, FCR_Processing_Data_Target] = par.processing.value
+            for data in processing_fields:
+                if processing_fields[data] in [FCR_Processing_Data_Target.BOTH, FCR_Processing_Data_Target.ORIGIN]:
+                    self.headers[f"ORIGIN_DB_{data.name}"] = self.csv_cols[f"ORIGIN_DB_{data.name}"][par.lang]
+                # NOT A ELIF
+                if processing_fields[data] in [FCR_Processing_Data_Target.BOTH, FCR_Processing_Data_Target.TARGET]:
+                    self.headers[f"TARGET_DB_{data.name}"] = self.csv_cols[f"TARGET_DB_{data.name}"][par.lang]
+            # Order columns by their index
+            self.headers_ordered = sorted(self.headers.keys(), key=lambda x: CSV_Cols[x].value)
+            # Columns from the original file
+            for col in original_file_cols:
+                self.headers[col] = col
+                self.headers_ordered.append(col)
 
         def write_line(self, rec, success):
             """Write this record line to the CSV file"""
@@ -1636,7 +1691,8 @@ class Original_Record(object):
             out[f"{db}_DATE_1"] = temp[0][0]
             out[f"{db}_DATE_2"] = temp[0][1]
             # Title
-            out[f"{db}_{FCR_Mapped_Fields.TITLE}"] = db_data.utils.get_first_title_as_string()
+            # out[f"{db}_{FCR_Mapped_Fields.TITLE}"] = db_data.utils.get_first_title_as_string()
+            out[f"{db}_TITLE_KEY"] = db_data.utils.get_first_title_as_string()
             # Publication dates
             out[f"{db}_{FCR_Mapped_Fields.PUBLICATION_DATES}"] = []
             for date_str in db_data.data[FCR_Mapped_Fields.PUBLICATION_DATES]:
@@ -1648,10 +1704,11 @@ class Original_Record(object):
             """Special function for BETTER_ITEM, to transform some data form"""
             par:Original_Record = self.parent
             db = "ORIGIN_DB"
-            db_data = par.origin_database_data
+            db_data:Database_Record = par.origin_database_data
             if not origin_db:
                 db = "TARGET_DB"
                 db_data = par.target_database_data[par.matched_id]
+                out[CSV_Cols.TARGET_DB_HAS_ITEMS.name] = len(db_data.data[FCR_Mapped_Fields.ITEMS]) > 0
             # Dates in physical description
             out[f"{db}_{FCR_Mapped_Fields.PHYSICAL_DESCRIPTION}"] = []
             for desc_str in db_data.data[FCR_Mapped_Fields.PHYSICAL_DESCRIPTION]: #AR259
@@ -1665,13 +1722,13 @@ class Original_Record(object):
             processing_fields:Dict[FCR_Mapped_Fields, FCR_Processing_Data_Target] = par.es.processing.value
             try:
                 # Errors
-                out["ERROR"] = par.error
-                out["ERROR_MSG"] = par.error_message
+                out[CSV_Cols.ERROR.name] = par.error
+                out[CSV_Cols.ERROR_MSG.name] = par.error_message
 
                 # Data from the original file
                 out.update(par.original_line)
-                out["INPUT_QUERY"] = par.input_query
-                out["ORIGIN_DB_INPUT_ID"] = par.original_uid
+                out[CSV_Cols.INPUT_QUERY.name] = par.input_query
+                out[CSV_Cols.ORIGIN_DB_INPUT_ID.name] = par.original_uid
 
                 # Origin database record
                 for data in processing_fields:
@@ -1682,12 +1739,12 @@ class Original_Record(object):
                     out = self.__special_better_item(out)
 
                 # Match records
-                out["MATCH_RECORDS_QUERY"] = par.query_used
-                out["MATCH_RECORDS_NB_RES"] = par.nb_matched_records
-                out["MATCH_RECORDS_RES"] = fcf.list_as_string(par.matched_records_ids)
+                out[CSV_Cols.MATCH_RECORDS_QUERY.name] = par.query_used
+                out[CSV_Cols.MATCH_RECORDS_NB_RESULTS.name] = par.nb_matched_records
+                out[CSV_Cols.MATCH_RECORDS_RESULTS.name] = fcf.list_as_string(par.matched_records_ids)
 
                 # Matched record
-                out["MATCHED_ID"] = par.matched_id
+                out[CSV_Cols.MATCHED_ID.name] = par.matched_id
 
                 # Target database record
                 for data in processing_fields:
@@ -1700,25 +1757,25 @@ class Original_Record(object):
                 # Analysis
                 target_record:Database_Record = par.target_database_data[par.matched_id] # for the IDE
                 # Title
-                out['MATCHING_TITRE_SIMILARITE'] = target_record.title_ratio
-                out['MATCHING_TITRE_APPARTENANCE'] = target_record.title_partial_ratio
-                out['MATCHING_TITRE_INVERSION'] = target_record.title_token_sort_ratio
-                out['MATCHING_TITRE_INVERSION_APPARTENANCE'] = target_record.title_token_set_ratio
+                out[CSV_Cols.MATCHING_TITLE_RATIO.name] = target_record.title_ratio
+                out[CSV_Cols.MATCHING_TITLE_PARTIAL_RATIO.name] = target_record.title_partial_ratio
+                out[CSV_Cols.MATCHING_TITLE_TOKEN_SORT_RATIO.name] = target_record.title_token_sort_ratio
+                out[CSV_Cols.MATCHING_TITLE_TOKEN_SET_RATIO.name] = target_record.title_token_set_ratio
                 # Dates
-                out['MATCHING_DATE_PUB'] = target_record.dates_matched
+                out[CSV_Cols.MATCHING_DATES_RESULT.name] = target_record.dates_matched
                 # Publishers
-                out['MATCHING_EDITEUR_SIMILARITE'] = target_record.publishers_score
-                out['TARGET_DB_CHOSEN_ED'] = target_record.chosen_publisher
-                out['ORIGIN_DB_CHOSEN_ED'] = target_record.chosen_compared_publisher
+                out[CSV_Cols.MATCHING_PUBLISHER_RESULT.name] = target_record.publishers_score
+                out[CSV_Cols.TARGET_DB_CHOSEN_PUBLISHER.name] = target_record.chosen_publisher
+                out[CSV_Cols.ORIGIN_DB_CHOSEN_PUBLISHER.name] = target_record.chosen_compared_publisher
                 # Ids
-                out["TARGET_DB_NB_OTHER_DB_ID"] = target_record.nb_other_db_id
-                out["TARGET_DB_DIFFERENT_LOCAL_SYSTEM_NB"] = target_record.local_id_in_compared_record.name
+                out[CSV_Cols.TARGET_DB_NB_OTHER_ID.name] = target_record.nb_other_db_id
+                out[CSV_Cols.IS_ORIGIN_ID_IN_TARGET_OTHER_DB_IDS.name] = target_record.local_id_in_compared_record.name
                 # Global validation
-                out["FINAL_OK"] = target_record.total_checks.name
-                out["NB_OK_CHECKS"] = target_record.passed_check_nb
-                out["TITLE_OK"] = target_record.checks[Analysis_Checks.TITLE]
-                out["PUBLISHER_OK"] = target_record.checks[Analysis_Checks.PUBLISHER]
-                out["DATE_OK"] = target_record.checks[Analysis_Checks.DATE]  
+                out[CSV_Cols.GLOBAL_VALIDATION_RESULT] = target_record.total_checks.name
+                out[CSV_Cols.GLOBAL_VALIDATION_NB_SUCCESSFUL_CHECKS.name] = target_record.passed_check_nb
+                out[CSV_Cols.GLOBAL_VALIDATION_TITLE_CHECK.name] = target_record.checks[Analysis_Checks.TITLE]
+                out[CSV_Cols.GLOBAL_VALIDATION_PUBLISHER_CHECK.name] = target_record.checks[Analysis_Checks.PUBLISHER]
+                out[CSV_Cols.GLOBAL_VALIDATION_DATE_CHECK.name] = target_record.checks[Analysis_Checks.DATE]  
                 return out
             except:
                 return out
