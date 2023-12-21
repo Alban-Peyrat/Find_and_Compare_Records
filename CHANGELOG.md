@@ -26,6 +26,7 @@ _Some previous changes will be added_
   * Use both of the previous at the same time
   * Delete duplicate words in a string
 * `Class Database_Record` now has a `utils` property with methods to return data formatted
+* New environment variable `CSV_OUTPUT_JSON_CONFIG_PATH`
 
 ### Changed
 
@@ -41,7 +42,7 @@ _Some previous changes will be added_
 
 * Changed `id2ppn.py` version to fix incorrect status and incorrect returned value if only one record matched with JSON returned data
 * Changed `Sudoc_SRU.py` version to fix XML parse errors when some queries using angle brackets were not properly transformed in Sudoc's response
-* Create the output folder if it doe snot exist
+* Create the output folder if it does not exist
 * Output used query display the actual query used
 
 ### Removed

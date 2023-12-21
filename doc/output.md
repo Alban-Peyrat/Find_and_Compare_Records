@@ -1,4 +1,8 @@
 
+## Define headers
+
+
+
 ## Add a new data from records
 
 * In `fcr_enum.py`, add two new entries in `Enum CSV_Cols` :
@@ -14,6 +18,7 @@
 
 * If the standard way of outputing data from records does not suit, add code to `Original_Record.CSV.__special_data` method in `fcr_classes.py`
 * If those are special to a processing, add a new `Original_Record.CSV.__special_` method (or edit the existant one), and add a `elif` to `Original_Record.CSV.to_csv` method (__for both *Origin database record* and *Target database record* if needed__)
+* In `Original_Record.CSV.__define_headers` method, be sure to add or delete the header in the part for special processing columns
 
 ## Add new data (not from the record)
 

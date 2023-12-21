@@ -30,8 +30,7 @@ class FCR_Processing_Data_Target(Enum):
 
 class FCR_Processings(Enum):
     BETTER_ITEM = {
-        FCR_Mapped_Fields.LEADER: FCR_Processing_Data_Target.BOTH,
-        FCR_Mapped_Fields.ID: FCR_Processing_Data_Target.BOTH,
+        FCR_Mapped_Fields.ID: FCR_Processing_Data_Target.ORIGIN,
         FCR_Mapped_Fields.PPN: FCR_Processing_Data_Target.ORIGIN,
         FCR_Mapped_Fields.GENERAL_PROCESSING_DATA_DATES: FCR_Processing_Data_Target.BOTH,
         FCR_Mapped_Fields.ERRONEOUS_ISBN: FCR_Processing_Data_Target.BOTH,
@@ -46,8 +45,7 @@ class FCR_Processings(Enum):
         }
     OTHER_DB_IN_LOCAL_DB = {}
     BETTER_ITEM_DVD = {
-        FCR_Mapped_Fields.LEADER: FCR_Processing_Data_Target.BOTH,
-        FCR_Mapped_Fields.ID: FCR_Processing_Data_Target.BOTH,
+        FCR_Mapped_Fields.ID: FCR_Processing_Data_Target.ORIGIN,
         FCR_Mapped_Fields.PPN: FCR_Processing_Data_Target.ORIGIN,
         FCR_Mapped_Fields.GENERAL_PROCESSING_DATA_DATES: FCR_Processing_Data_Target.BOTH,
         FCR_Mapped_Fields.EAN: FCR_Processing_Data_Target.BOTH,

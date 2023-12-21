@@ -27,12 +27,6 @@ import api.koha.Koha_SRU as Koha_SRU
 
 class Execution_Settings(object):
     def __init__(self, dir: str):
-        # || A del
-        # Load csv export file settings
-        with open(dir + "/json_configs/csv_export_cols.json", "r+", encoding="utf-8") as f:
-            self.csv_export_cols_json = json.load(f)
-        # ||| FIN de a DEL
-
         # Load analysis settings
         with open(dir + "/json_configs/analysis.json", "r+", encoding="utf-8") as f:
             self.analysis_json = json.load(f)
@@ -350,7 +344,7 @@ class Execution_Settings(object):
                 return index
             
     # --- CSV methods for other classes / functions ---
-    class CSV:
+    class CSV(object):
         def __init__(self, parent) -> None:
             self.parent:Execution_Settings = parent
         
@@ -363,7 +357,7 @@ class Execution_Settings(object):
             with open(os.getenv("CSV_OUTPUT_JSON_CONFIG_PATH"), "r+", encoding="utf-8") as f:
                 self.csv_cols = json.load(f)
             self.__define_headers(original_file_cols)
-            self.writer = csv.DictWriter(self.file, extrasaction="ignore", fieldnames=self.headers, delimiter=";")
+            self.writer = csv.DictWriter(self.file, extrasaction="ignore", fieldnames=self.headers_ordered, delimiter=";")
             self.writer.writerow(self.headers)
 
         def __define_headers(self, original_file_cols:List[str]):
@@ -404,9 +398,6 @@ class Execution_Settings(object):
                     CSV_Cols.TARGET_DB_TITLE_KEY
                 ]:
                 self.headers[col.name] = self.csv_cols[col.name][par.lang]
-            # Special processing cols
-            if par.processing_val == FCR_Processings.BETTER_ITEM.name:
-                self.headers[CSV_Cols.TARGET_DB_HAS_ITEMS.name] = self.csv_cols[CSV_Cols.TARGET_DB_HAS_ITEMS.name][par.lang]
             # Columns from records
             processing_fields:Dict[FCR_Mapped_Fields, FCR_Processing_Data_Target] = par.processing.value
             for data in processing_fields:
@@ -415,6 +406,15 @@ class Execution_Settings(object):
                 # NOT A ELIF
                 if processing_fields[data] in [FCR_Processing_Data_Target.BOTH, FCR_Processing_Data_Target.TARGET]:
                     self.headers[f"TARGET_DB_{data.name}"] = self.csv_cols[f"TARGET_DB_{data.name}"][par.lang]
+            # Special processing cols
+            if par.processing_val == FCR_Processings.BETTER_ITEM.name:
+                self.headers[CSV_Cols.TARGET_DB_HAS_ITEMS.name] = self.csv_cols[CSV_Cols.TARGET_DB_HAS_ITEMS.name][par.lang]
+                del self.headers[CSV_Cols.ORIGIN_DB_GENERAL_PROCESSING_DATA_DATES.name]
+                del self.headers[CSV_Cols.TARGET_DB_GENERAL_PROCESSING_DATA_DATES.name]
+            elif par.processing_val == FCR_Processings.BETTER_ITEM_DVD.name:
+                self.headers[CSV_Cols.TARGET_DB_HAS_ITEMS.name] = self.csv_cols[CSV_Cols.TARGET_DB_HAS_ITEMS.name][par.lang]
+                del self.headers[CSV_Cols.ORIGIN_DB_GENERAL_PROCESSING_DATA_DATES.name]
+                del self.headers[CSV_Cols.TARGET_DB_GENERAL_PROCESSING_DATA_DATES.name]
             # Order columns by their index
             self.headers_ordered = sorted(self.headers.keys(), key=lambda x: CSV_Cols[x].value)
             # Columns from the original file
@@ -1572,111 +1572,6 @@ class Original_Record(object):
     class Output:
         def __init__(self, parent) -> None:
             self.parent = parent
-
-        def to_retro_CSV(self) -> dict:
-            """Returns data as the dict for the old output method"""
-            par:Original_Record = self.parent
-            out = {}
-            try:
-                # Errors
-                out["ERROR"] = par.error
-                out["ERROR_MSG"] = par.error_message
-
-                # Data from the original file
-                out.update(par.original_line)
-                out["INPUT_QUERY"] = par.input_query
-                out["INPUT_KOHA_BIB_NB"] = par.original_uid
-
-                # Koha record
-                out['KOHA_BIB_NB'] = par.origin_database_data.utils.get_id()
-                temp = par.origin_database_data.data[FCR_Mapped_Fields.GENERAL_PROCESSING_DATA_DATES]
-                out['KOHA_DATE_1'] = temp[0][0]
-                out['KOHA_DATE_2'] = temp[0][1]
-                out['KOHA_214210c'] = par.origin_database_data.data[FCR_Mapped_Fields.PUBLISHERS_NAME]
-                out['KOHA_200adehiv'] = par.origin_database_data.utils.get_first_title_as_string()
-                out['KOHA_305'] = fcf.list_as_string(par.origin_database_data.data[FCR_Mapped_Fields.EDITION_NOTES])
-                out["KOHA_PPN"] = fcf.list_as_string(par.origin_database_data.data[FCR_Mapped_Fields.PPN])
-                out["KOHA_214210a_DATES"] = []
-                for date_str in par.origin_database_data.data[FCR_Mapped_Fields.PUBLICATION_DATES]:
-                    out["KOHA_214210a_DATES"] += fcf.get_year(date_str)
-                out["KOHA_214210a_DATES"] = fcf.list_as_string(out["KOHA_214210a_DATES"])
-                out["KOHA_215a_DATES"] = []
-                out['KOHA_010z'] = None
-                # Better_ITEM specifics
-                if par.es.processing_val == FCR_Processings.BETTER_ITEM.name:
-                    out['KOHA_010z'] = fcf.list_as_string(par.origin_database_data.data[FCR_Mapped_Fields.ERRONEOUS_ISBN])
-                    for desc_str in par.origin_database_data.data[FCR_Mapped_Fields.PHYSICAL_DESCRIPTION]: #AR259
-                        out["KOHA_215a_DATES"] += fcf.get_year(desc_str)
-                # Better_ITEM DVD specifics
-                if par.es.processing_val == FCR_Processings.BETTER_ITEM_DVD.name:
-                    out["KOHA_215a_DATES"] = par.origin_database_data.data[FCR_Mapped_Fields.PHYSICAL_DESCRIPTION]
-                out["KOHA_215a_DATES"] = fcf.list_as_string(out["KOHA_215a_DATES"])
-
-                # Match records
-                out["MATCH_RECORDS_QUERY"] = par.query_used
-                out["MATCH_RECORDS_NB_RES"] = par.nb_matched_records
-                out["MATCH_RECORDS_RES"] = par.matched_records_ids
-
-                # Matched record
-                out["MATCHED_ID"] = par.matched_id
-
-                # Sudoc record
-                temp_rec:Database_Record = par.target_database_data[par.matched_id]
-                temp_rec_data = temp_rec.data
-                temp = temp_rec_data[FCR_Mapped_Fields.GENERAL_PROCESSING_DATA_DATES]
-                if len(temp) < 1:
-                    out['SUDOC_DATE_1'] = None    
-                    out['SUDOC_DATE_2'] = None
-                else:
-                    out['SUDOC_DATE_1'] = temp[0][0]
-                    out['SUDOC_DATE_2'] = temp[0][1]
-                out['SUDOC_214210c'] = temp_rec_data[FCR_Mapped_Fields.PUBLISHERS_NAME]
-                out['SUDOC_200adehiv'] = temp_rec.utils.get_first_title_as_string()
-                out['SUDOC_305'] = fcf.list_as_string(temp_rec_data[FCR_Mapped_Fields.EDITION_NOTES])
-                out["SUDOC_LOCAL_SYSTEM_NB"] = temp_rec_data[FCR_Mapped_Fields.OTHER_DB_ID]
-                # sudoc_record.get_local_system_nb(es.iln)
-                out["SUDOC_NB_LOCAL_SYSTEM_NB"] = len(out["SUDOC_LOCAL_SYSTEM_NB"])
-                out["SUDOC_LOCAL_SYSTEM_NB"] = fcf.list_as_string(out["SUDOC_LOCAL_SYSTEM_NB"])
-                out["SUDOC_ITEMS"] = temp_rec_data[FCR_Mapped_Fields.ITEMS]
-                # sudoc_record.get_library_items(es.rcr)
-                out["SUDOC_HAS_ITEMS"] = len(out["SUDOC_ITEMS"]) > 0
-                if out["SUDOC_NB_LOCAL_SYSTEM_NB"] > 0:
-                    out["SUDOC_DIFFERENT_LOCAL_SYSTEM_NB"] = not par.origin_database_data.utils.get_id() in out["SUDOC_LOCAL_SYSTEM_NB"]
-                out["SUDOC_ITEMS"] = fcf.list_as_string(out["SUDOC_ITEMS"])
-                out['SUDOC_010z'] = None
-                # Better_ITEM specifics
-                if par.es.processing_val == FCR_Processings.BETTER_ITEM.name:
-                    out['SUDOC_010z'] = fcf.list_as_string(temp_rec_data[FCR_Mapped_Fields.ERRONEOUS_ISBN])
-
-                # Analysis
-                target_record:Database_Record = par.target_database_data[par.matched_id] # for the IDE
-                # Title
-                out['MATCHING_TITRE_SIMILARITE'] = temp_rec.title_ratio
-                out['MATCHING_TITRE_APPARTENANCE'] = temp_rec.title_partial_ratio
-                out['MATCHING_TITRE_INVERSION'] = temp_rec.title_token_sort_ratio
-                out['MATCHING_TITRE_INVERSION_APPARTENANCE'] = temp_rec.title_token_set_ratio
-                # Dates
-                out['MATCHING_DATE_PUB'] = target_record.dates_matched
-                # Publishers
-                out['MATCHING_EDITEUR_SIMILARITE'] = target_record.publishers_score
-                out['SUDOC_CHOSEN_ED'] = target_record.chosen_publisher
-                out['KOHA_CHOSEN_ED'] = target_record.chosen_compared_publisher
-                # Ids
-                out["SUDOC_LOCAL_SYSTEM_NB"] = target_record.list_of_other_db_id
-                out["SUDOC_NB_LOCAL_SYSTEM_NB"] = target_record.nb_other_db_id
-                out["SUDOC_DIFFERENT_LOCAL_SYSTEM_NB"] = target_record.local_id_in_compared_record.name
-                # pretty sure I don't need to do that here anymore but eh, this is just for retro output so who cares
-                out['KOHA_214210c'] = fcf.list_as_string(out['KOHA_214210c'])
-                out['SUDOC_214210c'] = fcf.list_as_string(out['SUDOC_214210c'])
-                # Global validation
-                out["FINAL_OK"] = target_record.total_checks.name
-                out["NB_OK_CHECKS"] = target_record.passed_check_nb
-                out["TITLE_OK"] = target_record.checks[Analysis_Checks.TITLE]
-                out["PUBLISHER_OK"] = target_record.checks[Analysis_Checks.PUBLISHER]
-                out["DATE_OK"] = target_record.checks[Analysis_Checks.DATE]  
-                return out
-            except:
-                return out
         
         def __special_data(self, out:dict, origin_db=True) -> dict:
             """Special data with special output methods"""
@@ -1708,11 +1603,15 @@ class Original_Record(object):
             if not origin_db:
                 db = "TARGET_DB"
                 db_data = par.target_database_data[par.matched_id]
-                out[CSV_Cols.TARGET_DB_HAS_ITEMS.name] = len(db_data.data[FCR_Mapped_Fields.ITEMS]) > 0
+                out[CSV_Cols.TARGET_DB_HAS_ITEMS.name] = db_data.local_id_in_compared_record.name
             # Dates in physical description
-            out[f"{db}_{FCR_Mapped_Fields.PHYSICAL_DESCRIPTION}"] = []
-            for desc_str in db_data.data[FCR_Mapped_Fields.PHYSICAL_DESCRIPTION]: #AR259
-                out[f"{db}_{FCR_Mapped_Fields.PHYSICAL_DESCRIPTION}"] += fcf.get_year(desc_str)
+            if origin_db:
+                out[f"{db}_{FCR_Mapped_Fields.PHYSICAL_DESCRIPTION.name}"] = []
+                for desc_str in db_data.data[FCR_Mapped_Fields.PHYSICAL_DESCRIPTION]: #AR259
+                    out[f"{db}_{FCR_Mapped_Fields.PHYSICAL_DESCRIPTION.name}"] += fcf.get_year(desc_str)
+                out[f"{db}_{FCR_Mapped_Fields.PHYSICAL_DESCRIPTION.name}"] = fcf.list_as_string(out[f"{db}_{FCR_Mapped_Fields.PHYSICAL_DESCRIPTION.name}"])
+            # Delete unused columns
+            del out[f"{db}_{FCR_Mapped_Fields.GENERAL_PROCESSING_DATA_DATES.name}"]
             return out
         
         def to_csv(self):
@@ -1747,15 +1646,15 @@ class Original_Record(object):
                 out[CSV_Cols.MATCHED_ID.name] = par.matched_id
 
                 # Target database record
+                target_record:Database_Record = par.target_database_data[par.matched_id] # for the IDE
                 for data in processing_fields:
                     if processing_fields[data] in [FCR_Processing_Data_Target.BOTH, FCR_Processing_Data_Target.TARGET]:
-                        out[f"TARGET_DB_{data.name}"] = fcf.list_as_string(par.origin_database_data.data[data])
-                out = self.__special_data(out)
+                        out[f"TARGET_DB_{data.name}"] = fcf.list_as_string(target_record.data[data])
+                out = self.__special_data(out, False)
                 if par.es.processing_val == FCR_Processings.BETTER_ITEM.name:
-                    out = self.__special_better_item(out)
+                    out = self.__special_better_item(out, False)
 
                 # Analysis
-                target_record:Database_Record = par.target_database_data[par.matched_id] # for the IDE
                 # Title
                 out[CSV_Cols.MATCHING_TITLE_RATIO.name] = target_record.title_ratio
                 out[CSV_Cols.MATCHING_TITLE_PARTIAL_RATIO.name] = target_record.title_partial_ratio
@@ -1771,7 +1670,7 @@ class Original_Record(object):
                 out[CSV_Cols.TARGET_DB_NB_OTHER_ID.name] = target_record.nb_other_db_id
                 out[CSV_Cols.IS_ORIGIN_ID_IN_TARGET_OTHER_DB_IDS.name] = target_record.local_id_in_compared_record.name
                 # Global validation
-                out[CSV_Cols.GLOBAL_VALIDATION_RESULT] = target_record.total_checks.name
+                out[CSV_Cols.GLOBAL_VALIDATION_RESULT.name] = target_record.total_checks.name
                 out[CSV_Cols.GLOBAL_VALIDATION_NB_SUCCESSFUL_CHECKS.name] = target_record.passed_check_nb
                 out[CSV_Cols.GLOBAL_VALIDATION_TITLE_CHECK.name] = target_record.checks[Analysis_Checks.TITLE]
                 out[CSV_Cols.GLOBAL_VALIDATION_PUBLISHER_CHECK.name] = target_record.checks[Analysis_Checks.PUBLISHER]

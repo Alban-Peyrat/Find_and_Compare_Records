@@ -55,23 +55,9 @@ def main(es: fcr.Execution_Settings):
         
         # Load original file data
         csvdata = csv.DictReader(fh, delimiter=";")
-        CSV_ORIGINAL_COLS = csvdata.fieldnames # a del
-
+        
         # Create CSV output file
         es.csv.create_file(csvdata.fieldnames)
-        # |||| a del
-        # Defines headers
-        fieldnames_id, fieldnames_names = [], []
-        for col in es.csv_export_cols_json:
-            fieldnames_id.append(col["id"])
-            fieldnames_names.append(col["name"])
-        fieldnames_id += CSV_ORIGINAL_COLS
-        fieldnames_names += CSV_ORIGINAL_COLS
-        # Generates the file header
-        f_csv = open(es.file_path_out_csv, 'w', newline="", encoding='utf-8')
-        csv_writer = csv.DictWriter(f_csv, extrasaction="ignore", fieldnames=fieldnames_id, delimiter=";")
-        generate_csv_output_header(csv_writer, fieldnames_id, fieldnames_names=fieldnames_names)
-        # ||| fin de a del
         es.logger.info("CSV output file : " + es.csv.file_path)
 
         for line in csvdata:
@@ -93,9 +79,8 @@ def main(es: fcr.Execution_Settings):
             if koha_record.status == 'Error' :
                 rec.trigger_error("Koha_API_PublicBiblio : " + koha_record.error_msg)
                 results_report.increase_fail(fcr.Errors.KOHA) # report stats
-                go_next(es.logger, results, csv_writer, rec.output.to_retro_CSV(), False)
                 es.csv.write_line(rec, False)
-                results.append(rec.output.to_retro_CSV())
+                results.append(rec.output.to_csv())
                 continue # skip to next line
             
             # Successfully got Koha record
@@ -115,15 +100,14 @@ def main(es: fcr.Execution_Settings):
                 es.log_error(rec.error_message)
                 
                 # Skip to next line
-                go_next(es.logger, results, csv_writer, rec.output.to_retro_CSV(), False)
                 es.csv.write_line(rec, False)
-                results.append(rec.output.to_retro_CSV())
+                results.append(rec.output.to_csv())
                 continue
             
             # Match records was a success
             results_report.increase_success(fcr.Success.MATCH_RECORD) # report stats
             es.log_debug(f"Query used for matched record : {rec.query_used}")
-            es.log_debug(f"Result for {es.operation} : {' || '.join(str(rec.matched_records_ids))}")
+            es.log_debug(f"Result for {es.operation} : {str(rec.matched_records_ids)}")
 
             # --------------- FOR EACH MATCHED RECORDS ---------------
             for matched_id in rec.matched_records_ids:
@@ -134,9 +118,8 @@ def main(es: fcr.Execution_Settings):
                 if sudoc_record.status == 'Error':
                     rec.trigger_error(sudoc_record.error_msg)
                     results_report.increase_fail(fcr.Errors.SUDOC) # report stats
-                    go_next(es.logger, results, csv_writer, rec.output.to_retro_CSV(), False)
                     es.csv.write_line(rec, False)
-                    results.append(rec.output.to_retro_CSV())
+                    results.append(rec.output.to_csv())
                     continue # skip to next line
 
                 # Successfully got Sudoc record
@@ -158,12 +141,10 @@ def main(es: fcr.Execution_Settings):
 
                 # --------------- END OF THIS LINE ---------------
                 es.log_debug(f"Results : {target_record.total_checks.name} (titles : {target_record.checks[fcr.Analysis_Checks.TITLE]}, publishers : {target_record.checks[fcr.Analysis_Checks.PUBLISHER]}, dates : {target_record.checks[fcr.Analysis_Checks.DATE]})")
-                go_next(es.logger, results, csv_writer, rec.output.to_retro_CSV(), True)
                 es.csv.write_line(rec, True)
-                results.append(rec.output.to_retro_CSV())
+                results.append(rec.output.to_csv())
 
         # Closes CSV file
-        f_csv.close()
         es.csv.close_file()
 
     # --------------- END OF MAIN FUNCTION ---------------
@@ -185,27 +166,3 @@ def main(es: fcr.Execution_Settings):
     generate_report(es, results_report, logger=es.logger)
 
     es.log_big_info("<(^-^)> <(^-^)> Script fully executed without FATAL errors <(^-^)> <(^-^)>")
-
-# |||| A DEL
-def generate_csv_output_header(csv_writer, fieldnames_id, fieldnames_names=[]):
-    """Generates the CSV output file headers.
-    
-    Argument :
-        - csv_writeer : the csv_writer
-        - fieldnames_id {list of str} : name of the keys to export
-        - delimiter [optionnal] {str}
-        - fieldnames_names [optionnal] {list of str} : header name if different from the key ID"""
-    if fieldnames_names == []:
-        csv_writer.writeheader()
-    else:
-        new_headers = {}
-        for ii, id in enumerate(fieldnames_id):
-            new_headers[id] = fieldnames_names[ii]
-        csv_writer.writerow(new_headers)
-
-def go_next(logger, results, csv_writer, result, success):
-    """Executes all necessary things before continuing to next line"""
-    csv_writer.writerow(result)
-    log_fin_traitement(logger, result, success)
-    # results.append(result)
-# ||| FIN DE A DEL
