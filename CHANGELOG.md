@@ -35,10 +35,7 @@ _Some previous changes will be added_
 * Some output functions have been moved to a new `output` property of `Class Original_Record`
 * Internal changes to error management
 * Slight changes to logs, notably only logging once the query used
-
-### Deprecated
-
-* `csv_export_cols.json` will be deleted once the old outputmethod to CSV is deleted
+* New CSV export, including new `json_configs` file : `csv_cols.json`
 
 ### Fixed
 
@@ -46,6 +43,10 @@ _Some previous changes will be added_
 * Changed `Sudoc_SRU.py` version to fix XML parse errors when some queries using angle brackets were not properly transformed in Sudoc's response
 * Create the output folder if it doe snot exist
 * Output used query display the actual query used
+
+### Removed
+
+* File `csv_export_cols.json`
 
 ## [1.12.1] - 2023-12-08
 
