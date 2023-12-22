@@ -42,6 +42,10 @@ class GUI_Text(Enum):
         "eng": "Service name (for logs)",
         "fre": "Nom du service (pour les logs)"
     }
+    LOG_LEVEL_TEXT = {
+        "eng":"Log level",
+        "fre":"Niveau de journalisation"
+    }
     FILE_TO_ANALYZE = {
         "eng": "File to be analyzed",
         "fre": "Fichier à analyser"
@@ -49,6 +53,10 @@ class GUI_Text(Enum):
     OUTPUT_FOLDER = {
         "eng": "Output folder",
         "fre": "Dossier contenant les résultats"
+    }
+    CSV_COLS_CONFIG_FILE_PATH_TEXT = {
+        "eng":"Configuration file for CSV column names",
+        "fre":"Fichier de configuration des noms de colonnes CSV"
     }
     LOG_FOLDER = {
         "eng": "Log folder",

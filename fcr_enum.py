@@ -73,6 +73,13 @@ class Analysis_Final_Results(Enum):
     PARTIAL_MATCH = 3
     NO_MATCH = 4
 
+class Log_Level(Enum):
+    DEBUG = 0
+    INFO = 1
+    WARNING = 2
+    ERROR = 3
+    CRITICAL = 4
+
 # ---------- MATCH RECORDS (MR) ----------
 class Operations(Enum):
     SEARCH_IN_SUDOC_BY_ISBN = 0
@@ -214,6 +221,7 @@ class CSV_Cols(Enum):
     GLOBAL_VALIDATION_PUBLISHER_CHECK = 4030
     GLOBAL_VALIDATION_DATE_CHECK = 4040
     MATCH_RECORDS_QUERY = 5000
+    FCR_ACTION_USED = 5005
     MATCH_RECORDS_NB_RESULTS = 5010
     MATCH_RECORDS_RESULTS = 5020
     ORIGIN_DB_ID = 6000

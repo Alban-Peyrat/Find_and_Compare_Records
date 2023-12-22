@@ -4,6 +4,7 @@
 import os
 from dotenv import load_dotenv
 import logging
+from logging.handlers import RotatingFileHandler
 import csv
 import json
 import xml.etree.ElementTree as ET
@@ -13,7 +14,6 @@ from typing import Dict, List, Tuple, Optional, Union
 from fuzzywuzzy import fuzz
 
 # Internal imports
-import scripts.logs as logs
 import fcr_func as fcf
 from fcr_enum import *
 
@@ -47,7 +47,9 @@ class Execution_Settings(object):
         self.service = os.getenv("SERVICE")
         self.file_path = os.getenv("FILE_PATH")
         self.output_path = os.getenv("OUTPUT_PATH")
+        self.csv_cols_config_path = os.getenv("CSV_OUTPUT_JSON_CONFIG_PATH")
         self.logs_path = os.getenv("LOGS_PATH")
+        self.log_level = os.getenv("LOG_LEVEL")
         # Processing & operations
         self.UI_change_processing(os.getenv("PROCESSING_VAL"))
         self.get_operation()
@@ -93,28 +95,12 @@ class Execution_Settings(object):
             self.chosen_analysis_checks[Analysis_Checks.PUBLISHER] = None
         if self.chosen_analysis["USE_DATE"]:
             self.chosen_analysis_checks[Analysis_Checks.DATE] = None
-    
-    def init_logger(self):
-        """Init the logger"""
-        logs.init_logs(self.logs_path, self.service,'DEBUG')
-        self.logger = logging.getLogger(self.service)
-        self.logger.info("File : " + self.file_path)
-        self.logger.info("Origin database URL : " + self.origin_url)
-        self.logger.info("Chosen analysis : " + self.chosen_analysis["name"])
-
-    def log_debug(self, msg:str):
-        """Log a debug statement logging first the service then the message"""
-        self.logger.debug(f"{self.service} :: {msg}")
-
-    def log_big_info(self, msg:str):
-        """Logs a info statement encapsuled between ----"""
-        self.logger.info(f"--------------- {msg} ---------------")
-
-    def log_error(self, msg:str):
-        """Log a error statement logging first the service then the message"""
-        self.logger.error(f"{self.service} :: {msg}")
 
     # ----- Methods for UI -----
+    def UI_get_log_levels(self) -> List[str]:
+        """Returns log levels as a list of str"""
+        return [lvl.name for lvl in Log_Level]
+    
     def UI_switch_lang(self):
         """Switch the two languages"""
         if self.lang == "eng":
@@ -189,8 +175,10 @@ class Execution_Settings(object):
     def UI_update_main_screen_values(self, val:dict):
         """Updates all data from the UI inside this instance"""
         self.service = val["SERVICE"]
+        self.log_level = val["LOG_LEVEL"]
         self.file_path = val["FILE_PATH"]
         self.output_path = val["OUTPUT_PATH"]
+        self.csv_cols_config_path = val["CSV_OUTPUT_JSON_CONFIG_PATH"]
         self.logs_path = val["LOGS_PATH"]
         self.UI_change_processing(val["PROCESSING_VAL"])
         self.get_operation()
@@ -342,7 +330,63 @@ class Execution_Settings(object):
         for index, this in enumerate(self.analysis_json):
             if this["name"] == name:
                 return index
-            
+    
+    # --- Logger methods for other classes / functions ---
+    def init_logger(self):
+        """Init the logger"""
+        self.log = self.Logger(self)
+
+    class Logger(object):
+        def __init__(self, parent) -> None:
+            self.parent:Execution_Settings = parent
+            par = self.parent
+            self.__init_logs(par.logs_path, par.service, par.log_level)
+            self.logger = logging.getLogger(par.service)
+
+        def __init_logs(self, logsrep,programme,niveau):
+            # logs.py by @louxfaure, check file for more comments
+            # D'aprés http://sametmax.com/ecrire-des-logs-en-python/
+            logsfile = logsrep + "/" + programme + ".log"
+            logger = logging.getLogger(programme)
+            logger.setLevel(getattr(logging, niveau))
+            # Formatter
+            formatter = logging.Formatter(u'%(asctime)s :: %(levelname)s :: %(message)s')
+            file_handler = RotatingFileHandler(logsfile, 'a', 10000000, 1, encoding="utf-8")
+            file_handler.setLevel(getattr(logging, niveau))
+            file_handler.setFormatter(formatter)
+            logger.addHandler(file_handler)
+            # For console
+            stream_handler = logging.StreamHandler()
+            stream_handler.setLevel(getattr(logging, niveau))
+            stream_handler.setFormatter(formatter)
+            logger.addHandler(stream_handler)
+
+            logger.info('Logger initialised')
+
+        def critical(self, msg:str):
+            """Basic log critical function"""
+            self.logger.critical(f"{msg}")
+
+        def debug(self, msg:str):
+            """Log a debug statement logging first the service then the message"""
+            self.logger.debug(f"{self.parent.service} :: {msg}")
+
+        def info(self, msg:str):
+            """Basic log info function"""
+            self.logger.info(f"{msg}")
+
+        def simple_info(self, msg:str, data):
+            """Log an info statement separating msg and data by :"""
+            self.logger.info(f"{msg} : {data}")
+
+        def big_info(self, msg:str):
+            """Logs a info statement encapsuled between ----"""
+            self.logger.info(f"--------------- {msg} ---------------")
+
+        def error(self, msg:str):
+            """Log a error statement logging first the service then the message"""
+            self.logger.error(f"{self.parent.service} :: {msg}")
+
     # --- CSV methods for other classes / functions ---
     class CSV(object):
         def __init__(self, parent) -> None:
@@ -354,7 +398,7 @@ class Execution_Settings(object):
             Takes as argument the list of columns from the original file"""
             self.file_path = self.parent.file_path_out_csv
             self.file = open(self.file_path, "w", newline="", encoding='utf-8')
-            with open(os.getenv("CSV_OUTPUT_JSON_CONFIG_PATH"), "r+", encoding="utf-8") as f:
+            with open(self.parent.csv_cols_config_path, "r+", encoding="utf-8") as f:
                 self.csv_cols = json.load(f)
             self.__define_headers(original_file_cols)
             self.writer = csv.DictWriter(self.file, extrasaction="ignore", fieldnames=self.headers_ordered, delimiter=";")
@@ -371,6 +415,7 @@ class Execution_Settings(object):
                     CSV_Cols.INPUT_QUERY,
                     CSV_Cols.ORIGIN_DB_INPUT_ID,
                     CSV_Cols.MATCH_RECORDS_QUERY,
+                    CSV_Cols.FCR_ACTION_USED,
                     CSV_Cols.MATCH_RECORDS_NB_RESULTS,
                     CSV_Cols.MATCH_RECORDS_RESULTS,
                     CSV_Cols.MATCHED_ID,
@@ -429,7 +474,7 @@ class Execution_Settings(object):
                 msg = "SUCCESSFULLY processed"
             else:
                 msg = "FAILED to process"
-            self.parent.logger.info(f"{msg} line input query = \"{rec.input_query}\", origin database ID = \"{rec.original_uid}\"")
+            self.parent.log.info(f"{msg} line input query = \"{rec.input_query}\", origin database ID = \"{rec.original_uid}\"")
 
         def close_file(self):
             """Closes the CSV file"""
@@ -690,7 +735,9 @@ class Matched_Records(object):
 
         # Calls the operation
         self.execute_operation()
-        self.query = self.tries[-1].query
+        last_try:Request_Try = self.tries[-1]
+        self.query = last_try.query
+        self.action = last_try.action
 
     def execute_operation(self):
         """Searches in the Sudoc with 3 possibles tries :
@@ -797,7 +844,7 @@ class Matched_Records(object):
                 thisTry.add_returned_ids(res.get_results(merge=True))
 
         # Action SRU SUdoc MTI title AUT author EDI publisher APu date TDO v
-        if action == Actions.SRU_SUDOC_MTI_AUT_EDI_APU_TDO_V:
+        elif action == Actions.SRU_SUDOC_MTI_AUT_EDI_APU_TDO_V:
             sru = ssru.Sudoc_SRU()
             # Extract data
             title = fcf.delete_for_sudoc(self.local_record.utils.get_titles_as_string())
@@ -862,7 +909,7 @@ class Matched_Records(object):
                 thisTry.add_returned_records(res.get_records())
 
         # Action SRU SUdoc MTI title AUT author APu date TDO v
-        if action == Actions.SRU_SUDOC_MTI_AUT_EDI_APU_TDO_V:
+        elif action == Actions.SRU_SUDOC_MTI_AUT_APU_TDO_V:
             sru = ssru.Sudoc_SRU()
             # Extract data
             title = fcf.delete_for_sudoc(self.local_record.utils.get_titles_as_string())
@@ -920,7 +967,7 @@ class Matched_Records(object):
                 thisTry.add_returned_records(res.get_records())
 
         # Action SRU SUdoc TOU title + author + publisher + date TDO v
-        if action == Actions.SRU_SUDOC_MTI_AUT_EDI_APU_TDO_V:
+        elif action == Actions.SRU_SUDOC_TOU_TITLE_AUTHOR_PUBLISHER_DATE_TDO_V:
             sru = ssru.Sudoc_SRU()
             # Extract data
             title = fcf.delete_for_sudoc(self.local_record.utils.get_titles_as_string())
@@ -962,7 +1009,7 @@ class Matched_Records(object):
                 thisTry.add_returned_records(res.get_records())
 
         # Action SRU SUdoc TOU title + author + date TDO v
-        if action == Actions.SRU_SUDOC_MTI_AUT_EDI_APU_TDO_V:
+        elif action == Actions.SRU_SUDOC_TOU_TITLE_AUTHOR_DATE_TDO_V:
             sru = ssru.Sudoc_SRU()
             # Extract data
             title = fcf.delete_for_sudoc(self.local_record.utils.get_titles_as_string())
@@ -1002,8 +1049,8 @@ class Matched_Records(object):
                 thisTry.add_returned_ids(res.get_records_id())
                 thisTry.add_returned_records(res.get_records())
 
-# Action SRU SUdoc TOU title + author + publisher + date TDO v
-        if action == Actions.SRU_SUDOC_MTI_AUT_EDI_APU_TDO_V:
+        # Action SRU SUdoc TOU title + author + publisher TDO v
+        elif action == Actions.SRU_SUDOC_TOU_TITLE_AUTHOR_PUBLISHER_TDO_V:
             sru = ssru.Sudoc_SRU()
             # Extract data
             title = fcf.delete_for_sudoc(self.local_record.utils.get_titles_as_string())
@@ -1535,12 +1582,13 @@ class Original_Record(object):
         """Extract the first column of the file as the input query and
         the last column as the original UID regardless of the headers name"""
         self.input_query = self.original_line[headers[0]]
-        self.original_uid = self.original_line[headers[len(self.original_line)-1]].rstrip()
+        self.original_uid = str(self.original_line[headers[len(self.original_line)-1]]).rstrip()
     
     def get_matched_records_instance(self, mr: Matched_Records):
         """Extract data from the matched_records result."""
         self.matched_record_instance = mr
         self.query_used = mr.query
+        self.action_used = mr.action
         self.nb_matched_records = len(mr.returned_ids)
         self.matched_records_ids = mr.returned_ids
         self.matched_records = mr.returned_records
@@ -1639,6 +1687,7 @@ class Original_Record(object):
 
                 # Match records
                 out[CSV_Cols.MATCH_RECORDS_QUERY.name] = par.query_used
+                out[CSV_Cols.FCR_ACTION_USED.name] = par.action_used.name
                 out[CSV_Cols.MATCH_RECORDS_NB_RESULTS.name] = par.nb_matched_records
                 out[CSV_Cols.MATCH_RECORDS_RESULTS.name] = fcf.list_as_string(par.matched_records_ids)
 

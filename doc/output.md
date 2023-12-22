@@ -22,8 +22,9 @@
 
 ## Add new data (not from the record)
 
-* In `fcr_enum.py`, add two new entries in `Enum CSV_Cols` :
-  * Use `ORIGIN_DB_` / `TARGET_DB_` followed by the name of the eleemnt in `Enum FCR_Mapped_Fields`
+* In `fcr_enum.py`, add one or two new entries in `Enum CSV_Cols` :
+  * Use `ORIGIN_DB_` / `TARGET_DB_` followed by the name of the element in `Enum FCR_Mapped_Fields` if it's for both database
+  * If it is not a database specific element, add it to the list in `Original_Record.CSV.__define_headers` method
   * The value is used to determine the order of the columns in the CSV file
 * In `fcr_classes.py`, add code to `Original_Record.CSV.to_csv` method :
   * Add to `out` dictionnary the value, using the `Enum CSV_Cols` __name__ as a key

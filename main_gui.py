@@ -33,10 +33,12 @@ class GUI_Screens(Enum):
     MAIN_SCREEN = {
         "values":[
             "SERVICE",
+            "LOG_LEVEL",
             "PROCESSING_VAL",
             "FILE_PATH",
             "OUTPUT_PATH",
-            "LOGS_PATH"
+            "CSV_OUTPUT_JSON_CONFIG_PATH",
+            "LOGS_PATH",
         ],
         "tabs":[]
     }
@@ -104,15 +106,24 @@ MAIN_SCREEN_LAYOUT = [
     [sg.Text(f"{GUI_Text.OUTPUT_FOLDER.value[VALLS.lang]} :", k=GUI_Text.OUTPUT_FOLDER.name)],
     [sg.Input(key="OUTPUT_PATH", default_text=VALLS.output_path, size=(80, None)), sg.FolderBrowse()],
 
-    # Service name
+    # CSV export file path
+    [sg.Text(f"{GUI_Text.CSV_COLS_CONFIG_FILE_PATH_TEXT.value[VALLS.lang]} :", k=GUI_Text.CSV_COLS_CONFIG_FILE_PATH_TEXT.name)],
+    [sg.Input(key="CSV_OUTPUT_JSON_CONFIG_PATH", default_text=VALLS.csv_cols_config_path, size=(80, None)), sg.FolderBrowse()],
+
+
+    # Service name & log lovel
     [
         sg.Text(f"{GUI_Text.SERVICE_NAME.value[VALLS.lang]} :", k=GUI_Text.SERVICE_NAME.name),
-        sg.Input(key="SERVICE", default_text=VALLS.service, size=(40, None))
+        sg.Input(key="SERVICE", default_text=VALLS.service, size=(25, None)),
+        sg.Text(f"{GUI_Text.LOG_LEVEL_TEXT.value[VALLS.lang]} :", k=GUI_Text.LOG_LEVEL_TEXT.name),
+        sg.OptionMenu(VALLS.UI_get_log_levels(), size=(9, None), key="LOG_LEVEL", default_value=VALLS.log_level)
     ],
 
     # Logs path
-    [sg.Text(f"{GUI_Text.LOG_FOLDER.value[VALLS.lang]} :", k=GUI_Text.LOG_FOLDER.name)],
-    [sg.Input(key="LOGS_PATH", default_text=VALLS.logs_path, size=(80, None)), sg.FolderBrowse()],
+    [
+        sg.Text(f"{GUI_Text.LOG_FOLDER.value[VALLS.lang]} :", k=GUI_Text.LOG_FOLDER.name),
+        sg.Input(key="LOGS_PATH", default_text=VALLS.logs_path, size=(55, None)), sg.FolderBrowse()
+    ],
 
     # Submit + Save
     [

@@ -1,0 +1,262 @@
+{
+    "INPUT_QUERY":{
+        "fre":"Requête originale",
+        "eng":"Input query"
+    },
+    "ORIGIN_DB_INPUT_ID":{
+        "fre":"Biblionumber fichier original",
+        "eng":"Original file biblionumber"
+    },
+    "ERROR":{
+        "fre":"Erreur",
+        "eng":"Error"
+    },
+    "ERROR_MSG":{
+        "fre":"Message d'erreur",
+        "eng":"Error message"
+    },
+    "GLOBAL_VALIDATION_RESULT":{
+        "fre":"Validation globale",
+        "eng":"Global validation result"
+    },
+    "GLOBAL_VALIDATION_NB_SUCCESSFUL_CHECKS":{
+        "fre":"Nombre de validations réussies",
+        "eng":"Number of successful checks"
+    },
+    "GLOBAL_VALIDATION_TITLE_CHECK":{
+        "fre":"Validation des titres",
+        "eng":"Title check"
+    },
+    "GLOBAL_VALIDATION_PUBLISHER_CHECK":{
+        "fre":"Validation des éditeurs",
+        "eng":"Publishers check"
+    },
+    "GLOBAL_VALIDATION_DATE_CHECK":{
+        "fre":"Validation des dates",
+        "eng":"Dates check"
+    },
+    "MATCH_RECORDS_QUERY":{
+        "fre":"Requête pour recherche de correspondances",
+        "eng":"Query used to match records"
+    },
+    "MATCH_RECORDS_NB_RESULTS":{
+        "fre":"Nombre de PPN trouvés",
+        "eng":"Number of found PPN"
+    },
+    "MATCH_RECORDS_RESULTS":{
+        "fre":"PPN trouvés",
+        "eng":"Matched PPN"
+    },
+    "ORIGIN_DB_ID":{
+        "fre":"Biblionbumber Koha",
+        "eng":"Biblionbumber Koha"
+    },
+    "TARGET_DB_ID":{
+        "fre":"PPN Sudoc (ID)",
+        "eng":"PPN Sudoc (ID)"
+    },
+    "MATCHED_ID":{
+        "fre":"PPN choisi",
+        "eng":"Chosen PPN"
+    },
+    "ORIGIN_DB_PPN":{
+        "fre":"PPN Koha",
+        "eng":"PPN Koha"
+    },
+    "TARGET_DB_PPN":{
+        "fre":"PPN Sudoc",
+        "eng":"PPN Sudoc"
+    },
+    "ORIGIN_DB_OTHER_DB_ID":{
+        "fre":"Identifiants dans d'autres bases de données Koha",
+        "eng":"IDs in other database Koha"
+    },
+    "TARGET_DB_OTHER_DB_ID":{
+        "fre":"Biblionumbers dans Sudoc",
+        "eng":"Biblionumber in Sudoc"
+    },
+    "TARGET_DB_NB_OTHER_ID":{
+        "fre":"Nombre de biblionumbers dans Sudoc",
+        "eng":"Number of biblionumbers in Sudoc"
+    },
+    "IS_ORIGIN_ID_IN_TARGET_OTHER_DB_IDS":{
+        "fre":"Biblionumber Koha dans le Sudoc ?",
+        "eng":"Koha biblionumber in Sudoc ?"
+    },
+    "ORIGIN_DB_ITEMS":{
+        "fre":"Exemplaires Koha",
+        "eng":"Items Koha"
+    },
+    "TARGET_DB_ITEMS":{
+        "fre":"Exemplaires Sudoc",
+        "eng":"Items Sudoc"
+    },
+    "TARGET_DB_HAS_ITEMS":{
+        "fre":"Déjà des exemplaires dans Sudoc ?",
+        "eng":"Already items in Sudoc ?"
+    },
+    "ORIGIN_DB_ITEMS_BARCODE":{
+        "fre":"Code-barres d'exemplaires Koha",
+        "eng":"Items barcodes Koha"
+    },
+    "TARGET_DB_ITEMS_BARCODE":{
+        "fre":"Code-barres d'exemplaires Sudoc",
+        "eng":"Items barcodes Sudoc"
+    },
+    "ORIGIN_DB_ERRONEOUS_ISBN":{
+        "fre":"ISBN erronés Koha",
+        "eng":"Erroneous ISBN Koha"
+    },
+    "TARGET_DB_ERRONEOUS_ISBN":{
+        "fre":"ISBN erronés Sudoc",
+        "eng":"Erroneous ISBN Sudoc"
+    },
+    "ORIGIN_DB_TITLE":{
+        "fre":"Titre Koha",
+        "eng":"Title Koha"
+    },
+    "TARGET_DB_TITLE":{
+        "fre":"Titre Sudoc",
+        "eng":"Title Sudoc"
+    },
+    "ORIGIN_DB_TITLE_KEY":{
+        "fre":"Clef de titre Koha",
+        "eng":"Title key Koha"
+    },
+    "TARGET_DB_TITLE_KEY":{
+        "fre":"Clef de titre Sudoc",
+        "eng":"Title key Sudoc"
+    },
+    "ORIGIN_DB_PUBLISHERS_NAME":{
+        "fre":"Éditeurs Koha",
+        "eng":"Publishers name Koha"
+    },
+    "TARGET_DB_PUBLISHERS_NAME":{
+        "fre":"Éditeurs Sudoc",
+        "eng":"Publishers name Sudoc"
+    },
+    "ORIGIN_DB_CHOSEN_PUBLISHER":{
+        "fre":"Clef d'éditeur choisi Koha",
+        "eng":"Chosen publisher key Koha"
+    },
+    "TARGET_DB_CHOSEN_PUBLISHER":{
+        "fre":"Clef d'éditeur choisi Sudoc",
+        "eng":"Chosen publisher key Sudoc"
+    },
+    "ORIGIN_DB_GENERAL_PROCESSING_DATA_DATES":{
+        "fre":"Dates des données générales de traitement Koha",
+        "eng":"General processing data dates Koha"
+    },
+    "TARGET_DB_GENERAL_PROCESSING_DATA_DATES":{
+        "fre":"Dates des données générales de traitement Sudoc",
+        "eng":"General processing data dates Sudoc"
+    },
+    "ORIGIN_DB_DATE_1":{
+        "fre":"Date de publication 1 Koha",
+        "eng":"Publication date 1 Koha"
+    },
+    "TARGET_DB_DATE_1":{
+        "fre":"Date de publication 1 Sudoc",
+        "eng":"Publication date 1 Sudoc"
+    },
+    "ORIGIN_DB_DATE_2":{
+        "fre":"Date de publication 2 Koha",
+        "eng":"Publication date 2 Koha"
+    },
+    "TARGET_DB_DATE_2":{
+        "fre":"Date de publication 2 Sudoc",
+        "eng":"Publication date 2 Sudoc"
+    },
+    "ORIGIN_DB_EDITION_NOTES":{
+        "fre":"Notes d'éditions Koha",
+        "eng":"Notes about edition Koha"
+    },
+    "TARGET_DB_EDITION_NOTES":{
+        "fre":"Notes d'éditions Sudoc",
+        "eng":"Notes about edition Sudoc"
+    },
+    "ORIGIN_DB_PUBLICATION_DATES":{
+        "fre":"Dates de publication Koha",
+        "eng":"Publication dates Koha"
+    },
+    "TARGET_DB_PUBLICATION_DATES":{
+        "fre":"Dates de publication Sudoc",
+        "eng":"Publication dates Sudoc"
+    },
+    "ORIGIN_DB_PHYSICAL_DESCRIPTION":{
+        "fre":"Description physique Koha",
+        "eng":"Physical description Koha"
+    },
+    "TARGET_DB_PHYSICAL_DESCRIPTION":{
+        "fre":"Description physique Sudoc",
+        "eng":"Physical description Sudoc"
+    },
+    "ORIGIN_DB_CONTENTS_NOTES":{
+        "fre":"Notes de contenus Koha",
+        "eng":"Contents notes Koha"
+    },
+    "TARGET_DB_CONTENTS_NOTES":{
+        "fre":"Notes de contenus Sudoc",
+        "eng":"Contents notes Sudoc"
+    },
+    "ORIGIN_DB_OTHER_ED_IN_OTHER_MEDIUM_BIBG_ID":{
+        "fre":"Identifiants de notices des autres éditions sur autre support Koha",
+        "eng":"Bibliographic IDs of other editions on other medium Koha"
+    },
+    "TARGET_DB_OTHER_ED_IN_OTHER_MEDIUM_BIBG_ID":{
+        "fre":"Identifiants de notices des autres éditions sur autre support Sudoc",
+        "eng":"Bibliographic IDs of other editions on other medium Sudoc"
+    },
+    "ORIGIN_DB_EAN":{
+        "fre":"EAN Koha",
+        "eng":"EAN Koha"
+    },
+    "TARGET_DB_EAN":{
+        "fre":"EAN Sudoc",
+        "eng":"EAN Sudoc"
+    },
+    "ORIGIN_DB_AUTHORS":{
+        "fre":"Auteurs Koha",
+        "eng":"Authors Koha"
+    },
+    "TARGET_DB_AUTHORS":{
+        "fre":"Auteurs Sudoc",
+        "eng":"Authors Sudoc"
+    },
+    "ORIGIN_DB_LEADER":{
+        "fre":"Label Koha",
+        "eng":"Leader Koha"
+    },
+    "TARGET_DB_LEADER":{
+        "fre":"Label Sudoc",
+        "eng":"Leader Sudoc"
+    },
+    "MATCHING_TITLE_RATIO":{
+        "fre":"Score de similarité des titres",
+        "eng":"Matching title ratio"
+    },
+    "MATCHING_TITLE_PARTIAL_RATIO":{
+        "fre":"Score d'appartenance des titres",
+        "eng":"Matching title partial ratio"
+    },
+    "MATCHING_TITLE_TOKEN_SORT_RATIO":{
+        "fre":"Score d'inversion des titres",
+        "eng":"Matching title token sort ratio"
+    },
+    "MATCHING_TITLE_TOKEN_SET_RATIO":{
+        "fre":"Score d'inversion appartenance des titres",
+        "eng":"Matching title token set ratio"
+    },
+    "MATCHING_DATES_RESULT":{
+        "fre":"Correspondance des dates de publications",
+        "eng":"Matching dates result"
+    },
+    "MATCHING_PUBLISHER_RESULT":{
+        "fre":"Score de similarité des éditeurs choisis",
+        "eng":"Matching publishers result"
+    },
+    "FCR_ACTION_USED":{
+        "fre":"Action FCR utilisée",
+        "eng":"FCR action used"
+    }
+}
