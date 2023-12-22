@@ -254,5 +254,9 @@
     "MATCHING_PUBLISHER_RESULT":{
         "fre":"Score de similarité des éditeurs choisis",
         "eng":"Matching publishers result"
+    },
+    "FCR_ACTION_USED":{
+        "fre":"Action FCR utilisée",
+        "eng":"FCR action used"
     }
 }

@@ -9,9 +9,12 @@ _Some previous changes will be added_
 
 ## [Unreleased]
 
+
+## [1.13.0] - 2023-12-22
+
 ### Added
 
-* Changelog file
+* Added changelog file
 * New processing `BETTER_ITEM_DVD`
 * New actions :
   * EAN to PPN
@@ -26,7 +29,10 @@ _Some previous changes will be added_
   * Use both of the previous at the same time
   * Delete duplicate words in a string
 * `Class Database_Record` now has a `utils` property with methods to return data formatted
-* New environment variable `CSV_OUTPUT_JSON_CONFIG_PATH`
+* New environment variable `CSV_OUTPUT_JSON_CONFIG_PATH`, selectable in the UI
+* Log level is selectable in the UI
+* Used action is now exportable
+* New `json_configs` file : `csv_cols.json` (and a personnalised `csv_cols_BETTER_ITEM.json`)
 
 ### Changed
 
@@ -35,8 +41,8 @@ _Some previous changes will be added_
 * Authors data defaults to fields `700`, `701`, `702`, `710`, `711` and `712`
 * Some output functions have been moved to a new `output` property of `Class Original_Record`
 * Internal changes to error management
-* Slight changes to logs, notably only logging once the query used
-* New CSV export, including new `json_configs` file : `csv_cols.json`
+* Internal changes to logs, notably updated old logged informations and only logging once the query used
+* Reworked CSV export
 
 ### Fixed
 
@@ -48,6 +54,7 @@ _Some previous changes will be added_
 ### Removed
 
 * File `csv_export_cols.json`
+* `logs.py` (moved it's fucntion inside `Logger` subclass in `fcr_classes.py`)
 
 ## [1.12.1] - 2023-12-08
 
