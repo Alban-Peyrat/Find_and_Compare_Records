@@ -108,7 +108,7 @@ MAIN_SCREEN_LAYOUT = [
 
     # CSV export file path
     [sg.Text(f"{GUI_Text.CSV_COLS_CONFIG_FILE_PATH_TEXT.value[VALLS.lang]} :", k=GUI_Text.CSV_COLS_CONFIG_FILE_PATH_TEXT.name)],
-    [sg.Input(key="CSV_OUTPUT_JSON_CONFIG_PATH", default_text=VALLS.csv_cols_config_path, size=(80, None)), sg.FolderBrowse()],
+    [sg.Input(key="CSV_OUTPUT_JSON_CONFIG_PATH", default_text=VALLS.csv_cols_config_path, size=(80, None)), sg.FileBrowse()],
 
 
     # Service name & log lovel
