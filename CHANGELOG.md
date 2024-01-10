@@ -9,6 +9,9 @@ _Some previous changes will be added_
 
 ## [Unreleased]
 
+### Fixed
+
+* Fixed CSV column names configuration file browse type
 
 ## [1.13.0] - 2023-12-22
 
@@ -68,11 +71,15 @@ _Some previous changes will be added_
 
 * Values filled in the UI without being saved are now properly sent to the main script, instead of using saved values
 
-## [1.12.0] - 2023-12-18
+## [1.12.0] - 2023-12-08
 
 ### Added
 
 * Multipe matches are now all retrieved instead of throwing a fake error
+
+### Fixed
+
+* Does not check if the biblionumber is different than those in the Sudoc if no biblionumbers are found in the Sudoc (previous behaviour)
 
 ### Removed
 
@@ -80,13 +87,50 @@ _Some previous changes will be added_
 
 ## [1.11.0] - 2023-11-22
 
+### Changed
 
+* Graphic user interface has been entirely remade and can now configure most configurations
+* French user documentation updated
+
+### Fixed
+
+* Fixed an error on unknown ISBN in `isbn2ppn`
 
 ## [1.10.0] - 2023-10-20
 
+### Added
 
+* Test files for the universal data extractor
 
-## [1.8.0] - 2023-10-03
+### Changed
+
+* Application name is now _Find and Compare Records_
+* List outputing in CSV file is now an emty cell if the list is empty, or just the value if list contains only one value
+* Internal changes, notably centralizing data export functions so they are universal
+* Technical documentation about the universal data extractor
+
+## [1.9.0] - 2023-10-03
+
+### Added
+
+* Technical documentation for the matching records part
+* Can now query Sudoc's SRU
+* Now query Sudoc's SRU using ISBN if both query on `isbn2ppn` failed
+
+### Changed
+
+* Internal changes to start implementing classes
+* Report is now broken
+
+## [1.8.0] - 2022-09-07
+
+### Added
+
+* Outputs erroneous ISBN from Koha & Sudoc
+
+### Changed
+
+* Part of the settings were moved from `settings.json` to a `.env` file
 
 ## [1.7.2] - 2023-04-21
 
@@ -105,3 +149,80 @@ _Some previous changes will be added_
 ### Added
 
 * Output years found inside Koha `215$a`
+
+## [1.6.0] - 2023-02-15
+
+### Added
+
+* `Abes_isbn2ppn.py` is now queried with a converted version of ISBN 10 to 13 (or the other way) if the first query did not return result
+
+## [1.5.0] - 2023-02-08
+
+### Added
+
+* Output notes about edition for both Koha and Sudoc
+
+## [1.4.1] - 2023-01-18
+
+### Changed
+
+* Internal changes to the matching records process
+
+### Fixed
+
+* Correctly outputs every lines, even if an error occurred
+* Fixed Koha API encoding problem when using JSON
+
+## [1.4.0] - 2023-01-17
+
+### Added
+
+* Added a graphic user interface
+* Now outputs :
+  * PPN already present in Koha record
+  * Items information already present in Sudoc record
+* RCR can now be configured
+
+### Changed
+
+* Internal changes (to a lot of things)
+
+### Fixed
+
+* Creatting the report no longer crashes the script
+
+## [1.3.1] - 2022-12-07
+
+### Fixed
+
+* Correctly ctaches all errors instead of just HTTP ones
+
+## [1.3.0] - 2022-11-24
+
+### Added
+
+* Output local system number present in Sudoc record
+* ILN can now be configured
+
+## [1.2.0] - 2022-11-02
+
+### Added
+
+* Documentation
+* A new configuration file `settings.json`
+
+### Changed
+
+* Internal changes, notably in the CSV export and better error handling
+
+## [1.1.0] - 2022-10-19
+
+### Fixed
+
+* Prevent crashes if no publisher was found in Koha or Sudoc record
+* Correctly increases ISBN to PPN success for the report
+* Correctly compute ht enumber of unique matching in the report
+
+## [1.0.0] - 2022-10-19
+
+* Realeased version for first executions
