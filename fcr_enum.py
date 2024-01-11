@@ -35,6 +35,7 @@ class FCR_Processings(Enum):
         FCR_Mapped_Fields.GENERAL_PROCESSING_DATA_DATES: FCR_Processing_Data_Target.BOTH,
         FCR_Mapped_Fields.ERRONEOUS_ISBN: FCR_Processing_Data_Target.BOTH,
         FCR_Mapped_Fields.TITLE: FCR_Processing_Data_Target.BOTH,
+        FCR_Mapped_Fields.AUTHORS: FCR_Processing_Data_Target.BOTH,
         FCR_Mapped_Fields.PUBLISHERS_NAME: FCR_Processing_Data_Target.BOTH,
         FCR_Mapped_Fields.EDITION_NOTES: FCR_Processing_Data_Target.BOTH,
         FCR_Mapped_Fields.PUBLICATION_DATES: FCR_Processing_Data_Target.BOTH,

@@ -9,6 +9,10 @@ _Some previous changes will be added_
 
 ## [Unreleased]
 
+### Added
+
+* Authors are exported in processing `BETETR_ITEM`
+
 ### Fixed
 
 * Fixed CSV column names configuration file browse type

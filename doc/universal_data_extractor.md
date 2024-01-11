@@ -28,7 +28,7 @@ Sudoc PICA XML is not supported
 
 # Add data to extract for a processing
 
-* In `fcr_classes.py` :
+* In `fcr_enum.py` :
   * Add a key for the processing entry in `FCR_Processings`, using as key a `FCR_Mapped_Fields` entry and as value a `FCR_Processing_Data_Target` entry
 
 # For filtered fields
