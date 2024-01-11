@@ -1,8 +1,6 @@
 
 ## Define headers
 
-
-
 ## Add a new data from records
 
 * In `fcr_enum.py`, add two new entries in `Enum CSV_Cols` :

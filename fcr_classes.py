@@ -21,7 +21,7 @@ from fcr_enum import *
 # Internal imports
 import api.abes.Abes_id2ppn as id2ppn
 import api.abes.Sudoc_SRU as ssru
-import api.koha.Koha_SRU as Koha_SRU
+import api.koha.Koha_SRU as ksru
 
 # -------------------- Execution settings (ES) --------------------
 

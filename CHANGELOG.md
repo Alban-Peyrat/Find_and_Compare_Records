@@ -13,6 +13,10 @@ _Some previous changes will be added_
 
 * Authors are exported in processing `BETETR_ITEM`
 
+### Changed
+
+* Changed Koha SRU connector version
+
 ### Fixed
 
 * Fixed CSV column names configuration file browse type
