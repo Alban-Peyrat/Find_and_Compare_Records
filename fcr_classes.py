@@ -1651,7 +1651,7 @@ class Original_Record(object):
             if not origin_db:
                 db = "TARGET_DB"
                 db_data = par.target_database_data[par.matched_id]
-                out[CSV_Cols.TARGET_DB_HAS_ITEMS.name] = db_data.local_id_in_compared_record.name
+                out[CSV_Cols.TARGET_DB_HAS_ITEMS.name] = len(db_data.data[FCR_Mapped_Fields.ITEMS.name])
             # Dates in physical description
             if origin_db:
                 out[f"{db}_{FCR_Mapped_Fields.PHYSICAL_DESCRIPTION.name}"] = []

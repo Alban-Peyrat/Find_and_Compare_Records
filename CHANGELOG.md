@@ -11,7 +11,7 @@ _Some previous changes will be added_
 
 ### Added
 
-* Authors are exported in processing `BETETR_ITEM`
+* Authors are exported in processing `BETTER_ITEM`
 
 ### Changed
 
@@ -20,6 +20,7 @@ _Some previous changes will be added_
 ### Fixed
 
 * Fixed CSV column names configuration file browse type
+* Fixed `BETTER_ITEM` target database *has items* not displaying the correct information
 
 ## [1.13.0] - 2023-12-22
 
