@@ -68,11 +68,26 @@ class Analysis_Checks(Enum):
     DATE = 2
 
 class Analysis_Final_Results(Enum):
-    UNKNOWN = 0
-    NO_CHECK = 1
-    TOTAL_MATCH = 2
-    PARTIAL_MATCH = 3
-    NO_MATCH = 4
+    UNKNOWN = {
+        "eng":"Unknown final result",
+        "fre":"Résultat final inconnu"
+    }
+    NO_CHECK = {
+        "eng":"Analysis does no check",
+        "fre":"L'analyse ne fait aucune vérification"
+    }
+    TOTAL_MATCH = {
+        "eng":"All checks were successful",
+        "fre":"Toutes vérifications ont réussi"
+    }
+    PARTIAL_MATCH = {
+        "eng":"Only some checks were successful",
+        "fre":"Seules certaines vérifications ont réussi"
+    }
+    NO_MATCH = {
+        "eng":"All checks failed",
+        "fre":"Toutes les vérifications ont échoué"
+    }
 
 class Log_Level(Enum):
     DEBUG = 0
@@ -194,11 +209,26 @@ XML_NS = {
 
 # ---------- MAIN ----------
 class Other_Database_Id_In_Target(Enum):
-    UNKNOWN = 0
-    NO_OTHER_DB_ID = 1
-    THIS_ID_INCLUDED = 2
-    ONLY_THIS_OTHER_DB_ID = 3
-    THIS_ID_NOT_INCLUDED = 4
+    UNKNOWN = {
+        "eng":"Unknown",
+        "fre":"Inconnu"
+    }
+    NO_OTHER_DB_ID = {
+        "eng":"No other DB ID in target record",
+        "fre":"Aucun ID d'autres BDD dans la notice cible"
+    }
+    THIS_ID_INCLUDED = {
+        "eng":"Current origin ID included in target record other DB ID",
+        "fre":"L'actuel ID de la notice d'origine est présent dans les ID d'autres BDD de la notice cible"
+    }
+    ONLY_THIS_OTHER_DB_ID = {
+        "eng":"Current origin ID is the only other DB ID in target record",
+        "fre":"L'actuel ID de la notice est d'origine est l'unique ID d'autres BDD de la notice cible"
+    }
+    THIS_ID_NOT_INCLUDED = {
+        "eng":"Current origin ID is not included in target record other DB ID",
+        "fre":"L'actuel ID de la notice d'origine n'est pas présent dans les ID d'autres BDD de la notice cible"
+    }
 
 # ---------- REPORT ----------
 class Success(Enum):

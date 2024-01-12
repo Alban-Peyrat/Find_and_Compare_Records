@@ -1651,7 +1651,7 @@ class Original_Record(object):
             if not origin_db:
                 db = "TARGET_DB"
                 db_data = par.target_database_data[par.matched_id]
-                out[CSV_Cols.TARGET_DB_HAS_ITEMS.name] = len(db_data.data[FCR_Mapped_Fields.ITEMS.name])
+                out[CSV_Cols.TARGET_DB_HAS_ITEMS.name] = len(db_data.data[FCR_Mapped_Fields.ITEMS]) > 0
             # Dates in physical description
             if origin_db:
                 out[f"{db}_{FCR_Mapped_Fields.PHYSICAL_DESCRIPTION.name}"] = []
@@ -1717,9 +1717,9 @@ class Original_Record(object):
                 out[CSV_Cols.ORIGIN_DB_CHOSEN_PUBLISHER.name] = target_record.chosen_compared_publisher
                 # Ids
                 out[CSV_Cols.TARGET_DB_NB_OTHER_ID.name] = target_record.nb_other_db_id
-                out[CSV_Cols.IS_ORIGIN_ID_IN_TARGET_OTHER_DB_IDS.name] = target_record.local_id_in_compared_record.name
+                out[CSV_Cols.IS_ORIGIN_ID_IN_TARGET_OTHER_DB_IDS.name] = target_record.local_id_in_compared_record.value[par.es.lang]
                 # Global validation
-                out[CSV_Cols.GLOBAL_VALIDATION_RESULT.name] = target_record.total_checks.name
+                out[CSV_Cols.GLOBAL_VALIDATION_RESULT.name] = target_record.total_checks.value[par.es.lang]
                 out[CSV_Cols.GLOBAL_VALIDATION_NB_SUCCESSFUL_CHECKS.name] = target_record.passed_check_nb
                 out[CSV_Cols.GLOBAL_VALIDATION_TITLE_CHECK.name] = target_record.checks[Analysis_Checks.TITLE]
                 out[CSV_Cols.GLOBAL_VALIDATION_PUBLISHER_CHECK.name] = target_record.checks[Analysis_Checks.PUBLISHER]
