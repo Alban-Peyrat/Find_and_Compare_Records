@@ -4,7 +4,7 @@
         "eng":"Input query"
     },
     "ORIGIN_DB_INPUT_ID":{
-        "fre":"Identifiant fichier original",
+        "fre":"ID fichier original",
         "eng":"Original file ID"
     },
     "ERROR":{
@@ -44,20 +44,20 @@
         "eng":"Number of matches"
     },
     "MATCH_RECORDS_RESULTS":{
-        "fre":"Identifiants correspondants",
+        "fre":"IDs correspondants",
         "eng":"Matched IDs"
     },
     "ORIGIN_DB_ID":{
-        "fre":"Identifiant BDD d'origine",
+        "fre":"ID BDD d'origine",
         "eng":"ID origin DB"
     },
     "TARGET_DB_ID":{
-        "fre":"Identifiant BDD de destination",
+        "fre":"ID BDD de destination",
         "eng":"ID target DB"
     },
     "MATCHED_ID":{
-        "fre":"Identifiant correspondant",
-        "eng":"Matched ID"
+        "fre":"ID en cours de traitement",
+        "eng":"Current ID"
     },
     "ORIGIN_DB_PPN":{
         "fre":"PPN BDD d'origine",
@@ -68,19 +68,19 @@
         "eng":"PPN target DB"
     },
     "ORIGIN_DB_OTHER_DB_ID":{
-        "fre":"Identifiants dans d'autres bases de données BDD d'origine",
+        "fre":"IDs dans d'autres bases de données BDD d'origine",
         "eng":"IDs in other database origin DB"
     },
     "TARGET_DB_OTHER_DB_ID":{
-        "fre":"Identifiants dans d'autres bases de données BDD de destination",
+        "fre":"IDs dans d'autres bases de données BDD de destination",
         "eng":"IDs in other database target DB"
     },
     "TARGET_DB_NB_OTHER_ID":{
-        "fre":"Nombre d'identifiants d'autres bases de données BDD de destination",
+        "fre":"Nombre d'IDs d'autres bases de données BDD de destination",
         "eng":"Number of IDs in other databases target DB"
     },
     "IS_ORIGIN_ID_IN_TARGET_OTHER_DB_IDS":{
-        "fre":"Identifiant BDD d'origine compris dans les identfiants d'auters bases de données BDD de destination ?",
+        "fre":"ID BDD d'origine compris dans les IDs d'auters bases de données BDD de destination ?",
         "eng":"Is origin DB ID in target DB IDs in other databases ?"
     },
     "ORIGIN_DB_ITEMS":{
@@ -200,11 +200,11 @@
         "eng":"Contents notes target DB"
     },
     "ORIGIN_DB_OTHER_ED_IN_OTHER_MEDIUM_BIBG_ID":{
-        "fre":"Identifiants de notices des autres éditions sur autre support BDD d'origine",
+        "fre":"IDs de notices des autres éditions sur autre support BDD d'origine",
         "eng":"Bibliographic IDs of other editions on other medium origin DB"
     },
     "TARGET_DB_OTHER_ED_IN_OTHER_MEDIUM_BIBG_ID":{
-        "fre":"Identifiants de notices des autres éditions sur autre support BDD de destination",
+        "fre":"IDs de notices des autres éditions sur autre support BDD de destination",
         "eng":"Bibliographic IDs of other editions on other medium target DB"
     },
     "ORIGIN_DB_EAN":{

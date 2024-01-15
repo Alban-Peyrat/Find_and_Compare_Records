@@ -70,23 +70,23 @@ class Analysis_Checks(Enum):
 class Analysis_Final_Results(Enum):
     UNKNOWN = {
         "eng":"Unknown final result",
-        "fre":"Résultat final inconnu"
+        "fre":"Vérification inconnue"
     }
     NO_CHECK = {
-        "eng":"Analysis does no check",
-        "fre":"L'analyse ne fait aucune vérification"
+        "eng":"No checks",
+        "fre":"Pas de vérification"
     }
     TOTAL_MATCH = {
         "eng":"All checks were successful",
-        "fre":"Toutes vérifications ont réussi"
+        "fre":"Vérications complètes"
     }
     PARTIAL_MATCH = {
-        "eng":"Only some checks were successful",
-        "fre":"Seules certaines vérifications ont réussi"
+        "eng":"Checks partially successful",
+        "fre":"Vérifications partielles"
     }
     NO_MATCH = {
         "eng":"All checks failed",
-        "fre":"Toutes les vérifications ont échoué"
+        "fre":"Vérifications KO"
     }
 
 class Log_Level(Enum):
@@ -214,20 +214,20 @@ class Other_Database_Id_In_Target(Enum):
         "fre":"Inconnu"
     }
     NO_OTHER_DB_ID = {
-        "eng":"No other DB ID in target record",
-        "fre":"Aucun ID d'autres BDD dans la notice cible"
+        "eng":"No ID in the list",
+        "fre":"Aucun ID dans la liste"
     }
     THIS_ID_INCLUDED = {
-        "eng":"Current origin ID included in target record other DB ID",
-        "fre":"L'actuel ID de la notice d'origine est présent dans les ID d'autres BDD de la notice cible"
+        "eng":"Included in list",
+        "fre":"Présent dans la liste"
     }
     ONLY_THIS_OTHER_DB_ID = {
-        "eng":"Current origin ID is the only other DB ID in target record",
-        "fre":"L'actuel ID de la notice est d'origine est l'unique ID d'autres BDD de la notice cible"
+        "eng":"List includes only this ID",
+        "fre":"Liste comportant que cet ID"
     }
     THIS_ID_NOT_INCLUDED = {
-        "eng":"Current origin ID is not included in target record other DB ID",
-        "fre":"L'actuel ID de la notice d'origine n'est pas présent dans les ID d'autres BDD de la notice cible"
+        "eng":"Missing from list",
+        "fre":"Absent de la liste"
     }
 
 # ---------- REPORT ----------

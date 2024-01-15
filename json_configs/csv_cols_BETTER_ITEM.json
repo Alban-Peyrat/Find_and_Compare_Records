@@ -56,8 +56,8 @@
         "eng":"PPN Sudoc (ID)"
     },
     "MATCHED_ID":{
-        "fre":"PPN choisi",
-        "eng":"Chosen PPN"
+        "fre":"PPN en cours de traitement",
+        "eng":"Current PPN"
     },
     "ORIGIN_DB_PPN":{
         "fre":"PPN Koha",
