@@ -9,6 +9,8 @@ _Some previous changes will be added_
 
 ## [Unreleased]
 
+## [1.13.1] - 2024-01-2024
+
 ### Added
 
 * Authors are exported in processing `BETTER_ITEM`
