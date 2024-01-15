@@ -18,7 +18,7 @@ _Some previous changes will be added_
 ### Changed
 
 * Changed Koha SRU connector version
-* ID validation and `BETTER_ITEM` *has items* now output text instead of internal codes
+* ID validation and analysis result now output text instead of internal codes
 * Changed some columns names
 
 ### Fixed
