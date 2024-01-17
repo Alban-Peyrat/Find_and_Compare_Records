@@ -103,6 +103,25 @@ class Execution_Settings(object):
         elif self.processing == FCR_Processings.MARC_FILE_IN_KOHA_SRU:
             self.origin_database = Databases.LOCAL
             self.target_database = Databases.KOHA_SRU
+    
+    def load_original_file_data(self):
+        self.original_file_data = {}
+        # CSV handling
+        if self.processing in [FCR_Processings.BETTER_ITEM, FCR_Processings.BETTER_ITEM_DVD]:
+            self.original_file_data_is_csv = True
+            with open(self.file_path, 'r', newline="", encoding="utf-8") as fh:
+                csvdata = csv.DictReader(fh, delimiter=";")
+                self.original_file_headers = csvdata.fieldnames
+                for index, line in enumerate(csvdata):
+                    self.original_file_data[index] = line
+        # MARC handling
+        elif self.processing == FCR_Processings.MARC_FILE_IN_KOHA_SRU:
+            self.original_file_data_is_csv = False
+            self.original_file_headers = []
+            with open(self.file_path, 'rb') as fh:
+                marcreader = pymarc.MARCReader(fh, to_unicode=True, force_utf8=True)
+                for index, record in enumerate(marcreader):
+                    self.original_file_data[index] = record
 
     # ----- Methods for UI -----
     def UI_get_log_levels(self) -> List[str]:
@@ -1787,19 +1806,24 @@ class Universal_Data_Extractor(object):
 # -------------------- MAIN --------------------
 
 class Original_Record(object):
-    def __init__(self, line: dict, es:Execution_Settings):
+    def __init__(self, es:Execution_Settings, line:dict=None):
         self.reset_error()
         self.original_line = line
         self.es = es
         self.target_database_data = {}
         self.output = self.Output(self)
     
-    def extract_from_original_line(self, headers: List[str]):
+    def extract_from_original_line(self):
         """Extract the first column of the file as the input query and
         the last column as the original UID regardless of the headers name"""
-        self.input_query = self.original_line[headers[0]]
-        self.original_uid = str(self.original_line[headers[len(self.original_line)-1]]).rstrip()
+        self.input_query = self.original_line[self.es.original_file_headers[0]]
+        self.original_uid = str(self.original_line[self.es.original_file_headers[len(self.original_line)-1]]).rstrip()
     
+    def set_fake_csv_file_data(self):
+        """Sets fake data for fields extracted from CSV file to prevent crashes"""
+        self.input_query = "NO INPUT QUERY"
+        self.original_uid = "NO ORIGINAL UID"
+
     def get_matched_records_instance(self, mr: Matched_Records):
         """Extract data from the matched_records result."""
         self.matched_record_instance = mr
@@ -1889,7 +1913,8 @@ class Original_Record(object):
                 out[CSV_Cols.ERROR_MSG.name] = par.error_message
 
                 # Data from the original file
-                out.update(par.original_line)
+                if par.es.original_file_data_is_csv:
+                    out.update(par.original_line)
                 out[CSV_Cols.INPUT_QUERY.name] = par.input_query
                 out[CSV_Cols.ORIGIN_DB_INPUT_ID.name] = par.original_uid
 
