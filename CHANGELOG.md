@@ -26,10 +26,12 @@ _Some previous changes will be added_
 
 * `OTHER_DB_IN_LOCAL_DB` was renammed in `MARC_FILE_IN_KOHA_SRU`
 * Updated `Koha_SRU` version
+* Filters are now properly implanted
 
 ### Fixed
 
 * Fixed displayed processing in *Processing configuration* screen, previously not updating properly if selected processing was changed in the main screen
+* Fixed `Database_Record.utils` methods crashing the application if some data was not extracted from the record
 
 ## [1.13.1] - 2024-01-2024
 

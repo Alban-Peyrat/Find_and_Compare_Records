@@ -195,16 +195,25 @@ class Try_Operations(Enum):
 
 
 # ---------- UNIVERSAL DATA EXTRACTOR (UDE) ----------
+class FCR_Filters(Enum):
+    """List of all filters"""
+    ILN = 0
+    RCR = 1
+    FILTER1 = 2
+    FILTER2 = 3
+    FILTER3 = 4
+
 class Databases(Enum):
     """List of databases and their filter field"""
     ABESXML = {
-        FCR_Mapped_Fields.OTHER_DB_ID:"ILN",
-        FCR_Mapped_Fields.ITEMS:"RCR",
-        FCR_Mapped_Fields.ITEMS_BARCODE:"RCR"
+        FCR_Mapped_Fields.OTHER_DB_ID:FCR_Filters.ILN,
+        FCR_Mapped_Fields.ITEMS:FCR_Filters.RCR,
+        FCR_Mapped_Fields.ITEMS_BARCODE:FCR_Filters.RCR
     }
     SUDOC_SRU = {}
     KOHA_PUBLIC_BIBLIO = {}
-    KOHA_SRU = {}
+    KOHA_SRU = {
+    }
     LOCAL = {}
 
 class Record_Formats(Enum):
