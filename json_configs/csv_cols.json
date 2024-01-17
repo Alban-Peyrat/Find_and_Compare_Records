@@ -258,5 +258,13 @@
     "FCR_ACTION_USED":{
         "fre":"Action FCR utilisée",
         "eng":"FCR action used"
+    },
+    "ORIGIN_DB_ISBN":{
+        "fre":"ISBN BDD d'origine",
+        "eng":"ISBN origin DB"
+    },
+    "TARGET_DB_ISBN":{
+        "fre":"ISBN BDD de destination",
+        "eng":"ISBN target DB"
     }
 }

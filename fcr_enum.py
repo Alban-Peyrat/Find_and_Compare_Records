@@ -22,6 +22,7 @@ class FCR_Mapped_Fields(Enum):
     ITEMS_BARCODE = "items_barcode"
     EAN = "ean"
     AUTHORS = "authors"
+    ISBN = "isbn"
 
 class FCR_Processing_Data_Target(Enum):
     ORIGIN = 0
@@ -44,7 +45,18 @@ class FCR_Processings(Enum):
         FCR_Mapped_Fields.ITEMS_BARCODE: FCR_Processing_Data_Target.TARGET,
         FCR_Mapped_Fields.ITEMS: FCR_Processing_Data_Target.TARGET
         }
-    OTHER_DB_IN_LOCAL_DB = {}
+    MARC_FILE_IN_KOHA_SRU = {
+        FCR_Mapped_Fields.ID: FCR_Processing_Data_Target.BOTH,
+        FCR_Mapped_Fields.PPN: FCR_Processing_Data_Target.TARGET,
+        FCR_Mapped_Fields.ISBN:FCR_Processing_Data_Target.BOTH,
+        FCR_Mapped_Fields.GENERAL_PROCESSING_DATA_DATES: FCR_Processing_Data_Target.BOTH,
+        FCR_Mapped_Fields.ERRONEOUS_ISBN: FCR_Processing_Data_Target.TARGET,
+        FCR_Mapped_Fields.TITLE: FCR_Processing_Data_Target.BOTH,
+        FCR_Mapped_Fields.AUTHORS: FCR_Processing_Data_Target.BOTH,
+        FCR_Mapped_Fields.PUBLISHERS_NAME: FCR_Processing_Data_Target.BOTH,
+        FCR_Mapped_Fields.EDITION_NOTES: FCR_Processing_Data_Target.BOTH,
+        FCR_Mapped_Fields.PUBLICATION_DATES: FCR_Processing_Data_Target.BOTH
+    }
     BETTER_ITEM_DVD = {
         FCR_Mapped_Fields.ID: FCR_Processing_Data_Target.ORIGIN,
         FCR_Mapped_Fields.PPN: FCR_Processing_Data_Target.ORIGIN,
@@ -103,7 +115,8 @@ class Operations(Enum):
     SEARCH_IN_SUDOC_BY_ISBN_ONLY_ISBN2PPN = 2
     SEARCH_IN_SUDOC_BY_ISBN_ONLY_SRU = 3
     SEARCH_IN_SUDOC_DVD = 4
-    # SEARCH_IN_ISO2701_FILE = 5
+    SEARCH_IN_KOHA_SRU_VANILLA = 5
+    # SEARCH_IN_ISO2701_FILE = 6
 
 class Actions(Enum):
     ISBN2PPN = 0
@@ -115,6 +128,12 @@ class Actions(Enum):
     SRU_SUDOC_TOU_TITLE_AUTHOR_PUBLISHER_DATE_TDO_V = 6
     SRU_SUDOC_TOU_TITLE_AUTHOR_DATE_TDO_V = 7
     SRU_SUDOC_TOU_TITLE_AUTHOR_PUBLISHER_TDO_V = 8
+    KOHA_SRU_IBSN = 9
+    KOHA_SRU_TITLE_AUTHOR_PUBLISHER_DATE = 10
+    KOHA_SRU_TITLE_AUTHOR_DATE = 11
+    KOHA_SRU_ANY_TITLE_AUTHOR_PUBLISHER_DATE = 12
+    KOHA_SRU_ANY_TITLE_AUTHOR_DATE = 13
+    
 
 class Try_Status(Enum):
     UNKNWON = 0
@@ -126,6 +145,7 @@ class Match_Records_Errors(Enum):
     NOTHING_WAS_FOUND = 1
     NO_EAN_WAS_FOUND = 2
     REQUIRED_DATA_MISSING = 3
+    NO_ISBN_WAS_FOUND = 4
 
 class Match_Records_Error_Messages(Enum):
     # Why tf are there 2 enums for errors
@@ -133,11 +153,13 @@ class Match_Records_Error_Messages(Enum):
     NOTHING_WAS_FOUND = "Nothing was found"
     NO_EAN_WAS_FOUND = "Original record has no EAN"
     REQUIRED_DATA_MISSING = "Original record was missing one of the required data"
+    NO_ISBN_WAS_FOUND = "Original record has no ISBN"
 
 
 PROCESSING_OPERATION_MAPPING = {
     FCR_Processings.BETTER_ITEM:Operations.SEARCH_IN_SUDOC_BY_ISBN,
-    FCR_Processings.BETTER_ITEM_DVD:Operations.SEARCH_IN_SUDOC_DVD
+    FCR_Processings.BETTER_ITEM_DVD:Operations.SEARCH_IN_SUDOC_DVD,
+    FCR_Processings.MARC_FILE_IN_KOHA_SRU:Operations.SEARCH_IN_KOHA_SRU_VANILLA
 }
 
 # TRY_OPERATIONS defines for each Operations a lsit of Actions to execute
@@ -161,6 +183,13 @@ class Try_Operations(Enum):
         Actions.SRU_SUDOC_MTI_AUT_APU_TDO_V,
         Actions.SRU_SUDOC_TOU_TITLE_AUTHOR_PUBLISHER_DATE_TDO_V,
         Actions.SRU_SUDOC_TOU_TITLE_AUTHOR_PUBLISHER_TDO_V
+    ]
+    SEARCH_IN_KOHA_SRU_VANILLA = [
+        Actions.KOHA_SRU_IBSN,
+        Actions.KOHA_SRU_TITLE_AUTHOR_PUBLISHER_DATE,
+        Actions.KOHA_SRU_TITLE_AUTHOR_DATE,
+        Actions.KOHA_SRU_ANY_TITLE_AUTHOR_PUBLISHER_DATE,
+        Actions.KOHA_SRU_ANY_TITLE_AUTHOR_DATE
     ]
     
 
@@ -260,6 +289,8 @@ class CSV_Cols(Enum):
     MATCHED_ID = 7000
     ORIGIN_DB_PPN = 7100
     TARGET_DB_PPN = 7101
+    ORIGIN_DB_ISBN = 7200
+    TARGET_DB_ISBN = 7201
     ORIGIN_DB_OTHER_DB_ID = 7900
     TARGET_DB_OTHER_DB_ID = 7901
     TARGET_DB_NB_OTHER_ID = 8000
