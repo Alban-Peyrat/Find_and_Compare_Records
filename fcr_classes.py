@@ -668,6 +668,24 @@ class Database_Record(object):
             if dates == []:
                 return dates, None, None
             return dates, min(dates), max(dates)
+        
+        def get_first_ean_as_string(self) -> str:
+            """Returns the first EAN as a str"""
+            ean = ""
+            for val in self.data[FCR_Mapped_Fields.EAN]:
+                if type(val) == str and val != "":
+                    ean = val
+                    break
+            return ean
+
+        def get_first_isbn_as_string(self) -> str:
+            """Returns the first ISBN as a str"""
+            isbn = ""
+            for val in self.data[FCR_Mapped_Fields.ISBN]:
+                if type(val) == str and val != "":
+                    isbn = val
+                    break
+            return isbn
             
             
 # -------------------- MATCH RECORDS (MR) --------------------
@@ -770,6 +788,15 @@ class Matched_Records(object):
         """Makes the request for this specific action and returns a list of IDs as a result"""
         # Actions based on the same connector are siilar, do not forget to udate all of them
 
+        #to avoid redundance
+        # Extract data
+        title = fcf.delete_for_sudoc(self.local_record.utils.get_titles_as_string())
+        author = fcf.delete_for_sudoc(self.local_record.utils.get_authors_as_string())
+        publisher = fcf.delete_for_sudoc(self.local_record.utils.get_all_publishers_as_string())
+        dates, oldest_date, newest_date = self.local_record.utils.get_all_publication_dates()
+        ean = self.local_record.utils.get_first_ean_as_string()
+        isbn = self.local_record.utils.get_first_isbn_as_string()
+
         # Action SRU SUdoc ISBN
         if action == Actions.SRU_SUDOC_ISBN:
             sru = ssru.Sudoc_SRU()
@@ -825,12 +852,6 @@ class Matched_Records(object):
 
         # Action SRU SUdoc EAN
         elif action == Actions.EAN2PPN:
-            # Gets the first EAN
-            ean = ""
-            for val in self.local_record.data[FCR_Mapped_Fields.EAN]:
-                if type(val) == str and val != "":
-                    ean = val
-                    break
             # No EAN was found, throw an error
             if ean == "":
                 thisTry.error_occured(Match_Records_Errors.NO_EAN_WAS_FOUND)
@@ -846,11 +867,6 @@ class Matched_Records(object):
         # Action SRU SUdoc MTI title AUT author EDI publisher APu date TDO v
         elif action == Actions.SRU_SUDOC_MTI_AUT_EDI_APU_TDO_V:
             sru = ssru.Sudoc_SRU()
-            # Extract data
-            title = fcf.delete_for_sudoc(self.local_record.utils.get_titles_as_string())
-            author = fcf.delete_for_sudoc(self.local_record.utils.get_authors_as_string())
-            publisher = fcf.delete_for_sudoc(self.local_record.utils.get_all_publishers_as_string())
-            dates, oldest_date, newest_date = self.local_record.utils.get_all_publication_dates()
             # Ensure no data is Empty 
             if title.strip() == "" or author.strip() == "" or publisher.strip() == "" or len(dates) < 1:
                 thisTry.error_occured(Match_Records_Errors.REQUIRED_DATA_MISSING)
@@ -911,10 +927,6 @@ class Matched_Records(object):
         # Action SRU SUdoc MTI title AUT author APu date TDO v
         elif action == Actions.SRU_SUDOC_MTI_AUT_APU_TDO_V:
             sru = ssru.Sudoc_SRU()
-            # Extract data
-            title = fcf.delete_for_sudoc(self.local_record.utils.get_titles_as_string())
-            author = fcf.delete_for_sudoc(self.local_record.utils.get_authors_as_string())
-            dates, oldest_date, newest_date = self.local_record.utils.get_all_publication_dates()
             # Ensure no data is Empty 
             if title.strip() == "" or author.strip() == "" or len(dates) < 1:
                 thisTry.error_occured(Match_Records_Errors.REQUIRED_DATA_MISSING)
@@ -969,11 +981,6 @@ class Matched_Records(object):
         # Action SRU SUdoc TOU title + author + publisher + date TDO v
         elif action == Actions.SRU_SUDOC_TOU_TITLE_AUTHOR_PUBLISHER_DATE_TDO_V:
             sru = ssru.Sudoc_SRU()
-            # Extract data
-            title = fcf.delete_for_sudoc(self.local_record.utils.get_titles_as_string())
-            author = fcf.delete_for_sudoc(self.local_record.utils.get_authors_as_string())
-            publisher = fcf.delete_for_sudoc(self.local_record.utils.get_all_publishers_as_string())
-            dates, oldest_date, newest_date = self.local_record.utils.get_all_publication_dates()
             # Ensure no data is Empty 
             if title.strip() == "" or author.strip() == "" or publisher.strip() == "" or len(dates) < 1:
                 thisTry.error_occured(Match_Records_Errors.REQUIRED_DATA_MISSING)
@@ -1011,10 +1018,6 @@ class Matched_Records(object):
         # Action SRU SUdoc TOU title + author + date TDO v
         elif action == Actions.SRU_SUDOC_TOU_TITLE_AUTHOR_DATE_TDO_V:
             sru = ssru.Sudoc_SRU()
-            # Extract data
-            title = fcf.delete_for_sudoc(self.local_record.utils.get_titles_as_string())
-            author = fcf.delete_for_sudoc(self.local_record.utils.get_authors_as_string())
-            dates, oldest_date, newest_date = self.local_record.utils.get_all_publication_dates()
             # Ensure no data is Empty 
             if title.strip() == "" or author.strip() == "" or len(dates) < 1:
                 thisTry.error_occured(Match_Records_Errors.REQUIRED_DATA_MISSING)
@@ -1052,10 +1055,6 @@ class Matched_Records(object):
         # Action SRU SUdoc TOU title + author + publisher TDO v
         elif action == Actions.SRU_SUDOC_TOU_TITLE_AUTHOR_PUBLISHER_TDO_V:
             sru = ssru.Sudoc_SRU()
-            # Extract data
-            title = fcf.delete_for_sudoc(self.local_record.utils.get_titles_as_string())
-            author = fcf.delete_for_sudoc(self.local_record.utils.get_authors_as_string())
-            publisher = fcf.delete_for_sudoc(self.local_record.utils.get_all_publishers_as_string())
             # Ensure no data is Empty 
             if title.strip() == "" or author.strip() == "" or publisher.strip() == "":
                 thisTry.error_occured(Match_Records_Errors.REQUIRED_DATA_MISSING)
@@ -1089,7 +1088,186 @@ class Matched_Records(object):
                 thisTry.add_returned_ids(res.get_records_id())
                 thisTry.add_returned_records(res.get_records())
 
-        # Action in Koha SRU
+        # Action Koha SRU ISBN
+        elif action == Actions.KOHA_SRU_IBSN:
+            # No ISBN was found, throw an error
+            if isbn == "":
+                thisTry.error_occured(Match_Records_Errors.NO_ISBN_WAS_FOUND)
+                return
+            sru = ksru.Koha_SRU(self.es.target_url, ksru.SRU_Version.V1_1)
+            sru_request = ksru.Part_Of_Query(
+                ksru.SRU_Indexes.ISBN,
+                ksru.SRU_Relations.EQUALS,
+                isbn
+            )
+            thisTry.define_used_query(sru.generate_query([sru_request]))
+            res = sru.search(
+                thisTry.query,
+                record_schema=ksru.SRU_Record_Schemas.MARCXML,
+                start_record=1,
+                maximum_records=100
+            )
+            if (res.status == "Error"):
+                thisTry.error_occured(res.get_error_msg())
+            else:
+                thisTry.add_returned_ids(res.get_records_id())
+                thisTry.add_returned_records(res.get_records())
+
+        # Action Koha SRU Title, author, publisher and date on their own indexes
+        elif action == Actions.KOHA_SRU_TITLE_AUTHOR_PUBLISHER_DATE:
+            sru = ksru.Koha_SRU(self.es.target_url, ksru.SRU_Version.V1_1)
+            # Ensure no data is Empty 
+            if title.strip() == "" or author.strip() == "" or publisher.strip() == "" or len(dates) < 1:
+                thisTry.error_occured(Match_Records_Errors.REQUIRED_DATA_MISSING)
+                return
+            # Generate query
+            sru_request = [
+                ksru.Part_Of_Query(
+                    ksru.SRU_Indexes.TITLE,
+                    ksru.SRU_Relations.EQUALS,
+                    title,
+                    ksru.SRU_Boolean_Operators.AND
+                ),
+                ksru.Part_Of_Query(
+                    ksru.SRU_Indexes.AUTHOR,
+                    ksru.SRU_Relations.EQUALS,
+                    author,
+                    ksru.SRU_Boolean_Operators.AND
+                ),
+                ksru.Part_Of_Query(
+                    ksru.SRU_Indexes.PUBLISHER,
+                    ksru.SRU_Relations.EQUALS,
+                    publisher,
+                    ksru.SRU_Boolean_Operators.AND
+                ),
+                f" and ({ksru.SRU_Indexes.DATE.value}={f' or {ksru.SRU_Indexes.DATE.value}='.join([str(num) for num in dates])})",
+            ]
+            thisTry.define_used_query(sru.generate_query(sru_request))
+            res = sru.search(
+                thisTry.query,
+                record_schema=ksru.SRU_Record_Schemas.MARCXML,
+                start_record=1,
+                maximum_records=100
+            )
+            if (res.status == "Error"):
+                thisTry.error_occured(res.get_error_msg())
+            else:
+                thisTry.add_returned_ids(res.get_records_id())
+                thisTry.add_returned_records(res.get_records())
+
+        # Action Koha SRU Title, author and date on their own indexes
+        elif action == Actions.KOHA_SRU_TITLE_AUTHOR_DATE:
+            sru = ksru.Koha_SRU(self.es.target_url, ksru.SRU_Version.V1_1)
+            # Ensure no data is Empty 
+            if title.strip() == "" or author.strip() == "" or len(dates) < 1:
+                thisTry.error_occured(Match_Records_Errors.REQUIRED_DATA_MISSING)
+                return
+            # Generate query
+            sru_request = [
+                ksru.Part_Of_Query(
+                    ksru.SRU_Indexes.TITLE,
+                    ksru.SRU_Relations.EQUALS,
+                    title,
+                    ksru.SRU_Boolean_Operators.AND
+                ),
+                ksru.Part_Of_Query(
+                    ksru.SRU_Indexes.AUTHOR,
+                    ksru.SRU_Relations.EQUALS,
+                    author,
+                    ksru.SRU_Boolean_Operators.AND
+                ),
+                f" and ({ksru.SRU_Indexes.DATE.value}={f' or {ksru.SRU_Indexes.DATE.value}='.join([str(num) for num in dates])})",
+            ]
+            thisTry.define_used_query(sru.generate_query(sru_request))
+            res = sru.search(
+                thisTry.query,
+                record_schema=ksru.SRU_Record_Schemas.MARCXML,
+                start_record=1,
+                maximum_records=100
+            )
+            if (res.status == "Error"):
+                thisTry.error_occured(res.get_error_msg())
+            else:
+                thisTry.add_returned_ids(res.get_records_id())
+                thisTry.add_returned_records(res.get_records())
+
+        # Action Koha SRU Title, author, publisher and date on index "any"
+        elif action == Actions.KOHA_SRU_ANY_TITLE_AUTHOR_PUBLISHER_DATE:
+            sru = ksru.Koha_SRU(self.es.target_url, ksru.SRU_Version.V1_1)
+            # Ensure no data is Empty 
+            if title.strip() == "" or author.strip() == "" or publisher.strip() == "" or len(dates) < 1:
+                thisTry.error_occured(Match_Records_Errors.REQUIRED_DATA_MISSING)
+                return
+            # Generate query
+            sru_request = [
+                ksru.Part_Of_Query(
+                    ksru.SRU_Indexes.ANY,
+                    ksru.SRU_Relations.EQUALS,
+                    title,
+                    ksru.SRU_Boolean_Operators.AND
+                ),
+                ksru.Part_Of_Query(
+                    ksru.SRU_Indexes.ANY,
+                    ksru.SRU_Relations.EQUALS,
+                    author,
+                    ksru.SRU_Boolean_Operators.AND
+                ),
+                ksru.Part_Of_Query(
+                    ksru.SRU_Indexes.ANY,
+                    ksru.SRU_Relations.EQUALS,
+                    publisher,
+                    ksru.SRU_Boolean_Operators.AND
+                ),
+                f" and ({ksru.SRU_Indexes.ANY.value}={f' or {ksru.SRU_Indexes.ANY.value}='.join([str(num) for num in dates])})",
+            ]
+            thisTry.define_used_query(sru.generate_query(sru_request))
+            res = sru.search(
+                thisTry.query,
+                record_schema=ksru.SRU_Record_Schemas.MARCXML,
+                start_record=1,
+                maximum_records=100
+            )
+            if (res.status == "Error"):
+                thisTry.error_occured(res.get_error_msg())
+            else:
+                thisTry.add_returned_ids(res.get_records_id())
+                thisTry.add_returned_records(res.get_records())
+
+        # Action Koha SRU Title, author and date on index "any"
+        elif action == Actions.KOHA_SRU_ANY_TITLE_AUTHOR_DATE:
+            sru = ksru.Koha_SRU(self.es.target_url, ksru.SRU_Version.V1_1)
+            # Ensure no data is Empty 
+            if title.strip() == "" or author.strip() == "" or len(dates) < 1:
+                thisTry.error_occured(Match_Records_Errors.REQUIRED_DATA_MISSING)
+                return
+            # Generate query
+            sru_request = [
+                ksru.Part_Of_Query(
+                    ksru.SRU_Indexes.ANY,
+                    ksru.SRU_Relations.EQUALS,
+                    title,
+                    ksru.SRU_Boolean_Operators.AND
+                ),
+                ksru.Part_Of_Query(
+                    ksru.SRU_Indexes.ANY,
+                    ksru.SRU_Relations.EQUALS,
+                    author,
+                    ksru.SRU_Boolean_Operators.AND
+                ),
+                f" and ({ksru.SRU_Indexes.ANY.value}={f' or {ksru.SRU_Indexes.ANY.value}='.join([str(num) for num in dates])})",
+            ]
+            thisTry.define_used_query(sru.generate_query(sru_request))
+            res = sru.search(
+                thisTry.query,
+                record_schema=ksru.SRU_Record_Schemas.MARCXML,
+                start_record=1,
+                maximum_records=100
+            )
+            if (res.status == "Error"):
+                thisTry.error_occured(res.get_error_msg())
+            else:
+                thisTry.add_returned_ids(res.get_records_id())
+                thisTry.add_returned_records(res.get_records())
 
 # -------------------- UNIVERSAL DATA EXTRACTOR (UDE) --------------------
 
@@ -1159,6 +1337,7 @@ class Marc_Fields_Mapping(object):
         self.id = Marc_Fields_Data(self.marc_fields_json[FCR_Mapped_Fields.ID.value])
         self.ppn = Marc_Fields_Data(self.marc_fields_json[FCR_Mapped_Fields.PPN.value])
         self.ean = Marc_Fields_Data(self.marc_fields_json[FCR_Mapped_Fields.EAN.value])
+        self.isbn = Marc_Fields_Data(self.marc_fields_json[FCR_Mapped_Fields.ISBN.value])
         self.general_processing_data_dates = Marc_Fields_Data(self.marc_fields_json[FCR_Mapped_Fields.GENERAL_PROCESSING_DATA_DATES.value])
         self.erroneous_isbn = Marc_Fields_Data(self.marc_fields_json[FCR_Mapped_Fields.ERRONEOUS_ISBN.value])
         self.title = Marc_Fields_Data(self.marc_fields_json[FCR_Mapped_Fields.TITLE.value])
@@ -1379,6 +1558,8 @@ class Universal_Data_Extractor(object):
             return self.get_ppn(filter_value)
         elif mapped_field == FCR_Mapped_Fields.EAN:
             return self.get_ean(filter_value)
+        elif mapped_field == FCR_Mapped_Fields.ISBN:
+            return self.get_isbn(filter_value)
         elif mapped_field == FCR_Mapped_Fields.GENERAL_PROCESSING_DATA_DATES:
             return self.get_general_processing_data_dates(filter_value)
         elif mapped_field == FCR_Mapped_Fields.ERRONEOUS_ISBN:
@@ -1476,6 +1657,12 @@ class Universal_Data_Extractor(object):
         Takes filter_value as argument if mapped to have a filtering subfield."""
         return self.extract_list_of_ids(self.marc_fields_mapping.ean, filter_value)
 
+    def get_isbn(self, filter_value: Optional[str] = "") -> List[str]:
+        """Return all ISBN as a list of str, without duplicates.
+
+        Takes filter_value as argument if mapped to have a filtering subfield."""
+        return self.extract_list_of_ids(self.marc_fields_mapping.isbn, filter_value)
+    
     def get_edition_notes(self, filter_value: Optional[str] = "") -> List[str]:
         """Return all fields mapped as edition notes as a list of strings
         Each subfield is separated by a space

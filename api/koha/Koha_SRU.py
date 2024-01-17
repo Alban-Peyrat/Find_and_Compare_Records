@@ -38,7 +38,10 @@ class SRU_Record_Schemas(Enum):
     # MARC21 = "marc21"
 
 class SRU_Indexes(Enum):
-    # "cql.serverChoice" / BIB1_1016 UNUSED
+    CQL_SERVERCHOICE = "cql.serverChoice"
+    ANY = "cql.serverChoice"
+    BIB1_1016 = "cql.serverChoice"
+    DC_ANY = "dc.any"
     BIBLIONUMBER = "rec.id"
     REC_ID = "rec.id"
     BIB1_12 = "rec.id"

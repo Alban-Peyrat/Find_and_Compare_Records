@@ -147,10 +147,10 @@ PROCESSING_CONFIGURATION_SCREEN_MAIN_TAB_LAYOUT = [
     # ----- Row 3-4 -----
     # Target database URL
     [
-        sg.Text(f"{GUI_Text.TARGET_DATABASE_URL.value[VALLS.lang]} :", k=GUI_Text.TARGET_DATABASE_URL.name, metadata={"class":["PROCESSING_CONFIGURATION_MAIN", fcr.FCR_Processings.OTHER_DB_IN_LOCAL_DB.name]})
+        sg.Text(f"{GUI_Text.TARGET_DATABASE_URL.value[VALLS.lang]} :", k=GUI_Text.TARGET_DATABASE_URL.name, metadata={"class":["PROCESSING_CONFIGURATION_MAIN", fcr.FCR_Processings.MARC_FILE_IN_KOHA_SRU.name]})
     ],
     [
-        sg.Input(key="TARGET_URL", default_text=VALLS.target_url, size=(80, None), metadata={"class":["PROCESSING_CONFIGURATION_MAIN", fcr.FCR_Processings.OTHER_DB_IN_LOCAL_DB.name]})
+        sg.Input(key="TARGET_URL", default_text=VALLS.target_url, size=(80, None), metadata={"class":["PROCESSING_CONFIGURATION_MAIN", fcr.FCR_Processings.MARC_FILE_IN_KOHA_SRU.name]})
     ],
 
     # ----- Row 5-6 -----
@@ -158,21 +158,21 @@ PROCESSING_CONFIGURATION_SCREEN_MAIN_TAB_LAYOUT = [
     [
         sg.Text(f"{GUI_Text.ILN_TEXT.value[VALLS.lang]} :", k=GUI_Text.ILN_TEXT.name, metadata={"class":["PROCESSING_CONFIGURATION_MAIN", fcr.FCR_Processings.BETTER_ITEM.name, fcr.FCR_Processings.BETTER_ITEM_DVD.name]}),
         sg.Input(key="ILN", default_text=VALLS.iln, size=(4, None), metadata={"class":["PROCESSING_CONFIGURATION_MAIN", fcr.FCR_Processings.BETTER_ITEM.name, fcr.FCR_Processings.BETTER_ITEM_DVD.name]}),
-        sg.Text(f"{GUI_Text.FILTER1_TEXT.value[VALLS.lang]} :", k=GUI_Text.FILTER1_TEXT.name, metadata={"class":["PROCESSING_CONFIGURATION_MAIN", fcr.FCR_Processings.OTHER_DB_IN_LOCAL_DB.name]}),
-        sg.Input(key="FILTER1", default_text=VALLS.filter1, size=(4, None), metadata={"class":["PROCESSING_CONFIGURATION_MAIN", fcr.FCR_Processings.OTHER_DB_IN_LOCAL_DB.name]})
+        sg.Text(f"{GUI_Text.FILTER1_TEXT.value[VALLS.lang]} :", k=GUI_Text.FILTER1_TEXT.name, metadata={"class":["PROCESSING_CONFIGURATION_MAIN", fcr.FCR_Processings.MARC_FILE_IN_KOHA_SRU.name]}),
+        sg.Input(key="FILTER1", default_text=VALLS.filter1, size=(4, None), metadata={"class":["PROCESSING_CONFIGURATION_MAIN", fcr.FCR_Processings.MARC_FILE_IN_KOHA_SRU.name]})
     ],
     [
         sg.Text(f"{GUI_Text.RCR_TEXT.value[VALLS.lang]} :", k=GUI_Text.RCR_TEXT.name, metadata={"class":["PROCESSING_CONFIGURATION_MAIN", fcr.FCR_Processings.BETTER_ITEM.name, fcr.FCR_Processings.BETTER_ITEM_DVD.name]}),
         sg.Input(key="RCR", default_text=VALLS.rcr, size=(10, None), metadata={"class":["PROCESSING_CONFIGURATION_MAIN", fcr.FCR_Processings.BETTER_ITEM.name, fcr.FCR_Processings.BETTER_ITEM_DVD.name]}),
-        sg.Text(f"{GUI_Text.FILTER2_TEXT.value[VALLS.lang]} :", k=GUI_Text.FILTER2_TEXT.name, metadata={"class":["PROCESSING_CONFIGURATION_MAIN", fcr.FCR_Processings.OTHER_DB_IN_LOCAL_DB.name]}),
-        sg.Input(key="FILTER2", default_text=VALLS.filter2, size=(4, None), metadata={"class":["PROCESSING_CONFIGURATION_MAIN", fcr.FCR_Processings.OTHER_DB_IN_LOCAL_DB.name]})
+        sg.Text(f"{GUI_Text.FILTER2_TEXT.value[VALLS.lang]} :", k=GUI_Text.FILTER2_TEXT.name, metadata={"class":["PROCESSING_CONFIGURATION_MAIN", fcr.FCR_Processings.MARC_FILE_IN_KOHA_SRU.name]}),
+        sg.Input(key="FILTER2", default_text=VALLS.filter2, size=(4, None), metadata={"class":["PROCESSING_CONFIGURATION_MAIN", fcr.FCR_Processings.MARC_FILE_IN_KOHA_SRU.name]})
     ],
 
     # ----- Row 7-8 -----
     # 3rd filter parameter
     [
-        sg.Text(f"{GUI_Text.FILTER3_TEXT.value[VALLS.lang]} :", k=GUI_Text.FILTER3_TEXT.name, metadata={"class":["PROCESSING_CONFIGURATION_MAIN", fcr.FCR_Processings.OTHER_DB_IN_LOCAL_DB.name]}),
-        sg.Input(key="FILTER3", default_text=VALLS.filter3, size=(4, None), metadata={"class":["PROCESSING_CONFIGURATION_MAIN", fcr.FCR_Processings.OTHER_DB_IN_LOCAL_DB.name]})
+        sg.Text(f"{GUI_Text.FILTER3_TEXT.value[VALLS.lang]} :", k=GUI_Text.FILTER3_TEXT.name, metadata={"class":["PROCESSING_CONFIGURATION_MAIN", fcr.FCR_Processings.MARC_FILE_IN_KOHA_SRU.name]}),
+        sg.Input(key="FILTER3", default_text=VALLS.filter3, size=(4, None), metadata={"class":["PROCESSING_CONFIGURATION_MAIN", fcr.FCR_Processings.MARC_FILE_IN_KOHA_SRU.name]})
     ],
     [
         
@@ -588,6 +588,10 @@ while True:
                 save_mapping_as_new(new_name, val, window) 
         else:
             save_parameters(curr_screen, val)
+
+    # --------------- User selected a mapping ---------------
+    if event == "PROCESSING_VAL":
+        window["-display_chosen_processing_in_processing_configuration_screen-"].update(value=val["PROCESSING_VAL"])
 
     # --------------- Continue to processign configuration ---------------
     if event == GUI_Text.GO_TO_PROCESSING_CONFIGURATION.name:

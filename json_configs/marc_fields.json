@@ -47,6 +47,23 @@
                 }
             ]
         },
+        "isbn": {
+            "label": {
+                "eng": "ISBN",
+                "fre": "ISBN"
+            },
+            "fields": [
+                {
+                    "tag": "010",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "",
+                    "subfields": [
+                        "a"
+                    ],
+                    "positions": ""
+                }
+            ]
+        },
         "general_processing_data_dates": {
             "label": {
                 "eng": "Dates (general processing data)",
@@ -408,6 +425,23 @@
             "fields": [
                 {
                     "tag": "073",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "",
+                    "subfields": [
+                        "a"
+                    ],
+                    "positions": ""
+                }
+            ]
+        },
+        "isbn": {
+            "label": {
+                "eng": "ISBN",
+                "fre": "ISBN"
+            },
+            "fields": [
+                {
+                    "tag": "010",
                     "single_line_coded_data": false,
                     "filtering_subfield": "",
                     "subfields": [
@@ -969,6 +1003,23 @@
                 }
             ]
         },
+        "isbn": {
+            "label": {
+                "eng": "ISBN",
+                "fre": "ISBN"
+            },
+            "fields": [
+                {
+                    "tag": "010",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "",
+                    "subfields": [
+                        "a"
+                    ],
+                    "positions": ""
+                }
+            ]
+        },
         "general_processing_data_dates": {
             "label": {
                 "eng": "Dates from general processing data",
@@ -1316,6 +1367,23 @@
             "fields": [
                 {
                     "tag": "073",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "",
+                    "subfields": [
+                        "a"
+                    ],
+                    "positions": ""
+                }
+            ]
+        },
+        "isbn": {
+            "label": {
+                "eng": "ISBN",
+                "fre": "ISBN"
+            },
+            "fields": [
+                {
+                    "tag": "010",
                     "single_line_coded_data": false,
                     "filtering_subfield": "",
                     "subfields": [

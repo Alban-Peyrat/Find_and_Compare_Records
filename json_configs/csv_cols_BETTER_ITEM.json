@@ -258,5 +258,13 @@
     "FCR_ACTION_USED":{
         "fre":"Action FCR utilisée",
         "eng":"FCR action used"
+    },
+    "ORIGIN_DB_ISBN":{
+        "fre":"ISBN Koha",
+        "eng":"ISBN Koha"
+    },
+    "TARGET_DB_ISBN":{
+        "fre":"ISBN Sudoc",
+        "eng":"ISBN Sudoc"
     }
 }

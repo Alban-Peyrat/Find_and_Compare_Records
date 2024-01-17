@@ -9,6 +9,28 @@ _Some previous changes will be added_
 
 ## [Unreleased]
 
+### Added
+
+* New file in user documetnation explaining the exported data (only calculated fields)
+* Added actions for Koha SRU :
+  * ISBN
+  * Title, author, publisher and date using their own indexes
+  * Title, author and date using their own indexes
+  * Title, author, publisher and date using `any` index
+  * Title, author and date using `any` index
+* Added a new operation to query Koha SRU `SEARCH_IN_KOHA_SRU_VANILLA`
+* Added ISBN as extractable data from records
+* Added `Utils` methods to `Database_Records` to get the first ISBn and the first EAN as a string
+
+### Changed
+
+* `OTHER_DB_IN_LOCAL_DB` was renammed in `MARC_FILE_IN_KOHA_SRU`
+* Updated `Koha_SRU` version
+
+### Fixed
+
+* Fixed displayed processing in *Processing configuration* screen, previously not updating properly if selected processing was changed in the main screen
+
 ## [1.13.1] - 2024-01-2024
 
 ### Added
