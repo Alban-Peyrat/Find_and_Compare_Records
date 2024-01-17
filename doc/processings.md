@@ -7,6 +7,8 @@
   * Add a new key in `PROCESSING_OPERATION_MAPPING` using :
     * A `FCR_Processings` entry as a key
     * A `Operations` entry as a value
+* In `fcr_classes.py` :
+  * In `Execution_Settings`, define the databases in `define_databases()` methods
 * In `main_gui.py` : see [in GUI doc](./GUI.md#hide-elements-for-some-processings)
 
 

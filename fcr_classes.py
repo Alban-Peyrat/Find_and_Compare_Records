@@ -95,6 +95,14 @@ class Execution_Settings(object):
             self.chosen_analysis_checks[Analysis_Checks.PUBLISHER] = None
         if self.chosen_analysis["USE_DATE"]:
             self.chosen_analysis_checks[Analysis_Checks.DATE] = None
+    
+    def define_databases(self):
+        if self.processing in [FCR_Processings.BETTER_ITEM, FCR_Processings.BETTER_ITEM_DVD]:
+            self.origin_database = Databases.KOHA_PUBLIC_BIBLIO
+            self.target_database = Databases.ABESXML
+        elif self.processing == FCR_Processings.MARC_FILE_IN_KOHA_SRU:
+            self.origin_database = Databases.LOCAL
+            self.target_database = Databases.KOHA_SRU
 
     # ----- Methods for UI -----
     def UI_get_log_levels(self) -> List[str]:
@@ -171,6 +179,7 @@ class Execution_Settings(object):
         Takes as argument the new val AS A STRING not a FCR_Processings entry"""
         self.processing_val = processing_val
         self.processing = FCR_Processings[self.processing_val]
+        self.define_databases()
 
     def UI_update_main_screen_values(self, val:dict):
         """Updates all data from the UI inside this instance"""
@@ -499,13 +508,17 @@ class Database_Record(object):
                 or (not self.is_target_db and processing.value[data] == FCR_Processing_Data_Target.ORIGIN)
             ):
                 if data in self.database.value:
-                    #temp
                     filter_value = ""
-                    if self.database.value[data] == "RCR":
+                    if self.database.value[data] == FCR_Filters.RCR:
                         filter_value = es.rcr
-                    if self.database.value[data] == "ILN":
+                    elif self.database.value[data] == FCR_Filters.ILN:
                         filter_value = es.iln
-                    #temp
+                    elif self.database.value[data] == FCR_Filters.FILTER1:
+                        filter_value = es.filter1
+                    elif self.database.value[data] == FCR_Filters.FILTER2:
+                        filter_value = es.filter2
+                    elif self.database.value[data] == FCR_Filters.FILTER3:
+                        filter_value = es.filter3
                     self.data[data] = self.ude.get_by_mapped_field_name(data, filter_value)
                 else:
                     self.data[data] = self.ude.get_by_mapped_field_name(data)
@@ -636,22 +649,32 @@ class Database_Record(object):
 
         def get_id(self) -> str:
             """Returns the record ID as a string"""
+            if not FCR_Mapped_Fields.ID in self.data:
+                return ""
             return fcf.list_as_string(self.data[FCR_Mapped_Fields.ID])
 
         def get_first_title_as_string(self) -> str:
             """Returns the first title cleaned up as a strin"""
+            if not FCR_Mapped_Fields.TITLE in self.data:
+                return ""
             return fcf.nettoie_titre(fcf.list_as_string(self.data[FCR_Mapped_Fields.TITLE][0]))
 
         def get_titles_as_string(self) -> str:
             """Returns all titles cleaned up as a str"""
+            if not FCR_Mapped_Fields.TITLE in self.data:
+                return ""
             return fcf.nettoie_titre(fcf.list_as_string(self.data[FCR_Mapped_Fields.TITLE]))
 
         def get_authors_as_string(self) -> str:
             """Returns all authors cleaned up as a str"""
+            if not FCR_Mapped_Fields.AUTHORS in self.data:
+                return ""
             return fcf.nettoie_titre(fcf.list_as_string(self.data[FCR_Mapped_Fields.AUTHORS]))
 
         def get_all_publishers_as_string(self) -> str:
             """Returns all authors cleaned up as a str"""
+            if not FCR_Mapped_Fields.PUBLISHERS_NAME in self.data:
+                return ""
             return fcf.clean_publisher(fcf.list_as_string(self.data[FCR_Mapped_Fields.PUBLISHERS_NAME]))
 
         def get_all_publication_dates(self) -> Tuple[List[int], int, int]:
@@ -660,6 +683,8 @@ class Database_Record(object):
                 - the oldest date as a int (None if no date)
                 - the newest date as a int (None if no date)"""
             dates = []
+            if not FCR_Mapped_Fields.PUBLICATION_DATES in self.data:
+                return dates, None, None
             for date_str in self.data[FCR_Mapped_Fields.PUBLICATION_DATES]:
                 dates += fcf.get_year(date_str)
             # Intifies
@@ -672,6 +697,8 @@ class Database_Record(object):
         def get_first_ean_as_string(self) -> str:
             """Returns the first EAN as a str"""
             ean = ""
+            if not FCR_Mapped_Fields.EAN in self.data:
+                return ean
             for val in self.data[FCR_Mapped_Fields.EAN]:
                 if type(val) == str and val != "":
                     ean = val
@@ -681,6 +708,8 @@ class Database_Record(object):
         def get_first_isbn_as_string(self) -> str:
             """Returns the first ISBN as a str"""
             isbn = ""
+            if not FCR_Mapped_Fields.ISBN in self.data:
+                return isbn
             for val in self.data[FCR_Mapped_Fields.ISBN]:
                 if type(val) == str and val != "":
                     isbn = val

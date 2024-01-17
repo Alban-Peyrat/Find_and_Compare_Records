@@ -3,7 +3,6 @@
 # External imports
 import os
 import csv
-import logging
 import json
 
 # Internal import
@@ -57,6 +56,10 @@ def main(es: fcr.Execution_Settings):
         es.log.simple_info("Koha URL", es.origin_url)
         es.log.simple_info("ILN", es.iln)
         es.log.simple_info("RCR", es.rcr)
+    if es.processing_val == fcr.FCR_Processings.MARC_FILE_IN_KOHA_SRU.name:
+        es.log.simple_info("Koha URL", es.target_url)
+    es.log.simple_info("Origin database", es.origin_database.name)
+    es.log.simple_info("Target database", es.target_database.name)
     es.log.simple_info("Origin database mapping", es.origin_database_mapping)
     es.log.simple_info("Target database mapping", es.target_database_mapping)
 
@@ -98,7 +101,7 @@ def main(es: fcr.Execution_Settings):
             
             # Successfully got Koha record
             # AR362 : UDE
-            rec.get_origin_database_data(es.processing, koha_record.record_parsed, fcr.Databases.KOHA_PUBLIC_BIBLIO, es)
+            rec.get_origin_database_data(es.processing, koha_record.record_parsed, es.origin_database, es)
             es.log.debug(f"Origin database ID : {rec.origin_database_data.utils.get_id()}")
             es.log.debug(f"Origin database cleaned title : {rec.origin_database_data.utils.get_first_title_as_string()}")
 
@@ -139,7 +142,8 @@ def main(es: fcr.Execution_Settings):
                 # Successfully got Sudoc record
                 rec.reset_error()
                 # AR362 : UDE
-                rec.get_target_database_data(es.processing, matched_id, sudoc_record.record_parsed, fcr.Databases.ABESXML, es)
+                
+                rec.get_target_database_data(es.processing, matched_id, sudoc_record.record_parsed, es.target_database, es)
                 target_record:fcr.Database_Record = rec.target_database_data[matched_id] # for the IDE
                 results_report.increase_success(fcr.Success.GLOBAL) # report stats
                 es.log.debug(f"Target database ID : {rec.matched_id}")
