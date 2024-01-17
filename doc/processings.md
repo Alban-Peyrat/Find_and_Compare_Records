@@ -9,6 +9,7 @@
     * A `Operations` entry as a value
 * In `fcr_classes.py` :
   * In `Execution_Settings`, define the databases in `define_databases()` methods
+  * In `Execution_Settings`, add a behaviour at the beginning of `load_original_file_data()` method
 * In `main_gui.py` : see [in GUI doc](./GUI.md#hide-elements-for-some-processings)
 
 

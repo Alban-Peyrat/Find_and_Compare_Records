@@ -65,105 +65,125 @@ def main(es: fcr.Execution_Settings):
 
     # ------------------------------ MAIN FUNCTION ------------------------------
     results = []
-    with open(es.file_path, 'r', newline="", encoding="utf-8") as fh:
-        es.log.big_info("File processing start")
-        
-        # Load original file data
-        csvdata = csv.DictReader(fh, delimiter=";")
-        
-        # Create CSV output file
-        es.csv.create_file(csvdata.fieldnames)
-        es.log.simple_info("CSV output file", es.csv.file_path)
-        es.log.simple_info("CSV column configuration file", es.csv_cols_config_path)
+    es.log.big_info("File processing start")
+    
+    # Load original file data
+    es.load_original_file_data()
+    
+    # Create CSV output file
+    es.csv.create_file(es.original_file_headers)
+    es.log.simple_info("CSV output file", es.csv.file_path)
+    es.log.simple_info("CSV column configuration file", es.csv_cols_config_path)
 
-        for line in csvdata:
-            # Declaration & set-up of record
-            rec = fcr.Original_Record(line, es)
-            results_report.increase_processed() # report stats
+    for index in es.original_file_data:
+        # Declaration & set-up of record
+        line = None
+        if es.original_file_data_is_csv:
+            line = es.original_file_data[index]
             # Retrieve ISBN + KohaBibNb
             # 0 = ISBN, 1 = 915$a, 2 = 915$b, 3 = 930$c, 4 = 930$e,
             # 5 = 930$a, 6 = 930$j, 7 = 930$v, 8 = L035$a
+        rec = fcr.Original_Record(es, line)
+        results_report.increase_processed() # report stats
 
-            # Gets input query and original uid
-            rec.extract_from_original_line(csvdata.fieldnames)
+        # Gets input query and original uid for BETTER_ITEMs
+        if es.original_file_data_is_csv:
+            rec.extract_from_original_line()
             es.log.info(f"--- Processing new line : input query = \"{rec.input_query}\", origin database ID = \"{rec.original_uid}\"")
+        else:
+            rec.set_fake_csv_file_data()
+            es.log.info(f"--- Processing record n°{index}")
 
-            # --------------- ORIGIN DATABASE ---------------
-            # Get Koha record
-            koha_record = Koha_API_PublicBiblio.Koha_API_PublicBiblio(rec.original_uid, es.origin_url, service=es.service, format="application/marcxml+xml")
-            # Thfck is this → j'ai rajouté un filter(None) au moment de l'export CSV mais ça pose problème quand même...
-            if koha_record.status == 'Error' :
-                rec.trigger_error("Koha_API_PublicBiblio : " + koha_record.error_msg)
+        # --------------- ORIGIN DATABASE ---------------
+        # Get origin DB record
+        # BETTER_ITEMs querying Koha Public biblio
+        if es.processing in [fcr.FCR_Processings.BETTER_ITEM, fcr.FCR_Processings.BETTER_ITEM_DVD]:
+            origin_record = Koha_API_PublicBiblio.Koha_API_PublicBiblio(rec.original_uid, es.origin_url, service=es.service, format="application/marcxml+xml")
+            if origin_record.status == 'Error' :
+                rec.trigger_error(f"Koha_API_PublicBiblio : {origin_record.error_msg}")
                 results_report.increase_fail(fcr.Errors.KOHA) # report stats
+                es.log.error(rec.error_message)
                 es.csv.write_line(rec, False)
                 results.append(rec.output.to_csv())
                 continue # skip to next line
-            
-            # Successfully got Koha record
-            # AR362 : UDE
-            rec.get_origin_database_data(es.processing, koha_record.record_parsed, es.origin_database, es)
-            es.log.debug(f"Origin database ID : {rec.origin_database_data.utils.get_id()}")
-            es.log.debug(f"Origin database cleaned title : {rec.origin_database_data.utils.get_first_title_as_string()}")
-
-            # --------------- Match records ---------------
-            rec.get_matched_records_instance(fcr.Matched_Records(es.operation, rec.input_query, rec.origin_database_data, es))     
-            if rec.nb_matched_records == 0:
-                rec.trigger_error("{} : no result".format(str(es.operation.name)))
-
-            # ||| needs to be redone with enhanced match records errors
-            if rec.error:
-                results_report.increase_fail(fcr.Errors.MATCH_RECORD)
+            rec.get_origin_database_data(es.processing, origin_record.record_parsed, es.origin_database, es)
+        # MARC_FILE_IN_KOHA_SRU from the file
+        if es.processing == fcr.FCR_Processings.MARC_FILE_IN_KOHA_SRU:
+            origin_record = es.original_file_data[index]
+            if origin_record is None:
+                rec.trigger_error(f"MARC file : record was ignored because its chunk raised an exception")
+                results_report.increase_fail(fcr.Errors.LOCAL_RECORD) # report stats
                 es.log.error(rec.error_message)
-                
-                # Skip to next line
                 es.csv.write_line(rec, False)
                 results.append(rec.output.to_csv())
-                continue
+                continue # skip to next line
+            rec.get_origin_database_data(es.processing, origin_record, es.origin_database, es)
             
-            # Match records was a success
-            results_report.increase_success(fcr.Success.MATCH_RECORD) # report stats
-            es.log.debug(f"Query used for matched record : {rec.query_used}")
-            es.log.debug(f"Action : {rec.action_used.name}")
-            es.log.debug(f"Result for {es.operation} : {str(rec.matched_records_ids)}")
+        # Successfully got origin DB record
+        es.log.debug(f"Origin database ID : {rec.origin_database_data.utils.get_id()}")
+        es.log.debug(f"Origin database cleaned title : {rec.origin_database_data.utils.get_first_title_as_string()}")
 
-            # --------------- FOR EACH MATCHED RECORDS ---------------
-            for matched_id in rec.matched_records_ids:
-                rec.set_matched_id(matched_id)
-                # --------------- SUDOC ---------------
-                # Get Sudoc record
-                sudoc_record = AbesXml.AbesXml(matched_id,service=es.service)
-                if sudoc_record.status == 'Error':
-                    rec.trigger_error(sudoc_record.error_msg)
-                    results_report.increase_fail(fcr.Errors.SUDOC) # report stats
-                    es.csv.write_line(rec, False)
-                    results.append(rec.output.to_csv())
-                    continue # skip to next line
+        # --------------- Match records ---------------
+        rec.get_matched_records_instance(fcr.Matched_Records(es.operation, rec.input_query, rec.origin_database_data, es))     
+        if rec.nb_matched_records == 0:
+            rec.trigger_error("{} : no result".format(str(es.operation.name)))
 
-                # Successfully got Sudoc record
-                rec.reset_error()
-                # AR362 : UDE
-                
-                rec.get_target_database_data(es.processing, matched_id, sudoc_record.record_parsed, es.target_database, es)
-                target_record:fcr.Database_Record = rec.target_database_data[matched_id] # for the IDE
-                results_report.increase_success(fcr.Success.GLOBAL) # report stats
-                es.log.debug(f"Target database ID : {rec.matched_id}")
-                es.log.debug(f"Target database cleaned title : {target_record.utils.get_first_title_as_string()}")
+        # ||| needs to be redone with enhanced match records errors
+        # Idk when this comment was set but we can do errors by operations I guess, or smething like that
+        if rec.error:
+            results_report.increase_fail(fcr.Errors.MATCH_RECORD)
+            es.log.error(rec.error_message)
+            
+            # Skip to next line
+            es.csv.write_line(rec, False)
+            results.append(rec.output.to_csv())
+            continue
+        
+        # Match records was a success
+        results_report.increase_success(fcr.Success.MATCH_RECORD) # report stats
+        es.log.debug(f"Query used for matched record : {rec.query_used}")
+        es.log.debug(f"Action : {rec.action_used.name}")
+        es.log.debug(f"Result for {es.operation} : {str(rec.matched_records_ids)}")
 
-                # --------------- MATCHING PROCESS ---------------
-                # Garder les logs dans main
-                target_record.compare_to(rec.origin_database_data)
-                es.log.debug(f"Title scores : Simple ratio = {target_record.title_ratio}, Partial ratio = {target_record.title_partial_ratio}, Token sort ratio = {target_record.title_token_sort_ratio}, Token set ratio = {target_record.title_token_set_ratio}")
-                es.log.debug(f"Dates matched ? {target_record.dates_matched}")
-                es.log.debug(f"Publishers score = {target_record.publishers_score} (using \"{target_record.chosen_publisher}\" and \"{target_record.chosen_compared_publisher}\")")
-                es.log.debug(f"Record ID included = {target_record.local_id_in_compared_record.name}")
-
-                # --------------- END OF THIS LINE ---------------
-                es.log.debug(f"Results : {target_record.total_checks.name} (titles : {target_record.checks[fcr.Analysis_Checks.TITLE]}, publishers : {target_record.checks[fcr.Analysis_Checks.PUBLISHER]}, dates : {target_record.checks[fcr.Analysis_Checks.DATE]})")
-                es.csv.write_line(rec, True)
+        # --------------- FOR EACH MATCHED RECORDS ---------------
+        for matched_id in rec.matched_records_ids:
+            rec.set_matched_id(matched_id)
+            # --------------- SUDOC ---------------
+            # Get Sudoc record
+            sudoc_record = AbesXml.AbesXml(matched_id,service=es.service)
+            if sudoc_record.status == 'Error':
+                rec.trigger_error(sudoc_record.error_msg)
+                results_report.increase_fail(fcr.Errors.SUDOC) # report stats
+                es.log.error(rec.error_message)
+                es.csv.write_line(rec, False)
                 results.append(rec.output.to_csv())
+                continue # skip to next line
 
-        # Closes CSV file
-        es.csv.close_file()
+            # Successfully got Sudoc record
+            rec.reset_error()
+            # AR362 : UDE
+            
+            rec.get_target_database_data(es.processing, matched_id, sudoc_record.record_parsed, es.target_database, es)
+            target_record:fcr.Database_Record = rec.target_database_data[matched_id] # for the IDE
+            results_report.increase_success(fcr.Success.GLOBAL) # report stats
+            es.log.debug(f"Target database ID : {rec.matched_id}")
+            es.log.debug(f"Target database cleaned title : {target_record.utils.get_first_title_as_string()}")
+
+            # --------------- MATCHING PROCESS ---------------
+            # Garder les logs dans main
+            target_record.compare_to(rec.origin_database_data)
+            es.log.debug(f"Title scores : Simple ratio = {target_record.title_ratio}, Partial ratio = {target_record.title_partial_ratio}, Token sort ratio = {target_record.title_token_sort_ratio}, Token set ratio = {target_record.title_token_set_ratio}")
+            es.log.debug(f"Dates matched ? {target_record.dates_matched}")
+            es.log.debug(f"Publishers score = {target_record.publishers_score} (using \"{target_record.chosen_publisher}\" and \"{target_record.chosen_compared_publisher}\")")
+            es.log.debug(f"Record ID included = {target_record.local_id_in_compared_record.name}")
+
+            # --------------- END OF THIS LINE ---------------
+            es.log.debug(f"Results : {target_record.total_checks.name} (titles : {target_record.checks[fcr.Analysis_Checks.TITLE]}, publishers : {target_record.checks[fcr.Analysis_Checks.PUBLISHER]}, dates : {target_record.checks[fcr.Analysis_Checks.DATE]})")
+            es.csv.write_line(rec, True)
+            results.append(rec.output.to_csv())
+
+    # Closes CSV file
+    es.csv.close_file()
 
     # --------------- END OF MAIN FUNCTION ---------------
     es.log.big_info("File processing ended")

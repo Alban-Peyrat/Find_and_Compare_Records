@@ -277,6 +277,7 @@ class Errors(Enum):
     MATCH_RECORD = 1
     KOHA = 2
     SUDOC = 3
+    LOCAL_RECORD = 4
 
 # ---------- REPORT ----------
 class CSV_Cols(Enum):

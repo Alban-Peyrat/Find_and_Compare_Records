@@ -6,6 +6,7 @@ test.py
 .env
 my.env
 _test_gui.py
+test_marc_file.py
 old_releases/
 
 # Byte-compiled / optimized / DLL files
