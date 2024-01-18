@@ -214,7 +214,7 @@ class Databases(Enum):
     KOHA_PUBLIC_BIBLIO = {}
     KOHA_SRU = {
     }
-    LOCAL = {}
+    LOCAL = {FCR_Mapped_Fields.LEADER:FCR_Filters.FILTER3}
 
 class Record_Formats(Enum):
     """List of supported record formats"""
@@ -250,6 +250,10 @@ class Other_Database_Id_In_Target(Enum):
     UNKNOWN = {
         "eng":"Unknown",
         "fre":"Inconnu"
+    }
+    SKIPPED = {
+        "eng":"Skipped",
+        "fre":"Ignoré"
     }
     NO_OTHER_DB_ID = {
         "eng":"No ID in the list",

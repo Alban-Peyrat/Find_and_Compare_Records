@@ -11,6 +11,10 @@ import api.koha.Koha_API_PublicBiblio as Koha_API_PublicBiblio
 from scripts.outputing import * # pour éviter de devoir réécrire tous les appels de fonctions
 import fcr_classes as fcr
 
+def temp_id(index:int):
+    """Defines a temporary index"""
+    return f"FCR INDEX {index}"
+
 def main(es: fcr.Execution_Settings):
     """Main function.
     Takes as argument an Execution_Settings instance"""
@@ -108,7 +112,7 @@ def main(es: fcr.Execution_Settings):
                 continue # skip to next line
             rec.get_origin_database_data(es.processing, origin_record.record_parsed, es.origin_database, es)
         # MARC_FILE_IN_KOHA_SRU from the file
-        if es.processing == fcr.FCR_Processings.MARC_FILE_IN_KOHA_SRU:
+        elif es.processing == fcr.FCR_Processings.MARC_FILE_IN_KOHA_SRU:
             origin_record = es.original_file_data[index]
             if origin_record is None:
                 rec.trigger_error(f"MARC file : record was ignored because its chunk raised an exception")
@@ -118,6 +122,7 @@ def main(es: fcr.Execution_Settings):
                 results.append(rec.output.to_csv())
                 continue # skip to next line
             rec.get_origin_database_data(es.processing, origin_record, es.origin_database, es)
+            rec.original_uid = rec.origin_database_data.utils.get_id()
             
         # Successfully got origin DB record
         es.log.debug(f"Origin database ID : {rec.origin_database_data.utils.get_id()}")
@@ -146,25 +151,48 @@ def main(es: fcr.Execution_Settings):
         es.log.debug(f"Result for {es.operation} : {str(rec.matched_records_ids)}")
 
         # --------------- FOR EACH MATCHED RECORDS ---------------
-        for matched_id in rec.matched_records_ids:
-            rec.set_matched_id(matched_id)
-            # --------------- SUDOC ---------------
-            # Get Sudoc record
-            sudoc_record = AbesXml.AbesXml(matched_id,service=es.service)
-            if sudoc_record.status == 'Error':
-                rec.trigger_error(sudoc_record.error_msg)
-                results_report.increase_fail(fcr.Errors.SUDOC) # report stats
-                es.log.error(rec.error_message)
-                es.csv.write_line(rec, False)
-                results.append(rec.output.to_csv())
-                continue # skip to next line
+        # If Sudoc SRU in BETTER_ITEMs, query AbesXML because SRU don't have L035 (18/01/2024)
+        record_list = rec.matched_records_ids
+        list_is_id = True
+        if len(rec.matched_records) > 0:
+            record_list = rec.matched_records
+            list_is_id = False
+            # Tiny brain can't comprehend how to mrege all the if so I'm nesting them
+            if es.processing in [fcr.FCR_Processings.BETTER_ITEM, fcr.FCR_Processings.BETTER_ITEM_DVD]:
+                if "SRU_SUDOC" in rec.action_used.name:
+                    record_list = rec.matched_records_ids
+                    list_is_id = True
 
-            # Successfully got Sudoc record
+        for ii, record_from_mr_list in enumerate(record_list):
+            # Enumerate is to make sure I don't accidentally merge two records without ID
+            if list_is_id:
+                rec.set_matched_id(record_from_mr_list)
+            else:
+                rec.set_matched_id(temp_id(ii))
+
+            # --------------- TARGET DATABASE ---------------
+            # Get target DB record
+            # BETTER_ITEMs querying Sudoc XML
+            if es.processing in [fcr.FCR_Processings.BETTER_ITEM, fcr.FCR_Processings.BETTER_ITEM_DVD]:
+                target_db_queried_record = AbesXml.AbesXml(rec.matched_id,service=es.service)
+                if target_db_queried_record.status == 'Error':
+                    rec.trigger_error(f"Sudoc XML : {target_db_queried_record.error_msg}")
+                    results_report.increase_fail(fcr.Errors.SUDOC) # report stats
+                    es.log.error(rec.error_message)
+                    es.csv.write_line(rec, False)
+                    results.append(rec.output.to_csv())
+                    continue # skip to next line
+                rec.get_target_database_data(es.processing, rec.matched_id, target_db_queried_record.record_parsed, es.target_database, es)
+            # MARC_FILE_IN_KOHA_SRU from the file
+            elif es.processing == fcr.FCR_Processings.MARC_FILE_IN_KOHA_SRU:
+                rec.get_target_database_data(es.processing, rec.matched_id, record_from_mr_list, es.target_database, es)
+                target_record:fcr.Database_Record = rec.target_database_data[f"FCR INDEX {ii}"] # for the IDE
+                if target_record.utils.get_id().strip() != "":
+                    rec.change_target_record_id(temp_id(ii), target_record.utils.get_id().strip())
+
+            # Successfully got target db record
             rec.reset_error()
-            # AR362 : UDE
-            
-            rec.get_target_database_data(es.processing, matched_id, sudoc_record.record_parsed, es.target_database, es)
-            target_record:fcr.Database_Record = rec.target_database_data[matched_id] # for the IDE
+            target_record:fcr.Database_Record = rec.target_database_data[rec.matched_id] # for the IDE
             results_report.increase_success(fcr.Success.GLOBAL) # report stats
             es.log.debug(f"Target database ID : {rec.matched_id}")
             es.log.debug(f"Target database cleaned title : {target_record.utils.get_first_title_as_string()}")

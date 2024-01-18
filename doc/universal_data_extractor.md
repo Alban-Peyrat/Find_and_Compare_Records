@@ -61,7 +61,7 @@ Each one has a `label` and `fields` key, the last one being an object with :
 * `single_line_coded_data` as a boolean
 * `filtering_subfield` as a string
 * `subfields` and `positions` as arrays
-  * For control fields (00X), all pother data is ignored
+  * For control fields (00X), all other data is ignored
   * If `filtering_subfield` is an empty string, is ignored
   * If `subfields` is an empty array, every subfield will be retrieved
   * `positions` is only used for single line coded data
