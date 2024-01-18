@@ -10,7 +10,7 @@ import json
 import xml.etree.ElementTree as ET
 import pymarc
 import re
-from typing import Dict, List, Tuple, Optional, Union
+from typing import Any, Dict, List, Tuple, Optional, Union
 from fuzzywuzzy import fuzz
 
 # Internal imports
@@ -488,6 +488,12 @@ class Execution_Settings(object):
                 self.headers[CSV_Cols.TARGET_DB_HAS_ITEMS.name] = self.csv_cols[CSV_Cols.TARGET_DB_HAS_ITEMS.name][par.lang]
                 del self.headers[CSV_Cols.ORIGIN_DB_GENERAL_PROCESSING_DATA_DATES.name]
                 del self.headers[CSV_Cols.TARGET_DB_GENERAL_PROCESSING_DATA_DATES.name]
+            elif par.processing_val == FCR_Processings.MARC_FILE_IN_KOHA_SRU.name:
+                del self.headers[CSV_Cols.ORIGIN_DB_GENERAL_PROCESSING_DATA_DATES.name]
+                del self.headers[CSV_Cols.TARGET_DB_GENERAL_PROCESSING_DATA_DATES.name]
+                del self.headers[CSV_Cols.INPUT_QUERY.name]
+                del self.headers[CSV_Cols.TARGET_DB_NB_OTHER_ID.name]
+                del self.headers[CSV_Cols.IS_ORIGIN_ID_IN_TARGET_OTHER_DB_IDS.name]
             # Order columns by their index
             self.headers_ordered = sorted(self.headers.keys(), key=lambda x: CSV_Cols[x].value)
             # Columns from the original file
@@ -590,7 +596,13 @@ class Database_Record(object):
     def __compare_other_db_id(self, compared_to):
         """Checks if this record id is in the comapred other database IDs"""
         self.local_id_in_compared_record = Other_Database_Id_In_Target.UNKNOWN
-        self.list_of_other_db_id = self.data[FCR_Mapped_Fields.OTHER_DB_ID]
+        self.list_of_other_db_id = self.utils.get_other_db_id()
+        # Other DB IDs are not extracted
+        if self.list_of_other_db_id == None:
+            self.local_id_in_compared_record = Other_Database_Id_In_Target.SKIPPED
+            self.nb_other_db_id = 0
+            return
+        # They were extracted
         self.nb_other_db_id = len(self.list_of_other_db_id)
         id = fcf.list_as_string(compared_to.data[FCR_Mapped_Fields.ID])
         if self.nb_other_db_id == 0:
@@ -673,8 +685,10 @@ class Database_Record(object):
             return fcf.list_as_string(self.data[FCR_Mapped_Fields.ID])
 
         def get_first_title_as_string(self) -> str:
-            """Returns the first title cleaned up as a strin"""
+            """Returns the first title cleaned up as a string"""
             if not FCR_Mapped_Fields.TITLE in self.data:
+                return ""
+            if len(self.data[FCR_Mapped_Fields.TITLE]) < 1:
                 return ""
             return fcf.nettoie_titre(fcf.list_as_string(self.data[FCR_Mapped_Fields.TITLE][0]))
 
@@ -734,6 +748,13 @@ class Database_Record(object):
                     isbn = val
                     break
             return isbn
+        
+        def get_other_db_id(self) -> List[str]|None:
+            """Returns the other DB IDs as a list of str.
+            Returns None if data was not extracted"""
+            if not FCR_Mapped_Fields.OTHER_DB_ID in self.data:
+                return None
+            return self.data[FCR_Mapped_Fields.OTHER_DB_ID]
             
             
 # -------------------- MATCH RECORDS (MR) --------------------
@@ -1374,10 +1395,9 @@ class Marc_Fields_Mapping(object):
         self.is_target_db = is_target_db
         self.marc_fields_json = {}
         if self.is_target_db and type(self.is_target_db) == bool:
-            self.load_mapping(es, "TARGET_DATABASE")
+            self.load_mapping(es, es.target_database_mapping)
         elif not self.is_target_db and type(self.is_target_db) == bool:
-            self.load_mapping(es, "ORIGIN_DATABASE")
-            self.marc_fields_json = es.marc_fields_json["ORIGIN_DATABASE"]
+            self.load_mapping(es, es.origin_database_mapping)
     
     def load_mapping(self, es: Execution_Settings, name: str):
         """Loads a marc field mappig by name from marc_fields.json (debgging)"""
@@ -1590,6 +1610,11 @@ class Universal_Data_Extractor(object):
                 if regex_matched:
                     begining = int(regex_matched.group(1))
                     end = int(regex_matched.group(2)) + 1
+                    # Restrict beginning and end to the max length if they're too high
+                    if begining > len(field_text):
+                        begining = len(field_text)
+                    if end > len(field_text):
+                        end = len(field_text)
                     # End must be > begin and can be equal to the len
                     if begining < len(field_text) and end <= len(field_text) and begining < end:
                         output.append(field_text[begining:end])
@@ -1841,6 +1866,11 @@ class Original_Record(object):
     def get_target_database_data(self, processing: FCR_Processings, id:str, record: ET.ElementTree | dict | pymarc.record.Record, database: Databases, es: Execution_Settings):
         """Extract data from the origin database record"""
         self.target_database_data[id] = Database_Record(processing, record, database, True, es)
+
+    def change_target_record_id(self, old_id:str, new_id:str):
+        """Changes the ID key in target_database_data and set a new matched_id"""
+        self.target_database_data[new_id] = self.target_database_data.pop(old_id)
+        self.set_matched_id(new_id)
 
     def trigger_error(self, msg:str):
         """Updates the errors properties, takes as parameter the error moessage"""

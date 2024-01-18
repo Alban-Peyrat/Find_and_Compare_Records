@@ -11,7 +11,8 @@ _Some previous changes will be added_
 
 ### Added
 
-* New file in user documetnation explaining the exported data (only calculated fields)
+* New file in user documentation explaining the exported data (only calculated fields)
+* New processing analysing a local MARC file and querying a Koha SRU (`MARC_FILE_IN_KOHA_SRU`)
 * Added actions for Koha SRU :
   * ISBN
   * Title, author, publisher and date using their own indexes
@@ -20,20 +21,25 @@ _Some previous changes will be added_
   * Title, author and date using `any` index
 * Added a new operation to query Koha SRU `SEARCH_IN_KOHA_SRU_VANILLA`
 * Added ISBN as extractable data from records
-* Added `Utils` methods to `Database_Records` to get the first ISBn and the first EAN as a string
+* Added `Utils` methods to `Database_Records` to get the first ISBN and the first EAN as a string
+* Added `Utils` methods to `Database_Records` to get the other database IDs
+* Added a new default marc field mapping
 
 ### Changed
 
 * `OTHER_DB_IN_LOCAL_DB` was renammed in `MARC_FILE_IN_KOHA_SRU`
 * Updated `Koha_SRU` version
 * Filters are now properly implanted
-* Records are now correctly retrieved from the correct database instead of Koha origin database and Sudoc
+* Records are now correctly retrieved from the correct database instead of Koha (origin database) and Sudoc (target database)
 
 ### Fixed
 
 * Fixed displayed processing in *Processing configuration* screen, previously not updating properly if selected processing was changed in the main screen
-* Fixed `Database_Record.utils` methods crashing the application if some data was not extracted from the record
+* Fixed `Database_Record.utils` methods crashing the application if some data was not extracted from the record (or if there is no title returned)
 * Fixed some errors in main function not logging themselves
+* Fixed marc field mapping using only to `ORIGIN_DATABASE` and `TARGET_DATABASE`
+* Fixed universal data extractor not extracting anything from single line coded data if positions in a range larger than the max length of the field content
+* Fixed crashes if other database IDs were not exported for the target database : a new value `SKIPPED` is used in those cases
 
 ## [1.13.1] - 2024-01-2024
 

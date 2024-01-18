@@ -1896,5 +1896,378 @@
                 }
             ]
         }
+    },
+    "KENTIKA_ENSP": {
+        "id": {
+            "label": {
+                "eng": "Kentika ID",
+                "fre": "Kentika ID"
+            },
+            "fields": [
+                {
+                    "tag": "035",
+                    "single_line_coded_data": true,
+                    "filtering_subfield": "",
+                    "subfields": ["a"],
+                    "positions": ["8-99"]
+                }
+            ]
+        },
+        "ppn": {
+            "label": {
+                "eng": "PPN",
+                "fre": "PPN"
+            },
+            "fields": [
+                {
+                    "tag": "009",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "",
+                    "subfields": [],
+                    "positions": []
+                }
+            ]
+        },
+        "ean": {
+            "label": {
+                "eng": "EAN",
+                "fre": "EAN"
+            },
+            "fields": [
+                {
+                    "tag": "073",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "",
+                    "subfields": [
+                        "a"
+                    ],
+                    "positions": ""
+                }
+            ]
+        },
+        "isbn": {
+            "label": {
+                "eng": "ISBN",
+                "fre": "ISBN"
+            },
+            "fields": [
+                {
+                    "tag": "010",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "",
+                    "subfields": [
+                        "a"
+                    ],
+                    "positions": ""
+                }
+            ]
+        },
+        "general_processing_data_dates": {
+            "label": {
+                "eng": "Dates from general processing data",
+                "fre": "Dates (donn\u00e9es g\u00e9n\u00e9rales de traitement)"
+            },
+            "fields": [
+                {
+                    "tag": "100",
+                    "single_line_coded_data": true,
+                    "filtering_subfield": "",
+                    "subfields": [],
+                    "positions": [
+                        "9-12",
+                        "13-16"
+                    ]
+                }
+            ]
+        },
+        "erroneous_isbn": {
+            "label": {
+                "eng": "Erroneous ISBN",
+                "fre": "ISBN erron\u00e9"
+            },
+            "fields": [
+                {
+                    "tag": "010",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "",
+                    "subfields": [
+                        "z"
+                    ],
+                    "positions": []
+                }
+            ]
+        },
+        "title": {
+            "label": {
+                "eng": "Title",
+                "fre": "Titre"
+            },
+            "fields": [
+                {
+                    "tag": "200",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "",
+                    "subfields": [
+                        "a",
+                        "d",
+                        "e",
+                        "h",
+                        "i",
+                        "v"
+                    ],
+                    "positions": []
+                }
+            ]
+        },
+        "authors": {
+            "label": {
+                "eng": "Authors",
+                "fre": "Auteurs"
+            },
+            "fields": [
+                {
+                    "tag": "700",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "",
+                    "subfields": [
+                        "a",
+                        "b"
+                    ],
+                    "positions": []
+                },
+                {
+                    "tag": "701",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "",
+                    "subfields": [
+                        "a",
+                        "b"
+                    ],
+                    "positions": [
+                        ""
+                    ]
+                },
+                {
+                    "tag": "702",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "",
+                    "subfields": [
+                        "a",
+                        "b"
+                    ],
+                    "positions": [
+                        ""
+                    ]
+                },
+                {
+                    "tag": "710",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "",
+                    "subfields": [
+                        "a",
+                        "b",
+                        "c"
+                    ],
+                    "positions": [
+                        ""
+                    ]
+                },
+                {
+                    "tag": "711",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "",
+                    "subfields": [
+                        "a",
+                        "b",
+                        "c"
+                    ],
+                    "positions": [
+                        ""
+                    ]
+                },
+                {
+                    "tag": "712",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "",
+                    "subfields": [
+                        "a",
+                        "b",
+                        "c"
+                    ],
+                    "positions": [
+                        ""
+                    ]
+                }
+            ]
+        },
+        "publishers_name": {
+            "label": {
+                "eng": "Publishers name",
+                "fre": "\u00c9diteurs"
+            },
+            "fields": [
+                {
+                    "tag": "210",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "",
+                    "subfields": [
+                        "c"
+                    ],
+                    "positions": []
+                },
+                {
+                    "tag": "214",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "",
+                    "subfields": [
+                        "c"
+                    ],
+                    "positions": []
+                }
+            ]
+        },
+        "edition_note": {
+            "label": {
+                "eng": "Notes about edition",
+                "fre": "Notes d'\u00e9dition"
+            },
+            "fields": [
+                {
+                    "tag": "305",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "",
+                    "subfields": [
+                        "a"
+                    ],
+                    "positions": []
+                }
+            ]
+        },
+        "publication_dates": {
+            "label": {
+                "eng": "Publication date",
+                "fre": "Dates de publications"
+            },
+            "fields": [
+                {
+                    "tag": "210",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "",
+                    "subfields": [
+                        "d"
+                    ],
+                    "positions": []
+                },
+                {
+                    "tag": "214",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "",
+                    "subfields": [
+                        "d"
+                    ],
+                    "positions": []
+                }
+            ]
+        },
+        "physical_desription": {
+            "label": {
+                "eng": "Physical description",
+                "fre": "Description physique"
+            },
+            "fields": [
+                {
+                    "tag": "215",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "",
+                    "subfields": [
+                        "a"
+                    ],
+                    "positions": []
+                }
+            ]
+        },
+        "contents_notes": {
+            "label": {
+                "eng": "Contents notes",
+                "fre": "Notes de contenu"
+            },
+            "fields": [
+                {
+                    "tag": "327",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "",
+                    "subfields": [
+                        "a"
+                    ],
+                    "positions": []
+                }
+            ]
+        },
+        "other_edition_in_other_medium_bibliographic_id": {
+            "label": {
+                "eng": "Bibliographic IDs of other edition in other medium",
+                "fre": "IDs de notice des autres \u00e9ditions sur autre support"
+            },
+            "fields": [
+                {
+                    "tag": "452",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "",
+                    "subfields": [
+                        "9"
+                    ],
+                    "positions": []
+                }
+            ]
+        },
+        "other_database_id": {
+            "label": {
+                "eng": "IDs in other database",
+                "fre": "IDs dans d'autres bases de donn\u00e9es"
+            },
+            "fields": [
+                {
+                    "tag": "035",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "",
+                    "subfields": [
+                        "a"
+                    ],
+                    "positions": []
+                }
+            ]
+        },
+        "items": {
+            "label": {
+                "eng": "Items",
+                "fre": "Exemplaires"
+            },
+            "fields": [
+                {
+                    "tag": "995",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "",
+                    "subfields": [],
+                    "positions": []
+                }
+            ]
+        },
+        "items_barcode": {
+            "label": {
+                "eng": "Items barcode",
+                "fre": "Code-barre des exemplaires"
+            },
+            "fields": [
+                {
+                    "tag": "995",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "",
+                    "subfields": [
+                        "f"
+                    ],
+                    "positions": []
+                }
+            ]
+        }
     }
 }
