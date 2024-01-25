@@ -9,6 +9,8 @@ _Some previous changes will be added_
 
 ## [Unreleased]
 
+## [1.14.1] - 2024-01-25
+
 ### Changed
 
 * Report is more precise
