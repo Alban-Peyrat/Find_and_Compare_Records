@@ -12,6 +12,7 @@ import pymarc
 import re
 from typing import Any, Dict, List, Tuple, Optional, Union
 from fuzzywuzzy import fuzz
+from datetime import datetime
 
 # Internal imports
 import fcr_func as fcf
@@ -79,9 +80,9 @@ class Execution_Settings(object):
     
     # ----- Methods for main -----
     def generate_files_path(self):
-        self.file_path_out_results = self.output_path + "/resultats.txt"
-        self.file_path_out_json = self.output_path + "/resultats.json"
-        self.file_path_out_csv = self.output_path + "/resultats.csv"
+        self.file_path_out_results = self.output_path + "/results_report"
+        self.file_path_out_json = self.output_path + "/results.json"
+        self.file_path_out_csv = self.output_path + "/results.csv"
     
     def get_operation(self):
         self.operation = PROCESSING_OPERATION_MAPPING[self.processing]
@@ -2000,20 +2001,122 @@ class Original_Record(object):
                 return out
 
 class Report(object):
-    def __init__(self):
+    def __init__(self, es:Execution_Settings):
+        self.es = es
+        self.time_start = datetime.now()
         self.processed = 0
+        self.match_record_single_match = 0
+        self.match_record_multiple_match = 0
         self.errors = {}
-        for error in Errors:
-            self.errors[error.value] = 0
+        for error in Report_Errors:
+            self.errors[error.name] = 0
         self.success = {}
-        for succ in Success:
-            self.success[succ.value] = 0
+        for succ in Report_Success:
+            self.success[succ.name] = 0
+        self.actions = {}
+        for action in Try_Operations[es.operation.name].value:
+            self.actions[action.name] = self.Action(action)
+
+    class Action(object):
+        def __init__(self, action:Actions) -> None:
+            self.name = action.name
+            self.action = action
+            self.total = 0
+            self.success = 0
+            self.fail = 0
+        
+        def increase_total(self):
+            self.total += 1
+
+        def increase_success(self):
+            self.success += 1
+        
+        def increase_fail(self):
+            self.fail += 1
 
     def increase_processed(self):
         self.processed += 1
     
-    def increase_success(self, step: Success):
-        self.success[step.value] += 1
+    def increase_step(self, step: Report_Success | Report_Errors):
+        if type(step) == Report_Success:
+            self.success[step.name] += 1
+        elif type(step) == Report_Errors:
+            self.errors[step.name] += 1
     
-    def increase_fail(self, err: Errors):
-        self.errors[err.value] += 1
+    def __get_step(self, step:Report_Success | Report_Errors) -> int:
+        if type(step) == Report_Success:
+            return self.success[step.name]
+        elif type(step) == Report_Errors:
+            return self.errors[step.name]
+    
+    def increase_match_records_actions(self, tries:List[Request_Try]):
+        for this_try in tries:
+            act:Report.Action = self.actions[this_try.action.name]
+            act.increase_total()
+            if this_try.returned_ids == []:
+                act.increase_fail()
+            else:
+                act.increase_success()
+
+    def increase_match_record_nb_of_match(self, match_record_matched_ids:list):
+        if len(match_record_matched_ids) > 1:
+            self.match_record_multiple_match += 1
+        else:
+            self.match_record_single_match += 1
+
+    def generate_report_output_lines(self) -> List[str]:
+        """Returns the report as a list of strings"""
+        output = []
+
+        # Header
+        output.append("# Results report\n")
+        output.append(f"For {self.es.processing_val} ({self.time_start.strftime('%y-%m-%d %H:%M')}) :")
+        output.append("\n")
+
+        # Settings infos
+        output.append("## Settings\n")
+        output.append(f"* Chosen analysis : {self.es.chosen_analysis['name']}")
+        output.append(f"* Processed file : {self.es.file_path}")
+        output.append(f"* CSV output file : {self.es.file_path_out_csv}")
+        output.append(f"* JSON output file : {self.es.file_path_out_json}")
+        if self.es.processing_val in [FCR_Processings.BETTER_ITEM.name, FCR_Processings.BETTER_ITEM_DVD.name]:
+            output.append(f"* Koha URL : {self.es.origin_url}")
+            output.append(f"* ILN : {self.es.iln}, RCR : {self.es.rcr}")
+        if self.es.processing_val == FCR_Processings.MARC_FILE_IN_KOHA_SRU.name:
+            output.append(f"* Koha URL : {self.es.target_url}")
+        output.append(f"* Origin database : {self.es.origin_database.name} (mapping : {self.es.origin_database_mapping})")
+        output.append(f"* Target database : {self.es.target_database.name} (mapping : {self.es.target_database_mapping})")
+        output.append("\n")
+
+        # Steps Sucesses
+        output.append("## Steps successes :\n")
+        output.append(f"* Processed records : {self.processed}")
+        output.append(f"* Origin database records successfully retrieved : {self.__get_step(Report_Success.ORIGIN_DB)}")
+        output.append(f"* Records matched something : {self.__get_step(Report_Success.MATCH_RECORD_MATCHED)} (single match : {self.match_record_single_match}, multiple matches : {self.match_record_multiple_match})")
+        output.append(f"* Target database records successfully retrieved : {self.__get_step(Report_Success.TARGET_DB)}")
+        output.append(f"* Records analysed : {self.__get_step(Report_Success.ANALYSIS)}")
+        output.append(f"* Origin records successfully processed : {self.__get_step(Report_Success.ORIGIN_RECORD_GLOBAL)}")
+        output.append(f"* Target records successfully processed : {self.__get_step(Report_Success.TARGET_RECORD_GLOBAL)}")
+        output.append("\n")
+
+        # Steps fails
+        output.append("## Steps fails :\n")
+        if self.es.processing_val in [FCR_Processings.BETTER_ITEM.name, FCR_Processings.BETTER_ITEM_DVD.name]:
+            output.append(f"* Could not retrieve Koha records : {self.__get_step(Report_Errors.ORIGIN_DB_KOHA)}")
+        if self.es.processing_val == FCR_Processings.MARC_FILE_IN_KOHA_SRU.name:
+            output.append(f"* Could not retrieve local MARC records : {self.__get_step(Report_Errors.ORIGIN_DB_LOCAL_RECORD)}")
+        output.append(f"* Records matched nothing : {self.__get_step(Report_Errors.MATCH_RECORD_NO_MATCH)}")
+        if self.es.processing_val in [FCR_Processings.BETTER_ITEM.name, FCR_Processings.BETTER_ITEM_DVD.name]:
+            output.append(f"* Could not retrieve Sudoc records : {self.__get_step(Report_Errors.TARGET_DB_SUDOC)}")
+        if self.es.processing_val == FCR_Processings.MARC_FILE_IN_KOHA_SRU.name:
+            output.append(f"* Could not retrieve Koha records : {self.__get_step(Report_Errors.TARGET_DB_KOHA)}")
+        output.append("\n")
+
+        # Actions details
+        output.append("## Actions used details :\n")
+        for action in self.actions:
+            act:Report.Action = self.actions[action]
+            output.append(f"* `{action}` used {act.total} times : {act.success} success, {act.fail} fails")
+        
+
+        return output

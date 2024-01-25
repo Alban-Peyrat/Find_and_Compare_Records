@@ -2,13 +2,11 @@
 
 # External imports
 import os
-import csv
 import json
 
 # Internal import
 import api.abes.AbesXml as AbesXml
 import api.koha.Koha_API_PublicBiblio as Koha_API_PublicBiblio
-from scripts.outputing import * # pour éviter de devoir réécrire tous les appels de fonctions
 import fcr_classes as fcr
 
 def temp_id(index:int):
@@ -50,10 +48,8 @@ def main(es: fcr.Execution_Settings):
         results_list.append("DATE")
     es.log.simple_info("Checks", str(results_list))
 
-    # ----------------- AR220 : a edit
     # Init report
-    results_report = fcr.Report()
-    # ----------------- Fin de AR220 : a edit
+    results_report = fcr.Report(es)
 
     es.log.simple_info("Processing", es.processing_val)
     if es.processing_val in [fcr.FCR_Processings.BETTER_ITEM.name, fcr.FCR_Processings.BETTER_ITEM_DVD.name]:
@@ -105,7 +101,7 @@ def main(es: fcr.Execution_Settings):
             origin_record = Koha_API_PublicBiblio.Koha_API_PublicBiblio(rec.original_uid, es.origin_url, service=es.service, format="application/marcxml+xml")
             if origin_record.status == 'Error' :
                 rec.trigger_error(f"Koha_API_PublicBiblio : {origin_record.error_msg}")
-                results_report.increase_fail(fcr.Errors.KOHA) # report stats
+                results_report.increase_step(fcr.Report_Errors.ORIGIN_DB_KOHA) # report stats
                 es.log.error(rec.error_message)
                 es.csv.write_line(rec, False)
                 results.append(rec.output.to_csv())
@@ -116,7 +112,7 @@ def main(es: fcr.Execution_Settings):
             origin_record = es.original_file_data[index]
             if origin_record is None:
                 rec.trigger_error(f"MARC file : record was ignored because its chunk raised an exception")
-                results_report.increase_fail(fcr.Errors.LOCAL_RECORD) # report stats
+                results_report.increase_step(fcr.Report_Errors.ORIGIN_DB_LOCAL_RECORD) # report stats
                 es.log.error(rec.error_message)
                 es.csv.write_line(rec, False)
                 results.append(rec.output.to_csv())
@@ -127,16 +123,16 @@ def main(es: fcr.Execution_Settings):
         # Successfully got origin DB record
         es.log.debug(f"Origin database ID : {rec.origin_database_data.utils.get_id()}")
         es.log.debug(f"Origin database cleaned title : {rec.origin_database_data.utils.get_first_title_as_string()}")
+        results_report.increase_step(fcr.Report_Success.ORIGIN_DB) # report stats
 
         # --------------- Match records ---------------
         rec.get_matched_records_instance(fcr.Matched_Records(es.operation, rec.input_query, rec.origin_database_data, es))     
         if rec.nb_matched_records == 0:
             rec.trigger_error("{} : no result".format(str(es.operation.name)))
 
-        # ||| needs to be redone with enhanced match records errors
-        # Idk when this comment was set but we can do errors by operations I guess, or smething like that
         if rec.error:
-            results_report.increase_fail(fcr.Errors.MATCH_RECORD)
+            results_report.increase_step(fcr.Report_Errors.MATCH_RECORD_NO_MATCH) # report stats
+            results_report.increase_match_records_actions(rec.matched_record_instance.tries)
             es.log.error(rec.error_message)
             
             # Skip to next line
@@ -145,7 +141,9 @@ def main(es: fcr.Execution_Settings):
             continue
         
         # Match records was a success
-        results_report.increase_success(fcr.Success.MATCH_RECORD) # report stats
+        results_report.increase_step(fcr.Report_Success.MATCH_RECORD_MATCHED) # report stats
+        results_report.increase_match_records_actions(rec.matched_record_instance.tries) # report stats
+        results_report.increase_match_record_nb_of_match(rec.matched_records_ids) # report stats
         es.log.debug(f"Query used for matched record : {rec.query_used}")
         es.log.debug(f"Action : {rec.action_used.name}")
         es.log.debug(f"Result for {es.operation} : {str(rec.matched_records_ids)}")
@@ -177,7 +175,7 @@ def main(es: fcr.Execution_Settings):
                 target_db_queried_record = AbesXml.AbesXml(rec.matched_id,service=es.service)
                 if target_db_queried_record.status == 'Error':
                     rec.trigger_error(f"Sudoc XML : {target_db_queried_record.error_msg}")
-                    results_report.increase_fail(fcr.Errors.SUDOC) # report stats
+                    results_report.increase_step(fcr.Report_Errors.TARGET_DB_SUDOC) # report stats
                     es.log.error(rec.error_message)
                     es.csv.write_line(rec, False)
                     results.append(rec.output.to_csv())
@@ -193,13 +191,14 @@ def main(es: fcr.Execution_Settings):
             # Successfully got target db record
             rec.reset_error()
             target_record:fcr.Database_Record = rec.target_database_data[rec.matched_id] # for the IDE
-            results_report.increase_success(fcr.Success.GLOBAL) # report stats
+            results_report.increase_step(fcr.Report_Success.TARGET_DB) # report stats
             es.log.debug(f"Target database ID : {rec.matched_id}")
             es.log.debug(f"Target database cleaned title : {target_record.utils.get_first_title_as_string()}")
 
-            # --------------- MATCHING PROCESS ---------------
+            # --------------- ANALYSIS PROCESS ---------------
             # Garder les logs dans main
             target_record.compare_to(rec.origin_database_data)
+            results_report.increase_step(fcr.Report_Success.ANALYSIS) # report stats
             es.log.debug(f"Title scores : Simple ratio = {target_record.title_ratio}, Partial ratio = {target_record.title_partial_ratio}, Token sort ratio = {target_record.title_token_sort_ratio}, Token set ratio = {target_record.title_token_set_ratio}")
             es.log.debug(f"Dates matched ? {target_record.dates_matched}")
             es.log.debug(f"Publishers score = {target_record.publishers_score} (using \"{target_record.chosen_publisher}\" and \"{target_record.chosen_compared_publisher}\")")
@@ -209,7 +208,9 @@ def main(es: fcr.Execution_Settings):
             es.log.debug(f"Results : {target_record.total_checks.name} (titles : {target_record.checks[fcr.Analysis_Checks.TITLE]}, publishers : {target_record.checks[fcr.Analysis_Checks.PUBLISHER]}, dates : {target_record.checks[fcr.Analysis_Checks.DATE]})")
             es.csv.write_line(rec, True)
             results.append(rec.output.to_csv())
+            results_report.increase_step(fcr.Report_Success.TARGET_RECORD_GLOBAL) # report stats
 
+        results_report.increase_step(fcr.Report_Success.ORIGIN_RECORD_GLOBAL) # report stats
     # Closes CSV file
     es.csv.close_file()
 
@@ -226,9 +227,14 @@ def main(es: fcr.Execution_Settings):
     es.log.simple_info("CSV output file", es.file_path_out_csv)
 
     # --------------- REPORT ---------------
-    generate_report(es, results_report)
     es.log.simple_info("Report file", es.file_path_out_results)
     es.log.big_info("Report")
-    generate_report(es, results_report, logger=es.log)
+    with open(es.file_path_out_results, 'w', encoding='utf-8') as f:    
+        for line in results_report.generate_report_output_lines():
+            # File
+            f.write(line + "\n")
+            # Log
+            if line.replace("\n", "").strip() != "":
+                es.log.info(line.replace("\n", "").replace("#", "---")) # Do not log line breaks & #
 
     es.log.big_info("<(^-^)> <(^-^)> Script fully executed without FATAL errors <(^-^)> <(^-^)>")

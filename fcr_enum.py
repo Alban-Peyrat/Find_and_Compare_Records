@@ -273,15 +273,20 @@ class Other_Database_Id_In_Target(Enum):
     }
 
 # ---------- REPORT ----------
-class Success(Enum):
-    MATCH_RECORD = 0
-    GLOBAL = 1
+class Report_Success(Enum):
+    ORIGIN_DB = 1
+    MATCH_RECORD_MATCHED = 2
+    TARGET_DB = 3
+    ANALYSIS = 4
+    TARGET_RECORD_GLOBAL = 10
+    ORIGIN_RECORD_GLOBAL = 11
 
-class Errors(Enum):
-    MATCH_RECORD = 1
-    KOHA = 2
-    SUDOC = 3
-    LOCAL_RECORD = 4
+class Report_Errors(Enum):
+    ORIGIN_DB_KOHA = 100
+    ORIGIN_DB_LOCAL_RECORD = 101
+    MATCH_RECORD_NO_MATCH = 200
+    TARGET_DB_SUDOC = 300
+    TARGET_DB_KOHA = 301
 
 # ---------- REPORT ----------
 class CSV_Cols(Enum):

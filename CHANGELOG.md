@@ -9,6 +9,20 @@ _Some previous changes will be added_
 
 ## [Unreleased]
 
+### Changed
+
+* Report is more precise
+* Results files are nammed `results` instead of `resultats`, the reprot file is now called `results_report`
+
+### Fixed
+
+* Report is back
+
+### Removed
+
+* `outputing.py` (moved its final function inside `Report` class in `fcr_classes.py`)
+* `scripts` folder as nothing was there anymore
+
 ## [1.14.0] - 2024-01-25
 
 ### Added
@@ -104,7 +118,7 @@ _Some previous changes will be added_
 ### Removed
 
 * File `csv_export_cols.json`
-* `logs.py` (moved it's fucntion inside `Logger` subclass in `fcr_classes.py`)
+* `logs.py` (moved its fucntion inside `Logger` subclass in `fcr_classes.py`)
 
 ## [1.12.1] - 2023-12-08
 
