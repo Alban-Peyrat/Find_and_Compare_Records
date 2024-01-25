@@ -9,6 +9,8 @@ _Some previous changes will be added_
 
 ## [Unreleased]
 
+## [1.14.0] - 2024-01-25
+
 ### Added
 
 * New file in user documentation explaining the exported data (only calculated fields)
@@ -28,7 +30,7 @@ _Some previous changes will be added_
 ### Changed
 
 * `OTHER_DB_IN_LOCAL_DB` was renammed in `MARC_FILE_IN_KOHA_SRU`
-* Updated `Koha_SRU` version
+* Updated `Koha_SRU` and `Koha_API_PublicBiblio` version
 * Filters are now properly implanted
 * Records are now correctly retrieved from the correct database instead of Koha (origin database) and Sudoc (target database)
 
@@ -41,7 +43,7 @@ _Some previous changes will be added_
 * Fixed universal data extractor not extracting anything from single line coded data if positions in a range larger than the max length of the field content
 * Fixed crashes if other database IDs were not exported for the target database : a new value `SKIPPED` is used in those cases
 
-## [1.13.1] - 2024-01-2024
+## [1.13.1] - 2024-01-15
 
 ### Added
 
