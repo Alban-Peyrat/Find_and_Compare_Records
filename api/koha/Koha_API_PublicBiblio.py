@@ -33,6 +33,8 @@ class Koha_API_PublicBiblio(object):
 
     def __init__(self,bibnb,kohaUrl,service='Koha_API_PublicBiblio', format="application/marcxml+xml"):
         self.logger = logging.getLogger(service)
+        if kohaUrl[-1:] in ["/", "\\"]:
+            kohaUrl = kohaUrl[:len(kohaUrl)-1]
         self.endpoint = kohaUrl + "/api/v1/public/biblios/"
         self.service = service
         self.bibnb = str(bibnb)

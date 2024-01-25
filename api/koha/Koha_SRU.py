@@ -203,6 +203,8 @@ class Koha_SRU(object):
         - [optional] service {str} : Name of the service for the logs"""
     def __init__(self, url:str, version:SRU_Version.V1_1, service="Koha_SRU"):
         # Const
+        if url[-1:] in ["/", "\\"]:
+            url = url[:len(url)-1]
         self.endpoint = url + "/biblios"
         # Control provided version and set it to its string form
         if type(version) == SRU_Version:
