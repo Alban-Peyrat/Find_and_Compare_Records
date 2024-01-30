@@ -9,6 +9,10 @@ _Some previous changes will be added_
 
 ## [Unreleased]
 
+### Fixed
+
+* Fixed records missing general processing data crashing the export to CSV function, thus not exporting every data
+
 ## [1.14.1] - 2024-01-25
 
 ### Changed

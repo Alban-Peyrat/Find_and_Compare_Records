@@ -1901,9 +1901,13 @@ class Original_Record(object):
                 db = "TARGET_DB"
                 db_data = par.target_database_data[par.matched_id]
             # Dates general processing data
-            temp = db_data.data[FCR_Mapped_Fields.GENERAL_PROCESSING_DATA_DATES]
-            out[f"{db}_DATE_1"] = temp[0][0]
-            out[f"{db}_DATE_2"] = temp[0][1]
+            if fcf.list_as_string(db_data.data[FCR_Mapped_Fields.GENERAL_PROCESSING_DATA_DATES]) != "":
+                temp = db_data.data[FCR_Mapped_Fields.GENERAL_PROCESSING_DATA_DATES]
+                out[f"{db}_DATE_1"] = temp[0][0]
+                out[f"{db}_DATE_2"] = temp[0][1]
+            else:
+                out[f"{db}_DATE_1"] = ""
+                out[f"{db}_DATE_2"] = ""
             # Title
             # out[f"{db}_{FCR_Mapped_Fields.TITLE}"] = db_data.utils.get_first_title_as_string()
             out[f"{db}_TITLE_KEY"] = db_data.utils.get_first_title_as_string()
