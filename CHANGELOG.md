@@ -9,6 +9,8 @@ _Some previous changes will be added_
 
 ## [Unreleased]
 
+## [1.14.2] - 2024-02-02
+
 ### Changed
 
 * `list_as_string()` now returns values separated by `, ` without being enclosed in `[]`
