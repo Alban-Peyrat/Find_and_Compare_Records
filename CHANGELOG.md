@@ -9,9 +9,14 @@ _Some previous changes will be added_
 
 ## [Unreleased]
 
+### Changed
+
+* `list_as_string()` now returns values separated by `, ` without being enclosed in `[]`
+
 ### Fixed
 
 * Fixed records missing general processing data crashing the export to CSV function, thus not exporting every data
+* Fixed crashes when trying to use regular expression on some strings containing Unicode format characters after merging them with `list_as_string()`
 
 ## [1.14.1] - 2024-01-25
 

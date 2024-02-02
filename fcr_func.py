@@ -68,7 +68,18 @@ def get_year(txt:str) -> str:
 
 def delete_control_char(txt: str) -> str:
     """Returns the string without control characters"""
-    return re.sub(r"[\x00-\x1F]", " ", str(txt))
+    # https://pythonguides.com/remove-unicode-characters-in-python/
+    # https://stackoverflow.com/questions/5028717/matching-unicode-characters-in-python-regular-expressions
+    # This hits to wide .encode("ascii", "ignore").decode()
+    # Delete backslashes in case some of them are escaped
+    # Control characters : (https://www.compart.com/en/unicode/category/Cc)
+    # \x00-\x1F : ASCII control characters
+    # \x7F-\x9F : other control characters
+    # Format characters : (https://www.compart.com/en/unicode/category/Cf)
+    # Single characters : \xAD \u061C \u06DD \u070F \u08E2 \u180E \uFEFF \u110BD \u110CD \uE0001
+    # Ranges : \u0600-\u0605 \u200B-\u200F \u202A-\u202E \u2060-\u206F \uFFF9-\uFFFB ~~\u13430-\u13438~~
+    # ~~\u1BCA0-\u1BCA3 \u1D173-\u1D17A \uE0020-\uE007F~~
+    return re.sub(r"[\x00-\x1F|\x7F-\x9F|\xAD|\u0600-\u0605|\u061C|\u06DD|\u070F|\u08E2|\u180E|\u200B-\u200F|\u202A-\u202E|\u2060-\u206F|\uFEFF|\uFFF9-\uFFFB|\u110BD|\u110CD|\uE0001|\\]", " ", str(txt), re.UNICODE)
 
 def list_as_string(this_list: list) -> str:
     """Returns the list as a string :
@@ -93,7 +104,7 @@ def list_as_string(this_list: list) -> str:
         elif len(non_empty_elements) == 1:
             return delete_control_char(str(non_empty_elements[0]))
         else:
-            return delete_control_char(str(non_empty_elements))
+            return delete_control_char(str(", ".join(non_empty_elements)))
 
 def delete_CBS_boolean_operators(txt:str) -> str:
     """Deletes all CBS boolean operators (AND, OR, NOT) in eevry language and return the resukt as a string
