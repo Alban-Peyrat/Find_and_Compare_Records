@@ -764,7 +764,11 @@ class SRU_Result_Search(object):
     def get_nb_results(self):
         """Return the number of results as an int."""
         if self.result_as_parsed_xml.findall("srw:numberOfRecords", XML_NS):
-            return int(self.result_as_parsed_xml.find("srw:numberOfRecords", XML_NS).text)
+            # Somehow FCR crashed because the text was None
+            try:
+                return int(self.result_as_parsed_xml.find("srw:numberOfRecords", XML_NS).text)
+            except:
+                return 0
         else: # Prbly not encessary in this SRU
             return 0
 

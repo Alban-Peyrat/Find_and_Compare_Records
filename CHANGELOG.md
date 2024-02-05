@@ -9,6 +9,12 @@ _Some previous changes will be added_
 
 ## [Unreleased]
 
+## [1.14.3] - 2024-02-05
+
+### Fixed
+
+* Updated `Koha_SRU` & `Abes_SRU` versions, including a fix preventing crashes when the SRU responded with a `numberOfRecords` but data retrieved from it could not be changed to integer
+
 ## [1.14.2] - 2024-02-02
 
 ### Changed

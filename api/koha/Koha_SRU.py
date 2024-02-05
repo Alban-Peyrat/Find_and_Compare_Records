@@ -532,7 +532,11 @@ class SRU_Result_Search(object):
     def get_nb_results(self):
         """Returns the number of results as an int."""
         if self.result_as_parsed_xml.findall(f"zs{self.version}:numberOfRecords", XML_NS):
-            return int(self.result_as_parsed_xml.find(f"zs{self.version}:numberOfRecords", XML_NS).text)
+            # Abes SRU crashed FCR because numberofrecords return None
+            try:
+                return int(self.result_as_parsed_xml.find(f"zs{self.version}:numberOfRecords", XML_NS).text)
+            except:
+                return 0
         else: 
             return 0
 
