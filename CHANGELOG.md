@@ -13,6 +13,12 @@ _Some previous changes will be added_
 
 * New extractable data : exported to digital library, maps horizontal scales, maps mathematical data, series, series link, geographical subject
 * Processing `MARC_FILE_IN_KOHA_SRU` now exports if record was exported to digital library
+* New processings : `BETTER_ITEM_NO_ISBN` & `BETTER_ITEM_MAPS`
+* Duplicated Sudoc SRU actions limited on `V` document type to query `B` and `K`
+
+### Fixed
+
+* Processing `BETTER_ITEM_DVD` now properly applies `BETTER_ITEM` 's special transformation before exporting data to CSV
 
 ## [1.14.3] - 2024-02-05
 

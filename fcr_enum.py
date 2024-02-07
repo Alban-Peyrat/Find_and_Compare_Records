@@ -80,6 +80,43 @@ class FCR_Processings(Enum):
         FCR_Mapped_Fields.ITEMS_BARCODE: FCR_Processing_Data_Target.TARGET,
         FCR_Mapped_Fields.ITEMS: FCR_Processing_Data_Target.TARGET    
     }
+    BETTER_ITEM_NO_ISBN = {
+        FCR_Mapped_Fields.ID: FCR_Processing_Data_Target.ORIGIN,
+        FCR_Mapped_Fields.PPN: FCR_Processing_Data_Target.ORIGIN,
+        FCR_Mapped_Fields.GENERAL_PROCESSING_DATA_DATES: FCR_Processing_Data_Target.BOTH,
+        FCR_Mapped_Fields.EAN: FCR_Processing_Data_Target.BOTH,
+        FCR_Mapped_Fields.ERRONEOUS_ISBN: FCR_Processing_Data_Target.BOTH,
+        FCR_Mapped_Fields.TITLE: FCR_Processing_Data_Target.BOTH,
+        FCR_Mapped_Fields.AUTHORS: FCR_Processing_Data_Target.BOTH,
+        FCR_Mapped_Fields.PUBLISHERS_NAME: FCR_Processing_Data_Target.BOTH,
+        FCR_Mapped_Fields.EDITION_NOTES: FCR_Processing_Data_Target.BOTH,
+        FCR_Mapped_Fields.PUBLICATION_DATES: FCR_Processing_Data_Target.BOTH,
+        FCR_Mapped_Fields.PHYSICAL_DESCRIPTION: FCR_Processing_Data_Target.ORIGIN,
+        FCR_Mapped_Fields.OTHER_DB_ID: FCR_Processing_Data_Target.TARGET,
+        FCR_Mapped_Fields.ITEMS_BARCODE: FCR_Processing_Data_Target.TARGET,
+        FCR_Mapped_Fields.ITEMS: FCR_Processing_Data_Target.TARGET
+    }
+    BETTER_ITEM_MAPS = {
+        FCR_Mapped_Fields.ID: FCR_Processing_Data_Target.ORIGIN,
+        FCR_Mapped_Fields.PPN: FCR_Processing_Data_Target.ORIGIN,
+        FCR_Mapped_Fields.GENERAL_PROCESSING_DATA_DATES: FCR_Processing_Data_Target.BOTH,
+        FCR_Mapped_Fields.EAN: FCR_Processing_Data_Target.BOTH,
+        FCR_Mapped_Fields.TITLE: FCR_Processing_Data_Target.BOTH,
+        FCR_Mapped_Fields.AUTHORS: FCR_Processing_Data_Target.BOTH,
+        FCR_Mapped_Fields.PUBLISHERS_NAME: FCR_Processing_Data_Target.BOTH,
+        FCR_Mapped_Fields.EDITION_NOTES: FCR_Processing_Data_Target.BOTH,
+        FCR_Mapped_Fields.PHYSICAL_DESCRIPTION: FCR_Processing_Data_Target.BOTH,
+        FCR_Mapped_Fields.PUBLICATION_DATES: FCR_Processing_Data_Target.BOTH,
+        FCR_Mapped_Fields.CONTENTS_NOTES: FCR_Processing_Data_Target.ORIGIN,
+        FCR_Mapped_Fields.OTHER_DB_ID: FCR_Processing_Data_Target.TARGET,
+        FCR_Mapped_Fields.ITEMS_BARCODE: FCR_Processing_Data_Target.TARGET,
+        FCR_Mapped_Fields.ITEMS: FCR_Processing_Data_Target.TARGET,
+        FCR_Mapped_Fields.MAPS_HORIZONTAL_SCALE: FCR_Processing_Data_Target.BOTH,
+        FCR_Mapped_Fields.MAPS_MATHEMATICAL_DATA: FCR_Processing_Data_Target.BOTH,
+        FCR_Mapped_Fields.SERIES: FCR_Processing_Data_Target.BOTH,
+        FCR_Mapped_Fields.SERIES_LINK: FCR_Processing_Data_Target.BOTH,
+        FCR_Mapped_Fields.GEOGRAPHICAL_SUBJECT: FCR_Processing_Data_Target.BOTH,
+    }
 
 class Analysis_Checks(Enum):
     TITLE = 0
@@ -123,6 +160,8 @@ class Operations(Enum):
     SEARCH_IN_SUDOC_BY_ISBN_ONLY_SRU = 3
     SEARCH_IN_SUDOC_DVD = 4
     SEARCH_IN_KOHA_SRU_VANILLA = 5
+    SEARCH_IN_SUDOC_NO_ISBN = 6
+    SEARCH_IN_SUDOC_MAPS = 7
     # SEARCH_IN_ISO2701_FILE = 6
 
 class Actions(Enum):
@@ -140,6 +179,16 @@ class Actions(Enum):
     KOHA_SRU_TITLE_AUTHOR_DATE = 11
     KOHA_SRU_ANY_TITLE_AUTHOR_PUBLISHER_DATE = 12
     KOHA_SRU_ANY_TITLE_AUTHOR_DATE = 13
+    SRU_SUDOC_MTI_AUT_EDI_APU_TDO_B = 14
+    SRU_SUDOC_MTI_AUT_APU_TDO_B = 15
+    SRU_SUDOC_TOU_TITLE_AUTHOR_PUBLISHER_DATE_TDO_B = 16
+    SRU_SUDOC_TOU_TITLE_AUTHOR_DATE_TDO_B = 17
+    SRU_SUDOC_TOU_TITLE_AUTHOR_PUBLISHER_TDO_B = 18
+    SRU_SUDOC_MTI_AUT_EDI_APU_TDO_K = 19
+    SRU_SUDOC_MTI_AUT_APU_TDO_K = 20
+    SRU_SUDOC_TOU_TITLE_AUTHOR_PUBLISHER_DATE_TDO_K = 21
+    SRU_SUDOC_TOU_TITLE_AUTHOR_DATE_TDO_K = 21
+    SRU_SUDOC_TOU_TITLE_AUTHOR_PUBLISHER_TDO_K = 22
     
 
 class Try_Status(Enum):
@@ -166,7 +215,9 @@ class Match_Records_Error_Messages(Enum):
 PROCESSING_OPERATION_MAPPING = {
     FCR_Processings.BETTER_ITEM:Operations.SEARCH_IN_SUDOC_BY_ISBN,
     FCR_Processings.BETTER_ITEM_DVD:Operations.SEARCH_IN_SUDOC_DVD,
-    FCR_Processings.MARC_FILE_IN_KOHA_SRU:Operations.SEARCH_IN_KOHA_SRU_VANILLA
+    FCR_Processings.MARC_FILE_IN_KOHA_SRU:Operations.SEARCH_IN_KOHA_SRU_VANILLA,
+    FCR_Processings.BETTER_ITEM_NO_ISBN:Operations.SEARCH_IN_SUDOC_NO_ISBN,
+    FCR_Processings.BETTER_ITEM_MAPS:Operations.SEARCH_IN_SUDOC_MAPS
 }
 
 # TRY_OPERATIONS defines for each Operations a lsit of Actions to execute
@@ -198,8 +249,20 @@ class Try_Operations(Enum):
         Actions.KOHA_SRU_ANY_TITLE_AUTHOR_PUBLISHER_DATE,
         Actions.KOHA_SRU_ANY_TITLE_AUTHOR_DATE
     ]
-    
-
+    SEARCH_IN_SUDOC_NO_ISBN = [
+        Actions.EAN2PPN,
+        Actions.SRU_SUDOC_MTI_AUT_EDI_APU_TDO_B,
+        Actions.SRU_SUDOC_MTI_AUT_APU_TDO_B,
+        Actions.SRU_SUDOC_TOU_TITLE_AUTHOR_PUBLISHER_DATE_TDO_B,
+        Actions.SRU_SUDOC_TOU_TITLE_AUTHOR_PUBLISHER_TDO_B
+    ]
+    SEARCH_IN_SUDOC_MAPS = [
+        Actions.EAN2PPN,
+        Actions.SRU_SUDOC_MTI_AUT_EDI_APU_TDO_K,
+        Actions.SRU_SUDOC_MTI_AUT_APU_TDO_K,
+        Actions.SRU_SUDOC_TOU_TITLE_AUTHOR_PUBLISHER_DATE_TDO_K,
+        Actions.SRU_SUDOC_TOU_TITLE_AUTHOR_PUBLISHER_TDO_K
+    ]
 
 # ---------- UNIVERSAL DATA EXTRACTOR (UDE) ----------
 class FCR_Filters(Enum):

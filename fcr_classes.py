@@ -98,7 +98,7 @@ class Execution_Settings(object):
             self.chosen_analysis_checks[Analysis_Checks.DATE] = None
     
     def define_databases(self):
-        if self.processing in [FCR_Processings.BETTER_ITEM, FCR_Processings.BETTER_ITEM_DVD]:
+        if self.processing in [FCR_Processings.BETTER_ITEM, FCR_Processings.BETTER_ITEM_DVD, FCR_Processings.BETTER_ITEM_NO_ISBN, FCR_Processings.BETTER_ITEM_MAPS]:
             self.origin_database = Databases.KOHA_PUBLIC_BIBLIO
             self.target_database = Databases.ABESXML
         elif self.processing == FCR_Processings.MARC_FILE_IN_KOHA_SRU:
@@ -108,7 +108,7 @@ class Execution_Settings(object):
     def load_original_file_data(self):
         self.original_file_data = {}
         # CSV handling
-        if self.processing in [FCR_Processings.BETTER_ITEM, FCR_Processings.BETTER_ITEM_DVD]:
+        if self.processing in [FCR_Processings.BETTER_ITEM, FCR_Processings.BETTER_ITEM_DVD, FCR_Processings.BETTER_ITEM_NO_ISBN, FCR_Processings.BETTER_ITEM_MAPS]:
             self.original_file_data_is_csv = True
             with open(self.file_path, 'r', newline="", encoding="utf-8") as fh:
                 csvdata = csv.DictReader(fh, delimiter=";")
@@ -481,11 +481,7 @@ class Execution_Settings(object):
                 if processing_fields[data] in [FCR_Processing_Data_Target.BOTH, FCR_Processing_Data_Target.TARGET]:
                     self.headers[f"TARGET_DB_{data.name}"] = self.csv_cols[f"TARGET_DB_{data.name}"][par.lang]
             # Special processing cols
-            if par.processing_val == FCR_Processings.BETTER_ITEM.name:
-                self.headers[CSV_Cols.TARGET_DB_HAS_ITEMS.name] = self.csv_cols[CSV_Cols.TARGET_DB_HAS_ITEMS.name][par.lang]
-                del self.headers[CSV_Cols.ORIGIN_DB_GENERAL_PROCESSING_DATA_DATES.name]
-                del self.headers[CSV_Cols.TARGET_DB_GENERAL_PROCESSING_DATA_DATES.name]
-            elif par.processing_val == FCR_Processings.BETTER_ITEM_DVD.name:
+            if par.processing_val in [FCR_Processings.BETTER_ITEM.name, FCR_Processings.BETTER_ITEM_DVD.name, FCR_Processings.BETTER_ITEM_NO_ISBN.name, FCR_Processings.BETTER_ITEM_MAPS.name]:
                 self.headers[CSV_Cols.TARGET_DB_HAS_ITEMS.name] = self.csv_cols[CSV_Cols.TARGET_DB_HAS_ITEMS.name][par.lang]
                 del self.headers[CSV_Cols.ORIGIN_DB_GENERAL_PROCESSING_DATA_DATES.name]
                 del self.headers[CSV_Cols.TARGET_DB_GENERAL_PROCESSING_DATA_DATES.name]
@@ -1141,6 +1137,454 @@ class Matched_Records(object):
                     ssru.SRU_Filters.TDO,
                     ssru.SRU_Relations.EQUALS,
                     ssru.SRU_Filter_TDO.V,
+                    ssru.SRU_Boolean_Operators.AND
+                )
+            ]
+            thisTry.define_used_query(sru.generate_query(sru_request))
+            res = sru.search(
+                thisTry.query,
+                record_schema=ssru.SRU_Record_Schemas.UNIMARC,
+                record_packing=ssru.SRU_Record_Packings.XML,
+                maximum_records=100,
+                start_record=1
+            )
+            if (res.status == "Error"):
+                thisTry.error_occured(res.get_error_msg())
+            else:
+                thisTry.add_returned_ids(res.get_records_id())
+                thisTry.add_returned_records(res.get_records())
+
+        # Action SRU SUdoc MTI title AUT author EDI publisher APu date TDO B
+        elif action == Actions.SRU_SUDOC_MTI_AUT_EDI_APU_TDO_B:
+            sru = ssru.Sudoc_SRU()
+            # Ensure no data is Empty 
+            if title.strip() == "" or author.strip() == "" or publisher.strip() == "" or len(dates) < 1:
+                thisTry.error_occured(Match_Records_Errors.REQUIRED_DATA_MISSING)
+                return
+            # Generate query
+            sru_request = [
+                ssru.Part_Of_Query(
+                    ssru.SRU_Indexes.MTI,
+                    ssru.SRU_Relations.EQUALS,
+                    title,
+                    ssru.SRU_Boolean_Operators.AND
+                ),
+                ssru.Part_Of_Query(
+                    ssru.SRU_Indexes.AUT,
+                    ssru.SRU_Relations.EQUALS,
+                    author,
+                    ssru.SRU_Boolean_Operators.AND
+                ),
+                ssru.Part_Of_Query(
+                    ssru.SRU_Indexes.EDI,
+                    ssru.SRU_Relations.EQUALS,
+                    publisher,
+                    ssru.SRU_Boolean_Operators.AND
+                ),
+                ssru.Part_Of_Query(
+                    ssru.SRU_Filters.APU,
+                    ssru.SRU_Relations.SUPERIOR_OR_EQUAL,
+                    oldest_date,
+                    ssru.SRU_Boolean_Operators.AND
+                ),
+                ssru.Part_Of_Query(
+                    ssru.SRU_Filters.APU,
+                    ssru.SRU_Relations.INFERIOR_OR_EQUAL,
+                    newest_date,
+                    ssru.SRU_Boolean_Operators.AND
+                ),
+                ssru.Part_Of_Query(
+                    ssru.SRU_Filters.TDO,
+                    ssru.SRU_Relations.EQUALS,
+                    ssru.SRU_Filter_TDO.B,
+                    ssru.SRU_Boolean_Operators.AND
+                )
+            ]
+            thisTry.define_used_query(sru.generate_query(sru_request))
+            res = sru.search(
+                thisTry.query,
+                record_schema=ssru.SRU_Record_Schemas.UNIMARC,
+                record_packing=ssru.SRU_Record_Packings.XML,
+                maximum_records=100,
+                start_record=1
+            )
+            if (res.status == "Error"):
+                thisTry.error_occured(res.get_error_msg())
+            else:
+                thisTry.add_returned_ids(res.get_records_id())
+                thisTry.add_returned_records(res.get_records())
+
+        # Action SRU SUdoc MTI title AUT author APu date TDO B
+        elif action == Actions.SRU_SUDOC_MTI_AUT_APU_TDO_B:
+            sru = ssru.Sudoc_SRU()
+            # Ensure no data is Empty 
+            if title.strip() == "" or author.strip() == "" or len(dates) < 1:
+                thisTry.error_occured(Match_Records_Errors.REQUIRED_DATA_MISSING)
+                return
+            # Generate query
+            sru_request = [
+                ssru.Part_Of_Query(
+                    ssru.SRU_Indexes.MTI,
+                    ssru.SRU_Relations.EQUALS,
+                    title,
+                    ssru.SRU_Boolean_Operators.AND
+                ),
+                ssru.Part_Of_Query(
+                    ssru.SRU_Indexes.AUT,
+                    ssru.SRU_Relations.EQUALS,
+                    author,
+                    ssru.SRU_Boolean_Operators.AND
+                ),
+                ssru.Part_Of_Query(
+                    ssru.SRU_Filters.APU,
+                    ssru.SRU_Relations.SUPERIOR_OR_EQUAL,
+                    oldest_date,
+                    ssru.SRU_Boolean_Operators.AND
+                ),
+                ssru.Part_Of_Query(
+                    ssru.SRU_Filters.APU,
+                    ssru.SRU_Relations.INFERIOR_OR_EQUAL,
+                    newest_date,
+                    ssru.SRU_Boolean_Operators.AND
+                ),
+                ssru.Part_Of_Query(
+                    ssru.SRU_Filters.TDO,
+                    ssru.SRU_Relations.EQUALS,
+                    ssru.SRU_Filter_TDO.B,
+                    ssru.SRU_Boolean_Operators.AND
+                )
+            ]
+            thisTry.define_used_query(sru.generate_query(sru_request))
+            res = sru.search(
+                thisTry.query,
+                record_schema=ssru.SRU_Record_Schemas.UNIMARC,
+                record_packing=ssru.SRU_Record_Packings.XML,
+                maximum_records=100,
+                start_record=1
+            )
+            if (res.status == "Error"):
+                thisTry.error_occured(res.get_error_msg())
+            else:
+                thisTry.add_returned_ids(res.get_records_id())
+                thisTry.add_returned_records(res.get_records())
+
+        # Action SRU SUdoc TOU title + author + publisher + date TDO B
+        elif action == Actions.SRU_SUDOC_TOU_TITLE_AUTHOR_PUBLISHER_DATE_TDO_B:
+            sru = ssru.Sudoc_SRU()
+            # Ensure no data is Empty 
+            if title.strip() == "" or author.strip() == "" or publisher.strip() == "" or len(dates) < 1:
+                thisTry.error_occured(Match_Records_Errors.REQUIRED_DATA_MISSING)
+                return
+            # Generate query
+            sru_request = [
+                ssru.Part_Of_Query(
+                    ssru.SRU_Indexes.TOU,
+                    ssru.SRU_Relations.EQUALS,
+                    fcf.delete_duplicate_words(" ".join([title, author, publisher])),
+                    ssru.SRU_Boolean_Operators.AND
+                ),
+                f" AND (tou={' or tou='.join([str(num) for num in dates])})",
+                ssru.Part_Of_Query(
+                    ssru.SRU_Filters.TDO,
+                    ssru.SRU_Relations.EQUALS,
+                    ssru.SRU_Filter_TDO.B,
+                    ssru.SRU_Boolean_Operators.AND
+                )
+            ]
+            thisTry.define_used_query(sru.generate_query(sru_request))
+            res = sru.search(
+                thisTry.query,
+                record_schema=ssru.SRU_Record_Schemas.UNIMARC,
+                record_packing=ssru.SRU_Record_Packings.XML,
+                maximum_records=100,
+                start_record=1
+            )
+            if (res.status == "Error"):
+                thisTry.error_occured(res.get_error_msg())
+            else:
+                thisTry.add_returned_ids(res.get_records_id())
+                thisTry.add_returned_records(res.get_records())
+
+        # Action SRU SUdoc TOU title + author + date TDO B
+        elif action == Actions.SRU_SUDOC_TOU_TITLE_AUTHOR_DATE_TDO_B:
+            sru = ssru.Sudoc_SRU()
+            # Ensure no data is Empty 
+            if title.strip() == "" or author.strip() == "" or len(dates) < 1:
+                thisTry.error_occured(Match_Records_Errors.REQUIRED_DATA_MISSING)
+                return
+            # Generate query
+            sru_request = [
+                ssru.Part_Of_Query(
+                    ssru.SRU_Indexes.TOU,
+                    ssru.SRU_Relations.EQUALS,
+                    fcf.delete_duplicate_words(" ".join([title, author])),
+                    ssru.SRU_Boolean_Operators.AND
+                ),
+                f" AND (tou={' or tou='.join([str(num) for num in dates])})",
+                ssru.Part_Of_Query(
+                    ssru.SRU_Filters.TDO,
+                    ssru.SRU_Relations.EQUALS,
+                    ssru.SRU_Filter_TDO.B,
+                    ssru.SRU_Boolean_Operators.AND
+                )
+            ]
+            thisTry.define_used_query(sru.generate_query(sru_request))
+            res = sru.search(
+                thisTry.query,
+                record_schema=ssru.SRU_Record_Schemas.UNIMARC,
+                record_packing=ssru.SRU_Record_Packings.XML,
+                maximum_records=100,
+                start_record=1
+            )
+            if (res.status == "Error"):
+                thisTry.error_occured(res.get_error_msg())
+            else:
+                thisTry.add_returned_ids(res.get_records_id())
+                thisTry.add_returned_records(res.get_records())
+
+        # Action SRU SUdoc TOU title + author + publisher TDO B
+        elif action == Actions.SRU_SUDOC_TOU_TITLE_AUTHOR_PUBLISHER_TDO_B:
+            sru = ssru.Sudoc_SRU()
+            # Ensure no data is Empty 
+            if title.strip() == "" or author.strip() == "" or publisher.strip() == "":
+                thisTry.error_occured(Match_Records_Errors.REQUIRED_DATA_MISSING)
+                return
+            # Generate query
+            sru_request = [
+                ssru.Part_Of_Query(
+                    ssru.SRU_Indexes.TOU,
+                    ssru.SRU_Relations.EQUALS,
+                    fcf.delete_duplicate_words(" ".join([title, author, publisher])),
+                    ssru.SRU_Boolean_Operators.AND
+                ),
+                ssru.Part_Of_Query(
+                    ssru.SRU_Filters.TDO,
+                    ssru.SRU_Relations.EQUALS,
+                    ssru.SRU_Filter_TDO.B,
+                    ssru.SRU_Boolean_Operators.AND
+                )
+            ]
+            thisTry.define_used_query(sru.generate_query(sru_request))
+            res = sru.search(
+                thisTry.query,
+                record_schema=ssru.SRU_Record_Schemas.UNIMARC,
+                record_packing=ssru.SRU_Record_Packings.XML,
+                maximum_records=100,
+                start_record=1
+            )
+            if (res.status == "Error"):
+                thisTry.error_occured(res.get_error_msg())
+            else:
+                thisTry.add_returned_ids(res.get_records_id())
+                thisTry.add_returned_records(res.get_records())
+
+        # Action SRU SUdoc MTI title AUT author EDI publisher APu date TDO K
+        elif action == Actions.SRU_SUDOC_MTI_AUT_EDI_APU_TDO_K:
+            sru = ssru.Sudoc_SRU()
+            # Ensure no data is Empty 
+            if title.strip() == "" or author.strip() == "" or publisher.strip() == "" or len(dates) < 1:
+                thisTry.error_occured(Match_Records_Errors.REQUIRED_DATA_MISSING)
+                return
+            # Generate query
+            sru_request = [
+                ssru.Part_Of_Query(
+                    ssru.SRU_Indexes.MTI,
+                    ssru.SRU_Relations.EQUALS,
+                    title,
+                    ssru.SRU_Boolean_Operators.AND
+                ),
+                ssru.Part_Of_Query(
+                    ssru.SRU_Indexes.AUT,
+                    ssru.SRU_Relations.EQUALS,
+                    author,
+                    ssru.SRU_Boolean_Operators.AND
+                ),
+                ssru.Part_Of_Query(
+                    ssru.SRU_Indexes.EDI,
+                    ssru.SRU_Relations.EQUALS,
+                    publisher,
+                    ssru.SRU_Boolean_Operators.AND
+                ),
+                ssru.Part_Of_Query(
+                    ssru.SRU_Filters.APU,
+                    ssru.SRU_Relations.SUPERIOR_OR_EQUAL,
+                    oldest_date,
+                    ssru.SRU_Boolean_Operators.AND
+                ),
+                ssru.Part_Of_Query(
+                    ssru.SRU_Filters.APU,
+                    ssru.SRU_Relations.INFERIOR_OR_EQUAL,
+                    newest_date,
+                    ssru.SRU_Boolean_Operators.AND
+                ),
+                ssru.Part_Of_Query(
+                    ssru.SRU_Filters.TDO,
+                    ssru.SRU_Relations.EQUALS,
+                    ssru.SRU_Filter_TDO.K,
+                    ssru.SRU_Boolean_Operators.AND
+                )
+            ]
+            thisTry.define_used_query(sru.generate_query(sru_request))
+            res = sru.search(
+                thisTry.query,
+                record_schema=ssru.SRU_Record_Schemas.UNIMARC,
+                record_packing=ssru.SRU_Record_Packings.XML,
+                maximum_records=100,
+                start_record=1
+            )
+            if (res.status == "Error"):
+                thisTry.error_occured(res.get_error_msg())
+            else:
+                thisTry.add_returned_ids(res.get_records_id())
+                thisTry.add_returned_records(res.get_records())
+
+        # Action SRU SUdoc MTI title AUT author APu date TDO K
+        elif action == Actions.SRU_SUDOC_MTI_AUT_APU_TDO_K:
+            sru = ssru.Sudoc_SRU()
+            # Ensure no data is Empty 
+            if title.strip() == "" or author.strip() == "" or len(dates) < 1:
+                thisTry.error_occured(Match_Records_Errors.REQUIRED_DATA_MISSING)
+                return
+            # Generate query
+            sru_request = [
+                ssru.Part_Of_Query(
+                    ssru.SRU_Indexes.MTI,
+                    ssru.SRU_Relations.EQUALS,
+                    title,
+                    ssru.SRU_Boolean_Operators.AND
+                ),
+                ssru.Part_Of_Query(
+                    ssru.SRU_Indexes.AUT,
+                    ssru.SRU_Relations.EQUALS,
+                    author,
+                    ssru.SRU_Boolean_Operators.AND
+                ),
+                ssru.Part_Of_Query(
+                    ssru.SRU_Filters.APU,
+                    ssru.SRU_Relations.SUPERIOR_OR_EQUAL,
+                    oldest_date,
+                    ssru.SRU_Boolean_Operators.AND
+                ),
+                ssru.Part_Of_Query(
+                    ssru.SRU_Filters.APU,
+                    ssru.SRU_Relations.INFERIOR_OR_EQUAL,
+                    newest_date,
+                    ssru.SRU_Boolean_Operators.AND
+                ),
+                ssru.Part_Of_Query(
+                    ssru.SRU_Filters.TDO,
+                    ssru.SRU_Relations.EQUALS,
+                    ssru.SRU_Filter_TDO.K,
+                    ssru.SRU_Boolean_Operators.AND
+                )
+            ]
+            thisTry.define_used_query(sru.generate_query(sru_request))
+            res = sru.search(
+                thisTry.query,
+                record_schema=ssru.SRU_Record_Schemas.UNIMARC,
+                record_packing=ssru.SRU_Record_Packings.XML,
+                maximum_records=100,
+                start_record=1
+            )
+            if (res.status == "Error"):
+                thisTry.error_occured(res.get_error_msg())
+            else:
+                thisTry.add_returned_ids(res.get_records_id())
+                thisTry.add_returned_records(res.get_records())
+
+        # Action SRU SUdoc TOU title + author + publisher + date TDO K
+        elif action == Actions.SRU_SUDOC_TOU_TITLE_AUTHOR_PUBLISHER_DATE_TDO_K:
+            sru = ssru.Sudoc_SRU()
+            # Ensure no data is Empty 
+            if title.strip() == "" or author.strip() == "" or publisher.strip() == "" or len(dates) < 1:
+                thisTry.error_occured(Match_Records_Errors.REQUIRED_DATA_MISSING)
+                return
+            # Generate query
+            sru_request = [
+                ssru.Part_Of_Query(
+                    ssru.SRU_Indexes.TOU,
+                    ssru.SRU_Relations.EQUALS,
+                    fcf.delete_duplicate_words(" ".join([title, author, publisher])),
+                    ssru.SRU_Boolean_Operators.AND
+                ),
+                f" AND (tou={' or tou='.join([str(num) for num in dates])})",
+                ssru.Part_Of_Query(
+                    ssru.SRU_Filters.TDO,
+                    ssru.SRU_Relations.EQUALS,
+                    ssru.SRU_Filter_TDO.K,
+                    ssru.SRU_Boolean_Operators.AND
+                )
+            ]
+            thisTry.define_used_query(sru.generate_query(sru_request))
+            res = sru.search(
+                thisTry.query,
+                record_schema=ssru.SRU_Record_Schemas.UNIMARC,
+                record_packing=ssru.SRU_Record_Packings.XML,
+                maximum_records=100,
+                start_record=1
+            )
+            if (res.status == "Error"):
+                thisTry.error_occured(res.get_error_msg())
+            else:
+                thisTry.add_returned_ids(res.get_records_id())
+                thisTry.add_returned_records(res.get_records())
+
+        # Action SRU SUdoc TOU title + author + date TDO K
+        elif action == Actions.SRU_SUDOC_TOU_TITLE_AUTHOR_DATE_TDO_K:
+            sru = ssru.Sudoc_SRU()
+            # Ensure no data is Empty 
+            if title.strip() == "" or author.strip() == "" or len(dates) < 1:
+                thisTry.error_occured(Match_Records_Errors.REQUIRED_DATA_MISSING)
+                return
+            # Generate query
+            sru_request = [
+                ssru.Part_Of_Query(
+                    ssru.SRU_Indexes.TOU,
+                    ssru.SRU_Relations.EQUALS,
+                    fcf.delete_duplicate_words(" ".join([title, author])),
+                    ssru.SRU_Boolean_Operators.AND
+                ),
+                f" AND (tou={' or tou='.join([str(num) for num in dates])})",
+                ssru.Part_Of_Query(
+                    ssru.SRU_Filters.TDO,
+                    ssru.SRU_Relations.EQUALS,
+                    ssru.SRU_Filter_TDO.K,
+                    ssru.SRU_Boolean_Operators.AND
+                )
+            ]
+            thisTry.define_used_query(sru.generate_query(sru_request))
+            res = sru.search(
+                thisTry.query,
+                record_schema=ssru.SRU_Record_Schemas.UNIMARC,
+                record_packing=ssru.SRU_Record_Packings.XML,
+                maximum_records=100,
+                start_record=1
+            )
+            if (res.status == "Error"):
+                thisTry.error_occured(res.get_error_msg())
+            else:
+                thisTry.add_returned_ids(res.get_records_id())
+                thisTry.add_returned_records(res.get_records())
+
+        # Action SRU SUdoc TOU title + author + publisher TDO K
+        elif action == Actions.SRU_SUDOC_TOU_TITLE_AUTHOR_PUBLISHER_TDO_K:
+            sru = ssru.Sudoc_SRU()
+            # Ensure no data is Empty 
+            if title.strip() == "" or author.strip() == "" or publisher.strip() == "":
+                thisTry.error_occured(Match_Records_Errors.REQUIRED_DATA_MISSING)
+                return
+            # Generate query
+            sru_request = [
+                ssru.Part_Of_Query(
+                    ssru.SRU_Indexes.TOU,
+                    ssru.SRU_Relations.EQUALS,
+                    fcf.delete_duplicate_words(" ".join([title, author, publisher])),
+                    ssru.SRU_Boolean_Operators.AND
+                ),
+                ssru.Part_Of_Query(
+                    ssru.SRU_Filters.TDO,
+                    ssru.SRU_Relations.EQUALS,
+                    ssru.SRU_Filter_TDO.K,
                     ssru.SRU_Boolean_Operators.AND
                 )
             ]
@@ -2018,7 +2462,7 @@ class Original_Record(object):
                     if processing_fields[data] in [FCR_Processing_Data_Target.BOTH, FCR_Processing_Data_Target.ORIGIN]:
                         out[f"ORIGIN_DB_{data.name}"] = fcf.list_as_string(par.origin_database_data.data[data])
                 out = self.__special_data(out)
-                if par.es.processing_val == FCR_Processings.BETTER_ITEM.name:
+                if par.es.processing_val in [FCR_Processings.BETTER_ITEM.name, FCR_Processings.BETTER_ITEM_DVD.name, FCR_Processings.BETTER_ITEM_NO_ISBN.name, FCR_Processings.BETTER_ITEM_MAPS.name]:
                     out = self.__special_better_item(out)
 
                 # Match records
@@ -2036,7 +2480,7 @@ class Original_Record(object):
                     if processing_fields[data] in [FCR_Processing_Data_Target.BOTH, FCR_Processing_Data_Target.TARGET]:
                         out[f"TARGET_DB_{data.name}"] = fcf.list_as_string(target_record.data[data])
                 out = self.__special_data(out, False)
-                if par.es.processing_val == FCR_Processings.BETTER_ITEM.name:
+                if par.es.processing_val in [FCR_Processings.BETTER_ITEM.name, FCR_Processings.BETTER_ITEM_DVD.name, FCR_Processings.BETTER_ITEM_NO_ISBN.name, FCR_Processings.BETTER_ITEM_MAPS.name]:
                     out = self.__special_better_item(out, False)
 
                 # Analysis

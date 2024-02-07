@@ -10,7 +10,14 @@
 * In `fcr_classes.py` :
   * In `Execution_Settings`, define the databases in `define_databases()` methods
   * In `Execution_Settings`, add a behaviour at the beginning of `load_original_file_data()` method
+  * If needed, add a `__special_` method to subclass `Original_Record.Output` and call it inside the `to_csv()` method
+  * If needed, remove some exported columns inside `Execution_Settings.CSV.__define_headers()` method
 * In `main_gui.py` : see [in GUI doc](./GUI.md#hide-elements-for-some-processings)
+* In `main.py`, add the processing to :
+  * The logger init part
+  * The origin database part
+  * The matched_records part if needed
+  * The target database part
 
 
 <!-- in database_record, add a case with the processig, calling for ude gets wanted -->

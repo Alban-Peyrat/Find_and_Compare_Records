@@ -52,7 +52,7 @@ def main(es: fcr.Execution_Settings):
     results_report = fcr.Report(es)
 
     es.log.simple_info("Processing", es.processing_val)
-    if es.processing_val in [fcr.FCR_Processings.BETTER_ITEM.name, fcr.FCR_Processings.BETTER_ITEM_DVD.name]:
+    if es.processing_val in [fcr.FCR_Processings.BETTER_ITEM.name, fcr.FCR_Processings.BETTER_ITEM_DVD.name, fcr.FCR_Processings.BETTER_ITEM_NO_ISBN.name, fcr.FCR_Processings.BETTER_ITEM_MAPS.name]:
         es.log.simple_info("Koha URL", es.origin_url)
         es.log.simple_info("ILN", es.iln)
         es.log.simple_info("RCR", es.rcr)
@@ -97,7 +97,7 @@ def main(es: fcr.Execution_Settings):
         # --------------- ORIGIN DATABASE ---------------
         # Get origin DB record
         # BETTER_ITEMs querying Koha Public biblio
-        if es.processing in [fcr.FCR_Processings.BETTER_ITEM, fcr.FCR_Processings.BETTER_ITEM_DVD]:
+        if es.processing in [fcr.FCR_Processings.BETTER_ITEM, fcr.FCR_Processings.BETTER_ITEM_DVD, fcr.FCR_Processings.BETTER_ITEM_NO_ISBN, fcr.FCR_Processings.BETTER_ITEM_MAPS]:
             origin_record = Koha_API_PublicBiblio.Koha_API_PublicBiblio(rec.original_uid, es.origin_url, service=es.service, format="application/marcxml+xml")
             if origin_record.status == 'Error' :
                 rec.trigger_error(f"Koha_API_PublicBiblio : {origin_record.error_msg}")
@@ -156,7 +156,7 @@ def main(es: fcr.Execution_Settings):
             record_list = rec.matched_records
             list_is_id = False
             # Tiny brain can't comprehend how to mrege all the if so I'm nesting them
-            if es.processing in [fcr.FCR_Processings.BETTER_ITEM, fcr.FCR_Processings.BETTER_ITEM_DVD]:
+            if es.processing in [fcr.FCR_Processings.BETTER_ITEM, fcr.FCR_Processings.BETTER_ITEM_DVD, fcr.FCR_Processings.BETTER_ITEM_NO_ISBN, fcr.FCR_Processings.BETTER_ITEM_MAPS]:
                 if "SRU_SUDOC" in rec.action_used.name:
                     record_list = rec.matched_records_ids
                     list_is_id = True
@@ -171,7 +171,7 @@ def main(es: fcr.Execution_Settings):
             # --------------- TARGET DATABASE ---------------
             # Get target DB record
             # BETTER_ITEMs querying Sudoc XML
-            if es.processing in [fcr.FCR_Processings.BETTER_ITEM, fcr.FCR_Processings.BETTER_ITEM_DVD]:
+            if es.processing in [fcr.FCR_Processings.BETTER_ITEM, fcr.FCR_Processings.BETTER_ITEM_DVD, fcr.FCR_Processings.BETTER_ITEM_NO_ISBN, fcr.FCR_Processings.BETTER_ITEM_MAPS]:
                 target_db_queried_record = AbesXml.AbesXml(rec.matched_id,service=es.service)
                 if target_db_queried_record.status == 'Error':
                     rec.trigger_error(f"Sudoc XML : {target_db_queried_record.error_msg}")
