@@ -25,6 +25,40 @@ import api.abes.Sudoc_SRU as ssru
 import api.koha.Koha_SRU as ksru
 
 # -------------------- Execution settings (ES) --------------------
+class Database(object):
+    def __init__(self, database:Database_Names, filters:Dict[FCR_Mapped_Fields, FCR_Filters]) -> None:
+        self.enum_member = database
+        self.name = database.name
+        self.id = database.value
+        self.filters = filters
+
+DATABASES_LIST = {
+    Database_Names.ABESXML:Database(
+        database=Database_Names.ABESXML,
+        filters={
+            FCR_Mapped_Fields.OTHER_DB_ID:FCR_Filters.ILN,
+            FCR_Mapped_Fields.ITEMS:FCR_Filters.RCR,
+            FCR_Mapped_Fields.ITEMS_BARCODE:FCR_Filters.RCR
+        }
+    ),
+    Database_Names.SUDOC_SRU:Database(
+        database=Database_Names.SUDOC_SRU,
+        filters={}
+    ),
+    Database_Names.KOHA_PUBLIC_BIBLIO:Database(
+        database=Database_Names.KOHA_PUBLIC_BIBLIO,
+        filters={}
+    ),
+    Database_Names.KOHA_SRU:Database(
+        database=Database_Names.KOHA_SRU,
+        filters={}
+    ),
+    Database_Names.LOCAL:Database(
+        database=Database_Names.LOCAL,
+        filters={}
+    )
+}
+
 class Operation(object):
     def __init__(self, operation: Operation_Names, actions:List[Actions]) -> None:
         """Takes as argument :
@@ -100,7 +134,7 @@ OPERATIONS_LIST = {
 }
 
 class Processing(object):
-    def __init__(self, processing: Processing_Names, mapped_data:Dict[FCR_Mapped_Fields, FCR_Processing_Data_Target], operation:Operation) -> None:
+    def __init__(self, processing: Processing_Names, mapped_data:Dict[FCR_Mapped_Fields, FCR_Processing_Data_Target], operation:Operation, origin_database:Database, target_database:Database) -> None:
         """Takes as argument :
             - a Processings_Name member
             - a dict with FCR_Mapped_Fields members as key and FCR_Processing_Data_Target membres as value
@@ -110,6 +144,8 @@ class Processing(object):
         self.id = processing.value
         self.mapped_data = mapped_data
         self.operation = operation
+        self.origin_database = origin_database
+        self.target_database = target_database
 
 PROCESSINGS_LIST = {
     Processing_Names.BETTER_ITEM:Processing(
@@ -129,7 +165,9 @@ PROCESSINGS_LIST = {
             FCR_Mapped_Fields.ITEMS_BARCODE: FCR_Processing_Data_Target.TARGET,
             FCR_Mapped_Fields.ITEMS: FCR_Processing_Data_Target.TARGET
         },
-        operation=OPERATIONS_LIST[Operation_Names.SEARCH_IN_SUDOC_BY_ISBN]
+        operation=OPERATIONS_LIST[Operation_Names.SEARCH_IN_SUDOC_BY_ISBN],
+        origin_database=DATABASES_LIST[Database_Names.KOHA_PUBLIC_BIBLIO],
+        target_database=DATABASES_LIST[Database_Names.ABESXML]
     ),
     Processing_Names.MARC_FILE_IN_KOHA_SRU:Processing(
         processing=Processing_Names.MARC_FILE_IN_KOHA_SRU,
@@ -146,7 +184,9 @@ PROCESSINGS_LIST = {
             FCR_Mapped_Fields.PUBLICATION_DATES: FCR_Processing_Data_Target.BOTH,
             FCR_Mapped_Fields.EXPORTED_TO_DIGITAL_LIBRARY: FCR_Processing_Data_Target.BOTH
         },
-        operation=OPERATIONS_LIST[Operation_Names.SEARCH_IN_KOHA_SRU_VANILLA]
+        operation=OPERATIONS_LIST[Operation_Names.SEARCH_IN_KOHA_SRU_VANILLA],
+        origin_database=DATABASES_LIST[Database_Names.LOCAL],
+        target_database=DATABASES_LIST[Database_Names.KOHA_SRU]
     ),
     Processing_Names.BETTER_ITEM_DVD:Processing(
         processing=Processing_Names.BETTER_ITEM_DVD,
@@ -166,7 +206,9 @@ PROCESSINGS_LIST = {
             FCR_Mapped_Fields.ITEMS_BARCODE: FCR_Processing_Data_Target.TARGET,
             FCR_Mapped_Fields.ITEMS: FCR_Processing_Data_Target.TARGET    
         },
-        operation=OPERATIONS_LIST[Operation_Names.SEARCH_IN_SUDOC_DVD]
+        operation=OPERATIONS_LIST[Operation_Names.SEARCH_IN_SUDOC_DVD],
+        origin_database=DATABASES_LIST[Database_Names.KOHA_PUBLIC_BIBLIO],
+        target_database=DATABASES_LIST[Database_Names.ABESXML]
     ),
     Processing_Names.BETTER_ITEM_NO_ISBN:Processing(
         processing=Processing_Names.BETTER_ITEM_NO_ISBN,
@@ -186,7 +228,9 @@ PROCESSINGS_LIST = {
             FCR_Mapped_Fields.ITEMS_BARCODE: FCR_Processing_Data_Target.TARGET,
             FCR_Mapped_Fields.ITEMS: FCR_Processing_Data_Target.TARGET
         },
-        operation=OPERATIONS_LIST[Operation_Names.SEARCH_IN_SUDOC_NO_ISBN]
+        operation=OPERATIONS_LIST[Operation_Names.SEARCH_IN_SUDOC_NO_ISBN],
+        origin_database=DATABASES_LIST[Database_Names.KOHA_PUBLIC_BIBLIO],
+        target_database=DATABASES_LIST[Database_Names.ABESXML]
     ),
     Processing_Names.BETTER_ITEM_MAPS:Processing(
         processing=Processing_Names.BETTER_ITEM_MAPS,
@@ -211,7 +255,9 @@ PROCESSINGS_LIST = {
             FCR_Mapped_Fields.SERIES_LINK: FCR_Processing_Data_Target.BOTH,
             FCR_Mapped_Fields.GEOGRAPHICAL_SUBJECT: FCR_Processing_Data_Target.BOTH,
         },
-        operation=OPERATIONS_LIST[Operation_Names.SEARCH_IN_SUDOC_MAPS]
+        operation=OPERATIONS_LIST[Operation_Names.SEARCH_IN_SUDOC_MAPS],
+        origin_database=DATABASES_LIST[Database_Names.KOHA_PUBLIC_BIBLIO],
+        target_database=DATABASES_LIST[Database_Names.ABESXML]
     )
 }
 
@@ -293,7 +339,6 @@ class Execution_Settings(object):
         """Updates the current dataabse mapping.
         Takes as argument the processing as a Processing_Nmaes member, the member name or the memeber value"""
         self.processing = get_processing(processing)
-        self.define_databases()
 
     def get_operation(self):
         self.operation = self.processing.operation
@@ -307,19 +352,6 @@ class Execution_Settings(object):
             self.chosen_analysis_checks[Analysis_Checks.PUBLISHER] = None
         if self.chosen_analysis["USE_DATE"]:
             self.chosen_analysis_checks[Analysis_Checks.DATE] = None
-    
-    def define_databases(self):
-        if self.processing.enum_member in [
-                Processing_Names.BETTER_ITEM,
-                Processing_Names.BETTER_ITEM_DVD,
-                Processing_Names.BETTER_ITEM_NO_ISBN,
-                Processing_Names.BETTER_ITEM_MAPS
-            ]:
-            self.origin_database = Databases.KOHA_PUBLIC_BIBLIO
-            self.target_database = Databases.ABESXML
-        elif self.processing.enum_member == Processing_Names.MARC_FILE_IN_KOHA_SRU:
-            self.origin_database = Databases.LOCAL
-            self.target_database = Databases.KOHA_SRU
     
     def load_original_file_data(self):
         self.original_file_data = {}
@@ -735,10 +767,12 @@ class Execution_Settings(object):
 class Database_Record(object):
     """Contains extracted data from the record.
     The data property contains every mapped data for the chosen processing"""
-    def __init__(self, processing: Processing, record: ET.ElementTree | dict | pymarc.record.Record, database: Databases, is_target_db: bool, es: Execution_Settings):
+    def __init__(self, processing: Processing, record: ET.ElementTree | dict | pymarc.record.Record, is_target_db: bool, es: Execution_Settings):
         self.processing = processing
         self.record = record
-        self.database = database
+        self.database = self.processing.origin_database
+        if is_target_db:
+            self.database = self.processing.target_database
         self.is_target_db = is_target_db
         self.ude = Universal_Data_Extractor(self.record, self.database, self.is_target_db, es)
         self.data = {}
@@ -748,17 +782,17 @@ class Database_Record(object):
                 or (self.is_target_db and processing.mapped_data[data] == FCR_Processing_Data_Target.TARGET)
                 or (not self.is_target_db and processing.mapped_data[data] == FCR_Processing_Data_Target.ORIGIN)
             ):
-                if data in self.database.value:
+                if data in self.database.filters:
                     filter_value = ""
-                    if self.database.value[data] == FCR_Filters.RCR:
+                    if self.database.filters[data] == FCR_Filters.RCR:
                         filter_value = es.rcr
-                    elif self.database.value[data] == FCR_Filters.ILN:
+                    elif self.database.filters[data] == FCR_Filters.ILN:
                         filter_value = es.iln
-                    elif self.database.value[data] == FCR_Filters.FILTER1:
+                    elif self.database.filters[data] == FCR_Filters.FILTER1:
                         filter_value = es.filter1
-                    elif self.database.value[data] == FCR_Filters.FILTER2:
+                    elif self.database.filters[data] == FCR_Filters.FILTER2:
                         filter_value = es.filter2
-                    elif self.database.value[data] == FCR_Filters.FILTER3:
+                    elif self.database.filters[data] == FCR_Filters.FILTER3:
                         filter_value = es.filter3
                     self.data[data] = self.ude.get_by_mapped_field_name(data, filter_value)
                 else:
@@ -2094,7 +2128,7 @@ class Universal_Data_Extractor(object):
         - is_target_db {bool} : determines if the database is ORIGIN_DATABSE/TARGET_DATABASE
     in marc_fields.json
         - es : execution settings"""
-    def __init__(self, record: ET.ElementTree | dict | pymarc.record.Record, database: Databases, is_target_db: bool, es: Execution_Settings):
+    def __init__(self, record: ET.ElementTree | dict | pymarc.record.Record, database: Database, is_target_db: bool, es: Execution_Settings):
         self.record = record
         self.format = Record_Formats.UNKNOWN
         if type(self.record) == ET.Element:
@@ -2112,9 +2146,9 @@ class Universal_Data_Extractor(object):
 
     def get_xml_namespace(self) -> str:
         """Returns the namespace code with a "/" at the beginning and a ":" at the end"""
-        if self.database == Databases.KOHA_PUBLIC_BIBLIO:
+        if self.database.enum_member == Database_Names.KOHA_PUBLIC_BIBLIO:
             return "/" + Xml_Namespaces.MARC.value + ":"
-        elif self.database == Databases.KOHA_SRU:
+        elif self.database.enum_member == Database_Names.KOHA_SRU:
             return "/" + Xml_Namespaces.MARC.value + ":"
         else:
             return ""
@@ -2578,13 +2612,13 @@ class Original_Record(object):
         self.matched_records = mr.returned_records
         self.matched_records_include_records = mr.includes_record
     
-    def get_origin_database_data(self, processing: Processing, record: ET.ElementTree | dict | pymarc.record.Record, database: Databases, es: Execution_Settings):
+    def get_origin_database_data(self, processing: Processing, record: ET.ElementTree | dict | pymarc.record.Record, es: Execution_Settings):
         """Extract data from the origin database record"""
-        self.origin_database_data = Database_Record(processing, record, database, False, es)
+        self.origin_database_data = Database_Record(processing, record, False, es)
 
-    def get_target_database_data(self, processing: Processing, id:str, record: ET.ElementTree | dict | pymarc.record.Record, database: Databases, es: Execution_Settings):
+    def get_target_database_data(self, processing: Processing, id:str, record: ET.ElementTree | dict | pymarc.record.Record, es: Execution_Settings):
         """Extract data from the origin database record"""
-        self.target_database_data[id] = Database_Record(processing, record, database, True, es)
+        self.target_database_data[id] = Database_Record(processing, record, True, es)
 
     def change_target_record_id(self, old_id:str, new_id:str):
         """Changes the ID key in target_database_data and set a new matched_id"""
@@ -2821,8 +2855,8 @@ class Report(object):
             output.append(f"* ILN : {self.es.iln}, RCR : {self.es.rcr}")
         if self.es.processing.enum_member == Processing_Names.MARC_FILE_IN_KOHA_SRU:
             output.append(f"* Koha URL : {self.es.target_url}")
-        output.append(f"* Origin database : {self.es.origin_database.name} (mapping : {self.es.origin_database_mapping})")
-        output.append(f"* Target database : {self.es.target_database.name} (mapping : {self.es.target_database_mapping})")
+        output.append(f"* Origin database : {self.es.processing.origin_database.name} (mapping : {self.es.origin_database_mapping})")
+        output.append(f"* Target database : {self.es.processing.target_database.name} (mapping : {self.es.target_database_mapping})")
         output.append("\n")
 
         # Steps Sucesses
