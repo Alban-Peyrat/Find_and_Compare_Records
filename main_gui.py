@@ -95,7 +95,7 @@ MAIN_SCREEN_LAYOUT = [
     # Processing
     [
         sg.Text(f"{GUI_Text.PROCESSING.value[VALLS.lang]} :", k=GUI_Text.PROCESSING.name),
-        sg.OptionMenu([processing.name for processing in fcr.FCR_Processings], size=(30, 5), key="PROCESSING_VAL", default_value=VALLS.processing_val)
+        sg.OptionMenu([processing.name for processing in fcr.Processing_Names], size=(30, 5), key="PROCESSING_VAL", default_value=VALLS.processing.name)
     ],
 
     # Original file path
@@ -138,41 +138,164 @@ PROCESSING_CONFIGURATION_SCREEN_MAIN_TAB_LAYOUT = [
     # ----- Row 1-2 -----
     # Origin database URL
     [
-        sg.Text(f"{GUI_Text.ORIGIGN_DATABASE_URL.value[VALLS.lang]} :", k=GUI_Text.ORIGIGN_DATABASE_URL.name, metadata={"class":["PROCESSING_CONFIGURATION_MAIN", fcr.FCR_Processings.BETTER_ITEM.name, fcr.FCR_Processings.BETTER_ITEM_DVD.name, fcr.FCR_Processings.BETTER_ITEM_NO_ISBN.name, fcr.FCR_Processings.BETTER_ITEM_MAPS.name]})
+        sg.Text(
+            f"{GUI_Text.ORIGIGN_DATABASE_URL.value[VALLS.lang]} :",
+            k=GUI_Text.ORIGIGN_DATABASE_URL.name,
+            metadata={"class":[
+                "PROCESSING_CONFIGURATION_MAIN",
+                fcr.Processing_Names.BETTER_ITEM.name,
+                fcr.Processing_Names.BETTER_ITEM_DVD.name,
+                fcr.Processing_Names.BETTER_ITEM_NO_ISBN.name,
+                fcr.Processing_Names.BETTER_ITEM_MAPS.name
+            ]}
+        )
     ],
     [
-        sg.Input(key="ORIGIN_URL", default_text=VALLS.origin_url, size=(80, None), metadata={"class":["PROCESSING_CONFIGURATION_MAIN", fcr.FCR_Processings.BETTER_ITEM.name, fcr.FCR_Processings.BETTER_ITEM_DVD.name, fcr.FCR_Processings.BETTER_ITEM_NO_ISBN.name, fcr.FCR_Processings.BETTER_ITEM_MAPS.name]})
+        sg.Input(
+            key="ORIGIN_URL",
+            default_text=VALLS.origin_url,
+            size=(80, None),
+            metadata={"class":[
+                "PROCESSING_CONFIGURATION_MAIN",
+                fcr.Processing_Names.BETTER_ITEM.name,
+                fcr.Processing_Names.BETTER_ITEM_DVD.name,
+                fcr.Processing_Names.BETTER_ITEM_NO_ISBN.name,
+                fcr.Processing_Names.BETTER_ITEM_MAPS.name
+            ]}
+        )
     ],
 
     # ----- Row 3-4 -----
     # Target database URL
     [
-        sg.Text(f"{GUI_Text.TARGET_DATABASE_URL.value[VALLS.lang]} :", k=GUI_Text.TARGET_DATABASE_URL.name, metadata={"class":["PROCESSING_CONFIGURATION_MAIN", fcr.FCR_Processings.MARC_FILE_IN_KOHA_SRU.name]})
+        sg.Text(
+            f"{GUI_Text.TARGET_DATABASE_URL.value[VALLS.lang]} :",
+            k=GUI_Text.TARGET_DATABASE_URL.name,
+            metadata={"class":[
+                "PROCESSING_CONFIGURATION_MAIN",
+                fcr.Processing_Names.MARC_FILE_IN_KOHA_SRU.name
+            ]}
+        )
     ],
     [
-        sg.Input(key="TARGET_URL", default_text=VALLS.target_url, size=(80, None), metadata={"class":["PROCESSING_CONFIGURATION_MAIN", fcr.FCR_Processings.MARC_FILE_IN_KOHA_SRU.name]})
+        sg.Input(
+            key="TARGET_URL",
+            default_text=VALLS.target_url,
+            size=(80, None),
+            metadata={"class":[
+                "PROCESSING_CONFIGURATION_MAIN",
+                fcr.Processing_Names.MARC_FILE_IN_KOHA_SRU.name
+            ]}
+        )
     ],
 
     # ----- Row 5-6 -----
     # Sudoc ILN + RCR (filter1-2)
     [
-        sg.Text(f"{GUI_Text.ILN_TEXT.value[VALLS.lang]} :", k=GUI_Text.ILN_TEXT.name, metadata={"class":["PROCESSING_CONFIGURATION_MAIN", fcr.FCR_Processings.BETTER_ITEM.name, fcr.FCR_Processings.BETTER_ITEM_DVD.name, fcr.FCR_Processings.BETTER_ITEM_NO_ISBN.name, fcr.FCR_Processings.BETTER_ITEM_MAPS.name]}),
-        sg.Input(key="ILN", default_text=VALLS.iln, size=(4, None), metadata={"class":["PROCESSING_CONFIGURATION_MAIN", fcr.FCR_Processings.BETTER_ITEM.name, fcr.FCR_Processings.BETTER_ITEM_DVD.name, fcr.FCR_Processings.BETTER_ITEM_NO_ISBN.name, fcr.FCR_Processings.BETTER_ITEM_MAPS.name]}),
-        sg.Text(f"{GUI_Text.FILTER1_TEXT.value[VALLS.lang]} :", k=GUI_Text.FILTER1_TEXT.name, metadata={"class":["PROCESSING_CONFIGURATION_MAIN", fcr.FCR_Processings.MARC_FILE_IN_KOHA_SRU.name]}),
-        sg.Input(key="FILTER1", default_text=VALLS.filter1, size=(4, None), metadata={"class":["PROCESSING_CONFIGURATION_MAIN", fcr.FCR_Processings.MARC_FILE_IN_KOHA_SRU.name]})
+        sg.Text(
+            f"{GUI_Text.ILN_TEXT.value[VALLS.lang]} :",
+            k=GUI_Text.ILN_TEXT.name,
+            metadata={"class":[
+                "PROCESSING_CONFIGURATION_MAIN",
+                fcr.Processing_Names.BETTER_ITEM.name,
+                fcr.Processing_Names.BETTER_ITEM_DVD.name,
+                fcr.Processing_Names.BETTER_ITEM_NO_ISBN.name,
+                fcr.Processing_Names.BETTER_ITEM_MAPS.name
+            ]}
+        ),
+        sg.Input(
+            key="ILN",
+            default_text=VALLS.iln,
+            size=(4, None),
+            metadata={"class":[
+                "PROCESSING_CONFIGURATION_MAIN",
+                fcr.Processing_Names.BETTER_ITEM.name,
+                fcr.Processing_Names.BETTER_ITEM_DVD.name,
+                fcr.Processing_Names.BETTER_ITEM_NO_ISBN.name,
+                fcr.Processing_Names.BETTER_ITEM_MAPS.name
+            ]}
+        ),
+        sg.Text(
+            f"{GUI_Text.FILTER1_TEXT.value[VALLS.lang]} :",
+            k=GUI_Text.FILTER1_TEXT.name,
+            metadata={"class":[
+                "PROCESSING_CONFIGURATION_MAIN",
+                fcr.Processing_Names.MARC_FILE_IN_KOHA_SRU.name
+            ]}
+        ),
+        sg.Input(
+            key="FILTER1",
+            default_text=VALLS.filter1,
+            size=(4, None),
+            metadata={"class":[
+                "PROCESSING_CONFIGURATION_MAIN",
+                fcr.Processing_Names.MARC_FILE_IN_KOHA_SRU.name
+            ]}
+        )
     ],
     [
-        sg.Text(f"{GUI_Text.RCR_TEXT.value[VALLS.lang]} :", k=GUI_Text.RCR_TEXT.name, metadata={"class":["PROCESSING_CONFIGURATION_MAIN", fcr.FCR_Processings.BETTER_ITEM.name, fcr.FCR_Processings.BETTER_ITEM_DVD.name, fcr.FCR_Processings.BETTER_ITEM_NO_ISBN.name, fcr.FCR_Processings.BETTER_ITEM_MAPS.name]}),
-        sg.Input(key="RCR", default_text=VALLS.rcr, size=(10, None), metadata={"class":["PROCESSING_CONFIGURATION_MAIN", fcr.FCR_Processings.BETTER_ITEM.name, fcr.FCR_Processings.BETTER_ITEM_DVD.name, fcr.FCR_Processings.BETTER_ITEM_NO_ISBN.name, fcr.FCR_Processings.BETTER_ITEM_MAPS.name]}),
-        sg.Text(f"{GUI_Text.FILTER2_TEXT.value[VALLS.lang]} :", k=GUI_Text.FILTER2_TEXT.name, metadata={"class":["PROCESSING_CONFIGURATION_MAIN", fcr.FCR_Processings.MARC_FILE_IN_KOHA_SRU.name]}),
-        sg.Input(key="FILTER2", default_text=VALLS.filter2, size=(4, None), metadata={"class":["PROCESSING_CONFIGURATION_MAIN", fcr.FCR_Processings.MARC_FILE_IN_KOHA_SRU.name]})
+        sg.Text(
+            f"{GUI_Text.RCR_TEXT.value[VALLS.lang]} :",
+            k=GUI_Text.RCR_TEXT.name,
+            metadata={"class":[
+                "PROCESSING_CONFIGURATION_MAIN",
+                fcr.Processing_Names.BETTER_ITEM.name,
+                fcr.Processing_Names.BETTER_ITEM_DVD.name,
+                fcr.Processing_Names.BETTER_ITEM_NO_ISBN.name,
+                fcr.Processing_Names.BETTER_ITEM_MAPS.name
+            ]}
+        ),
+        sg.Input(
+            key="RCR",
+            default_text=VALLS.rcr,
+            size=(10, None),
+            metadata={"class":[
+                "PROCESSING_CONFIGURATION_MAIN",
+                fcr.Processing_Names.BETTER_ITEM.name,
+                fcr.Processing_Names.BETTER_ITEM_DVD.name,
+                fcr.Processing_Names.BETTER_ITEM_NO_ISBN.name,
+                fcr.Processing_Names.BETTER_ITEM_MAPS.name
+            ]}
+        ),
+        sg.Text(
+            f"{GUI_Text.FILTER2_TEXT.value[VALLS.lang]} :",
+            k=GUI_Text.FILTER2_TEXT.name,
+            metadata={"class":[
+                "PROCESSING_CONFIGURATION_MAIN",
+                fcr.Processing_Names.MARC_FILE_IN_KOHA_SRU.name
+            ]}
+        ),
+        sg.Input(
+            key="FILTER2",
+            default_text=VALLS.filter2,
+            size=(4, None),
+            metadata={"class":[
+                "PROCESSING_CONFIGURATION_MAIN",
+                fcr.Processing_Names.MARC_FILE_IN_KOHA_SRU.name
+            ]}
+        )
     ],
 
     # ----- Row 7-8 -----
     # 3rd filter parameter
     [
-        sg.Text(f"{GUI_Text.FILTER3_TEXT.value[VALLS.lang]} :", k=GUI_Text.FILTER3_TEXT.name, metadata={"class":["PROCESSING_CONFIGURATION_MAIN", fcr.FCR_Processings.MARC_FILE_IN_KOHA_SRU.name]}),
-        sg.Input(key="FILTER3", default_text=VALLS.filter3, size=(4, None), metadata={"class":["PROCESSING_CONFIGURATION_MAIN", fcr.FCR_Processings.MARC_FILE_IN_KOHA_SRU.name]})
+        sg.Text(
+            f"{GUI_Text.FILTER3_TEXT.value[VALLS.lang]} :",
+            k=GUI_Text.FILTER3_TEXT.name,
+            metadata={"class":[
+                "PROCESSING_CONFIGURATION_MAIN",
+                fcr.Processing_Names.MARC_FILE_IN_KOHA_SRU.name
+            ]}
+        ),
+        sg.Input(
+            key="FILTER3",
+            default_text=VALLS.filter3,
+            size=(4, None),
+            metadata={"class":[
+                "PROCESSING_CONFIGURATION_MAIN",
+                fcr.Processing_Names.MARC_FILE_IN_KOHA_SRU.name
+            ]}
+        )
     ],
     [
         
@@ -294,7 +417,7 @@ PROCESSING_CONFIGURATION_SCREEN_LAYOUT = [
     # Chosen processing
     [
         sg.Push(),
-        sg.Text(VALLS.processing_val, justification='center', font=("Verdana", 22), k="-display_chosen_processing_in_processing_configuration_screen-"),
+        sg.Text(VALLS.processing.name, justification='center', font=("Verdana", 22), k="-display_chosen_processing_in_processing_configuration_screen-"),
         sg.Push()
     ],
 
@@ -452,7 +575,7 @@ def toggle_screen_visibility(window: sg.Window, wanted_screen: GUI_Screens):
             if not elem.metadata:
                 continue
             elif (
-                    VALLS.processing_val in elem.metadata["class"]
+                    VALLS.processing.name in elem.metadata["class"]
                     and "PROCESSING_CONFIGURATION_MAIN" in elem.metadata["class"]
                 ):
                 elem.update(visible=True)
