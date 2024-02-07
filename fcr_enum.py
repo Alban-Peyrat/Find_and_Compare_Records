@@ -143,18 +143,26 @@ class FCR_Filters(Enum):
     FILTER2 = 3
     FILTER3 = 4
 
-class Databases(Enum):
-    """List of databases and their filter field"""
-    ABESXML = {
-        FCR_Mapped_Fields.OTHER_DB_ID:FCR_Filters.ILN,
-        FCR_Mapped_Fields.ITEMS:FCR_Filters.RCR,
-        FCR_Mapped_Fields.ITEMS_BARCODE:FCR_Filters.RCR
-    }
-    SUDOC_SRU = {}
-    KOHA_PUBLIC_BIBLIO = {}
-    KOHA_SRU = {
-    }
-    LOCAL = {FCR_Mapped_Fields.LEADER:FCR_Filters.FILTER3}
+class Database_Names(Enum):
+    ABESXML = 0
+    SUDOC_SRU = 1
+    KOHA_PUBLIC_BIBLIO = 2
+    KOHA_SRU = 3
+    LOCAL = 4
+
+# ↓ A del
+# class Databases(Enum):
+#     """List of databases and their filter field"""
+#     ABESXML = {
+#         FCR_Mapped_Fields.OTHER_DB_ID:FCR_Filters.ILN,
+#         FCR_Mapped_Fields.ITEMS:FCR_Filters.RCR,
+#         FCR_Mapped_Fields.ITEMS_BARCODE:FCR_Filters.RCR
+#     }
+#     SUDOC_SRU = {}
+#     KOHA_PUBLIC_BIBLIO = {}
+#     KOHA_SRU = {
+#     }
+#     LOCAL = {FCR_Mapped_Fields.LEADER:FCR_Filters.FILTER3}
 
 class Record_Formats(Enum):
     """List of supported record formats"""

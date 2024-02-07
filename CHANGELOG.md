@@ -9,6 +9,14 @@ _Some previous changes will be added_
 
 ## [Unreleased]
 
+### Changed
+
+* Internal changes on the management of processings, operations and databases
+
+### Fixed
+
+* The function exporting lists as strings no longer replaces `1` by a space
+
 ## [1.15.0] - 2024-02-07
 
 ### Added

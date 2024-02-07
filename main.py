@@ -63,8 +63,8 @@ def main(es: fcr.Execution_Settings):
         es.log.simple_info("RCR", es.rcr)
     if es.processing.enum_member == fcr.Processing_Names.MARC_FILE_IN_KOHA_SRU:
         es.log.simple_info("Koha URL", es.target_url)
-    es.log.simple_info("Origin database", es.origin_database.name)
-    es.log.simple_info("Target database", es.target_database.name)
+    es.log.simple_info("Origin database", es.processing.origin_database.name)
+    es.log.simple_info("Target database", es.processing.origin_database.name)
     es.log.simple_info("Origin database mapping", es.origin_database_mapping)
     es.log.simple_info("Target database mapping", es.target_database_mapping)
 
@@ -116,7 +116,7 @@ def main(es: fcr.Execution_Settings):
                 es.csv.write_line(rec, False)
                 results.append(rec.output.to_csv())
                 continue # skip to next line
-            rec.get_origin_database_data(es.processing, origin_record.record_parsed, es.origin_database, es)
+            rec.get_origin_database_data(es.processing, origin_record.record_parsed, es)
         # MARC_FILE_IN_KOHA_SRU from the file
         elif es.processing.enum_member == fcr.Processing_Names.MARC_FILE_IN_KOHA_SRU:
             origin_record = es.original_file_data[index]
@@ -127,7 +127,7 @@ def main(es: fcr.Execution_Settings):
                 es.csv.write_line(rec, False)
                 results.append(rec.output.to_csv())
                 continue # skip to next line
-            rec.get_origin_database_data(es.processing, origin_record, es.origin_database, es)
+            rec.get_origin_database_data(es.processing, origin_record, es)
             rec.original_uid = rec.origin_database_data.utils.get_id()
             
         # Successfully got origin DB record
@@ -156,7 +156,7 @@ def main(es: fcr.Execution_Settings):
         results_report.increase_match_record_nb_of_match(rec.matched_records_ids) # report stats
         es.log.debug(f"Query used for matched record : {rec.query_used}")
         es.log.debug(f"Action : {rec.action_used.name}")
-        es.log.debug(f"Result for {es.operation} : {str(rec.matched_records_ids)}")
+        es.log.debug(f"Result for {es.operation.name} : {str(rec.matched_records_ids)}")
 
         # --------------- FOR EACH MATCHED RECORDS ---------------
         # If Sudoc SRU in BETTER_ITEMs, query AbesXML because SRU don't have L035 (18/01/2024)
@@ -200,10 +200,10 @@ def main(es: fcr.Execution_Settings):
                     es.csv.write_line(rec, False)
                     results.append(rec.output.to_csv())
                     continue # skip to next line
-                rec.get_target_database_data(es.processing, rec.matched_id, target_db_queried_record.record_parsed, es.target_database, es)
+                rec.get_target_database_data(es.processing, rec.matched_id, target_db_queried_record.record_parsed, es)
             # MARC_FILE_IN_KOHA_SRU from the file
             elif es.processing.enum_member == fcr.Processing_Names.MARC_FILE_IN_KOHA_SRU:
-                rec.get_target_database_data(es.processing, rec.matched_id, record_from_mr_list, es.target_database, es)
+                rec.get_target_database_data(es.processing, rec.matched_id, record_from_mr_list, es)
                 target_record:fcr.Database_Record = rec.target_database_data[f"FCR INDEX {ii}"] # for the IDE
                 if target_record.utils.get_id().strip() != "":
                     rec.change_target_record_id(temp_id(ii), target_record.utils.get_id().strip())
