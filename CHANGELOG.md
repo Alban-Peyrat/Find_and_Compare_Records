@@ -9,6 +9,8 @@ _Some previous changes will be added_
 
 ## [Unreleased]
 
+## [1.15.0] - 2024-02-07
+
 ### Added
 
 * New extractable data : exported to digital library, maps horizontal scales, maps mathematical data, series, series link, geographical subject
