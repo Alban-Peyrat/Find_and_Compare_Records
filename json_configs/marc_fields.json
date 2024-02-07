@@ -384,6 +384,112 @@
                     "positions": []
                 }
             ]
+        },
+        "exported_to_digital_library": {
+            "label": {
+                "eng": "Exported to digital library",
+                "fre": "Exporté vers bibliothèque numérique"
+            },
+            "fields": [
+                {
+                    "tag": "099",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "",
+                    "subfields": [
+                        "x"
+                    ],
+                    "positions": []
+                }
+            ]
+        },
+        "maps_horizontal_scale": {
+            "label": {
+                "eng": "Maps horizontal scale",
+                "fre": "Échelle horizontale cartes"
+            },
+            "fields": [
+                {
+                    "tag": "123",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "",
+                    "subfields": [
+                        "b"
+                    ],
+                    "positions": []
+                }
+            ]
+        },
+        "maps_mathematical_data": {
+            "label": {
+                "eng": "Maps mathematical data",
+                "fre": "Données mathémtiques cartes"
+            },
+            "fields": [
+                {
+                    "tag": "206",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "",
+                    "subfields": [
+                    ],
+                    "positions": []
+                }
+            ]
+        },
+        "series": {
+            "label": {
+                "eng": "Series",
+                "fre": "Collections"
+            },
+            "fields": [
+                {
+                    "tag": "225",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "",
+                    "subfields": [
+                        "a",
+                        "e",
+                        "h",
+                        "i",
+                        "x"
+                    ],
+                    "positions": []
+                }
+            ]
+        },
+        "series_link": {
+            "label": {
+                "eng": "Series link",
+                "fre": "Lien collections"
+            },
+            "fields": [
+                {
+                    "tag": "410",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "",
+                    "subfields": [
+                        "t",
+                        "x"
+                    ],
+                    "positions": []
+                }
+            ]
+        },
+        "geographical_subject": {
+            "label": {
+                "eng": "Geographical subject",
+                "fre": "Sujet géographique"
+            },
+            "fields": [
+                {
+                    "tag": "609",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "",
+                    "subfields": [
+                        "a"
+                    ],
+                    "positions": []
+                }
+            ]
         }
     },
     "TARGET_DATABASE": {
@@ -953,6 +1059,112 @@
                     "positions": []
                 }
             ]
+        },
+        "exported_to_digital_library": {
+            "label": {
+                "eng": "Exported to digital library",
+                "fre": "Exporté vers bibliothèque numérique"
+            },
+            "fields": [
+                {
+                    "tag": "999",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "",
+                    "subfields": [
+                        "z"
+                    ],
+                    "positions": []
+                }
+            ]
+        },
+        "maps_horizontal_scale": {
+            "label": {
+                "eng": "Maps horizontal scale",
+                "fre": "Échelle horizontale cartes"
+            },
+            "fields": [
+                {
+                    "tag": "123",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "",
+                    "subfields": [
+                        "b"
+                    ],
+                    "positions": []
+                }
+            ]
+        },
+        "maps_mathematical_data": {
+            "label": {
+                "eng": "Maps mathematical data",
+                "fre": "Données mathémtiques cartes"
+            },
+            "fields": [
+                {
+                    "tag": "206",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "",
+                    "subfields": [
+                    ],
+                    "positions": []
+                }
+            ]
+        },
+        "series": {
+            "label": {
+                "eng": "Series",
+                "fre": "Collections"
+            },
+            "fields": [
+                {
+                    "tag": "225",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "",
+                    "subfields": [
+                        "a",
+                        "e",
+                        "h",
+                        "i",
+                        "x"
+                    ],
+                    "positions": []
+                }
+            ]
+        },
+        "series_link": {
+            "label": {
+                "eng": "Series link",
+                "fre": "Lien collections"
+            },
+            "fields": [
+                {
+                    "tag": "410",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "",
+                    "subfields": [
+                        "t",
+                        "x"
+                    ],
+                    "positions": []
+                }
+            ]
+        },
+        "geographical_subject": {
+            "label": {
+                "eng": "Geographical subject",
+                "fre": "Sujet géographique"
+            },
+            "fields": [
+                {
+                    "tag": "607",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "",
+                    "subfields": [
+                        "a"
+                    ],
+                    "positions": []
+                }
+            ]
         }
     },
     "KOHA_ARCHIRES": {
@@ -1322,6 +1534,112 @@
                     "filtering_subfield": "",
                     "subfields": [
                         "f"
+                    ],
+                    "positions": []
+                }
+            ]
+        },
+        "exported_to_digital_library": {
+            "label": {
+                "eng": "Exported to digital library",
+                "fre": "Exporté vers bibliothèque numérique"
+            },
+            "fields": [
+                {
+                    "tag": "099",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "",
+                    "subfields": [
+                        "x"
+                    ],
+                    "positions": []
+                }
+            ]
+        },
+        "maps_horizontal_scale": {
+            "label": {
+                "eng": "Maps horizontal scale",
+                "fre": "Échelle horizontale cartes"
+            },
+            "fields": [
+                {
+                    "tag": "123",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "",
+                    "subfields": [
+                        "b"
+                    ],
+                    "positions": []
+                }
+            ]
+        },
+        "maps_mathematical_data": {
+            "label": {
+                "eng": "Maps mathematical data",
+                "fre": "Données mathémtiques cartes"
+            },
+            "fields": [
+                {
+                    "tag": "206",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "",
+                    "subfields": [
+                    ],
+                    "positions": []
+                }
+            ]
+        },
+        "series": {
+            "label": {
+                "eng": "Series",
+                "fre": "Collections"
+            },
+            "fields": [
+                {
+                    "tag": "225",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "",
+                    "subfields": [
+                        "a",
+                        "e",
+                        "h",
+                        "i",
+                        "x"
+                    ],
+                    "positions": []
+                }
+            ]
+        },
+        "series_link": {
+            "label": {
+                "eng": "Series link",
+                "fre": "Lien collections"
+            },
+            "fields": [
+                {
+                    "tag": "410",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "",
+                    "subfields": [
+                        "t",
+                        "x"
+                    ],
+                    "positions": []
+                }
+            ]
+        },
+        "geographical_subject": {
+            "label": {
+                "eng": "Geographical subject",
+                "fre": "Sujet géographique"
+            },
+            "fields": [
+                {
+                    "tag": "609",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "",
+                    "subfields": [
+                        "a"
                     ],
                     "positions": []
                 }
@@ -1895,6 +2213,112 @@
                     "positions": []
                 }
             ]
+        },
+        "exported_to_digital_library": {
+            "label": {
+                "eng": "Exported to digital library",
+                "fre": "Exporté vers bibliothèque numérique"
+            },
+            "fields": [
+                {
+                    "tag": "999",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "",
+                    "subfields": [
+                        "z"
+                    ],
+                    "positions": []
+                }
+            ]
+        },
+        "maps_horizontal_scale": {
+            "label": {
+                "eng": "Maps horizontal scale",
+                "fre": "Échelle horizontale cartes"
+            },
+            "fields": [
+                {
+                    "tag": "123",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "",
+                    "subfields": [
+                        "b"
+                    ],
+                    "positions": []
+                }
+            ]
+        },
+        "maps_mathematical_data": {
+            "label": {
+                "eng": "Maps mathematical data",
+                "fre": "Données mathémtiques cartes"
+            },
+            "fields": [
+                {
+                    "tag": "206",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "",
+                    "subfields": [
+                    ],
+                    "positions": []
+                }
+            ]
+        },
+        "series": {
+            "label": {
+                "eng": "Series",
+                "fre": "Collections"
+            },
+            "fields": [
+                {
+                    "tag": "225",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "",
+                    "subfields": [
+                        "a",
+                        "e",
+                        "h",
+                        "i",
+                        "x"
+                    ],
+                    "positions": []
+                }
+            ]
+        },
+        "series_link": {
+            "label": {
+                "eng": "Series link",
+                "fre": "Lien collections"
+            },
+            "fields": [
+                {
+                    "tag": "410",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "",
+                    "subfields": [
+                        "t",
+                        "x"
+                    ],
+                    "positions": []
+                }
+            ]
+        },
+        "geographical_subject": {
+            "label": {
+                "eng": "Geographical subject",
+                "fre": "Sujet géographique"
+            },
+            "fields": [
+                {
+                    "tag": "607",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "",
+                    "subfields": [
+                        "a"
+                    ],
+                    "positions": []
+                }
+            ]
         }
     },
     "KENTIKA_ENSP": {
@@ -2264,6 +2688,112 @@
                     "filtering_subfield": "",
                     "subfields": [
                         "f"
+                    ],
+                    "positions": []
+                }
+            ]
+        },
+        "exported_to_digital_library": {
+            "label": {
+                "eng": "Exported to digital library",
+                "fre": "Exporté vers bibliothèque numérique"
+            },
+            "fields": [
+                {
+                    "tag": "099",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "",
+                    "subfields": [
+                        "x"
+                    ],
+                    "positions": []
+                }
+            ]
+        },
+        "maps_horizontal_scale": {
+            "label": {
+                "eng": "Maps horizontal scale",
+                "fre": "Échelle horizontale cartes"
+            },
+            "fields": [
+                {
+                    "tag": "123",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "",
+                    "subfields": [
+                        "b"
+                    ],
+                    "positions": []
+                }
+            ]
+        },
+        "maps_mathematical_data": {
+            "label": {
+                "eng": "Maps mathematical data",
+                "fre": "Données mathémtiques cartes"
+            },
+            "fields": [
+                {
+                    "tag": "206",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "",
+                    "subfields": [
+                    ],
+                    "positions": []
+                }
+            ]
+        },
+        "series": {
+            "label": {
+                "eng": "Series",
+                "fre": "Collections"
+            },
+            "fields": [
+                {
+                    "tag": "225",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "",
+                    "subfields": [
+                        "a",
+                        "e",
+                        "h",
+                        "i",
+                        "x"
+                    ],
+                    "positions": []
+                }
+            ]
+        },
+        "series_link": {
+            "label": {
+                "eng": "Series link",
+                "fre": "Lien collections"
+            },
+            "fields": [
+                {
+                    "tag": "410",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "",
+                    "subfields": [
+                        "t",
+                        "x"
+                    ],
+                    "positions": []
+                }
+            ]
+        },
+        "geographical_subject": {
+            "label": {
+                "eng": "Geographical subject",
+                "fre": "Sujet géographique"
+            },
+            "fields": [
+                {
+                    "tag": "609",
+                    "single_line_coded_data": false,
+                    "filtering_subfield": "",
+                    "subfields": [
+                        "a"
                     ],
                     "positions": []
                 }

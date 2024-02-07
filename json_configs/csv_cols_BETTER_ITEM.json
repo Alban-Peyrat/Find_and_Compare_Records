@@ -266,5 +266,53 @@
     "TARGET_DB_ISBN":{
         "fre":"ISBN Sudoc",
         "eng":"ISBN Sudoc"
+    },
+    "ORIGIN_DB_EXPORTED_TO_DIGITAL_LIBRARY":{
+        "fre":"Exporté vers bibliothèque numérique Koha",
+        "eng":"Exported to digital library Koha"
+    },
+    "TARGET_DB_EXPORTED_TO_DIGITAL_LIBRARY":{
+        "fre":"Exporté vers bibliothèque numérique Sudoc",
+        "eng":"Exported to digital library Sudoc"
+    },
+    "ORIGIN_DB_MAPS_HORIZONTAL_SCALE":{
+        "fre":"Échelle horizontale cartes Koha",
+        "eng":"Maps horizontal scale Koha"
+    },
+    "TARGET_DB_MAPS_HORIZONTAL_SCALE":{
+        "fre":"Échelle horizontale cartes Sudoc",
+        "eng":"Maps horizontal scale Sudoc"
+    },
+    "ORIGIN_DB_MAPS_MATHEMATICAL_DATA":{
+        "fre":"Données mathématiques cartes Koha",
+        "eng":"Maps mathematical data Koha"
+    },
+    "TARGET_DB_MAPS_MATHEMATICAL_DATA":{
+        "fre":"Données mathématiques cartes Sudoc",
+        "eng":"Maps mathematical data Sudoc"
+    },
+    "ORIGIN_DB_SERIES":{
+        "fre":"Collections Koha",
+        "eng":"Series Koha"
+    },
+    "TARGET_DB_SERIES":{
+        "fre":"Collections Sudoc",
+        "eng":"Series Sudoc"
+    },
+    "ORIGIN_DB_SERIES_LINK":{
+        "fre":"Lien collections Koha",
+        "eng":"Series link Koha"
+    },
+    "TARGET_DB_SERIES_LINK":{
+        "fre":"Lien collections Sudoc",
+        "eng":"Series link Sudoc"
+    },
+    "ORIGIN_DB_GEOGRAPHICAL_SUBJECT":{
+        "fre":"Sujet géographique Koha",
+        "eng":"Geographical subject Koha"
+    },
+    "TARGET_DB_GEOGRAPHICAL_SUBJECT":{
+        "fre":"Sujet géographique Sudoc",
+        "eng":"Geographical subject Sudoc"
     }
 }

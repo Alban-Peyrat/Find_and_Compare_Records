@@ -9,6 +9,11 @@ _Some previous changes will be added_
 
 ## [Unreleased]
 
+### Added
+
+* New extractable data : exported to digital library, maps horizontal scales, maps mathematical data, series, series link, geographical subject
+* Processing `MARC_FILE_IN_KOHA_SRU` now exports if record was exported to digital library
+
 ## [1.14.3] - 2024-02-05
 
 ### Fixed
