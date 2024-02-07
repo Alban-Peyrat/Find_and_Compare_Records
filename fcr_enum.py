@@ -23,6 +23,12 @@ class FCR_Mapped_Fields(Enum):
     EAN = "ean"
     AUTHORS = "authors"
     ISBN = "isbn"
+    EXPORTED_TO_DIGITAL_LIBRARY = "exported_to_digital_library"
+    MAPS_HORIZONTAL_SCALE = "maps_horizontal_scale"
+    MAPS_MATHEMATICAL_DATA = "maps_mathematical_data"
+    SERIES = "series"
+    SERIES_LINK = "series_link"
+    GEOGRAPHICAL_SUBJECT = "geographical_subject"
 
 class FCR_Processing_Data_Target(Enum):
     ORIGIN = 0
@@ -55,7 +61,8 @@ class FCR_Processings(Enum):
         FCR_Mapped_Fields.AUTHORS: FCR_Processing_Data_Target.BOTH,
         FCR_Mapped_Fields.PUBLISHERS_NAME: FCR_Processing_Data_Target.BOTH,
         FCR_Mapped_Fields.EDITION_NOTES: FCR_Processing_Data_Target.BOTH,
-        FCR_Mapped_Fields.PUBLICATION_DATES: FCR_Processing_Data_Target.BOTH
+        FCR_Mapped_Fields.PUBLICATION_DATES: FCR_Processing_Data_Target.BOTH,
+        FCR_Mapped_Fields.EXPORTED_TO_DIGITAL_LIBRARY: FCR_Processing_Data_Target.BOTH
     }
     BETTER_ITEM_DVD = {
         FCR_Mapped_Fields.ID: FCR_Processing_Data_Target.ORIGIN,
@@ -351,10 +358,19 @@ class CSV_Cols(Enum):
     TARGET_DB_AUTHORS = 20001
     ORIGIN_DB_LEADER = 21000
     TARGET_DB_LEADER = 21001
-    RESERVED_SLOT1 = 22000
-    RESERVED_SLOT2 = 23000
-    RESERVED_SLOT3 = 24000
+    ORIGIN_DB_EXPORTED_TO_DIGITAL_LIBRARY = 22000
+    TARGET_DB_EXPORTED_TO_DIGITAL_LIBRARY = 22001
+    ORIGIN_DB_MAPS_HORIZONTAL_SCALE = 23000
+    TARGET_DB_MAPS_HORIZONTAL_SCALE = 23001
+    ORIGIN_DB_MAPS_MATHEMATICAL_DATA = 23100
+    TARGET_DB_MAPS_MATHEMATICAL_DATA = 23101
+    ORIGIN_DB_SERIES = 24000
+    TARGET_DB_SERIES = 24001
+    ORIGIN_DB_SERIES_LINK = 24100
+    TARGET_DB_SERIES_LINK = 24101
     RESERVED_SLOT4 = 25000
+    ORIGIN_DB_GEOGRAPHICAL_SUBJECT = 25600
+    TARGET_DB_GEOGRAPHICAL_SUBJECT = 25601
     RESERVED_SLOT5 = 26000
     RESERVED_SLOT6 = 27000
     RESERVED_SLOT7 = 28000

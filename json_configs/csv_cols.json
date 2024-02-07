@@ -266,5 +266,53 @@
     "TARGET_DB_ISBN":{
         "fre":"ISBN BDD de destination",
         "eng":"ISBN target DB"
+    },
+    "ORIGIN_DB_EXPORTED_TO_DIGITAL_LIBRARY":{
+        "fre":"Exporté vers bibliothèque numérique BDD d'origine",
+        "eng":"Exported to digital library origin DB"
+    },
+    "TARGET_DB_EXPORTED_TO_DIGITAL_LIBRARY":{
+        "fre":"Exporté vers bibliothèque numérique BDD de destination",
+        "eng":"Exported to digital library target DB"
+    },
+    "ORIGIN_DB_MAPS_HORIZONTAL_SCALE":{
+        "fre":"Échelle horizontale cartes BDD d'origine",
+        "eng":"Maps horizontal scale origin DB"
+    },
+    "TARGET_DB_MAPS_HORIZONTAL_SCALE":{
+        "fre":"Échelle horizontale cartes BDD de destination",
+        "eng":"Maps horizontal scale target DB"
+    },
+    "ORIGIN_DB_MAPS_MATHEMATICAL_DATA":{
+        "fre":"Données mathématiques cartes BDD d'origine",
+        "eng":"Maps mathematical data origin DB"
+    },
+    "TARGET_DB_MAPS_MATHEMATICAL_DATA":{
+        "fre":"Données mathématiques cartes BDD de destination",
+        "eng":"Maps mathematical data target DB"
+    },
+    "ORIGIN_DB_SERIES":{
+        "fre":"Collections BDD d'origine",
+        "eng":"Series origin DB"
+    },
+    "TARGET_DB_SERIES":{
+        "fre":"Collections BDD de destination",
+        "eng":"Series target DB"
+    },
+    "ORIGIN_DB_SERIES_LINK":{
+        "fre":"Lien collections BDD d'origine",
+        "eng":"Series link origin DB"
+    },
+    "TARGET_DB_SERIES_LINK":{
+        "fre":"Lien collections BDD de destination",
+        "eng":"Series link target DB"
+    },
+    "ORIGIN_DB_GEOGRAPHICAL_SUBJECT":{
+        "fre":"Sujet géographique BDD d'origine",
+        "eng":"Geographical subject origin DB"
+    },
+    "TARGET_DB_GEOGRAPHICAL_SUBJECT":{
+        "fre":"Sujet géographique BDD de destination",
+        "eng":"Geographical subject target DB"
     }
 }

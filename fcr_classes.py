@@ -1420,6 +1420,12 @@ class Marc_Fields_Mapping(object):
         self.other_database_id = Marc_Fields_Data(self.marc_fields_json[FCR_Mapped_Fields.OTHER_DB_ID.value])
         self.items = Marc_Fields_Data(self.marc_fields_json[FCR_Mapped_Fields.ITEMS.value])
         self.items_barcode = Marc_Fields_Data(self.marc_fields_json[FCR_Mapped_Fields.ITEMS_BARCODE.value])
+        self.exported_to_digital_library = Marc_Fields_Data(self.marc_fields_json[FCR_Mapped_Fields.EXPORTED_TO_DIGITAL_LIBRARY.value])
+        self.maps_horizontal_scale = Marc_Fields_Data(self.marc_fields_json[FCR_Mapped_Fields.MAPS_HORIZONTAL_SCALE.value])
+        self.maps_mathematical_data = Marc_Fields_Data(self.marc_fields_json[FCR_Mapped_Fields.MAPS_MATHEMATICAL_DATA.value])
+        self.series = Marc_Fields_Data(self.marc_fields_json[FCR_Mapped_Fields.SERIES.value])
+        self.series_link = Marc_Fields_Data(self.marc_fields_json[FCR_Mapped_Fields.SERIES_LINK.value])
+        self.geographical_subject = Marc_Fields_Data(self.marc_fields_json[FCR_Mapped_Fields.GEOGRAPHICAL_SUBJECT.value])
 
 class Universal_Data_Extractor(object):
     """Central class to extract data from a record.
@@ -1662,6 +1668,18 @@ class Universal_Data_Extractor(object):
             return self.get_items(filter_value)
         elif mapped_field == FCR_Mapped_Fields.ITEMS_BARCODE:
             return self.get_items_barcode(filter_value)
+        elif mapped_field == FCR_Mapped_Fields.EXPORTED_TO_DIGITAL_LIBRARY:
+            return self.get_exported_to_digital_library(filter_value)
+        elif mapped_field == FCR_Mapped_Fields.MAPS_HORIZONTAL_SCALE:
+            return self.get_maps_horizontal_scale(filter_value)
+        elif mapped_field == FCR_Mapped_Fields.MAPS_MATHEMATICAL_DATA:
+            return self.get_maps_mathematical_data(filter_value)
+        elif mapped_field == FCR_Mapped_Fields.SERIES:
+            return self.get_series(filter_value)
+        elif mapped_field == FCR_Mapped_Fields.SERIES_LINK:
+            return self.get_series_link(filter_value)
+        elif mapped_field == FCR_Mapped_Fields.GEOGRAPHICAL_SUBJECT:
+            return self.get_geographical_subject(filter_value)
 
     def get_leader(self) -> List[str]:
         """Return the leader field content as a list of string"""
@@ -1782,6 +1800,48 @@ class Universal_Data_Extractor(object):
 
         Takes filter_value as argument if mapped to have a filtering subfield."""
         return self.extract_list_of_ids(self.marc_fields_mapping.items_barcode, filter_value)
+    
+    def get_exported_to_digital_library(self, filter_value: Optional[str] = "") -> List[str]:
+        """Return all fields mapped as exported to digital library as a list of strings
+        Each subfield is separated by a space
+        
+        Takes filter_value as argument if mapped to have a filtering subfield."""
+        return self.extract_list_of_strings(self.marc_fields_mapping.exported_to_digital_library, filter_value)
+    
+    def get_maps_horizontal_scale(self, filter_value: Optional[str] = "") -> List[str]:
+        """Return all fields mapped as maps horizontal scales as a list of strings
+        Each subfield is separated by a space
+        
+        Takes filter_value as argument if mapped to have a filtering subfield."""
+        return self.extract_list_of_strings(self.marc_fields_mapping.maps_horizontal_scale, filter_value)
+    
+    def get_maps_mathematical_data(self, filter_value: Optional[str] = "") -> List[str]:
+        """Return all fields mapped as maps mathematical data as a list of strings
+        Each subfield is separated by a space
+        
+        Takes filter_value as argument if mapped to have a filtering subfield."""
+        return self.extract_list_of_strings(self.marc_fields_mapping.maps_mathematical_data, filter_value)
+    
+    def get_series(self, filter_value: Optional[str] = "") -> List[str]:
+        """Return all fields mapped as series as a list of strings
+        Each subfield is separated by a space
+        
+        Takes filter_value as argument if mapped to have a filtering subfield."""
+        return self.extract_list_of_strings(self.marc_fields_mapping.series, filter_value)
+
+    def get_series_link(self, filter_value: Optional[str] = "") -> List[str]:
+        """Return all fields mapped as series link as a list of strings
+        Each subfield is separated by a space
+        
+        Takes filter_value as argument if mapped to have a filtering subfield."""
+        return self.extract_list_of_strings(self.marc_fields_mapping.series_link, filter_value)
+
+    def get_geographical_subject(self, filter_value: Optional[str] = "") -> List[str]:
+        """Return all fields mapped as geographical subject as a list of strings
+        Each subfield is separated by a space
+        
+        Takes filter_value as argument if mapped to have a filtering subfield."""
+        return self.extract_list_of_strings(self.marc_fields_mapping.geographical_subject, filter_value)    
 
     def get_items(self, filter_value: Optional[str] = "") -> List[List[str]]:
         """Return all publication dates from the general processign data as a list (usually of list containing :
