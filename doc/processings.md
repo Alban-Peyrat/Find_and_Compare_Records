@@ -12,6 +12,7 @@
   * In `Execution_Settings`, add a behaviour at the beginning of `load_original_file_data()` method
   * If needed, add a `__special_` method to subclass `Original_Record.Output` and call it inside the `to_csv()` method
   * If needed, remove some exported columns inside `Execution_Settings.CSV.__define_headers()` method
+  dans report generetae_output_line aussi aussi
 * In `main_gui.py` : see [in GUI doc](./GUI.md#hide-elements-for-some-processings)
 * In `main.py`, add the processing to :
   * The logger init part

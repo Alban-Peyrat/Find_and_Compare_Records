@@ -25,6 +25,211 @@ import api.abes.Sudoc_SRU as ssru
 import api.koha.Koha_SRU as ksru
 
 # -------------------- Execution settings (ES) --------------------
+class Operation(object):
+    def __init__(self, operation: Operation_Names, actions:List[Actions]) -> None:
+        """Takes as argument :
+            - a Operaion_Nmaes member
+            - a list of Actions memner (the order is important)"""
+        self.enum_member = operation
+        self.name = operation.name
+        self.id = operation.value
+        self.actions = actions
+
+OPERATIONS_LIST = {
+    Operation_Names.SEARCH_IN_SUDOC_BY_ISBN:Operation(
+        operation=Operation_Names.SEARCH_IN_SUDOC_BY_ISBN,
+        actions=[
+            Actions.ISBN2PPN,
+            Actions.ISBN2PPN_MODIFIED_ISBN,
+            Actions.SRU_SUDOC_ISBN
+        ]
+    ),
+    Operation_Names.SEARCH_IN_SUDOC_BY_ISBN_ONLY_ISBN2PPN:Operation(
+        operation=Operation_Names.SEARCH_IN_SUDOC_BY_ISBN_ONLY_ISBN2PPN,
+        actions=[
+            Actions.ISBN2PPN,
+            Actions.ISBN2PPN_MODIFIED_ISBN
+        ]
+    ),
+    Operation_Names.SEARCH_IN_SUDOC_BY_ISBN_ONLY_SRU:Operation(
+        operation=Operation_Names.SEARCH_IN_SUDOC_BY_ISBN_ONLY_SRU,
+        actions=[
+            Actions.SRU_SUDOC_ISBN
+        ]
+    ),
+    Operation_Names.SEARCH_IN_SUDOC_DVD:Operation(
+        operation=Operation_Names.SEARCH_IN_SUDOC_DVD,
+        actions=[
+            Actions.EAN2PPN,
+            Actions.SRU_SUDOC_MTI_AUT_EDI_APU_TDO_V,
+            Actions.SRU_SUDOC_MTI_AUT_APU_TDO_V,
+            Actions.SRU_SUDOC_TOU_TITLE_AUTHOR_PUBLISHER_DATE_TDO_V,
+            Actions.SRU_SUDOC_TOU_TITLE_AUTHOR_PUBLISHER_TDO_V
+        ]
+    ),
+    Operation_Names.SEARCH_IN_KOHA_SRU_VANILLA:Operation(
+        operation=Operation_Names.SEARCH_IN_KOHA_SRU_VANILLA,
+        actions=[
+            Actions.KOHA_SRU_IBSN,
+            Actions.KOHA_SRU_TITLE_AUTHOR_PUBLISHER_DATE,
+            Actions.KOHA_SRU_TITLE_AUTHOR_DATE,
+            Actions.KOHA_SRU_ANY_TITLE_AUTHOR_PUBLISHER_DATE,
+            Actions.KOHA_SRU_ANY_TITLE_AUTHOR_DATE
+        ]
+    ),
+    Operation_Names.SEARCH_IN_SUDOC_NO_ISBN:Operation(
+        operation=Operation_Names.SEARCH_IN_SUDOC_NO_ISBN,
+        actions=[
+            Actions.EAN2PPN,
+            Actions.SRU_SUDOC_MTI_AUT_EDI_APU_TDO_B,
+            Actions.SRU_SUDOC_MTI_AUT_APU_TDO_B,
+            Actions.SRU_SUDOC_TOU_TITLE_AUTHOR_PUBLISHER_DATE_TDO_B,
+            Actions.SRU_SUDOC_TOU_TITLE_AUTHOR_PUBLISHER_TDO_B
+        ]
+    ),
+    Operation_Names.SEARCH_IN_SUDOC_MAPS:Operation(
+        operation=Operation_Names.SEARCH_IN_SUDOC_MAPS,
+        actions=[
+            Actions.EAN2PPN,
+            Actions.SRU_SUDOC_MTI_AUT_EDI_APU_TDO_K,
+            Actions.SRU_SUDOC_MTI_AUT_APU_TDO_K,
+            Actions.SRU_SUDOC_TOU_TITLE_AUTHOR_PUBLISHER_DATE_TDO_K,
+            Actions.SRU_SUDOC_TOU_TITLE_AUTHOR_PUBLISHER_TDO_K
+        ]
+    )
+}
+
+class Processing(object):
+    def __init__(self, processing: Processing_Names, mapped_data:Dict[FCR_Mapped_Fields, FCR_Processing_Data_Target], operation:Operation) -> None:
+        """Takes as argument :
+            - a Processings_Name member
+            - a dict with FCR_Mapped_Fields members as key and FCR_Processing_Data_Target membres as value
+            - a Operation instance"""
+        self.enum_member = processing
+        self.name = processing.name
+        self.id = processing.value
+        self.mapped_data = mapped_data
+        self.operation = operation
+
+PROCESSINGS_LIST = {
+    Processing_Names.BETTER_ITEM:Processing(
+        processing=Processing_Names.BETTER_ITEM,
+        mapped_data={
+            FCR_Mapped_Fields.ID: FCR_Processing_Data_Target.ORIGIN,
+            FCR_Mapped_Fields.PPN: FCR_Processing_Data_Target.ORIGIN,
+            FCR_Mapped_Fields.GENERAL_PROCESSING_DATA_DATES: FCR_Processing_Data_Target.BOTH,
+            FCR_Mapped_Fields.ERRONEOUS_ISBN: FCR_Processing_Data_Target.BOTH,
+            FCR_Mapped_Fields.TITLE: FCR_Processing_Data_Target.BOTH,
+            FCR_Mapped_Fields.AUTHORS: FCR_Processing_Data_Target.BOTH,
+            FCR_Mapped_Fields.PUBLISHERS_NAME: FCR_Processing_Data_Target.BOTH,
+            FCR_Mapped_Fields.EDITION_NOTES: FCR_Processing_Data_Target.BOTH,
+            FCR_Mapped_Fields.PUBLICATION_DATES: FCR_Processing_Data_Target.BOTH,
+            FCR_Mapped_Fields.PHYSICAL_DESCRIPTION: FCR_Processing_Data_Target.ORIGIN,
+            FCR_Mapped_Fields.OTHER_DB_ID: FCR_Processing_Data_Target.TARGET,
+            FCR_Mapped_Fields.ITEMS_BARCODE: FCR_Processing_Data_Target.TARGET,
+            FCR_Mapped_Fields.ITEMS: FCR_Processing_Data_Target.TARGET
+        },
+        operation=OPERATIONS_LIST[Operation_Names.SEARCH_IN_SUDOC_BY_ISBN]
+    ),
+    Processing_Names.MARC_FILE_IN_KOHA_SRU:Processing(
+        processing=Processing_Names.MARC_FILE_IN_KOHA_SRU,
+        mapped_data={
+            FCR_Mapped_Fields.ID: FCR_Processing_Data_Target.BOTH,
+            FCR_Mapped_Fields.PPN: FCR_Processing_Data_Target.TARGET,
+            FCR_Mapped_Fields.ISBN:FCR_Processing_Data_Target.BOTH,
+            FCR_Mapped_Fields.GENERAL_PROCESSING_DATA_DATES: FCR_Processing_Data_Target.BOTH,
+            FCR_Mapped_Fields.ERRONEOUS_ISBN: FCR_Processing_Data_Target.TARGET,
+            FCR_Mapped_Fields.TITLE: FCR_Processing_Data_Target.BOTH,
+            FCR_Mapped_Fields.AUTHORS: FCR_Processing_Data_Target.BOTH,
+            FCR_Mapped_Fields.PUBLISHERS_NAME: FCR_Processing_Data_Target.BOTH,
+            FCR_Mapped_Fields.EDITION_NOTES: FCR_Processing_Data_Target.BOTH,
+            FCR_Mapped_Fields.PUBLICATION_DATES: FCR_Processing_Data_Target.BOTH,
+            FCR_Mapped_Fields.EXPORTED_TO_DIGITAL_LIBRARY: FCR_Processing_Data_Target.BOTH
+        },
+        operation=OPERATIONS_LIST[Operation_Names.SEARCH_IN_KOHA_SRU_VANILLA]
+    ),
+    Processing_Names.BETTER_ITEM_DVD:Processing(
+        processing=Processing_Names.BETTER_ITEM_DVD,
+        mapped_data={
+            FCR_Mapped_Fields.ID: FCR_Processing_Data_Target.ORIGIN,
+            FCR_Mapped_Fields.PPN: FCR_Processing_Data_Target.ORIGIN,
+            FCR_Mapped_Fields.GENERAL_PROCESSING_DATA_DATES: FCR_Processing_Data_Target.BOTH,
+            FCR_Mapped_Fields.EAN: FCR_Processing_Data_Target.BOTH,
+            FCR_Mapped_Fields.TITLE: FCR_Processing_Data_Target.BOTH,
+            FCR_Mapped_Fields.AUTHORS: FCR_Processing_Data_Target.BOTH,
+            FCR_Mapped_Fields.PUBLISHERS_NAME: FCR_Processing_Data_Target.BOTH,
+            FCR_Mapped_Fields.EDITION_NOTES: FCR_Processing_Data_Target.BOTH,
+            FCR_Mapped_Fields.PHYSICAL_DESCRIPTION: FCR_Processing_Data_Target.BOTH,
+            FCR_Mapped_Fields.PUBLICATION_DATES: FCR_Processing_Data_Target.BOTH,
+            FCR_Mapped_Fields.CONTENTS_NOTES: FCR_Processing_Data_Target.ORIGIN,
+            FCR_Mapped_Fields.OTHER_DB_ID: FCR_Processing_Data_Target.TARGET,
+            FCR_Mapped_Fields.ITEMS_BARCODE: FCR_Processing_Data_Target.TARGET,
+            FCR_Mapped_Fields.ITEMS: FCR_Processing_Data_Target.TARGET    
+        },
+        operation=OPERATIONS_LIST[Operation_Names.SEARCH_IN_SUDOC_DVD]
+    ),
+    Processing_Names.BETTER_ITEM_NO_ISBN:Processing(
+        processing=Processing_Names.BETTER_ITEM_NO_ISBN,
+        mapped_data={
+            FCR_Mapped_Fields.ID: FCR_Processing_Data_Target.ORIGIN,
+            FCR_Mapped_Fields.PPN: FCR_Processing_Data_Target.ORIGIN,
+            FCR_Mapped_Fields.GENERAL_PROCESSING_DATA_DATES: FCR_Processing_Data_Target.BOTH,
+            FCR_Mapped_Fields.EAN: FCR_Processing_Data_Target.BOTH,
+            FCR_Mapped_Fields.ERRONEOUS_ISBN: FCR_Processing_Data_Target.BOTH,
+            FCR_Mapped_Fields.TITLE: FCR_Processing_Data_Target.BOTH,
+            FCR_Mapped_Fields.AUTHORS: FCR_Processing_Data_Target.BOTH,
+            FCR_Mapped_Fields.PUBLISHERS_NAME: FCR_Processing_Data_Target.BOTH,
+            FCR_Mapped_Fields.EDITION_NOTES: FCR_Processing_Data_Target.BOTH,
+            FCR_Mapped_Fields.PUBLICATION_DATES: FCR_Processing_Data_Target.BOTH,
+            FCR_Mapped_Fields.PHYSICAL_DESCRIPTION: FCR_Processing_Data_Target.ORIGIN,
+            FCR_Mapped_Fields.OTHER_DB_ID: FCR_Processing_Data_Target.TARGET,
+            FCR_Mapped_Fields.ITEMS_BARCODE: FCR_Processing_Data_Target.TARGET,
+            FCR_Mapped_Fields.ITEMS: FCR_Processing_Data_Target.TARGET
+        },
+        operation=OPERATIONS_LIST[Operation_Names.SEARCH_IN_SUDOC_NO_ISBN]
+    ),
+    Processing_Names.BETTER_ITEM_MAPS:Processing(
+        processing=Processing_Names.BETTER_ITEM_MAPS,
+        mapped_data={
+            FCR_Mapped_Fields.ID: FCR_Processing_Data_Target.ORIGIN,
+            FCR_Mapped_Fields.PPN: FCR_Processing_Data_Target.ORIGIN,
+            FCR_Mapped_Fields.GENERAL_PROCESSING_DATA_DATES: FCR_Processing_Data_Target.BOTH,
+            FCR_Mapped_Fields.EAN: FCR_Processing_Data_Target.BOTH,
+            FCR_Mapped_Fields.TITLE: FCR_Processing_Data_Target.BOTH,
+            FCR_Mapped_Fields.AUTHORS: FCR_Processing_Data_Target.BOTH,
+            FCR_Mapped_Fields.PUBLISHERS_NAME: FCR_Processing_Data_Target.BOTH,
+            FCR_Mapped_Fields.EDITION_NOTES: FCR_Processing_Data_Target.BOTH,
+            FCR_Mapped_Fields.PHYSICAL_DESCRIPTION: FCR_Processing_Data_Target.BOTH,
+            FCR_Mapped_Fields.PUBLICATION_DATES: FCR_Processing_Data_Target.BOTH,
+            FCR_Mapped_Fields.CONTENTS_NOTES: FCR_Processing_Data_Target.ORIGIN,
+            FCR_Mapped_Fields.OTHER_DB_ID: FCR_Processing_Data_Target.TARGET,
+            FCR_Mapped_Fields.ITEMS_BARCODE: FCR_Processing_Data_Target.TARGET,
+            FCR_Mapped_Fields.ITEMS: FCR_Processing_Data_Target.TARGET,
+            FCR_Mapped_Fields.MAPS_HORIZONTAL_SCALE: FCR_Processing_Data_Target.BOTH,
+            FCR_Mapped_Fields.MAPS_MATHEMATICAL_DATA: FCR_Processing_Data_Target.BOTH,
+            FCR_Mapped_Fields.SERIES: FCR_Processing_Data_Target.BOTH,
+            FCR_Mapped_Fields.SERIES_LINK: FCR_Processing_Data_Target.BOTH,
+            FCR_Mapped_Fields.GEOGRAPHICAL_SUBJECT: FCR_Processing_Data_Target.BOTH,
+        },
+        operation=OPERATIONS_LIST[Operation_Names.SEARCH_IN_SUDOC_MAPS]
+    )
+}
+
+def get_processing(processing:Processing_Names|str|int) -> Processing:
+    """Returns the Prtocessing instance for the given processing.
+    Argument can either be :
+        - Processing_Names member
+        - Processing_Names member name
+        - Processing_Names member value"""
+    if type(processing) == Processing_Names:
+        return PROCESSINGS_LIST[processing]
+    elif type(processing) == str:
+        return PROCESSINGS_LIST[Processing_Names[processing]]
+    elif type(processing) == int:
+        for member in Processing_Names:
+            if member.value == processing:
+                return PROCESSINGS_LIST[member]
+    return None
 
 class Execution_Settings(object):
     def __init__(self, dir: str):
@@ -52,7 +257,7 @@ class Execution_Settings(object):
         self.logs_path = os.getenv("LOGS_PATH")
         self.log_level = os.getenv("LOG_LEVEL")
         # Processing & operations
-        self.UI_change_processing(os.getenv("PROCESSING_VAL"))
+        self.change_processing(os.getenv("PROCESSING_VAL"))
         self.get_operation()
         # Database specifics
         self.origin_url = os.getenv("ORIGIN_URL")
@@ -84,8 +289,14 @@ class Execution_Settings(object):
         self.file_path_out_json = self.output_path + "/results.json"
         self.file_path_out_csv = self.output_path + "/results.csv"
     
+    def change_processing(self, processing: Processing_Names|str|int):
+        """Updates the current dataabse mapping.
+        Takes as argument the processing as a Processing_Nmaes member, the member name or the memeber value"""
+        self.processing = get_processing(processing)
+        self.define_databases()
+
     def get_operation(self):
-        self.operation = PROCESSING_OPERATION_MAPPING[self.processing]
+        self.operation = self.processing.operation
 
     def define_chosen_analysis(self, nb: int):
         self.chosen_analysis = self.analysis_json[nb]
@@ -98,17 +309,27 @@ class Execution_Settings(object):
             self.chosen_analysis_checks[Analysis_Checks.DATE] = None
     
     def define_databases(self):
-        if self.processing in [FCR_Processings.BETTER_ITEM, FCR_Processings.BETTER_ITEM_DVD, FCR_Processings.BETTER_ITEM_NO_ISBN, FCR_Processings.BETTER_ITEM_MAPS]:
+        if self.processing.enum_member in [
+                Processing_Names.BETTER_ITEM,
+                Processing_Names.BETTER_ITEM_DVD,
+                Processing_Names.BETTER_ITEM_NO_ISBN,
+                Processing_Names.BETTER_ITEM_MAPS
+            ]:
             self.origin_database = Databases.KOHA_PUBLIC_BIBLIO
             self.target_database = Databases.ABESXML
-        elif self.processing == FCR_Processings.MARC_FILE_IN_KOHA_SRU:
+        elif self.processing.enum_member == Processing_Names.MARC_FILE_IN_KOHA_SRU:
             self.origin_database = Databases.LOCAL
             self.target_database = Databases.KOHA_SRU
     
     def load_original_file_data(self):
         self.original_file_data = {}
         # CSV handling
-        if self.processing in [FCR_Processings.BETTER_ITEM, FCR_Processings.BETTER_ITEM_DVD, FCR_Processings.BETTER_ITEM_NO_ISBN, FCR_Processings.BETTER_ITEM_MAPS]:
+        if self.processing.enum_member in [
+                Processing_Names.BETTER_ITEM,
+                Processing_Names.BETTER_ITEM_DVD,
+                Processing_Names.BETTER_ITEM_NO_ISBN,
+                Processing_Names.BETTER_ITEM_MAPS
+            ]:
             self.original_file_data_is_csv = True
             with open(self.file_path, 'r', newline="", encoding="utf-8") as fh:
                 csvdata = csv.DictReader(fh, delimiter=";")
@@ -116,7 +337,7 @@ class Execution_Settings(object):
                 for index, line in enumerate(csvdata):
                     self.original_file_data[index] = line
         # MARC handling
-        elif self.processing == FCR_Processings.MARC_FILE_IN_KOHA_SRU:
+        elif self.processing.enum_member == Processing_Names.MARC_FILE_IN_KOHA_SRU:
             self.original_file_data_is_csv = False
             self.original_file_headers = []
             with open(self.file_path, 'rb') as fh:
@@ -194,13 +415,6 @@ class Execution_Settings(object):
         Takes as argument the new mappnig"""
         self.UI_curr_database_mapping = new_mapping
 
-    def UI_change_processing(self, processing_val: str):
-        """Updates the current dataabse mapping.
-        Takes as argument the new val AS A STRING not a FCR_Processings entry"""
-        self.processing_val = processing_val
-        self.processing = FCR_Processings[self.processing_val]
-        self.define_databases()
-
     def UI_update_main_screen_values(self, val:dict):
         """Updates all data from the UI inside this instance"""
         self.service = val["SERVICE"]
@@ -209,7 +423,7 @@ class Execution_Settings(object):
         self.output_path = val["OUTPUT_PATH"]
         self.csv_cols_config_path = val["CSV_OUTPUT_JSON_CONFIG_PATH"]
         self.logs_path = val["LOGS_PATH"]
-        self.UI_change_processing(val["PROCESSING_VAL"])
+        self.change_processing(val["PROCESSING_VAL"])
         self.get_operation()
 
     def UI_update_processing_configuration_values(self, val:dict):
@@ -473,7 +687,7 @@ class Execution_Settings(object):
                 ]:
                 self.headers[col.name] = self.csv_cols[col.name][par.lang]
             # Columns from records
-            processing_fields:Dict[FCR_Mapped_Fields, FCR_Processing_Data_Target] = par.processing.value
+            processing_fields:Dict[FCR_Mapped_Fields, FCR_Processing_Data_Target] = par.processing.mapped_data
             for data in processing_fields:
                 if processing_fields[data] in [FCR_Processing_Data_Target.BOTH, FCR_Processing_Data_Target.ORIGIN]:
                     self.headers[f"ORIGIN_DB_{data.name}"] = self.csv_cols[f"ORIGIN_DB_{data.name}"][par.lang]
@@ -481,11 +695,16 @@ class Execution_Settings(object):
                 if processing_fields[data] in [FCR_Processing_Data_Target.BOTH, FCR_Processing_Data_Target.TARGET]:
                     self.headers[f"TARGET_DB_{data.name}"] = self.csv_cols[f"TARGET_DB_{data.name}"][par.lang]
             # Special processing cols
-            if par.processing_val in [FCR_Processings.BETTER_ITEM.name, FCR_Processings.BETTER_ITEM_DVD.name, FCR_Processings.BETTER_ITEM_NO_ISBN.name, FCR_Processings.BETTER_ITEM_MAPS.name]:
+            if par.processing in [
+                    Processing_Names.BETTER_ITEM,
+                    Processing_Names.BETTER_ITEM_DVD,
+                    Processing_Names.BETTER_ITEM_NO_ISBN,
+                    Processing_Names.BETTER_ITEM_MAPS
+                ]:
                 self.headers[CSV_Cols.TARGET_DB_HAS_ITEMS.name] = self.csv_cols[CSV_Cols.TARGET_DB_HAS_ITEMS.name][par.lang]
                 del self.headers[CSV_Cols.ORIGIN_DB_GENERAL_PROCESSING_DATA_DATES.name]
                 del self.headers[CSV_Cols.TARGET_DB_GENERAL_PROCESSING_DATA_DATES.name]
-            elif par.processing_val == FCR_Processings.MARC_FILE_IN_KOHA_SRU.name:
+            elif par.processing == Processing_Names.MARC_FILE_IN_KOHA_SRU:
                 del self.headers[CSV_Cols.ORIGIN_DB_GENERAL_PROCESSING_DATA_DATES.name]
                 del self.headers[CSV_Cols.TARGET_DB_GENERAL_PROCESSING_DATA_DATES.name]
                 del self.headers[CSV_Cols.INPUT_QUERY.name]
@@ -516,18 +735,18 @@ class Execution_Settings(object):
 class Database_Record(object):
     """Contains extracted data from the record.
     The data property contains every mapped data for the chosen processing"""
-    def __init__(self, processing: FCR_Processings, record: ET.ElementTree | dict | pymarc.record.Record, database: Databases, is_target_db: bool, es: Execution_Settings):
+    def __init__(self, processing: Processing, record: ET.ElementTree | dict | pymarc.record.Record, database: Databases, is_target_db: bool, es: Execution_Settings):
         self.processing = processing
         self.record = record
         self.database = database
         self.is_target_db = is_target_db
         self.ude = Universal_Data_Extractor(self.record, self.database, self.is_target_db, es)
         self.data = {}
-        for data in processing.value:
+        for data in processing.mapped_data:
             if (
-                (processing.value[data] == FCR_Processing_Data_Target.BOTH)
-                or (self.is_target_db and processing.value[data] == FCR_Processing_Data_Target.TARGET)
-                or (not self.is_target_db and processing.value[data] == FCR_Processing_Data_Target.ORIGIN)
+                (processing.mapped_data[data] == FCR_Processing_Data_Target.BOTH)
+                or (self.is_target_db and processing.mapped_data[data] == FCR_Processing_Data_Target.TARGET)
+                or (not self.is_target_db and processing.mapped_data[data] == FCR_Processing_Data_Target.ORIGIN)
             ):
                 if data in self.database.value:
                     filter_value = ""
@@ -799,20 +1018,15 @@ class Matched_Records(object):
     """
     
     Takes as argument :
-        - operation {Operations Instance} (defaults to SEARCH_IN_SUDOC_BY_ISBN)"""
-    def __init__(self, operation: Operations, query: str, local_record:Database_Record, es: Execution_Settings):
+        - operation {Operation Instance}"""
+    def __init__(self, operation: Operation, query: str, local_record:Database_Record, es: Execution_Settings):
         self.error = None
         self.error_msg = None
         self.tries = []
         self.returned_ids = []
         self.returned_records = []
         self.includes_record = False
-
-       # Get the operation, defaults on SEARCH_IN_SUDOC one
-        self.operation = Operations.SEARCH_IN_SUDOC_BY_ISBN
-        if type(operation) == Operations:
-            self.operation = operation
-
+        self.operation = operation # Removed default operation, I'd rather it threw an error
         self.query = query
         self.local_record = local_record
         self.es = es
@@ -830,7 +1044,7 @@ class Matched_Records(object):
             - if failed again, Sudoc SRU on ISB index
         
         Requires match_records query to be an ISBN"""
-        for index, action in enumerate(Try_Operations[self.operation.name].value):
+        for index, action in enumerate(self.operation.actions):
             thisTry = Request_Try(index, action)
             self.request_action(action, thisTry)
             self.tries.append(thisTry)
@@ -2364,11 +2578,11 @@ class Original_Record(object):
         self.matched_records = mr.returned_records
         self.matched_records_include_records = mr.includes_record
     
-    def get_origin_database_data(self, processing: FCR_Processings, record: ET.ElementTree | dict | pymarc.record.Record, database: Databases, es: Execution_Settings):
+    def get_origin_database_data(self, processing: Processing, record: ET.ElementTree | dict | pymarc.record.Record, database: Databases, es: Execution_Settings):
         """Extract data from the origin database record"""
         self.origin_database_data = Database_Record(processing, record, database, False, es)
 
-    def get_target_database_data(self, processing: FCR_Processings, id:str, record: ET.ElementTree | dict | pymarc.record.Record, database: Databases, es: Execution_Settings):
+    def get_target_database_data(self, processing: Processing, id:str, record: ET.ElementTree | dict | pymarc.record.Record, database: Databases, es: Execution_Settings):
         """Extract data from the origin database record"""
         self.target_database_data[id] = Database_Record(processing, record, database, True, es)
 
@@ -2445,7 +2659,7 @@ class Original_Record(object):
             """Returns the data as a dict for the CSV export"""
             par:Original_Record = self.parent
             out = {}
-            processing_fields:Dict[FCR_Mapped_Fields, FCR_Processing_Data_Target] = par.es.processing.value
+            processing_fields:Dict[FCR_Mapped_Fields, FCR_Processing_Data_Target] = par.es.processing.mapped_data
             try:
                 # Errors
                 out[CSV_Cols.ERROR.name] = par.error
@@ -2462,7 +2676,12 @@ class Original_Record(object):
                     if processing_fields[data] in [FCR_Processing_Data_Target.BOTH, FCR_Processing_Data_Target.ORIGIN]:
                         out[f"ORIGIN_DB_{data.name}"] = fcf.list_as_string(par.origin_database_data.data[data])
                 out = self.__special_data(out)
-                if par.es.processing_val in [FCR_Processings.BETTER_ITEM.name, FCR_Processings.BETTER_ITEM_DVD.name, FCR_Processings.BETTER_ITEM_NO_ISBN.name, FCR_Processings.BETTER_ITEM_MAPS.name]:
+                if par.es.processing.enum_member in [
+                    Processing_Names.BETTER_ITEM,
+                    Processing_Names.BETTER_ITEM_DVD,
+                    Processing_Names.BETTER_ITEM_NO_ISBN,
+                    Processing_Names.BETTER_ITEM_MAPS
+                    ]:
                     out = self.__special_better_item(out)
 
                 # Match records
@@ -2480,7 +2699,12 @@ class Original_Record(object):
                     if processing_fields[data] in [FCR_Processing_Data_Target.BOTH, FCR_Processing_Data_Target.TARGET]:
                         out[f"TARGET_DB_{data.name}"] = fcf.list_as_string(target_record.data[data])
                 out = self.__special_data(out, False)
-                if par.es.processing_val in [FCR_Processings.BETTER_ITEM.name, FCR_Processings.BETTER_ITEM_DVD.name, FCR_Processings.BETTER_ITEM_NO_ISBN.name, FCR_Processings.BETTER_ITEM_MAPS.name]:
+                if par.es.processing.enum_member in [
+                    Processing_Names.BETTER_ITEM.name,
+                    Processing_Names.BETTER_ITEM_DVD.name,
+                    Processing_Names.BETTER_ITEM_NO_ISBN.name,
+                    Processing_Names.BETTER_ITEM_MAPS.name
+                    ]:
                     out = self.__special_better_item(out, False)
 
                 # Analysis
@@ -2522,7 +2746,7 @@ class Report(object):
         for succ in Report_Success:
             self.success[succ.name] = 0
         self.actions = {}
-        for action in Try_Operations[es.operation.name].value:
+        for action in es.processing.operation.actions:
             self.actions[action.name] = self.Action(action)
 
     class Action(object):
@@ -2578,7 +2802,7 @@ class Report(object):
 
         # Header
         output.append("# Results report\n")
-        output.append(f"For {self.es.processing_val} ({self.time_start.strftime('%y-%m-%d %H:%M')}) :")
+        output.append(f"For {self.es.processing.name} ({self.time_start.strftime('%y-%m-%d %H:%M')}) :")
         output.append("\n")
 
         # Settings infos
@@ -2587,10 +2811,15 @@ class Report(object):
         output.append(f"* Processed file : {self.es.file_path}")
         output.append(f"* CSV output file : {self.es.file_path_out_csv}")
         output.append(f"* JSON output file : {self.es.file_path_out_json}")
-        if self.es.processing_val in [FCR_Processings.BETTER_ITEM.name, FCR_Processings.BETTER_ITEM_DVD.name]:
+        if self.es.processing.enum_member in [
+            Processing_Names.BETTER_ITEM,
+            Processing_Names.BETTER_ITEM_DVD,
+            Processing_Names.BETTER_ITEM_NO_ISBN,
+            Processing_Names.BETTER_ITEM_MAPS
+            ]:
             output.append(f"* Koha URL : {self.es.origin_url}")
             output.append(f"* ILN : {self.es.iln}, RCR : {self.es.rcr}")
-        if self.es.processing_val == FCR_Processings.MARC_FILE_IN_KOHA_SRU.name:
+        if self.es.processing.enum_member == Processing_Names.MARC_FILE_IN_KOHA_SRU:
             output.append(f"* Koha URL : {self.es.target_url}")
         output.append(f"* Origin database : {self.es.origin_database.name} (mapping : {self.es.origin_database_mapping})")
         output.append(f"* Target database : {self.es.target_database.name} (mapping : {self.es.target_database_mapping})")
@@ -2609,14 +2838,24 @@ class Report(object):
 
         # Steps fails
         output.append("## Steps fails :\n")
-        if self.es.processing_val in [FCR_Processings.BETTER_ITEM.name, FCR_Processings.BETTER_ITEM_DVD.name]:
+        if self.es.processing.enum_member in [
+            Processing_Names.BETTER_ITEM,
+            Processing_Names.BETTER_ITEM_DVD,
+            Processing_Names.BETTER_ITEM_NO_ISBN,
+            Processing_Names.BETTER_ITEM_MAPS
+            ]:
             output.append(f"* Could not retrieve Koha records : {self.__get_step(Report_Errors.ORIGIN_DB_KOHA)}")
-        if self.es.processing_val == FCR_Processings.MARC_FILE_IN_KOHA_SRU.name:
+        if self.es.processing.enum_member == Processing_Names.MARC_FILE_IN_KOHA_SRU:
             output.append(f"* Could not retrieve local MARC records : {self.__get_step(Report_Errors.ORIGIN_DB_LOCAL_RECORD)}")
         output.append(f"* Records matched nothing : {self.__get_step(Report_Errors.MATCH_RECORD_NO_MATCH)}")
-        if self.es.processing_val in [FCR_Processings.BETTER_ITEM.name, FCR_Processings.BETTER_ITEM_DVD.name]:
+        if self.es.processing.enum_member in [
+            Processing_Names.BETTER_ITEM,
+            Processing_Names.BETTER_ITEM_DVD,
+            Processing_Names.BETTER_ITEM_NO_ISBN,
+            Processing_Names.BETTER_ITEM_MAPS
+            ]:
             output.append(f"* Could not retrieve Sudoc records : {self.__get_step(Report_Errors.TARGET_DB_SUDOC)}")
-        if self.es.processing_val == FCR_Processings.MARC_FILE_IN_KOHA_SRU.name:
+        if self.es.processing.enum_member == Processing_Names.MARC_FILE_IN_KOHA_SRU:
             output.append(f"* Could not retrieve Koha records : {self.__get_step(Report_Errors.TARGET_DB_KOHA)}")
         output.append("\n")
 

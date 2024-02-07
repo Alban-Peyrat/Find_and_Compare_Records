@@ -51,12 +51,17 @@ def main(es: fcr.Execution_Settings):
     # Init report
     results_report = fcr.Report(es)
 
-    es.log.simple_info("Processing", es.processing_val)
-    if es.processing_val in [fcr.FCR_Processings.BETTER_ITEM.name, fcr.FCR_Processings.BETTER_ITEM_DVD.name, fcr.FCR_Processings.BETTER_ITEM_NO_ISBN.name, fcr.FCR_Processings.BETTER_ITEM_MAPS.name]:
+    es.log.simple_info("Processing", es.processing.name)
+    if es.processing.enum_member in [
+        fcr.Processing_Names.BETTER_ITEM,
+        fcr.Processing_Names.BETTER_ITEM_DVD,
+        fcr.Processing_Names.BETTER_ITEM_NO_ISBN,
+        fcr.Processing_Names.BETTER_ITEM_MAPS
+        ]:
         es.log.simple_info("Koha URL", es.origin_url)
         es.log.simple_info("ILN", es.iln)
         es.log.simple_info("RCR", es.rcr)
-    if es.processing_val == fcr.FCR_Processings.MARC_FILE_IN_KOHA_SRU.name:
+    if es.processing.enum_member == fcr.Processing_Names.MARC_FILE_IN_KOHA_SRU:
         es.log.simple_info("Koha URL", es.target_url)
     es.log.simple_info("Origin database", es.origin_database.name)
     es.log.simple_info("Target database", es.target_database.name)
@@ -97,7 +102,12 @@ def main(es: fcr.Execution_Settings):
         # --------------- ORIGIN DATABASE ---------------
         # Get origin DB record
         # BETTER_ITEMs querying Koha Public biblio
-        if es.processing in [fcr.FCR_Processings.BETTER_ITEM, fcr.FCR_Processings.BETTER_ITEM_DVD, fcr.FCR_Processings.BETTER_ITEM_NO_ISBN, fcr.FCR_Processings.BETTER_ITEM_MAPS]:
+        if es.processing.enum_member in [
+            fcr.Processing_Names.BETTER_ITEM,
+            fcr.Processing_Names.BETTER_ITEM_DVD,
+            fcr.Processing_Names.BETTER_ITEM_NO_ISBN,
+            fcr.Processing_Names.BETTER_ITEM_MAPS
+            ]:
             origin_record = Koha_API_PublicBiblio.Koha_API_PublicBiblio(rec.original_uid, es.origin_url, service=es.service, format="application/marcxml+xml")
             if origin_record.status == 'Error' :
                 rec.trigger_error(f"Koha_API_PublicBiblio : {origin_record.error_msg}")
@@ -108,7 +118,7 @@ def main(es: fcr.Execution_Settings):
                 continue # skip to next line
             rec.get_origin_database_data(es.processing, origin_record.record_parsed, es.origin_database, es)
         # MARC_FILE_IN_KOHA_SRU from the file
-        elif es.processing == fcr.FCR_Processings.MARC_FILE_IN_KOHA_SRU:
+        elif es.processing.enum_member == fcr.Processing_Names.MARC_FILE_IN_KOHA_SRU:
             origin_record = es.original_file_data[index]
             if origin_record is None:
                 rec.trigger_error(f"MARC file : record was ignored because its chunk raised an exception")
@@ -156,7 +166,12 @@ def main(es: fcr.Execution_Settings):
             record_list = rec.matched_records
             list_is_id = False
             # Tiny brain can't comprehend how to mrege all the if so I'm nesting them
-            if es.processing in [fcr.FCR_Processings.BETTER_ITEM, fcr.FCR_Processings.BETTER_ITEM_DVD, fcr.FCR_Processings.BETTER_ITEM_NO_ISBN, fcr.FCR_Processings.BETTER_ITEM_MAPS]:
+            if es.processing.enum_member in [
+                fcr.Processing_Names.BETTER_ITEM,
+                fcr.Processing_Names.BETTER_ITEM_DVD,
+                fcr.Processing_Names.BETTER_ITEM_NO_ISBN,
+                fcr.Processing_Names.BETTER_ITEM_MAPS
+                ]:
                 if "SRU_SUDOC" in rec.action_used.name:
                     record_list = rec.matched_records_ids
                     list_is_id = True
@@ -171,7 +186,12 @@ def main(es: fcr.Execution_Settings):
             # --------------- TARGET DATABASE ---------------
             # Get target DB record
             # BETTER_ITEMs querying Sudoc XML
-            if es.processing in [fcr.FCR_Processings.BETTER_ITEM, fcr.FCR_Processings.BETTER_ITEM_DVD, fcr.FCR_Processings.BETTER_ITEM_NO_ISBN, fcr.FCR_Processings.BETTER_ITEM_MAPS]:
+            if es.processing.enum_member in [
+                fcr.Processing_Names.BETTER_ITEM,
+                fcr.Processing_Names.BETTER_ITEM_DVD,
+                fcr.Processing_Names.BETTER_ITEM_NO_ISBN,
+                fcr.Processing_Names.BETTER_ITEM_MAPS
+                ]:
                 target_db_queried_record = AbesXml.AbesXml(rec.matched_id,service=es.service)
                 if target_db_queried_record.status == 'Error':
                     rec.trigger_error(f"Sudoc XML : {target_db_queried_record.error_msg}")
@@ -182,7 +202,7 @@ def main(es: fcr.Execution_Settings):
                     continue # skip to next line
                 rec.get_target_database_data(es.processing, rec.matched_id, target_db_queried_record.record_parsed, es.target_database, es)
             # MARC_FILE_IN_KOHA_SRU from the file
-            elif es.processing == fcr.FCR_Processings.MARC_FILE_IN_KOHA_SRU:
+            elif es.processing.enum_member == fcr.Processing_Names.MARC_FILE_IN_KOHA_SRU:
                 rec.get_target_database_data(es.processing, rec.matched_id, record_from_mr_list, es.target_database, es)
                 target_record:fcr.Database_Record = rec.target_database_data[f"FCR INDEX {ii}"] # for the IDE
                 if target_record.utils.get_id().strip() != "":
