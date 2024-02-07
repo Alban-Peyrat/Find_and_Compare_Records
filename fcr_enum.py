@@ -150,20 +150,6 @@ class Database_Names(Enum):
     KOHA_SRU = 3
     LOCAL = 4
 
-# ↓ A del
-# class Databases(Enum):
-#     """List of databases and their filter field"""
-#     ABESXML = {
-#         FCR_Mapped_Fields.OTHER_DB_ID:FCR_Filters.ILN,
-#         FCR_Mapped_Fields.ITEMS:FCR_Filters.RCR,
-#         FCR_Mapped_Fields.ITEMS_BARCODE:FCR_Filters.RCR
-#     }
-#     SUDOC_SRU = {}
-#     KOHA_PUBLIC_BIBLIO = {}
-#     KOHA_SRU = {
-#     }
-#     LOCAL = {FCR_Mapped_Fields.LEADER:FCR_Filters.FILTER3}
-
 class Record_Formats(Enum):
     """List of supported record formats"""
     UNKNOWN = 0

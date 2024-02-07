@@ -11,7 +11,7 @@ _Some previous changes will be added_
 
 ### Changed
 
-* Internal changes on the management of processings, operations and databases
+* Internal changes on the management of processings, operations, databases, UI screens & screen tabs
 
 ### Fixed
 

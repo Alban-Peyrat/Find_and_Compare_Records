@@ -6,7 +6,7 @@ import json
 import os
 import dotenv
 from enum import Enum
-from typing import List
+from typing import List, Dict
 
 # Internal import
 from theme.theme import *
@@ -28,10 +28,56 @@ sg.theme(theme_name)
 VALLS = fcr.Execution_Settings(CURR_DIR)
 VALLS.load_env_values()
 
+# --------------- Screen classes & enums ---------------
+
+class Tab_Names(Enum):
+    PROCESSING_CONFIGURATION_MAIN_TAB_TITLE = 0
+    PROCESSING_DATABASE_CONFIGURATION_TAB_TITLE = 1
+    PROCESSING_CHOSE_DATABASE_MAPPINGS_TAB_TITLE = 2
+
+class Tab(object):
+    def __init__(self, tab:Tab_Names, values:List[str], text:GUI_Text) -> None:
+        self.enum_member = tab
+        self.name = tab.name
+        self.id = tab.value
+        self.values = values
+        self.text_enum_member = text
+        self.text_name = text.name
+        
+class Screen_Names(Enum):
+    MAIN_SCREEN = 0
+    PROCESSING_CONFIGURATION_SCREEN = 1
+
+class Screen(object):
+    def __init__(self, screen:Screen_Names, values:List[str],  tabs:Dict[Tab_Names, Tab]) -> None:
+        self.enum_member = screen
+        self.name = screen.name
+        self.id = screen.value
+        self.values = values
+        self.tabs = tabs
+
+        
+    def get_tab(self, tab:Tab_Names|str|int) -> Tab:
+        """Returns the Screen instance for the given processing.
+        Argument can either be :
+            - Screen_Names member
+            - Screen_Names member name
+            - Screen_Names member value"""
+        if type(tab) == Tab_Names:
+            return self.tabs[tab]
+        elif type(tab) == str:
+            return self.tabs[Tab_Names[tab]]
+        elif type(tab) == int:
+            for member in Tab_Names:
+                if member.value == tab:
+                    return self.tabs[member]
+        return None
+
 curr_screen = None
-class GUI_Screens(Enum):
-    MAIN_SCREEN = {
-        "values":[
+SCREENS_LIST = {
+    Screen_Names.MAIN_SCREEN:Screen(
+        screen=Screen_Names.MAIN_SCREEN,
+        values=[
             "SERVICE",
             "LOG_LEVEL",
             "PROCESSING_VAL",
@@ -40,41 +86,57 @@ class GUI_Screens(Enum):
             "CSV_OUTPUT_JSON_CONFIG_PATH",
             "LOGS_PATH",
         ],
-        "tabs":[]
-    }
-    PROCESSING_CONFIGURATION_SCREEN = {
-        "values":[
-        ],
-        "tabs":[
-            {
-                GUI_Text.PROCESSING_CONFIGURATION_MAIN_TAB_TITLE.name:{
-                    "values":[
-                        "ORIGIN_URL",
-                        "TARGET_URL",
-                        "ILN",
-                        "RCR",
-                        "FILTER1",
-                        "FILTER2",
-                        "FILTER3"
-                    ]
-                },
-            },
-            {
-                GUI_Text.PROCESSING_DATABASE_CONFIGURATION_TAB_TITLE.name:{
-                    "values":[
-                    ]
-                }
-            },
-            {
-                GUI_Text.PROCESSING_CHOSE_DATABASE_MAPPINGS_TAB_TITLE.name:{
-                    "values":[
-                        "ORIGIN_DATABASE_MAPPING",
-                        "TARGET_DATABASE_MAPPING"
-                    ]
-                }
-            }
-        ]
-    }
+        tabs={}
+    ),
+    Screen_Names.PROCESSING_CONFIGURATION_SCREEN:Screen(
+        screen=Screen_Names.PROCESSING_CONFIGURATION_SCREEN,
+        values=[],
+        tabs = {
+            Tab_Names.PROCESSING_CONFIGURATION_MAIN_TAB_TITLE:Tab(
+                tab=Tab_Names.PROCESSING_CONFIGURATION_MAIN_TAB_TITLE,
+                values=[
+                    "ORIGIN_URL",
+                    "TARGET_URL",
+                    "ILN",
+                    "RCR",
+                    "FILTER1",
+                    "FILTER2",
+                    "FILTER3"
+                ],
+                text=GUI_Text.PROCESSING_CONFIGURATION_MAIN_TAB_TITLE
+            ),
+            Tab_Names.PROCESSING_DATABASE_CONFIGURATION_TAB_TITLE:Tab(
+                tab=Tab_Names.PROCESSING_DATABASE_CONFIGURATION_TAB_TITLE,
+                values=[],
+                text=GUI_Text.PROCESSING_DATABASE_CONFIGURATION_TAB_TITLE
+            ),
+            Tab_Names.PROCESSING_CHOSE_DATABASE_MAPPINGS_TAB_TITLE:Tab(
+                tab=Tab_Names.PROCESSING_CHOSE_DATABASE_MAPPINGS_TAB_TITLE,
+                values=[
+                    "ORIGIN_DATABASE_MAPPING",
+                    "TARGET_DATABASE_MAPPING"
+                ],
+                text=GUI_Text.PROCESSING_CHOSE_DATABASE_MAPPINGS_TAB_TITLE
+            )
+        }
+    )
+}
+
+def get_screen(screen:Screen_Names|str|int) -> Screen:
+    """Returns the Screen instance for the given processing.
+    Argument can either be :
+        - Screen_Names member
+        - Screen_Names member name
+        - Screen_Names member value"""
+    if type(screen) == Screen_Names:
+        return SCREENS_LIST[screen]
+    elif type(screen) == str:
+        return SCREENS_LIST[Screen_Names[screen]]
+    elif type(screen) == int:
+        for member in Screen_Names:
+            if member.value == screen:
+                return SCREENS_LIST[member]
+    return None
 
 # --------------- Screen layouts ---------------
 
@@ -441,12 +503,12 @@ PROCESSING_CONFIGURATION_SCREEN_LAYOUT = [
 ]
 
 GLOBAL_LAYOUT = [[
-    sg.Column(MAIN_SCREEN_LAYOUT, key=GUI_Screens.MAIN_SCREEN.name),
-    sg.Column(PROCESSING_CONFIGURATION_SCREEN_LAYOUT, key=GUI_Screens.PROCESSING_CONFIGURATION_SCREEN.name)
+    sg.Column(MAIN_SCREEN_LAYOUT, key=get_screen(Screen_Names.MAIN_SCREEN).name),
+    sg.Column(PROCESSING_CONFIGURATION_SCREEN_LAYOUT, key=get_screen(Screen_Names.PROCESSING_CONFIGURATION_SCREEN).name)
 ]]
 
 # --------------- UI Function def ---------------
-def save_parameters(screen: GUI_Screens, val: dict):
+def save_parameters(screen: Screen, val: dict):
     """Saves the parameters of the screen.
     
     Takes as parameters :
@@ -454,12 +516,10 @@ def save_parameters(screen: GUI_Screens, val: dict):
         - val : all values of the window"""
     dotenv.set_key(DOTENV_FILE, "LANG", VALLS.lang)
     val_list = []
-    if screen.value["tabs"]:
-        for tab in screen.value["tabs"]:
-            if val[screen.name + "_TABS"] in tab.keys():
-                val_list = tab[val[screen.name + "_TABS"]]["values"]
+    if screen.tabs:
+        val_list = screen.get_tab(val[screen.name + "_TABS"]).values
     else:
-        val_list = screen.value["values"]
+        val_list = screen.values
     for screen_val in val_list:
         new_val = val[screen_val]
         if type(new_val) == list and len(new_val) == 1:
@@ -540,16 +600,16 @@ def switch_languages(window: sg.Window):
         value=VALLS.UI_curr_data_label
     ) 
 
-def open_screen(window: sg.Window, screen: GUI_Screens) -> sg.Window:
+def open_screen(window: sg.Window, screen: Screen) -> sg.Window:
     """Generic function to generate a screen.
     
     Takes as arguments :
         - window : the current window
         - screen : the wanted screen entry in GUI_Screen"""
     screen_name = None
-    if screen == GUI_Screens.MAIN_SCREEN:
+    if screen == get_screen(Screen_Names.MAIN_SCREEN):
         screen_name = GUI_Text[screen.name + "_NAME"].value[VALLS.lang]
-    if screen == GUI_Screens.PROCESSING_CONFIGURATION_SCREEN:
+    if screen == get_screen(Screen_Names.PROCESSING_CONFIGURATION_SCREEN):
         screen_name = GUI_Text[screen.name + "_NAME"].value[VALLS.lang]
     if not window:
         window = sg.Window(screen_name, GLOBAL_LAYOUT, finalize=True)
@@ -559,18 +619,18 @@ def open_screen(window: sg.Window, screen: GUI_Screens) -> sg.Window:
         window.Title = screen_name
         toggle_screen_visibility(window, screen)
 
-def toggle_screen_visibility(window: sg.Window, wanted_screen: GUI_Screens):
+def toggle_screen_visibility(window: sg.Window, wanted_screen: Screen):
     """Display the wanetd screen and hides the other ones
     Takes as arguments :
         - window : the current window
         - screen : the wanted screen entry in GUI_Screen"""
-    for screen in GUI_Screens:
-        if screen != wanted_screen:
+    for screen in SCREENS_LIST:
+        if SCREENS_LIST[screen] != wanted_screen:
             window[screen.name].update(visible=False)
         else:
             window[screen.name].update(visible=True)
     # Display only this Processing used parts
-    if screen == GUI_Screens.PROCESSING_CONFIGURATION_SCREEN:
+    if screen == get_screen(Screen_Names.PROCESSING_CONFIGURATION_SCREEN):
         for elem in [elem for row in window[GUI_Text.PROCESSING_CONFIGURATION_MAIN_TAB_TITLE.name].Rows for elem in row]:
             if not elem.metadata:
                 continue
@@ -670,7 +730,7 @@ def ask_chosen_analysis():
 # # --------------- Window Definition ---------------
 # # Create the window
 window = None
-curr_screen = GUI_Screens.MAIN_SCREEN
+curr_screen = get_screen(Screen_Names.MAIN_SCREEN)
 window = open_screen(window, curr_screen)
 # Ensure thar changin option in OptionMenu generates an event
 for elem in window.key_dict:
@@ -719,7 +779,7 @@ while True:
     # --------------- Continue to processign configuration ---------------
     if event == GUI_Text.GO_TO_PROCESSING_CONFIGURATION.name:
         VALLS.UI_update_main_screen_values(val)
-        curr_screen = GUI_Screens.PROCESSING_CONFIGURATION_SCREEN
+        curr_screen = get_screen(Screen_Names.PROCESSING_CONFIGURATION_SCREEN)
         open_screen(window, curr_screen)
         toggle_UI_elems_for_new_marc_field(False, window)
 
