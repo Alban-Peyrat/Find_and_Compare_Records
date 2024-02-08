@@ -17,6 +17,10 @@ _Some previous changes will be added_
 
 * The function exporting lists as strings no longer replaces `1` by a space
 
+### Deleted
+
+* Old configuration script `define_default_settings_GUI.py`
+
 ## [1.15.0] - 2024-02-07
 
 ### Added
