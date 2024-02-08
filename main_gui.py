@@ -626,11 +626,11 @@ def toggle_screen_visibility(window: sg.Window, wanted_screen: Screen):
         - screen : the wanted screen entry in GUI_Screen"""
     for screen in SCREENS_LIST:
         if SCREENS_LIST[screen] != wanted_screen:
-            window[screen.name].update(visible=False)
+            window[SCREENS_LIST[screen].name].update(visible=False)
         else:
-            window[screen.name].update(visible=True)
+            window[SCREENS_LIST[screen].name].update(visible=True)
     # Display only this Processing used parts
-    if screen == get_screen(Screen_Names.PROCESSING_CONFIGURATION_SCREEN):
+    if SCREENS_LIST[screen].name == get_screen(Screen_Names.PROCESSING_CONFIGURATION_SCREEN).name:
         for elem in [elem for row in window[GUI_Text.PROCESSING_CONFIGURATION_MAIN_TAB_TITLE.name].Rows for elem in row]:
             if not elem.metadata:
                 continue
