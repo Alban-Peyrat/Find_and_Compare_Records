@@ -314,5 +314,9 @@
     "TARGET_DB_GEOGRAPHICAL_SUBJECT":{
         "fre":"Sujet géographique BDD de destination",
         "eng":"Geographical subject target DB"
+    },
+    "FCR_PROCESSED_ID":{
+        "fre":"ID traitement FCR",
+        "eng":"FCR processed ID"
     }
 }

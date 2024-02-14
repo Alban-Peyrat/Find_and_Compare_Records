@@ -710,6 +710,7 @@ class Execution_Settings(object):
                     CSV_Cols.GLOBAL_VALIDATION_TITLE_CHECK,
                     CSV_Cols.GLOBAL_VALIDATION_PUBLISHER_CHECK,
                     CSV_Cols.GLOBAL_VALIDATION_DATE_CHECK,
+                    CSV_Cols.FCR_PROCESSED_ID,
                     # special data
                     CSV_Cols.ORIGIN_DB_DATE_1,
                     CSV_Cols.TARGET_DB_DATE_1,
@@ -2669,6 +2670,19 @@ class Original_Record(object):
         """Sets the matched id property, takes a string as argument"""
         self.matched_id = id
 
+    def set_fcr_processed_id(self, origin_db_index:int, state:Processed_Id_State, target_db_index:int=None):
+        """Sets the FCR processed id property, takes as argument :
+            - the origin DB index being processed as an int
+            - A Processed_Id_State member
+            - [optional] the target DB index being processed as an int"""
+        part1 = f"{origin_db_index:05d}"
+        part2 = state.value
+        part3 = "XXX"
+        if target_db_index != None: # if value is 0, using only if target_db_index would fail
+            part3 = f"{target_db_index:03d}"
+        self.fcr_processed_id = f"{part1}{part2}{part3}"
+
+
     # --- Output methods for other classes / functions ---
     class Output:
         def __init__(self, parent) -> None:
@@ -2734,6 +2748,7 @@ class Original_Record(object):
                     out.update(par.original_line)
                 out[CSV_Cols.INPUT_QUERY.name] = par.input_query
                 out[CSV_Cols.ORIGIN_DB_INPUT_ID.name] = par.original_uid
+                out[CSV_Cols.FCR_PROCESSED_ID.name] = par.fcr_processed_id
 
                 # Origin database record
                 for data in processing_fields:

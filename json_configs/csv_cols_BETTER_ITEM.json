@@ -314,5 +314,9 @@
     "TARGET_DB_GEOGRAPHICAL_SUBJECT":{
         "fre":"Sujet géographique Sudoc",
         "eng":"Geographical subject Sudoc"
+    },
+    "FCR_PROCESSED_ID":{
+        "fre":"ID traitement FCR",
+        "eng":"FCR processed ID"
     }
 }

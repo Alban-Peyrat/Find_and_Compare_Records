@@ -208,6 +208,15 @@ class Other_Database_Id_In_Target(Enum):
         "fre":"Absent de la liste"
     }
 
+# ---------- ORIGINAL RECORD ----------
+class Processed_Id_State(Enum):
+    FAILED_BEFORE_ORIGIN_DB_GET = "Z"
+    FAILED_BEFORE_MATCH_RECORDS_GET = "O"
+    FAILED_BEFORE_TARGET_DB_LOOP = "M"
+    FAILED_TO_GET_TARGET_DB = "Y"
+    FAILED_TO_ANALYZE_TARGET_DB = "T"
+    SUCCESS = "A"
+
 # ---------- REPORT ----------
 class Report_Success(Enum):
     ORIGIN_DB = 1
@@ -311,4 +320,6 @@ class CSV_Cols(Enum):
     MATCHING_TITLE_TOKEN_SET_RATIO = 80030
     MATCHING_PUBLISHER_RESULT = 80100
     MATCHING_DATES_RESULT = 80200
+    # 
+    FCR_PROCESSED_ID = 98000
     # 99XXX are for original file
