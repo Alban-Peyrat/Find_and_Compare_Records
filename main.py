@@ -83,18 +83,18 @@ def main(es: fcr.Execution_Settings):
     for index in es.original_file_data:
         # Declaration & set-up of record
         line = None
-        if es.original_file_data_is_csv:
+        if es.processing.original_file_data_is_csv:
             line = es.original_file_data[index]
             # Retrieve ISBN + KohaBibNb
             # 0 = ISBN, 1 = 915$a, 2 = 915$b, 3 = 930$c, 4 = 930$e,
             # 5 = 930$a, 6 = 930$j, 7 = 930$v, 8 = L035$a
-        rec = fcr.Original_Record(es, line)
+        rec = fcr.Original_Record(es.processing, es.get_records_settings(), es.lang, line)
         rec.set_fcr_processed_id(index, fcr.Processed_Id_State.FAILED_BEFORE_ORIGIN_DB_GET)
         results_report.increase_processed() # report stats
 
         # Gets input query and original uid for BETTER_ITEMs
-        if es.original_file_data_is_csv:
-            rec.extract_from_original_line()
+        if es.processing.original_file_data_is_csv:
+            rec.extract_from_original_line(es.original_file_headers)
             es.log.info(f"--- Processing new line : input query = \"{rec.input_query}\", origin database ID = \"{rec.original_uid}\"")
         else:
             rec.set_fake_csv_file_data()
@@ -117,7 +117,7 @@ def main(es: fcr.Execution_Settings):
                 es.csv.write_line(rec, False)
                 results.append(rec.output.to_csv())
                 continue # skip to next line
-            rec.get_origin_database_data(es.processing, origin_record.record_parsed, es)
+            rec.get_origin_database_data(es.processing, origin_record.record_parsed)
         # MARC_FILE_IN_KOHA_SRU from the file
         elif es.processing.enum_member == fcr.Processing_Names.MARC_FILE_IN_KOHA_SRU:
             origin_record = es.original_file_data[index]
@@ -128,7 +128,7 @@ def main(es: fcr.Execution_Settings):
                 es.csv.write_line(rec, False)
                 results.append(rec.output.to_csv())
                 continue # skip to next line
-            rec.get_origin_database_data(es.processing, origin_record, es)
+            rec.get_origin_database_data(es.processing, origin_record)
             rec.original_uid = rec.origin_database_data.utils.get_id()
             
         # Successfully got origin DB record
@@ -138,7 +138,7 @@ def main(es: fcr.Execution_Settings):
         results_report.increase_step(fcr.Report_Success.ORIGIN_DB) # report stats
 
         # --------------- Match records ---------------
-        rec.get_matched_records_instance(fcr.Matched_Records(es.operation, rec.input_query, rec.origin_database_data, es))     
+        rec.get_matched_records_instance(fcr.Matched_Records(es.operation, rec.input_query, rec.origin_database_data, es.target_url, es.lang))     
         if rec.nb_matched_records == 0:
             rec.trigger_error(f"{es.operation.name} : {fcr.get_instance_from_enum(fcr.Errors.OPERATION_NO_RESULT).get_msg(es.lang)}")
 
@@ -206,10 +206,10 @@ def main(es: fcr.Execution_Settings):
                     es.csv.write_line(rec, False)
                     results.append(rec.output.to_csv())
                     continue # skip to next line
-                rec.get_target_database_data(es.processing, rec.matched_id, target_db_queried_record.record_parsed, es)
+                rec.get_target_database_data(es.processing, rec.matched_id, target_db_queried_record.record_parsed)
             # MARC_FILE_IN_KOHA_SRU from the file
             elif es.processing.enum_member == fcr.Processing_Names.MARC_FILE_IN_KOHA_SRU:
-                rec.get_target_database_data(es.processing, rec.matched_id, record_from_mr_list, es)
+                rec.get_target_database_data(es.processing, rec.matched_id, record_from_mr_list)
                 target_record:fcr.Database_Record = rec.target_database_data[f"FCR INDEX {ii}"] # for the IDE
                 if target_record.utils.get_id().strip() != "":
                     rec.change_target_record_id(temp_id(ii), target_record.utils.get_id().strip())
