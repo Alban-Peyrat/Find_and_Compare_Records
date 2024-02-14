@@ -113,6 +113,7 @@ class Actions(Enum):
     SRU_SUDOC_TOU_TITLE_AUTHOR_PUBLISHER_DATE_TDO_K = 21
     SRU_SUDOC_TOU_TITLE_AUTHOR_DATE_TDO_K = 21
     SRU_SUDOC_TOU_TITLE_AUTHOR_PUBLISHER_TDO_K = 22
+    ISBN2PPN_MODIFIED_ISBN_SAME_KEY = 23
     
 class Try_Status(Enum):
     UNKNWON = 0
@@ -125,6 +126,7 @@ class Match_Records_Errors(Enum):
     NO_EAN_WAS_FOUND = 2
     REQUIRED_DATA_MISSING = 3
     NO_ISBN_WAS_FOUND = 4
+    ISBN_MODIFICATION_FAILED = 5
 
 class Match_Records_Error_Messages(Enum):
     # Why tf are there 2 enums for errors

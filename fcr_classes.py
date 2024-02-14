@@ -75,6 +75,7 @@ OPERATIONS_LIST = {
         actions=[
             Actions.ISBN2PPN,
             Actions.ISBN2PPN_MODIFIED_ISBN,
+            Actions.ISBN2PPN_MODIFIED_ISBN_SAME_KEY,
             Actions.SRU_SUDOC_ISBN
         ]
     ),
@@ -1145,8 +1146,8 @@ class Matched_Records(object):
 
         # Action isbn2ppn with changed ISBN
         elif action == Actions.ISBN2PPN_MODIFIED_ISBN:
-            #AR226
             # Converting the ISBN to 10<->13
+            new_query = None
             if len(self.query) == 13:
                 new_query = self.query[3:-1]
                 new_query += id2ppn.compute_isbn_10_check_digit(list(str(new_query)))
@@ -1154,10 +1155,39 @@ class Matched_Records(object):
                 # Doesn't consider 979[...] as the original issue should only concern old ISBN
                 new_query = "978" + self.query[:-1]
                 new_query += id2ppn.compute_isbn_13_check_digit(list(str(new_query)))
+
+            # Ensure ISBN is not empty 
+            if not new_query:
+                thisTry.error_occured(Match_Records_Errors.ISBN_MODIFICATION_FAILED)
+                return
+
+            # Same thing as Action ISBN2PPN
+            i2p = id2ppn.Abes_id2ppn(useJson=True)
+            res = i2p.get_matching_ppn(new_query)
+            thisTry.define_used_query(res.get_id_used())
+            if res.status != id2ppn.Id2ppn_Status.SUCCESS:
+                thisTry.error_occured(res.get_error_msg())
+            else:
+                thisTry.add_returned_ids(res.get_results(merge=True))
+
+        # Action isbn2ppn with changed ISBN without recomputing th ekey
+        elif action == Actions.ISBN2PPN_MODIFIED_ISBN_SAME_KEY:
+            # Converting the ISBN to 10<->13 
+            new_query = None
+            if len(self.query) == 13:
+                new_query = self.query[3:]
+            elif len(self.query) == 10:
+                # Doesn't consider 979[...] as the original issue should only concern old ISBN
+                new_query = "978" + self.query
+            
+            # Ensure ISBN is not empty 
+            if not new_query:
+                thisTry.error_occured(Match_Records_Errors.ISBN_MODIFICATION_FAILED)
+                return
             
             # Same thing as Action ISBN2PPN
             i2p = id2ppn.Abes_id2ppn(useJson=True)
-            res = i2p.get_matching_ppn(self.query)
+            res = i2p.get_matching_ppn(new_query, check_isbn_validity=False)
             thisTry.define_used_query(res.get_id_used())
             if res.status != id2ppn.Id2ppn_Status.SUCCESS:
                 thisTry.error_occured(res.get_error_msg())
