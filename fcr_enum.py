@@ -3,6 +3,17 @@
 # External import
 from enum import Enum
 
+# ---------- ERRORS ----------
+class Errors(Enum):
+    GENERIC_ERROR = 0
+    NOTHING_WAS_FOUND = 1
+    NO_EAN_WAS_FOUND = 2
+    REQUIRED_DATA_MISSING = 3
+    NO_ISBN_WAS_FOUND = 4
+    ISBN_MODIFICATION_FAILED = 5
+    MARC_CHUNK_RAISED_EXCEPTION = 6
+    OPERATION_NO_RESULT = 7
+
 # ---------- Execution settings (ES) ----------
 class FCR_Mapped_Fields(Enum):
     LEADER = "Leader"
@@ -119,22 +130,6 @@ class Try_Status(Enum):
     UNKNWON = 0
     SUCCESS = 1
     ERROR = 2
-
-class Match_Records_Errors(Enum):
-    GENERIC_ERROR = 0
-    NOTHING_WAS_FOUND = 1
-    NO_EAN_WAS_FOUND = 2
-    REQUIRED_DATA_MISSING = 3
-    NO_ISBN_WAS_FOUND = 4
-    ISBN_MODIFICATION_FAILED = 5
-
-class Match_Records_Error_Messages(Enum):
-    # Why tf are there 2 enums for errors
-    GENERIC_ERROR = "Generic error"
-    NOTHING_WAS_FOUND = "Nothing was found"
-    NO_EAN_WAS_FOUND = "Original record has no EAN"
-    REQUIRED_DATA_MISSING = "Original record was missing one of the required data"
-    NO_ISBN_WAS_FOUND = "Original record has no ISBN"
 
 # ---------- UNIVERSAL DATA EXTRACTOR (UDE) ----------
 class FCR_Filters(Enum):

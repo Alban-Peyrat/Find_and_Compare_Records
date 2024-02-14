@@ -10,6 +10,7 @@ import json
 import xml.etree.ElementTree as ET
 import pymarc
 import re
+from enum import EnumType
 from typing import Any, Dict, List, Tuple, Optional, Union
 from fuzzywuzzy import fuzz
 from datetime import datetime
@@ -23,6 +24,82 @@ from fcr_enum import *
 import api.abes.Abes_id2ppn as id2ppn
 import api.abes.Sudoc_SRU as ssru
 import api.koha.Koha_SRU as ksru
+
+# -------------------- ERRORS --------------------
+class Error(object):
+    def __init__(self, error:Errors, msg:Dict[str, str]) -> None:
+        """Takes as argument :
+            - an Errors member
+            - a dict using lang ISO code as key and error message as value"""
+        self.enum_member = error
+        self.name = error.name
+        self.id = error.value
+        self.msg = msg
+    
+    def get_msg(self, lang:str) -> str:
+        """Returns the message in wanted lagnuage (return an empty string if nothing was found)"""
+        if lang in self.msg:
+            return self.msg[lang]
+        return ""
+
+ERRORS_LIST = {
+    Errors.GENERIC_ERROR:Error(
+        error=Errors.GENERIC_ERROR,
+        msg={
+            "eng":"Generic error",
+            "fre":"Erreur générique"
+        }
+    ),
+    Errors.NOTHING_WAS_FOUND:Error(
+        error=Errors.NOTHING_WAS_FOUND,
+        msg={
+            "eng":"Nothing was found",
+            "fre":"Aucun résultat"
+        }
+    ),
+    Errors.NO_EAN_WAS_FOUND:Error(
+        error=Errors.NO_EAN_WAS_FOUND,
+        msg={
+            "eng":"Original record has no EAN",
+            "fre":"Notice originale sans EAN"
+        }
+    ),
+    Errors.REQUIRED_DATA_MISSING:Error(
+        error=Errors.REQUIRED_DATA_MISSING,
+        msg={
+            "eng":"Original record was missing one of the required data",
+            "fre":"Données requises absentes dans la notice oringinale"
+        }
+    ),
+    Errors.NO_ISBN_WAS_FOUND:Error(
+        error=Errors.NO_ISBN_WAS_FOUND,
+        msg={
+            "eng":"Original record has no ISBN",
+            "fre":"Notice originale sans ISBN"
+        }
+    ),
+    Errors.ISBN_MODIFICATION_FAILED:Error(
+        error=Errors.ISBN_MODIFICATION_FAILED,
+        msg={
+            "eng":"Failed to create a modified ISBN",
+            "fre":"Échec de la création d'un ISBN modifié"
+        }
+    ),
+    Errors.MARC_CHUNK_RAISED_EXCEPTION:Error(
+        error=Errors.MARC_CHUNK_RAISED_EXCEPTION,
+        msg={
+            "eng":"Record was ignored because its chunk raised an exception",
+            "fre":"Notice ignorée car une erreur s'est produite en l'interprétant"
+        }
+    ),
+    Errors.OPERATION_NO_RESULT:Error(
+        error=Errors.OPERATION_NO_RESULT,
+        msg={
+            "eng":"No results fot this operation",
+            "fre":"Aucun résultat pour cette opération"
+        }
+    )
+}
 
 # -------------------- Execution settings (ES) --------------------
 class Database(object):
@@ -262,20 +339,60 @@ PROCESSINGS_LIST = {
     )
 }
 
-def get_processing(processing:Processing_Names|str|int) -> Processing:
-    """Returns the Prtocessing instance for the given processing.
+# def get_processing(processing:Processing_Names|str|int) -> Processing:
+#     """Returns the Prtocessing instance for the given processing.
+#     Argument can either be :
+#         - Processing_Names member
+#         - Processing_Names member name
+#         - Processing_Names member value"""
+#     if type(processing) == Processing_Names:
+#         return PROCESSINGS_LIST[processing]
+#     elif type(processing) == str:
+#         return PROCESSINGS_LIST[Processing_Names[processing]]
+#     elif type(processing) == int:
+#         for member in Processing_Names:
+#             if member.value == processing:
+#                 return PROCESSINGS_LIST[member]
+#     return None
+
+def get_instance_from_enum(member:Processing_Names|Operation_Names|Database_Names|Errors|str|int, enum:Enum=None) -> Processing|Operation|Database|Error:
+    """Returns the wanted instance for the given enum member.
+    /!\ Works for Processing_Names, Operation_Names, Database_Names, Error
     Argument can either be :
-        - Processing_Names member
-        - Processing_Names member name
-        - Processing_Names member value"""
-    if type(processing) == Processing_Names:
-        return PROCESSINGS_LIST[processing]
-    elif type(processing) == str:
-        return PROCESSINGS_LIST[Processing_Names[processing]]
-    elif type(processing) == int:
-        for member in Processing_Names:
-            if member.value == processing:
-                return PROCESSINGS_LIST[member]
+        - Enum member
+        - Enum member name
+        - Enum member value
+    If using the name or value, the second argument must be the enum you want from"""
+    # Arg is a member, easy to do
+    if type(member) == Processing_Names:
+        return PROCESSINGS_LIST[member]
+    elif type(member) == Operation_Names:
+        return OPERATIONS_LIST[member]
+    elif type(member) == Database_Names:
+        return DATABASES_LIST[member]
+    elif type(member) == Errors:
+        return ERRORS_LIST[member]
+    # Arg is not a memeber, check if we have the 2nd arg
+    elif type(enum) == EnumType:
+        # Get the LIST for this Enum
+        LIST = None
+        if enum.__name__ == "Processing_Names":
+            LIST = PROCESSINGS_LIST
+        elif enum.__name__ == "Operation_Names":
+            LIST = OPERATIONS_LIST
+        elif enum.__name__ == "Database_Names":
+            LIST = DATABASES_LIST
+        elif enum.__name__ == "Errors":
+            LIST = ERRORS_LIST
+        # Leave if Enum is incorrect
+        if LIST == None:
+            return None
+        if type(member) == str:
+            return LIST[enum[member]]
+        elif type(member) == int:
+            for member in enum:
+                if member.value == enum:
+                    return LIST[member]
     return None
 
 class Execution_Settings(object):
@@ -339,7 +456,7 @@ class Execution_Settings(object):
     def change_processing(self, processing: Processing_Names|str|int):
         """Updates the current dataabse mapping.
         Takes as argument the processing as a Processing_Nmaes member, the member name or the memeber value"""
-        self.processing = get_processing(processing)
+        self.processing = get_instance_from_enum(processing, Processing_Names)
 
     def get_operation(self):
         self.operation = self.processing.operation
@@ -1013,9 +1130,10 @@ class Database_Record(object):
 
 class Request_Try(object):
     """"""
-    def __init__(self, try_nb: int, action: Actions):
+    def __init__(self, try_nb: int, action: Actions, lang:str):
         self.try_nb = try_nb
         self.action = action
+        self.lang = lang
         self.status = Try_Status.UNKNWON
         self.error_type = None
         self.msg = None
@@ -1024,12 +1142,12 @@ class Request_Try(object):
         self.returned_records = []
         self.includes_records = False
     
-    def error_occured(self, msg: Match_Records_Errors | str):
-        if type(self.msg) == Match_Records_Errors:
+    def error_occured(self, msg: Errors | str):
+        if type(msg) == Errors:
             self.error_type = msg
-            self.msg = Match_Records_Error_Messages[self.error_type.name]
+            self.msg = get_instance_from_enum(self.error_type, Errors).get_msg(self.lang)
         else:
-            self.error_type = Match_Records_Errors.GENERIC_ERROR
+            self.error_type = Errors.GENERIC_ERROR
             self.msg = msg
         self.status = Try_Status.ERROR
     
@@ -1081,7 +1199,7 @@ class Matched_Records(object):
         
         Requires match_records query to be an ISBN"""
         for index, action in enumerate(self.operation.actions):
-            thisTry = Request_Try(index, action)
+            thisTry = Request_Try(index, action, self.es.lang)
             self.request_action(action, thisTry)
             self.tries.append(thisTry)
 
@@ -1096,8 +1214,8 @@ class Matched_Records(object):
         
         # Checks if results were found
         if self.returned_ids == []:
-            self.error = Match_Records_Errors.NOTHING_WAS_FOUND
-            self.error_msg = Match_Records_Error_Messages[self.error.name]
+            self.error = Errors.NOTHING_WAS_FOUND
+            self.error_msg = get_instance_from_enum(self.error, Errors).get_msg(self.es.lang)
 
 
     def request_action(self, action: Actions, thisTry: Request_Try):
@@ -1159,7 +1277,7 @@ class Matched_Records(object):
 
             # Ensure ISBN is not empty 
             if not new_query:
-                thisTry.error_occured(Match_Records_Errors.ISBN_MODIFICATION_FAILED)
+                thisTry.error_occured(Errors.ISBN_MODIFICATION_FAILED)
                 return
 
             # Same thing as Action ISBN2PPN
@@ -1183,7 +1301,7 @@ class Matched_Records(object):
             
             # Ensure ISBN is not empty 
             if not new_query:
-                thisTry.error_occured(Match_Records_Errors.ISBN_MODIFICATION_FAILED)
+                thisTry.error_occured(Errors.ISBN_MODIFICATION_FAILED)
                 return
             
             # Same thing as Action ISBN2PPN
@@ -1199,7 +1317,7 @@ class Matched_Records(object):
         elif action == Actions.EAN2PPN:
             # No EAN was found, throw an error
             if ean == "":
-                thisTry.error_occured(Match_Records_Errors.NO_EAN_WAS_FOUND)
+                thisTry.error_occured(Errors.NO_EAN_WAS_FOUND)
                 return
             i2p = id2ppn.Abes_id2ppn(webservice=id2ppn.Webservice.EAN, useJson=True)
             res = i2p.get_matching_ppn(ean)
@@ -1214,7 +1332,7 @@ class Matched_Records(object):
             sru = ssru.Sudoc_SRU()
             # Ensure no data is Empty 
             if title.strip() == "" or author.strip() == "" or publisher.strip() == "" or len(dates) < 1:
-                thisTry.error_occured(Match_Records_Errors.REQUIRED_DATA_MISSING)
+                thisTry.error_occured(Errors.REQUIRED_DATA_MISSING)
                 return
             # Generate query
             sru_request = [
@@ -1274,7 +1392,7 @@ class Matched_Records(object):
             sru = ssru.Sudoc_SRU()
             # Ensure no data is Empty 
             if title.strip() == "" or author.strip() == "" or len(dates) < 1:
-                thisTry.error_occured(Match_Records_Errors.REQUIRED_DATA_MISSING)
+                thisTry.error_occured(Errors.REQUIRED_DATA_MISSING)
                 return
             # Generate query
             sru_request = [
@@ -1328,7 +1446,7 @@ class Matched_Records(object):
             sru = ssru.Sudoc_SRU()
             # Ensure no data is Empty 
             if title.strip() == "" or author.strip() == "" or publisher.strip() == "" or len(dates) < 1:
-                thisTry.error_occured(Match_Records_Errors.REQUIRED_DATA_MISSING)
+                thisTry.error_occured(Errors.REQUIRED_DATA_MISSING)
                 return
             # Generate query
             sru_request = [
@@ -1365,7 +1483,7 @@ class Matched_Records(object):
             sru = ssru.Sudoc_SRU()
             # Ensure no data is Empty 
             if title.strip() == "" or author.strip() == "" or len(dates) < 1:
-                thisTry.error_occured(Match_Records_Errors.REQUIRED_DATA_MISSING)
+                thisTry.error_occured(Errors.REQUIRED_DATA_MISSING)
                 return
             # Generate query
             sru_request = [
@@ -1402,7 +1520,7 @@ class Matched_Records(object):
             sru = ssru.Sudoc_SRU()
             # Ensure no data is Empty 
             if title.strip() == "" or author.strip() == "" or publisher.strip() == "":
-                thisTry.error_occured(Match_Records_Errors.REQUIRED_DATA_MISSING)
+                thisTry.error_occured(Errors.REQUIRED_DATA_MISSING)
                 return
             # Generate query
             sru_request = [
@@ -1438,7 +1556,7 @@ class Matched_Records(object):
             sru = ssru.Sudoc_SRU()
             # Ensure no data is Empty 
             if title.strip() == "" or author.strip() == "" or publisher.strip() == "" or len(dates) < 1:
-                thisTry.error_occured(Match_Records_Errors.REQUIRED_DATA_MISSING)
+                thisTry.error_occured(Errors.REQUIRED_DATA_MISSING)
                 return
             # Generate query
             sru_request = [
@@ -1498,7 +1616,7 @@ class Matched_Records(object):
             sru = ssru.Sudoc_SRU()
             # Ensure no data is Empty 
             if title.strip() == "" or author.strip() == "" or len(dates) < 1:
-                thisTry.error_occured(Match_Records_Errors.REQUIRED_DATA_MISSING)
+                thisTry.error_occured(Errors.REQUIRED_DATA_MISSING)
                 return
             # Generate query
             sru_request = [
@@ -1552,7 +1670,7 @@ class Matched_Records(object):
             sru = ssru.Sudoc_SRU()
             # Ensure no data is Empty 
             if title.strip() == "" or author.strip() == "" or publisher.strip() == "" or len(dates) < 1:
-                thisTry.error_occured(Match_Records_Errors.REQUIRED_DATA_MISSING)
+                thisTry.error_occured(Errors.REQUIRED_DATA_MISSING)
                 return
             # Generate query
             sru_request = [
@@ -1589,7 +1707,7 @@ class Matched_Records(object):
             sru = ssru.Sudoc_SRU()
             # Ensure no data is Empty 
             if title.strip() == "" or author.strip() == "" or len(dates) < 1:
-                thisTry.error_occured(Match_Records_Errors.REQUIRED_DATA_MISSING)
+                thisTry.error_occured(Errors.REQUIRED_DATA_MISSING)
                 return
             # Generate query
             sru_request = [
@@ -1626,7 +1744,7 @@ class Matched_Records(object):
             sru = ssru.Sudoc_SRU()
             # Ensure no data is Empty 
             if title.strip() == "" or author.strip() == "" or publisher.strip() == "":
-                thisTry.error_occured(Match_Records_Errors.REQUIRED_DATA_MISSING)
+                thisTry.error_occured(Errors.REQUIRED_DATA_MISSING)
                 return
             # Generate query
             sru_request = [
@@ -1662,7 +1780,7 @@ class Matched_Records(object):
             sru = ssru.Sudoc_SRU()
             # Ensure no data is Empty 
             if title.strip() == "" or author.strip() == "" or publisher.strip() == "" or len(dates) < 1:
-                thisTry.error_occured(Match_Records_Errors.REQUIRED_DATA_MISSING)
+                thisTry.error_occured(Errors.REQUIRED_DATA_MISSING)
                 return
             # Generate query
             sru_request = [
@@ -1722,7 +1840,7 @@ class Matched_Records(object):
             sru = ssru.Sudoc_SRU()
             # Ensure no data is Empty 
             if title.strip() == "" or author.strip() == "" or len(dates) < 1:
-                thisTry.error_occured(Match_Records_Errors.REQUIRED_DATA_MISSING)
+                thisTry.error_occured(Errors.REQUIRED_DATA_MISSING)
                 return
             # Generate query
             sru_request = [
@@ -1776,7 +1894,7 @@ class Matched_Records(object):
             sru = ssru.Sudoc_SRU()
             # Ensure no data is Empty 
             if title.strip() == "" or author.strip() == "" or publisher.strip() == "" or len(dates) < 1:
-                thisTry.error_occured(Match_Records_Errors.REQUIRED_DATA_MISSING)
+                thisTry.error_occured(Errors.REQUIRED_DATA_MISSING)
                 return
             # Generate query
             sru_request = [
@@ -1813,7 +1931,7 @@ class Matched_Records(object):
             sru = ssru.Sudoc_SRU()
             # Ensure no data is Empty 
             if title.strip() == "" or author.strip() == "" or len(dates) < 1:
-                thisTry.error_occured(Match_Records_Errors.REQUIRED_DATA_MISSING)
+                thisTry.error_occured(Errors.REQUIRED_DATA_MISSING)
                 return
             # Generate query
             sru_request = [
@@ -1850,7 +1968,7 @@ class Matched_Records(object):
             sru = ssru.Sudoc_SRU()
             # Ensure no data is Empty 
             if title.strip() == "" or author.strip() == "" or publisher.strip() == "":
-                thisTry.error_occured(Match_Records_Errors.REQUIRED_DATA_MISSING)
+                thisTry.error_occured(Errors.REQUIRED_DATA_MISSING)
                 return
             # Generate query
             sru_request = [
@@ -1885,7 +2003,7 @@ class Matched_Records(object):
         elif action == Actions.KOHA_SRU_IBSN:
             # No ISBN was found, throw an error
             if isbn == "":
-                thisTry.error_occured(Match_Records_Errors.NO_ISBN_WAS_FOUND)
+                thisTry.error_occured(Errors.NO_ISBN_WAS_FOUND)
                 return
             sru = ksru.Koha_SRU(self.es.target_url, ksru.SRU_Version.V1_1)
             sru_request = ksru.Part_Of_Query(
@@ -1911,7 +2029,7 @@ class Matched_Records(object):
             sru = ksru.Koha_SRU(self.es.target_url, ksru.SRU_Version.V1_1)
             # Ensure no data is Empty 
             if title.strip() == "" or author.strip() == "" or publisher.strip() == "" or len(dates) < 1:
-                thisTry.error_occured(Match_Records_Errors.REQUIRED_DATA_MISSING)
+                thisTry.error_occured(Errors.REQUIRED_DATA_MISSING)
                 return
             # Generate query
             sru_request = [
@@ -1953,7 +2071,7 @@ class Matched_Records(object):
             sru = ksru.Koha_SRU(self.es.target_url, ksru.SRU_Version.V1_1)
             # Ensure no data is Empty 
             if title.strip() == "" or author.strip() == "" or len(dates) < 1:
-                thisTry.error_occured(Match_Records_Errors.REQUIRED_DATA_MISSING)
+                thisTry.error_occured(Errors.REQUIRED_DATA_MISSING)
                 return
             # Generate query
             sru_request = [
@@ -1989,7 +2107,7 @@ class Matched_Records(object):
             sru = ksru.Koha_SRU(self.es.target_url, ksru.SRU_Version.V1_1)
             # Ensure no data is Empty 
             if title.strip() == "" or author.strip() == "" or publisher.strip() == "" or len(dates) < 1:
-                thisTry.error_occured(Match_Records_Errors.REQUIRED_DATA_MISSING)
+                thisTry.error_occured(Errors.REQUIRED_DATA_MISSING)
                 return
             # Generate query
             sru_request = [
@@ -2031,7 +2149,7 @@ class Matched_Records(object):
             sru = ksru.Koha_SRU(self.es.target_url, ksru.SRU_Version.V1_1)
             # Ensure no data is Empty 
             if title.strip() == "" or author.strip() == "" or len(dates) < 1:
-                thisTry.error_occured(Match_Records_Errors.REQUIRED_DATA_MISSING)
+                thisTry.error_occured(Errors.REQUIRED_DATA_MISSING)
                 return
             # Generate query
             sru_request = [
@@ -2613,7 +2731,6 @@ class Universal_Data_Extractor(object):
         return output
 
 # -------------------- MAIN --------------------
-
 class Original_Record(object):
     def __init__(self, es:Execution_Settings, line:dict=None):
         self.reset_error()

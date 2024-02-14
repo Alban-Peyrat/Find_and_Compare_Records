@@ -22,10 +22,11 @@ _Some previous changes will be added_
     * `T` : failed to analyze the target database record
     * `A` : succesfully did all the checks
   * `YYY` : matched record index, `XXX` if it failed before looping through matched records
+* Errors are now translated
 
 ### Changed
 
-* Internal changes on the management of processings, operations, databases, UI screens & screen tabs
+* Internal changes on the management of processings, operations, databases, UI screens, screen tabs and errors
 
 ### Fixed
 
