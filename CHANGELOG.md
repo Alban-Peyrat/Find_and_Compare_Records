@@ -12,6 +12,16 @@ _Some previous changes will be added_
 ### Added
 
 * New action `ISBN2PPN_MODIFIED_ISBN_SAME_KEY` was added to `SEARCH_IN_SUDOC_BY_ISBN` operation after `ISBN2PPN_MODIFIED_ISBN` : they behave the same axcept that the new one keeps the original input ISBN check digit instead of recomputing it
+* New FCR processed ID with the form : `XXXXXZYYY` :
+  * `XXXXX` : record index of the file being processed, with leadings `0` (always 5 character long)
+  * `Z` :
+    * `Z` : failed before getting origin database record
+    * `O` : origin database record retrieved, failed before getting matched records
+    * `M` : successfully matched records, failed before looping through matched records
+    * `Y` : failed before getting the target database record
+    * `T` : failed to analyze the target database record
+    * `A` : succesfully did all the checks
+  * `YYY` : matched record index, `XXX` if it failed before looping through matched records
 
 ### Changed
 

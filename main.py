@@ -89,6 +89,7 @@ def main(es: fcr.Execution_Settings):
             # 0 = ISBN, 1 = 915$a, 2 = 915$b, 3 = 930$c, 4 = 930$e,
             # 5 = 930$a, 6 = 930$j, 7 = 930$v, 8 = L035$a
         rec = fcr.Original_Record(es, line)
+        rec.set_fcr_processed_id(index, fcr.Processed_Id_State.FAILED_BEFORE_ORIGIN_DB_GET)
         results_report.increase_processed() # report stats
 
         # Gets input query and original uid for BETTER_ITEMs
@@ -133,6 +134,7 @@ def main(es: fcr.Execution_Settings):
         # Successfully got origin DB record
         es.log.debug(f"Origin database ID : {rec.origin_database_data.utils.get_id()}")
         es.log.debug(f"Origin database cleaned title : {rec.origin_database_data.utils.get_first_title_as_string()}")
+        rec.set_fcr_processed_id(index, fcr.Processed_Id_State.FAILED_BEFORE_MATCH_RECORDS_GET)
         results_report.increase_step(fcr.Report_Success.ORIGIN_DB) # report stats
 
         # --------------- Match records ---------------
@@ -151,6 +153,7 @@ def main(es: fcr.Execution_Settings):
             continue
         
         # Match records was a success
+        rec.set_fcr_processed_id(index, fcr.Processed_Id_State.FAILED_BEFORE_TARGET_DB_LOOP)
         results_report.increase_step(fcr.Report_Success.MATCH_RECORD_MATCHED) # report stats
         results_report.increase_match_records_actions(rec.matched_record_instance.tries) # report stats
         results_report.increase_match_record_nb_of_match(rec.matched_records_ids) # report stats
@@ -178,10 +181,13 @@ def main(es: fcr.Execution_Settings):
 
         for ii, record_from_mr_list in enumerate(record_list):
             # Enumerate is to make sure I don't accidentally merge two records without ID
+            # /!\ THIS IS WHAT DEFINES THE CURRENT ID OF THE LOOP /!\
+            # rec.matched_id changes depending on the target db being anaylzed
             if list_is_id:
                 rec.set_matched_id(record_from_mr_list)
             else:
                 rec.set_matched_id(temp_id(ii))
+            rec.set_fcr_processed_id(index, fcr.Processed_Id_State.FAILED_TO_GET_TARGET_DB, ii)
 
             # --------------- TARGET DATABASE ---------------
             # Get target DB record
@@ -211,6 +217,8 @@ def main(es: fcr.Execution_Settings):
             # Successfully got target db record
             rec.reset_error()
             target_record:fcr.Database_Record = rec.target_database_data[rec.matched_id] # for the IDE
+            rec.set_fcr_processed_id(index, fcr.Processed_Id_State.FAILED_TO_ANALYZE_TARGET_DB, ii)
+
             results_report.increase_step(fcr.Report_Success.TARGET_DB) # report stats
             es.log.debug(f"Target database ID : {rec.matched_id}")
             es.log.debug(f"Target database cleaned title : {target_record.utils.get_first_title_as_string()}")
@@ -218,6 +226,7 @@ def main(es: fcr.Execution_Settings):
             # --------------- ANALYSIS PROCESS ---------------
             # Garder les logs dans main
             target_record.compare_to(rec.origin_database_data)
+            rec.set_fcr_processed_id(index, fcr.Processed_Id_State.SUCCESS, ii)
             results_report.increase_step(fcr.Report_Success.ANALYSIS) # report stats
             es.log.debug(f"Title scores : Simple ratio = {target_record.title_ratio}, Partial ratio = {target_record.title_partial_ratio}, Token sort ratio = {target_record.title_token_sort_ratio}, Token set ratio = {target_record.title_token_set_ratio}")
             es.log.debug(f"Dates matched ? {target_record.dates_matched}")
