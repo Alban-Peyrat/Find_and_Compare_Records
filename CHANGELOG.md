@@ -9,6 +9,8 @@ _Some previous changes will be added_
 
 ## [Unreleased]
 
+## [1.16.0] - 2024-02-14
+
 ### Added
 
 * New action `ISBN2PPN_MODIFIED_ISBN_SAME_KEY` was added to `SEARCH_IN_SUDOC_BY_ISBN` operation after `ISBN2PPN_MODIFIED_ISBN` : they behave the same axcept that the new one keeps the original input ISBN check digit instead of recomputing it
