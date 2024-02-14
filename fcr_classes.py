@@ -212,7 +212,7 @@ OPERATIONS_LIST = {
 }
 
 class Processing(object):
-    def __init__(self, processing: Processing_Names, mapped_data:Dict[FCR_Mapped_Fields, FCR_Processing_Data_Target], operation:Operation, origin_database:Database, target_database:Database) -> None:
+    def __init__(self, processing: Processing_Names, mapped_data:Dict[FCR_Mapped_Fields, FCR_Processing_Data_Target], operation:Operation, origin_database:Database, target_database:Database, original_file_data_is_csv:bool) -> None:
         """Takes as argument :
             - a Processings_Name member
             - a dict with FCR_Mapped_Fields members as key and FCR_Processing_Data_Target membres as value
@@ -224,6 +224,7 @@ class Processing(object):
         self.operation = operation
         self.origin_database = origin_database
         self.target_database = target_database
+        self.original_file_data_is_csv = original_file_data_is_csv
 
 PROCESSINGS_LIST = {
     Processing_Names.BETTER_ITEM:Processing(
@@ -245,7 +246,8 @@ PROCESSINGS_LIST = {
         },
         operation=OPERATIONS_LIST[Operation_Names.SEARCH_IN_SUDOC_BY_ISBN],
         origin_database=DATABASES_LIST[Database_Names.KOHA_PUBLIC_BIBLIO],
-        target_database=DATABASES_LIST[Database_Names.ABESXML]
+        target_database=DATABASES_LIST[Database_Names.ABESXML],
+        original_file_data_is_csv=True
     ),
     Processing_Names.MARC_FILE_IN_KOHA_SRU:Processing(
         processing=Processing_Names.MARC_FILE_IN_KOHA_SRU,
@@ -264,7 +266,8 @@ PROCESSINGS_LIST = {
         },
         operation=OPERATIONS_LIST[Operation_Names.SEARCH_IN_KOHA_SRU_VANILLA],
         origin_database=DATABASES_LIST[Database_Names.LOCAL],
-        target_database=DATABASES_LIST[Database_Names.KOHA_SRU]
+        target_database=DATABASES_LIST[Database_Names.KOHA_SRU],
+        original_file_data_is_csv=False
     ),
     Processing_Names.BETTER_ITEM_DVD:Processing(
         processing=Processing_Names.BETTER_ITEM_DVD,
@@ -286,7 +289,8 @@ PROCESSINGS_LIST = {
         },
         operation=OPERATIONS_LIST[Operation_Names.SEARCH_IN_SUDOC_DVD],
         origin_database=DATABASES_LIST[Database_Names.KOHA_PUBLIC_BIBLIO],
-        target_database=DATABASES_LIST[Database_Names.ABESXML]
+        target_database=DATABASES_LIST[Database_Names.ABESXML],
+        original_file_data_is_csv=True
     ),
     Processing_Names.BETTER_ITEM_NO_ISBN:Processing(
         processing=Processing_Names.BETTER_ITEM_NO_ISBN,
@@ -308,7 +312,8 @@ PROCESSINGS_LIST = {
         },
         operation=OPERATIONS_LIST[Operation_Names.SEARCH_IN_SUDOC_NO_ISBN],
         origin_database=DATABASES_LIST[Database_Names.KOHA_PUBLIC_BIBLIO],
-        target_database=DATABASES_LIST[Database_Names.ABESXML]
+        target_database=DATABASES_LIST[Database_Names.ABESXML],
+        original_file_data_is_csv=True
     ),
     Processing_Names.BETTER_ITEM_MAPS:Processing(
         processing=Processing_Names.BETTER_ITEM_MAPS,
@@ -335,25 +340,10 @@ PROCESSINGS_LIST = {
         },
         operation=OPERATIONS_LIST[Operation_Names.SEARCH_IN_SUDOC_MAPS],
         origin_database=DATABASES_LIST[Database_Names.KOHA_PUBLIC_BIBLIO],
-        target_database=DATABASES_LIST[Database_Names.ABESXML]
+        target_database=DATABASES_LIST[Database_Names.ABESXML],
+        original_file_data_is_csv=True
     )
 }
-
-# def get_processing(processing:Processing_Names|str|int) -> Processing:
-#     """Returns the Prtocessing instance for the given processing.
-#     Argument can either be :
-#         - Processing_Names member
-#         - Processing_Names member name
-#         - Processing_Names member value"""
-#     if type(processing) == Processing_Names:
-#         return PROCESSINGS_LIST[processing]
-#     elif type(processing) == str:
-#         return PROCESSINGS_LIST[Processing_Names[processing]]
-#     elif type(processing) == int:
-#         for member in Processing_Names:
-#             if member.value == processing:
-#                 return PROCESSINGS_LIST[member]
-#     return None
 
 def get_instance_from_enum(member:Processing_Names|Operation_Names|Database_Names|Errors|str|int, enum:Enum=None) -> Processing|Operation|Database|Error:
     """Returns the wanted instance for the given enum member.
@@ -394,6 +384,18 @@ def get_instance_from_enum(member:Processing_Names|Operation_Names|Database_Name
                 if member.value == enum:
                     return LIST[member]
     return None
+
+class Records_Settings(object):
+    def __init__(self, rcr:str, iln: str, filter1:str, filter2:str, filter3:str, chosen_analysis:int, chosen_analysis_checks:dict, origin_db_marc_fields_json:dict, target_db_marc_fields_json:dict) -> None:
+        self.rcr = rcr
+        self.iln = iln
+        self.filter1 = filter1
+        self.filter2 = filter2
+        self.filter3 = filter3
+        self.chosen_analysis = chosen_analysis
+        self.chosen_analysis_checks = chosen_analysis_checks
+        self.origin_db_marc_fields_json = origin_db_marc_fields_json
+        self.target_db_marc_fields_json = target_db_marc_fields_json
 
 class Execution_Settings(object):
     def __init__(self, dir: str):
@@ -447,6 +449,20 @@ class Execution_Settings(object):
         self.chosen_analysis = 0
         self.define_chosen_analysis(0)
     
+    # ----- Methods to pass some properties -----
+    def get_records_settings(self) -> Records_Settings:
+        return Records_Settings(
+            rcr=self.rcr,
+            iln=self.iln,
+            filter1=self.filter1,
+            filter2=self.filter2,
+            filter3=self.filter3,
+            chosen_analysis=self.chosen_analysis,
+            chosen_analysis_checks=self.chosen_analysis_checks,
+            origin_db_marc_fields_json=self.marc_fields_json[self.origin_database_mapping],
+            target_db_marc_fields_json=self.marc_fields_json[self.target_database_mapping]
+        )
+
     # ----- Methods for main -----
     def generate_files_path(self):
         self.file_path_out_results = self.output_path + "/results_report"
@@ -480,7 +496,6 @@ class Execution_Settings(object):
                 Processing_Names.BETTER_ITEM_NO_ISBN,
                 Processing_Names.BETTER_ITEM_MAPS
             ]:
-            self.original_file_data_is_csv = True
             with open(self.file_path, 'r', newline="", encoding="utf-8") as fh:
                 csvdata = csv.DictReader(fh, delimiter=";")
                 self.original_file_headers = csvdata.fieldnames
@@ -488,7 +503,6 @@ class Execution_Settings(object):
                     self.original_file_data[index] = line
         # MARC handling
         elif self.processing.enum_member == Processing_Names.MARC_FILE_IN_KOHA_SRU:
-            self.original_file_data_is_csv = False
             self.original_file_headers = []
             with open(self.file_path, 'rb') as fh:
                 marcreader = pymarc.MARCReader(fh, to_unicode=True, force_utf8=True)
@@ -882,18 +896,21 @@ class Execution_Settings(object):
             self.file.close()
 
 # -------------------- DATABASE RECORD (DBR) --------------------
-
 class Database_Record(object):
     """Contains extracted data from the record.
     The data property contains every mapped data for the chosen processing"""
-    def __init__(self, processing: Processing, record: ET.ElementTree | dict | pymarc.record.Record, is_target_db: bool, es: Execution_Settings):
+    def __init__(self, processing: Processing, record: ET.ElementTree | dict | pymarc.record.Record, is_target_db: bool, settings:Records_Settings):
         self.processing = processing
         self.record = record
         self.database = self.processing.origin_database
         if is_target_db:
             self.database = self.processing.target_database
         self.is_target_db = is_target_db
-        self.ude = Universal_Data_Extractor(self.record, self.database, self.is_target_db, es)
+        # Temp var for easyness
+        marc_fields_json = settings.origin_db_marc_fields_json
+        if self.is_target_db:
+            marc_fields_json = settings.target_db_marc_fields_json
+        self.ude = Universal_Data_Extractor(self.record, self.database, marc_fields_json)
         self.data = {}
         for data in processing.mapped_data:
             if (
@@ -904,20 +921,20 @@ class Database_Record(object):
                 if data in self.database.filters:
                     filter_value = ""
                     if self.database.filters[data] == FCR_Filters.RCR:
-                        filter_value = es.rcr
+                        filter_value = settings.rcr
                     elif self.database.filters[data] == FCR_Filters.ILN:
-                        filter_value = es.iln
+                        filter_value = settings.iln
                     elif self.database.filters[data] == FCR_Filters.FILTER1:
-                        filter_value = es.filter1
+                        filter_value = settings.filter1
                     elif self.database.filters[data] == FCR_Filters.FILTER2:
-                        filter_value = es.filter2
+                        filter_value = settings.filter2
                     elif self.database.filters[data] == FCR_Filters.FILTER3:
-                        filter_value = es.filter3
+                        filter_value = settings.filter3
                     self.data[data] = self.ude.get_by_mapped_field_name(data, filter_value)
                 else:
                     self.data[data] = self.ude.get_by_mapped_field_name(data)
-        self.chosen_analysis = es.chosen_analysis
-        self.chosen_analysis_checks = es.chosen_analysis_checks
+        self.chosen_analysis = settings.chosen_analysis
+        self.chosen_analysis_checks = settings.chosen_analysis_checks
         self.utils = self.Utils(self)
 
     def __compare_titles(self, compared_to):
@@ -1173,7 +1190,7 @@ class Matched_Records(object):
     
     Takes as argument :
         - operation {Operation Instance}"""
-    def __init__(self, operation: Operation, query: str, local_record:Database_Record, es: Execution_Settings):
+    def __init__(self, operation: Operation, query: str, local_record:Database_Record, target_url:str, lang:str):
         self.error = None
         self.error_msg = None
         self.tries = []
@@ -1183,7 +1200,8 @@ class Matched_Records(object):
         self.operation = operation # Removed default operation, I'd rather it threw an error
         self.query = query
         self.local_record = local_record
-        self.es = es
+        self.target_url = target_url
+        self.lang = lang
 
         # Calls the operation
         self.execute_operation()
@@ -1199,7 +1217,7 @@ class Matched_Records(object):
         
         Requires match_records query to be an ISBN"""
         for index, action in enumerate(self.operation.actions):
-            thisTry = Request_Try(index, action, self.es.lang)
+            thisTry = Request_Try(index, action, self.lang)
             self.request_action(action, thisTry)
             self.tries.append(thisTry)
 
@@ -1215,7 +1233,7 @@ class Matched_Records(object):
         # Checks if results were found
         if self.returned_ids == []:
             self.error = Errors.NOTHING_WAS_FOUND
-            self.error_msg = get_instance_from_enum(self.error, Errors).get_msg(self.es.lang)
+            self.error_msg = get_instance_from_enum(self.error, Errors).get_msg(self.lang)
 
 
     def request_action(self, action: Actions, thisTry: Request_Try):
@@ -2005,7 +2023,7 @@ class Matched_Records(object):
             if isbn == "":
                 thisTry.error_occured(Errors.NO_ISBN_WAS_FOUND)
                 return
-            sru = ksru.Koha_SRU(self.es.target_url, ksru.SRU_Version.V1_1)
+            sru = ksru.Koha_SRU(self.target_url, ksru.SRU_Version.V1_1)
             sru_request = ksru.Part_Of_Query(
                 ksru.SRU_Indexes.ISBN,
                 ksru.SRU_Relations.EQUALS,
@@ -2026,7 +2044,7 @@ class Matched_Records(object):
 
         # Action Koha SRU Title, author, publisher and date on their own indexes
         elif action == Actions.KOHA_SRU_TITLE_AUTHOR_PUBLISHER_DATE:
-            sru = ksru.Koha_SRU(self.es.target_url, ksru.SRU_Version.V1_1)
+            sru = ksru.Koha_SRU(self.target_url, ksru.SRU_Version.V1_1)
             # Ensure no data is Empty 
             if title.strip() == "" or author.strip() == "" or publisher.strip() == "" or len(dates) < 1:
                 thisTry.error_occured(Errors.REQUIRED_DATA_MISSING)
@@ -2068,7 +2086,7 @@ class Matched_Records(object):
 
         # Action Koha SRU Title, author and date on their own indexes
         elif action == Actions.KOHA_SRU_TITLE_AUTHOR_DATE:
-            sru = ksru.Koha_SRU(self.es.target_url, ksru.SRU_Version.V1_1)
+            sru = ksru.Koha_SRU(self.target_url, ksru.SRU_Version.V1_1)
             # Ensure no data is Empty 
             if title.strip() == "" or author.strip() == "" or len(dates) < 1:
                 thisTry.error_occured(Errors.REQUIRED_DATA_MISSING)
@@ -2104,7 +2122,7 @@ class Matched_Records(object):
 
         # Action Koha SRU Title, author, publisher and date on index "any"
         elif action == Actions.KOHA_SRU_ANY_TITLE_AUTHOR_PUBLISHER_DATE:
-            sru = ksru.Koha_SRU(self.es.target_url, ksru.SRU_Version.V1_1)
+            sru = ksru.Koha_SRU(self.target_url, ksru.SRU_Version.V1_1)
             # Ensure no data is Empty 
             if title.strip() == "" or author.strip() == "" or publisher.strip() == "" or len(dates) < 1:
                 thisTry.error_occured(Errors.REQUIRED_DATA_MISSING)
@@ -2146,7 +2164,7 @@ class Matched_Records(object):
 
         # Action Koha SRU Title, author and date on index "any"
         elif action == Actions.KOHA_SRU_ANY_TITLE_AUTHOR_DATE:
-            sru = ksru.Koha_SRU(self.es.target_url, ksru.SRU_Version.V1_1)
+            sru = ksru.Koha_SRU(self.target_url, ksru.SRU_Version.V1_1)
             # Ensure no data is Empty 
             if title.strip() == "" or author.strip() == "" or len(dates) < 1:
                 thisTry.error_occured(Errors.REQUIRED_DATA_MISSING)
@@ -2232,18 +2250,14 @@ class Marc_Fields_Mapping(object):
         - es : execution settings
         - is_target_db {bool} : determines if the database is ORIGIN_DATABSE/TARGET_DATABASE
     in marc_fields.json"""
-    def __init__(self,  es: Execution_Settings, is_target_db: bool = False):
+    def __init__(self, marc_fields_json:dict):
         """Loads the marc field mapping"""
-        self.is_target_db = is_target_db
-        self.marc_fields_json = {}
-        if self.is_target_db and type(self.is_target_db) == bool:
-            self.load_mapping(es, es.target_database_mapping)
-        elif not self.is_target_db and type(self.is_target_db) == bool:
-            self.load_mapping(es, es.origin_database_mapping)
+        # Just throw an error if is_target_db is not a bool
+        self.marc_fields_json = marc_fields_json
+        self.load_mapping()
     
-    def load_mapping(self, es: Execution_Settings, name: str):
+    def load_mapping(self):
         """Loads a marc field mappig by name from marc_fields.json (debgging)"""
-        self.marc_fields_json = es.marc_fields_json[name]
         self.id = Marc_Fields_Data(self.marc_fields_json[FCR_Mapped_Fields.ID.value])
         self.ppn = Marc_Fields_Data(self.marc_fields_json[FCR_Mapped_Fields.PPN.value])
         self.ean = Marc_Fields_Data(self.marc_fields_json[FCR_Mapped_Fields.EAN.value])
@@ -2277,7 +2291,7 @@ class Universal_Data_Extractor(object):
         - is_target_db {bool} : determines if the database is ORIGIN_DATABSE/TARGET_DATABASE
     in marc_fields.json
         - es : execution settings"""
-    def __init__(self, record: ET.ElementTree | dict | pymarc.record.Record, database: Database, is_target_db: bool, es: Execution_Settings):
+    def __init__(self, record: ET.ElementTree | dict | pymarc.record.Record, database: Database, marc_fields_json: dict):
         self.record = record
         self.format = Record_Formats.UNKNOWN
         if type(self.record) == ET.Element:
@@ -2288,8 +2302,7 @@ class Universal_Data_Extractor(object):
             self.format = Record_Formats.PYMARC_RECORD
         self.database = database
         self.xml_namespace = self.get_xml_namespace()
-        self.is_target_db = is_target_db
-        self.marc_fields_mapping = Marc_Fields_Mapping(es, self.is_target_db)
+        self.marc_fields_mapping = Marc_Fields_Mapping(marc_fields_json)
     
     # --- Resources methods ---
 
@@ -2732,18 +2745,20 @@ class Universal_Data_Extractor(object):
 
 # -------------------- MAIN --------------------
 class Original_Record(object):
-    def __init__(self, es:Execution_Settings, line:dict=None):
+    def __init__(self, processing:Processing, records_settings:Records_Settings, lang:str, line:dict=None):
         self.reset_error()
+        self.processing = processing
+        self.lang = lang
         self.original_line = line
-        self.es = es
+        self.records_settings = records_settings
         self.target_database_data = {}
         self.output = self.Output(self)
     
-    def extract_from_original_line(self):
+    def extract_from_original_line(self, headers:list):
         """Extract the first column of the file as the input query and
         the last column as the original UID regardless of the headers name"""
-        self.input_query = self.original_line[self.es.original_file_headers[0]]
-        self.original_uid = str(self.original_line[self.es.original_file_headers[len(self.original_line)-1]]).rstrip()
+        self.input_query = self.original_line[headers[0]]
+        self.original_uid = str(self.original_line[headers[len(self.original_line)-1]]).rstrip()
     
     def set_fake_csv_file_data(self):
         """Sets fake data for fields extracted from CSV file to prevent crashes"""
@@ -2760,13 +2775,13 @@ class Original_Record(object):
         self.matched_records = mr.returned_records
         self.matched_records_include_records = mr.includes_record
     
-    def get_origin_database_data(self, processing: Processing, record: ET.ElementTree | dict | pymarc.record.Record, es: Execution_Settings):
+    def get_origin_database_data(self, processing: Processing, record: ET.ElementTree | dict | pymarc.record.Record):
         """Extract data from the origin database record"""
-        self.origin_database_data = Database_Record(processing, record, False, es)
+        self.origin_database_data = Database_Record(processing, record, False, self.records_settings)
 
-    def get_target_database_data(self, processing: Processing, id:str, record: ET.ElementTree | dict | pymarc.record.Record, es: Execution_Settings):
+    def get_target_database_data(self, processing: Processing, id:str, record: ET.ElementTree | dict | pymarc.record.Record):
         """Extract data from the origin database record"""
-        self.target_database_data[id] = Database_Record(processing, record, True, es)
+        self.target_database_data[id] = Database_Record(processing, record, True, self.records_settings)
 
     def change_target_record_id(self, old_id:str, new_id:str):
         """Changes the ID key in target_database_data and set a new matched_id"""
@@ -2854,14 +2869,14 @@ class Original_Record(object):
             """Returns the data as a dict for the CSV export"""
             par:Original_Record = self.parent
             out = {}
-            processing_fields:Dict[FCR_Mapped_Fields, FCR_Processing_Data_Target] = par.es.processing.mapped_data
+            processing_fields:Dict[FCR_Mapped_Fields, FCR_Processing_Data_Target] = par.processing.mapped_data
             try:
                 # Errors
                 out[CSV_Cols.ERROR.name] = par.error
                 out[CSV_Cols.ERROR_MSG.name] = par.error_message
 
                 # Data from the original file
-                if par.es.original_file_data_is_csv:
+                if par.processing.original_file_data_is_csv:
                     out.update(par.original_line)
                 out[CSV_Cols.INPUT_QUERY.name] = par.input_query
                 out[CSV_Cols.ORIGIN_DB_INPUT_ID.name] = par.original_uid
@@ -2872,7 +2887,7 @@ class Original_Record(object):
                     if processing_fields[data] in [FCR_Processing_Data_Target.BOTH, FCR_Processing_Data_Target.ORIGIN]:
                         out[f"ORIGIN_DB_{data.name}"] = fcf.list_as_string(par.origin_database_data.data[data])
                 out = self.__special_data(out)
-                if par.es.processing.enum_member in [
+                if par.processing.enum_member in [
                     Processing_Names.BETTER_ITEM,
                     Processing_Names.BETTER_ITEM_DVD,
                     Processing_Names.BETTER_ITEM_NO_ISBN,
@@ -2895,7 +2910,7 @@ class Original_Record(object):
                     if processing_fields[data] in [FCR_Processing_Data_Target.BOTH, FCR_Processing_Data_Target.TARGET]:
                         out[f"TARGET_DB_{data.name}"] = fcf.list_as_string(target_record.data[data])
                 out = self.__special_data(out, False)
-                if par.es.processing.enum_member in [
+                if par.processing.enum_member in [
                     Processing_Names.BETTER_ITEM.name,
                     Processing_Names.BETTER_ITEM_DVD.name,
                     Processing_Names.BETTER_ITEM_NO_ISBN.name,
@@ -2917,9 +2932,9 @@ class Original_Record(object):
                 out[CSV_Cols.ORIGIN_DB_CHOSEN_PUBLISHER.name] = target_record.chosen_compared_publisher
                 # Ids
                 out[CSV_Cols.TARGET_DB_NB_OTHER_ID.name] = target_record.nb_other_db_id
-                out[CSV_Cols.IS_ORIGIN_ID_IN_TARGET_OTHER_DB_IDS.name] = target_record.local_id_in_compared_record.value[par.es.lang]
+                out[CSV_Cols.IS_ORIGIN_ID_IN_TARGET_OTHER_DB_IDS.name] = target_record.local_id_in_compared_record.value[par.lang]
                 # Global validation
-                out[CSV_Cols.GLOBAL_VALIDATION_RESULT.name] = target_record.total_checks.value[par.es.lang]
+                out[CSV_Cols.GLOBAL_VALIDATION_RESULT.name] = target_record.total_checks.value[par.lang]
                 out[CSV_Cols.GLOBAL_VALIDATION_NB_SUCCESSFUL_CHECKS.name] = target_record.passed_check_nb
                 out[CSV_Cols.GLOBAL_VALIDATION_TITLE_CHECK.name] = target_record.checks[Analysis_Checks.TITLE]
                 out[CSV_Cols.GLOBAL_VALIDATION_PUBLISHER_CHECK.name] = target_record.checks[Analysis_Checks.PUBLISHER]

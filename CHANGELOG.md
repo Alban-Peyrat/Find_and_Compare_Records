@@ -27,6 +27,7 @@ _Some previous changes will be added_
 ### Changed
 
 * Internal changes on the management of processings, operations, databases, UI screens, screen tabs and errors
+* Main function and classes are less dependent on the big execution settings variable
 
 ### Fixed
 
