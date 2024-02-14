@@ -9,6 +9,10 @@ _Some previous changes will be added_
 
 ## [Unreleased]
 
+### Added
+
+* New action `ISBN2PPN_MODIFIED_ISBN_SAME_KEY` was added to `SEARCH_IN_SUDOC_BY_ISBN` operation after `ISBN2PPN_MODIFIED_ISBN` : they behave the same axcept that the new one keeps the original input ISBN check digit instead of recomputing it
+
 ### Changed
 
 * Internal changes on the management of processings, operations, databases, UI screens & screen tabs
@@ -16,6 +20,8 @@ _Some previous changes will be added_
 ### Fixed
 
 * The function exporting lists as strings no longer replaces `1` by a space
+* Action `ISBN2PPN_MODIFIED_ISBN` now properly query the modified ISBN instead of the original one
+* Actions `ISBN2PPN_MODIFIED_ISBN` and `ISBN2PPN_MODIFIED_ISBN_SAME_KEY` now return a new error if a modified ISBN failed to be created
 
 ### Deleted
 
