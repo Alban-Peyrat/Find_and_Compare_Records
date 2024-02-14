@@ -122,7 +122,7 @@ def main(es: fcr.Execution_Settings):
         elif es.processing.enum_member == fcr.Processing_Names.MARC_FILE_IN_KOHA_SRU:
             origin_record = es.original_file_data[index]
             if origin_record is None:
-                rec.trigger_error(f"MARC file : record was ignored because its chunk raised an exception")
+                rec.trigger_error(f"MARC file : {fcr.get_instance_from_enum(fcr.Errors.MARC_CHUNK_RAISED_EXCEPTION).get_msg(es.lang)}")
                 results_report.increase_step(fcr.Report_Errors.ORIGIN_DB_LOCAL_RECORD) # report stats
                 es.log.error(rec.error_message)
                 es.csv.write_line(rec, False)
@@ -140,7 +140,7 @@ def main(es: fcr.Execution_Settings):
         # --------------- Match records ---------------
         rec.get_matched_records_instance(fcr.Matched_Records(es.operation, rec.input_query, rec.origin_database_data, es))     
         if rec.nb_matched_records == 0:
-            rec.trigger_error("{} : no result".format(str(es.operation.name)))
+            rec.trigger_error(f"{es.operation.name} : {fcr.get_instance_from_enum(fcr.Errors.OPERATION_NO_RESULT).get_msg(es.lang)}")
 
         if rec.error:
             results_report.increase_step(fcr.Report_Errors.MATCH_RECORD_NO_MATCH) # report stats
