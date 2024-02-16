@@ -9,7 +9,7 @@ _Some previous changes will be added_
 
 ## [Unreleased]
 
-## [1.16.1] - 2024-02-14
+## [1.16.1] - 2024-02-16
 
 ### Fixed
 
