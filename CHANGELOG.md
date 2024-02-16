@@ -9,6 +9,12 @@ _Some previous changes will be added_
 
 ## [Unreleased]
 
+## [1.16.1] - 2024-02-14
+
+### Fixed
+
+* List of list should not crash the CSV output function anymore
+
 ## [1.16.0] - 2024-02-14
 
 ### Added

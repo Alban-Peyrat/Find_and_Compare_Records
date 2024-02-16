@@ -102,9 +102,9 @@ def list_as_string(this_list: list) -> str:
         if len(non_empty_elements) == 0:
             return ""
         elif len(non_empty_elements) == 1:
-            return delete_control_char(str(non_empty_elements[0]))
+            return delete_control_char(str(", ".join(non_empty_elements[0])))
         else:
-            return delete_control_char(str(", ".join(non_empty_elements)))
+            return delete_control_char(str(", ".join([str(elem) for elem in non_empty_elements])))
 
 def delete_CBS_boolean_operators(txt:str) -> str:
     """Deletes all CBS boolean operators (AND, OR, NOT) in eevry language and return the resukt as a string
