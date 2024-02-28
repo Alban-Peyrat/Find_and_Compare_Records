@@ -9,6 +9,12 @@ _Some previous changes will be added_
 
 ## [Unreleased]
 
+## [1.16.2] - 2024-02-28
+
+### Fixed
+
+* CSV output does not replace `D` by spaces anymore
+
 ## [1.16.1] - 2024-02-16
 
 ### Fixed

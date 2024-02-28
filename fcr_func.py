@@ -79,7 +79,7 @@ def delete_control_char(txt: str) -> str:
     # Single characters : \xAD \u061C \u06DD \u070F \u08E2 \u180E \uFEFF \u110BD \u110CD \uE0001
     # Ranges : \u0600-\u0605 \u200B-\u200F \u202A-\u202E \u2060-\u206F \uFFF9-\uFFFB ~~\u13430-\u13438~~
     # ~~\u1BCA0-\u1BCA3 \u1D173-\u1D17A \uE0020-\uE007F~~
-    return re.sub(r"[\x00-\x1F|\x7F-\x9F|\xAD|\u0600-\u0605|\u061C|\u06DD|\u070F|\u08E2|\u180E|\u200B-\u200F|\u202A-\u202E|\u2060-\u206F|\uFEFF|\uFFF9-\uFFFB|\u110BD|\u110CD|\\]", " ", str(txt), re.UNICODE)
+    return re.sub(r"[\x00-\x1F|\x7F-\x9F|\xAD|\u0600-\u0605|\u061C|\u06DD|\u070F|\u08E2|\u180E|\u200B-\u200F|\u202A-\u202E|\u2060-\u206F|\uFEFF|\uFFF9-\uFFFB|\\]", " ", str(txt), re.UNICODE)
 
 def list_as_string(this_list: list) -> str:
     """Returns the list as a string :
