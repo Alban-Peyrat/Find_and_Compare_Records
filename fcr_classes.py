@@ -899,9 +899,10 @@ class Execution_Settings(object):
 class Database_Record(object):
     """Contains extracted data from the record.
     The data property contains every mapped data for the chosen processing"""
-    def __init__(self, processing: Processing, record: ET.ElementTree | dict | pymarc.record.Record, is_target_db: bool, settings:Records_Settings):
+    def __init__(self, processing: Processing, record: ET.ElementTree | dict | pymarc.record.Record, fcr_processed_id:str, is_target_db: bool, settings:Records_Settings):
         self.processing = processing
         self.record = record
+        self.fcr_processed_id = fcr_processed_id
         self.database = self.processing.origin_database
         if is_target_db:
             self.database = self.processing.target_database
@@ -1057,6 +1058,43 @@ class Database_Record(object):
         self.__compare_other_db_id(compared_to)
         self.__finalize_analysis()
 
+    def data_to_json(self) -> dict:
+        """Returns the data for a JSOn export, using FCR_Mapped_Fields names as keys"""
+        out = {}
+        for data in self.data:
+            out[data.name] = self.data[data]
+        return out
+
+    def analysis_to_json(self) -> dict:
+        """Returns the analysis data as a dict for a JSON export"""
+        if type(self.total_checks) == Analysis_Final_Results:
+            return {
+                "title":{
+                    "title_ratio":self.title_ratio,
+                    "title_partial_ratio":self.title_partial_ratio,
+                    "title_token_sort_ratio":self.title_token_sort_ratio,
+                    "title_token_set_ratio":self.title_token_set_ratio,
+                },
+                "dates":self.dates_matched,
+                "publishers":{
+                    "score":self.publishers_score,
+                    "target_db":self.chosen_publisher,
+                    "origin_db":self.chosen_compared_publisher
+                },
+                "other_ids":{
+                    "nb":self.nb_other_db_id,
+                    "result":self.local_id_in_compared_record.name
+                },
+                "global":{
+                    "result":self.total_checks.name,
+                    "nb_succesful_checks":self.passed_check_nb,
+                    "title":self.checks[Analysis_Checks.TITLE],
+                    "publisher":self.checks[Analysis_Checks.PUBLISHER],
+                    "date":self.checks[Analysis_Checks.DATE]
+                }
+            }
+        else:
+            return None
     
     # --- Utils methods for other classes / functions ---
     class Utils:
@@ -1184,7 +1222,22 @@ class Request_Try(object):
     def add_returned_records(self, records: list):
         self.returned_records = records
         self.includes_records = True
-
+    
+    def to_json(self) -> dict:
+        """Retuns the data ready for a JSON export"""
+        error_type = None
+        if type(self.error_type) == Errors:
+            error_type = self.error_type.name
+        return {
+            "try_nb":self.try_nb,
+            "action":self.action.name,
+            "status":self.status.name,
+            "error_type":error_type,
+            "msg":self.msg,
+            "query":self.query,
+            "returned_ids":self.returned_ids
+        }
+    
 class Matched_Records(object):
     """
     
@@ -1193,7 +1246,7 @@ class Matched_Records(object):
     def __init__(self, operation: Operation, query: str, local_record:Database_Record, target_url:str, lang:str):
         self.error = None
         self.error_msg = None
-        self.tries = []
+        self.tries:List[Request_Try] = []
         self.returned_ids = []
         self.returned_records = []
         self.includes_record = False
@@ -1235,6 +1288,12 @@ class Matched_Records(object):
             self.error = Errors.NOTHING_WAS_FOUND
             self.error_msg = get_instance_from_enum(self.error, Errors).get_msg(self.lang)
 
+    def tries_to_json(self) -> dict:
+        """Returns the tries as a dict ready for JSON export"""
+        out = {}
+        for this_try in self.tries:
+            out[this_try.try_nb] = this_try.to_json()
+        return out
 
     def request_action(self, action: Actions, thisTry: Request_Try):
         """Makes the request for this specific action and returns a list of IDs as a result"""
@@ -2777,11 +2836,11 @@ class Original_Record(object):
     
     def get_origin_database_data(self, processing: Processing, record: ET.ElementTree | dict | pymarc.record.Record):
         """Extract data from the origin database record"""
-        self.origin_database_data = Database_Record(processing, record, False, self.records_settings)
+        self.origin_database_data = Database_Record(processing, record, self.fcr_processed_id, False, self.records_settings)
 
     def get_target_database_data(self, processing: Processing, id:str, record: ET.ElementTree | dict | pymarc.record.Record):
         """Extract data from the origin database record"""
-        self.target_database_data[id] = Database_Record(processing, record, True, self.records_settings)
+        self.target_database_data[id] = Database_Record(processing, record, self.fcr_processed_id, True, self.records_settings)
 
     def change_target_record_id(self, old_id:str, new_id:str):
         """Changes the ID key in target_database_data and set a new matched_id"""
@@ -2865,7 +2924,59 @@ class Original_Record(object):
             del out[f"{db}_{FCR_Mapped_Fields.GENERAL_PROCESSING_DATA_DATES.name}"]
             return out
         
-        def to_csv(self):
+        def to_json(self, error:Report_Errors=None) -> dict:
+            """Returns the data as a dict for the JSON file"""
+            out = {}
+            par:Original_Record = self.parent
+
+            # Errors
+            out["error"] = par.error
+            out["error_message"] = par.error_message
+
+            # Original line
+            out["original_line"] = None
+            if type(par.original_line) == dict:
+                out["original_line"] = par.original_line
+
+            # IDs
+            out["fcr_processed_id"] = par.fcr_processed_id
+            out["input_query"] = par.input_query
+            out["original_uid"] = par.original_uid
+
+            # First possible return : failed to get origin DB
+            if error in [Report_Errors.ORIGIN_DB_KOHA, Report_Errors.ORIGIN_DB_LOCAL_RECORD]:
+                return out
+
+            # Origin database record
+            out["origin_database"] = {
+                "data":par.origin_database_data.data_to_json(),
+                "fcr_processed_id":par.fcr_processed_id
+            }
+
+            # Matched records
+            out["matched_record_tries"] = par.matched_record_instance.tries_to_json()
+            out["query_used"] = par.query_used
+            out["action_used"] = par.action_used.name
+            out["nb_matched_records"] = par.nb_matched_records
+            out["matched_records_ids"] = par.matched_records_ids
+
+            # Second possible return : no matched records
+            if error in [Report_Errors.MATCH_RECORD_NO_MATCH]:
+                return out
+
+            # Target DB records
+            out["target_database"] = {}
+            for record_id in par.target_database_data:
+                record:Database_Record = par.target_database_data[record_id] # for IDE
+                out["target_database"][record_id] = {
+                    "data":record.data_to_json(),
+                    "fcr_processed_id":record.fcr_processed_id,
+                    "analysis":record.analysis_to_json()
+                }
+
+            return out
+
+        def to_csv(self) -> dict:
             """Returns the data as a dict for the CSV export"""
             par:Original_Record = self.parent
             out = {}

@@ -9,6 +9,16 @@ _Some previous changes will be added_
 
 ## [Unreleased]
 
+## [1.17.0] - 2024-02-28
+
+### Changed
+
+* JSON output exports much mor eprecise data, including raw data from records
+
+### Fixed
+
+* Lists containing one element and empty elements are now properly output in CSV export
+
 ## [1.16.2] - 2024-02-28
 
 ### Fixed
