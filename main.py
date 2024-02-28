@@ -70,6 +70,7 @@ def main(es: fcr.Execution_Settings):
 
     # ------------------------------ MAIN FUNCTION ------------------------------
     results = []
+    json_output = []
     es.log.big_info("File processing start")
     
     # Load original file data
@@ -116,6 +117,7 @@ def main(es: fcr.Execution_Settings):
                 es.log.error(rec.error_message)
                 es.csv.write_line(rec, False)
                 results.append(rec.output.to_csv())
+                json_output.append(rec.output.to_json(fcr.Report_Errors.ORIGIN_DB_KOHA))
                 continue # skip to next line
             rec.get_origin_database_data(es.processing, origin_record.record_parsed)
         # MARC_FILE_IN_KOHA_SRU from the file
@@ -127,6 +129,7 @@ def main(es: fcr.Execution_Settings):
                 es.log.error(rec.error_message)
                 es.csv.write_line(rec, False)
                 results.append(rec.output.to_csv())
+                json_output.append(rec.output.to_json(fcr.Report_Errors.ORIGIN_DB_KOHA))
                 continue # skip to next line
             rec.get_origin_database_data(es.processing, origin_record)
             rec.original_uid = rec.origin_database_data.utils.get_id()
@@ -138,7 +141,7 @@ def main(es: fcr.Execution_Settings):
         results_report.increase_step(fcr.Report_Success.ORIGIN_DB) # report stats
 
         # --------------- Match records ---------------
-        rec.get_matched_records_instance(fcr.Matched_Records(es.operation, rec.input_query, rec.origin_database_data, es.target_url, es.lang))     
+        rec.get_matched_records_instance(fcr.Matched_Records(es.operation, rec.input_query, rec.origin_database_data, es.target_url, es.lang)) 
         if rec.nb_matched_records == 0:
             rec.trigger_error(f"{es.operation.name} : {fcr.get_instance_from_enum(fcr.Errors.OPERATION_NO_RESULT).get_msg(es.lang)}")
 
@@ -150,6 +153,7 @@ def main(es: fcr.Execution_Settings):
             # Skip to next line
             es.csv.write_line(rec, False)
             results.append(rec.output.to_csv())
+            json_output.append(rec.output.to_json(fcr.Report_Errors.MATCH_RECORD_NO_MATCH))
             continue
         
         # Match records was a success
@@ -239,6 +243,9 @@ def main(es: fcr.Execution_Settings):
             results.append(rec.output.to_csv())
             results_report.increase_step(fcr.Report_Success.TARGET_RECORD_GLOBAL) # report stats
 
+        # JSON output
+        json_output.append(rec.output.to_json())
+
         results_report.increase_step(fcr.Report_Success.ORIGIN_RECORD_GLOBAL) # report stats
     # Closes CSV file
     es.csv.close_file()
@@ -249,7 +256,7 @@ def main(es: fcr.Execution_Settings):
     # ------------------------------ FINAL OUTPUT ------------------------------
     # --------------- JSON FILE ---------------
     with open(es.file_path_out_json, 'w', encoding='utf-8') as f:
-        json.dump(results, f, ensure_ascii=False, indent=4)
+        json.dump(json_output, f, ensure_ascii=False, indent=4)
     es.log.simple_info("JSON output file", es.file_path_out_json)
 
     # --------------- CSV FILE ---------------
