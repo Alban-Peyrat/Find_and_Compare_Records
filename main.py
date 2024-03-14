@@ -64,7 +64,7 @@ def main(es: fcr.Execution_Settings):
     if es.processing.enum_member == fcr.Processing_Names.MARC_FILE_IN_KOHA_SRU:
         es.log.simple_info("Koha URL", es.target_url)
     es.log.simple_info("Origin database", es.processing.origin_database.name)
-    es.log.simple_info("Target database", es.processing.origin_database.name)
+    es.log.simple_info("Target database", es.processing.target_database.name)
     es.log.simple_info("Origin database mapping", es.origin_database_mapping)
     es.log.simple_info("Target database mapping", es.target_database_mapping)
 

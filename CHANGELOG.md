@@ -9,6 +9,14 @@ _Some previous changes will be added_
 
 ## [Unreleased]
 
+## [1.17.1] - 2024-03-14
+
+### Fixed
+
+* Added `UN` to the lsit of empty words deleted
+* Added `+` to the list of deleted noise
+* Logs now properly write the target database value instead of the origin database twice
+
 ## [1.17.0] - 2024-02-28
 
 ### Changed
