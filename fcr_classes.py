@@ -261,6 +261,7 @@ PROCESSINGS_LIST = {
             FCR_Mapped_Fields.AUTHORS: FCR_Processing_Data_Target.BOTH,
             FCR_Mapped_Fields.PUBLISHERS_NAME: FCR_Processing_Data_Target.BOTH,
             FCR_Mapped_Fields.EDITION_NOTES: FCR_Processing_Data_Target.BOTH,
+            FCR_Mapped_Fields.PHYSICAL_DESCRIPTION: FCR_Processing_Data_Target.BOTH,
             FCR_Mapped_Fields.PUBLICATION_DATES: FCR_Processing_Data_Target.BOTH,
             FCR_Mapped_Fields.EXPORTED_TO_DIGITAL_LIBRARY: FCR_Processing_Data_Target.BOTH
         },

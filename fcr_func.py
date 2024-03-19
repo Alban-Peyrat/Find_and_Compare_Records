@@ -16,7 +16,7 @@ def prep_string(_str:str, _noise = True, _multiplespaces = True) -> str:
     """
     # remove noise (punctuation) if asked (by default yes)
     if _noise:
-        _str = re.sub(r"\.|\,|\?|\!|\;|\/|\:|\=|\[|\]|\'|\-|\(|\)|\||\"|\<|\>|\+", " ", _str, flags=re.IGNORECASE)
+        _str = re.sub(r"\.|\,|\?|\!|\;|\/|\:|\=|\[|\]|\'|\-|\(|\)|\||\"|\<|\>|\+|\°", " ", _str, flags=re.IGNORECASE)
     # replace multiple spaces by ine in string if requested (default yes)
     if _multiplespaces:
         _str = re.sub("\s+", " ", _str).strip()

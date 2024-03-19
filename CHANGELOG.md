@@ -9,6 +9,14 @@ _Some previous changes will be added_
 
 ## [Unreleased]
 
+### Changed
+
+* Processing `MARC_FILE_IN_KOHA_SRU` now export physical descriptions for both records
+
+### Fixed
+
+* Added `°` to noise list
+
 ## [1.17.1] - 2024-03-14
 
 ### Fixed
