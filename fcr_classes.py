@@ -189,7 +189,8 @@ OPERATIONS_LIST = {
             Actions.KOHA_SRU_TITLE_AUTHOR_PUBLISHER_DATE,
             Actions.KOHA_SRU_TITLE_AUTHOR_DATE,
             Actions.KOHA_SRU_ANY_TITLE_AUTHOR_PUBLISHER_DATE,
-            Actions.KOHA_SRU_ANY_TITLE_AUTHOR_DATE
+            Actions.KOHA_SRU_ANY_TITLE_AUTHOR_DATE,
+            Actions.KOHA_SRU_ANY_TITLE_PUBLISHER_DATE
         ]
     ),
     Operation_Names.SEARCH_IN_SUDOC_NO_ISBN:Operation(
@@ -2247,6 +2248,42 @@ class Matched_Records(object):
                     ksru.SRU_Indexes.ANY,
                     ksru.SRU_Relations.EQUALS,
                     author,
+                    ksru.SRU_Boolean_Operators.AND
+                ),
+                f" and ({ksru.SRU_Indexes.ANY.value}={f' or {ksru.SRU_Indexes.ANY.value}='.join([str(num) for num in dates])})",
+            ]
+            thisTry.define_used_query(sru.generate_query(sru_request))
+            res = sru.search(
+                thisTry.query,
+                record_schema=ksru.SRU_Record_Schemas.MARCXML,
+                start_record=1,
+                maximum_records=100
+            )
+            if (res.status == "Error"):
+                thisTry.error_occured(res.get_error_msg())
+            else:
+                thisTry.add_returned_ids(res.get_records_id())
+                thisTry.add_returned_records(res.get_records())
+
+        # Action Koha SRU Title, publisher and date on index "any"
+        elif action == Actions.KOHA_SRU_ANY_TITLE_PUBLISHER_DATE:
+            sru = ksru.Koha_SRU(self.target_url, ksru.SRU_Version.V1_1)
+            # Ensure no data is Empty 
+            if title.strip() == "" or publisher.strip() == "" or len(dates) < 1:
+                thisTry.error_occured(Errors.REQUIRED_DATA_MISSING)
+                return
+            # Generate query
+            sru_request = [
+                ksru.Part_Of_Query(
+                    ksru.SRU_Indexes.ANY,
+                    ksru.SRU_Relations.EQUALS,
+                    title,
+                    ksru.SRU_Boolean_Operators.AND
+                ),
+                ksru.Part_Of_Query(
+                    ksru.SRU_Indexes.ANY,
+                    ksru.SRU_Relations.EQUALS,
+                    publisher,
                     ksru.SRU_Boolean_Operators.AND
                 ),
                 f" and ({ksru.SRU_Indexes.ANY.value}={f' or {ksru.SRU_Indexes.ANY.value}='.join([str(num) for num in dates])})",
