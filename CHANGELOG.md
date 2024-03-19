@@ -18,8 +18,11 @@ _Some previous changes will be added_
 * Processing `MARC_FILE_IN_KOHA_SRU` now export :
   * Physical descriptions for both records
   * Items barcodes for both records
+  * Document type for both records
+  * Piece for both records
 * Koha SRU now uses _Filter 1_ to filter items and items barcode information
 * Mapping `KOHA_ARCHIRES` now uses `b` as filtering subfield for items and items barcode
+* Added `collectif` & `collectifs` as empty words to delete
 
 ### Fixed
 
