@@ -9,6 +9,8 @@ _Some previous changes will be added_
 
 ## [Unreleased]
 
+## [1.17.2] - 2024-03-19
+
 ### Added
 
 * New exportable data : piece (UNIMARC 463, internal name is `linking_piece`) and document type
