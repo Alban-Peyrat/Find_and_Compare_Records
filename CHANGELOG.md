@@ -9,9 +9,17 @@ _Some previous changes will be added_
 
 ## [Unreleased]
 
+### Added
+
+* New exportable data : piece (UNIMARC 463, internal name is `linking_piece`) and document type
+
 ### Changed
 
-* Processing `MARC_FILE_IN_KOHA_SRU` now export physical descriptions for both records
+* Processing `MARC_FILE_IN_KOHA_SRU` now export :
+  * Physical descriptions for both records
+  * Items barcodes for both records
+* Koha SRU now uses _Filter 1_ to filter items and items barcode information
+* Mapping `KOHA_ARCHIRES` now uses `b` as filtering subfield for items and items barcode
 
 ### Fixed
 

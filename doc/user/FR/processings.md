@@ -15,3 +15,7 @@ Si l'ISBN est valide, interroge le webservice `isbn2ppn` de l'Abesavec l'ISBN ne
 Si le script ne parvient pas à se connecter au service ou si aucun PPN n'est renvoyé, transforme l'ISBN 10/13 en son équivalent 13/10 et ralnce la requête.
 En cas de nouvel échec, interroge le service SRU du Sudoc sur l'index `ISB`, ce qui permet également d'interroger les ISBN erronnés.
 En cas de nouvel échec, renvoie une erreur et passe à la prochaine ligne.
+
+## `MARC_FILE_IN_KOHA_SRU`
+
+Le filtre 1 est utilisé pour filtrer les données d'exemplaires dans le SRU de Koha (`995$b`)

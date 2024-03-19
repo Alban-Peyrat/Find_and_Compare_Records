@@ -128,7 +128,10 @@ DATABASES_LIST = {
     ),
     Database_Names.KOHA_SRU:Database(
         database=Database_Names.KOHA_SRU,
-        filters={}
+        filters={
+            FCR_Mapped_Fields.ITEMS:FCR_Filters.FILTER1,
+            FCR_Mapped_Fields.ITEMS_BARCODE:FCR_Filters.FILTER1
+            }
     ),
     Database_Names.LOCAL:Database(
         database=Database_Names.LOCAL,
@@ -254,6 +257,7 @@ PROCESSINGS_LIST = {
         mapped_data={
             FCR_Mapped_Fields.ID: FCR_Processing_Data_Target.BOTH,
             FCR_Mapped_Fields.PPN: FCR_Processing_Data_Target.TARGET,
+            FCR_Mapped_Fields.DOCUMENT_TYPE: FCR_Processing_Data_Target.BOTH,
             FCR_Mapped_Fields.ISBN:FCR_Processing_Data_Target.BOTH,
             FCR_Mapped_Fields.GENERAL_PROCESSING_DATA_DATES: FCR_Processing_Data_Target.BOTH,
             FCR_Mapped_Fields.ERRONEOUS_ISBN: FCR_Processing_Data_Target.TARGET,
@@ -263,7 +267,9 @@ PROCESSINGS_LIST = {
             FCR_Mapped_Fields.EDITION_NOTES: FCR_Processing_Data_Target.BOTH,
             FCR_Mapped_Fields.PHYSICAL_DESCRIPTION: FCR_Processing_Data_Target.BOTH,
             FCR_Mapped_Fields.PUBLICATION_DATES: FCR_Processing_Data_Target.BOTH,
-            FCR_Mapped_Fields.EXPORTED_TO_DIGITAL_LIBRARY: FCR_Processing_Data_Target.BOTH
+            FCR_Mapped_Fields.LINKING_PIECE: FCR_Processing_Data_Target.BOTH,
+            FCR_Mapped_Fields.EXPORTED_TO_DIGITAL_LIBRARY: FCR_Processing_Data_Target.BOTH,
+            FCR_Mapped_Fields.ITEMS_BARCODE: FCR_Processing_Data_Target.BOTH
         },
         operation=OPERATIONS_LIST[Operation_Names.SEARCH_IN_KOHA_SRU_VANILLA],
         origin_database=DATABASES_LIST[Database_Names.LOCAL],
@@ -2320,6 +2326,7 @@ class Marc_Fields_Mapping(object):
         """Loads a marc field mappig by name from marc_fields.json (debgging)"""
         self.id = Marc_Fields_Data(self.marc_fields_json[FCR_Mapped_Fields.ID.value])
         self.ppn = Marc_Fields_Data(self.marc_fields_json[FCR_Mapped_Fields.PPN.value])
+        self.document_type = Marc_Fields_Data(self.marc_fields_json[FCR_Mapped_Fields.DOCUMENT_TYPE.value])
         self.ean = Marc_Fields_Data(self.marc_fields_json[FCR_Mapped_Fields.EAN.value])
         self.isbn = Marc_Fields_Data(self.marc_fields_json[FCR_Mapped_Fields.ISBN.value])
         self.general_processing_data_dates = Marc_Fields_Data(self.marc_fields_json[FCR_Mapped_Fields.GENERAL_PROCESSING_DATA_DATES.value])
@@ -2333,6 +2340,7 @@ class Marc_Fields_Mapping(object):
         self.physical_desription = Marc_Fields_Data(self.marc_fields_json[FCR_Mapped_Fields.PHYSICAL_DESCRIPTION.value])
         self.other_edition_in_other_medium_bibliographic_id = Marc_Fields_Data(self.marc_fields_json[FCR_Mapped_Fields.OTHER_ED_IN_OTHER_MEDIUM_BIBG_ID.value])
         self.other_database_id = Marc_Fields_Data(self.marc_fields_json[FCR_Mapped_Fields.OTHER_DB_ID.value])
+        self.linking_piece = Marc_Fields_Data(self.marc_fields_json[FCR_Mapped_Fields.LINKING_PIECE.value])
         self.items = Marc_Fields_Data(self.marc_fields_json[FCR_Mapped_Fields.ITEMS.value])
         self.items_barcode = Marc_Fields_Data(self.marc_fields_json[FCR_Mapped_Fields.ITEMS_BARCODE.value])
         self.exported_to_digital_library = Marc_Fields_Data(self.marc_fields_json[FCR_Mapped_Fields.EXPORTED_TO_DIGITAL_LIBRARY.value])
@@ -2550,6 +2558,8 @@ class Universal_Data_Extractor(object):
             return self.get_id(filter_value)
         elif mapped_field == FCR_Mapped_Fields.PPN:
             return self.get_ppn(filter_value)
+        elif mapped_field == FCR_Mapped_Fields.DOCUMENT_TYPE:
+            return self.get_document_type(filter_value)
         elif mapped_field == FCR_Mapped_Fields.EAN:
             return self.get_ean(filter_value)
         elif mapped_field == FCR_Mapped_Fields.ISBN:
@@ -2576,6 +2586,8 @@ class Universal_Data_Extractor(object):
             return self.get_general_processing_data_dates(filter_value)
         elif mapped_field == FCR_Mapped_Fields.OTHER_ED_IN_OTHER_MEDIUM_BIBG_ID:
             return self.get_other_edition_in_other_medium_bibliographic_id(filter_value)
+        elif mapped_field == FCR_Mapped_Fields.LINKING_PIECE:
+            return self.get_linking_piece(filter_value)
         elif mapped_field == FCR_Mapped_Fields.OTHER_DB_ID:
             return self.get_other_database_id(filter_value)
         elif mapped_field == FCR_Mapped_Fields.ITEMS:
@@ -2657,6 +2669,12 @@ class Universal_Data_Extractor(object):
         Takes filter_value as argument if mapped to have a filtering subfield."""
         return self.extract_list_of_ids(self.marc_fields_mapping.ppn, filter_value)
 
+    def get_document_type(self, filter_value: Optional[str] = "") -> List[str]:
+        """Return all document types as a list of str, without duplicates.
+
+        Takes filter_value as argument if mapped to have a filtering subfield."""
+        return self.extract_list_of_ids(self.marc_fields_mapping.document_type, filter_value)
+    
     def get_ean(self, filter_value: Optional[str] = "") -> List[str]:
         """Return all EAN as a list of str, without duplicates.
 
@@ -2708,6 +2726,12 @@ class Universal_Data_Extractor(object):
 
         Takes filter_value as argument if mapped to have a filtering subfield."""
         return self.extract_list_of_ids(self.marc_fields_mapping.other_edition_in_other_medium_bibliographic_id, filter_value)
+
+    def get_linking_piece(self, filter_value: Optional[str] = "") -> List[str]:
+        """Return all of pieces (link) as a list of str.
+
+        Takes filter_value as argument if mapped to have a filtering subfield."""
+        return self.extract_list_of_strings(self.marc_fields_mapping.linking_piece, filter_value)
 
     def get_items_barcode(self, filter_value: Optional[str] = "") -> List[str]:
         """Return all items barcode as a list of str, without duplicates.

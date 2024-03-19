@@ -40,6 +40,8 @@ class FCR_Mapped_Fields(Enum):
     SERIES = "series"
     SERIES_LINK = "series_link"
     GEOGRAPHICAL_SUBJECT = "geographical_subject"
+    DOCUMENT_TYPE = "document_type"
+    LINKING_PIECE = "linking_piece"
 
 class FCR_Processing_Data_Target(Enum):
     ORIGIN = 0
@@ -304,8 +306,10 @@ class CSV_Cols(Enum):
     RESERVED_SLOT4 = 25000
     ORIGIN_DB_GEOGRAPHICAL_SUBJECT = 25600
     TARGET_DB_GEOGRAPHICAL_SUBJECT = 25601
-    RESERVED_SLOT5 = 26000
-    RESERVED_SLOT6 = 27000
+    ORIGIN_DB_LINKING_PIECE = 26000
+    TARGET_DB_LINKING_PIECE = 26001
+    ORIGIN_DB_DOCUMENT_TYPE = 27000
+    TARGET_DB_DOCUMENT_TYPE = 27001
     RESERVED_SLOT7 = 28000
     RESERVED_SLOT8 = 29000
     # 80XXX are reserved

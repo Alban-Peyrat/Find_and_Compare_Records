@@ -318,5 +318,21 @@
     "FCR_PROCESSED_ID":{
         "fre":"ID traitement FCR",
         "eng":"FCR processed ID"
+    },
+    "ORIGIN_DB_LINKING_PIECE":{
+        "fre":"Unité matérielle Koha",
+        "eng":"Piece Koha"
+    },
+    "TARGET_DB_LINKING_PIECE":{
+        "fre":"Unité matérielle Sudoc",
+        "eng":"Piece Sudoc"
+    },
+    "ORIGIN_DB_DOCUMENT_TYPE":{
+        "fre":"Type de document Koha",
+        "eng":"Document type Koha"
+    },
+    "TARGET_DB_DOCUMENT_TYPE":{
+        "fre":"Type de document Sudoc",
+        "eng":"Document type Sudoc"
     }
 }

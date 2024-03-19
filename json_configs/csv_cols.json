@@ -318,5 +318,21 @@
     "FCR_PROCESSED_ID":{
         "fre":"ID traitement FCR",
         "eng":"FCR processed ID"
+    },
+    "ORIGIN_DB_LINKING_PIECE":{
+        "fre":"Unité matérielle BDD d'origine",
+        "eng":"Piece origin DB"
+    },
+    "TARGET_DB_LINKING_PIECE":{
+        "fre":"Unité matérielle BDD de destination",
+        "eng":"Piece target DB"
+    },
+    "ORIGIN_DB_DOCUMENT_TYPE":{
+        "fre":"Type de document BDD d'origine",
+        "eng":"Document type origin DB"
+    },
+    "TARGET_DB_DOCUMENT_TYPE":{
+        "fre":"Type de document BDD de destination",
+        "eng":"Document type target DB"
     }
 }

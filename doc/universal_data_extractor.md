@@ -35,7 +35,7 @@ Sudoc PICA XML is not supported
 
 * In `fcr_enum.py` :
   * If needed, add a new entry in `FCR_Filters`, `Execution_Settings.__init__()` inside the `if` for filters (you're supposed to already ahve added an environmental variable in `Execution_Settings` and the UI)
-  * In `Databases`, add an element using as key a `FCR_Mapped_Fields` entry and as value a `FCR_Filters` entry
+* In `fcr_classes`, add a key value pair to the database in `DATABASES_LIST`, using as key a `FCR_Mapped_Fields` entry and as value a `FCR_Filters` entry
 
 The filter value checks if it __starts with__.
 
