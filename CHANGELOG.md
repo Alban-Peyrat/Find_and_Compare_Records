@@ -9,6 +9,23 @@ _Some previous changes will be added_
 
 ## [Unreleased]
 
+## [1.17.3] - 2024-03-20
+
+### Added
+
+* Transformations before request actions using titles, authors or publishers now deletes every word that does not start with a letter or a number
+
+### Changed
+
+* Reordered some columns in CSV output :
+  * Document type is now between erroneous ISBN and titles
+  * Authors are now between document type and titles
+  * Matched IDs, database ID and current ID are moved after FCR prcessed ID
+
+### Fixed
+
+* Added more dahs to the noise deletion process (Unicode 2010 to 2015)
+
 ## [1.17.2] - 2024-03-19
 
 ### Added

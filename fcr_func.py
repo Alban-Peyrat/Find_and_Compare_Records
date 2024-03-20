@@ -16,7 +16,7 @@ def prep_string(_str:str, _noise = True, _multiplespaces = True) -> str:
     """
     # remove noise (punctuation) if asked (by default yes)
     if _noise:
-        _str = re.sub(r"\.|\,|\?|\!|\;|\/|\:|\=|\[|\]|\'|\-|\(|\)|\||\"|\<|\>|\+|\°", " ", _str, flags=re.IGNORECASE)
+        _str = re.sub(r"\.|\,|\?|\!|\;|\/|\:|\=|\[|\]|\'|\-|\(|\)|\||\"|\<|\>|\+|\°|[\u2010-\u2015]", " ", _str, flags=re.IGNORECASE)
     # replace multiple spaces by ine in string if requested (default yes)
     if _multiplespaces:
         _str = re.sub("\s+", " ", _str).strip()
@@ -119,7 +119,7 @@ def delete_Sudoc_empty_words(txt:str) -> str:
 
 def delete_for_sudoc(txt:str) -> str:
     """Merges deletion func specifics for CBs and Sudoc"""
-    return delete_duplicate_words(delete_Sudoc_empty_words(delete_CBS_boolean_operators(txt)))
+    return delete_suspicious_looking_words(delete_duplicate_words(delete_Sudoc_empty_words(delete_CBS_boolean_operators(txt))))
 
 def delete_duplicate_words(txt:str) -> str:
     """Returns the strig withotu duplicates BUT DOES NOT KEEP  THE WORD ORDER"""
@@ -128,3 +128,11 @@ def delete_duplicate_words(txt:str) -> str:
         if word not in unique_words:
             unique_words.add(word)
     return " ".join(unique_words)
+
+def delete_suspicious_looking_words(txt:str) -> str:
+    """Returns the string without words not starting with a letter or a number"""
+    output = []
+    for word in txt.split():
+        if re.match(r"^[a-zA-Z\d]", word):
+            output.append(word)
+    return " ".join(output)
