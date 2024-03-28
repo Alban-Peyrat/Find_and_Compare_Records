@@ -9,6 +9,16 @@ _Some previous changes will be added_
 
 ## [Unreleased]
 
+## [1.17.4] - 2024-03-28
+
+### Added
+
+* New action requesting Koha SRU only using title on the title index
+
+### Changed
+
+* The operation `SEARCH_IN_KOHA_SRU_VANILLA` now queries as a last resort Koha SRU using only the title
+
 ## [1.17.3] - 2024-03-20
 
 ### Added
