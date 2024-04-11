@@ -9,6 +9,13 @@ _Some previous changes will be added_
 
 ## [Unreleased]
 
+## [1.17.5] - 2024-04-11
+
+### Fixed
+
+* `Universal_Data_Extractor.extract_list_of_strings` method does not crash anymore if some subfield had no values
+* ASCII range (hexadecimal) `21-2F`, `3A-40`, `5B-60`, `7B-7F` added to the noise list
+
 ## [1.17.4] - 2024-03-28
 
 ### Added

@@ -2884,7 +2884,11 @@ class Universal_Data_Extractor(object):
         output = []
         extraction = self.extract_data_from_marc_field(marc_field, filter_value)
         for field_value in extraction:
-            output.append(" ".join(field_value))
+            valid_values = []
+            for value in field_value:
+                if value:
+                    valid_values.append(value)
+            output.append(" ".join(valid_values))
         return output
     
     def extract_list_of_lists(self,marc_field: Marc_Fields_Data, filter_value: Optional[str] = "") -> List[str]:
