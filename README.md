@@ -8,3 +8,5 @@ _Documentation not fully updated_
 * __[Documentation utilisateur en français](./doc/user/FR)__
 
 This application is used to match records between two databases, perform an automatic comparison of the two records and output a file extracting data from both the record in the original database and all matched records in the target databse.
+
+It was originally a branch of [Alexandre Faure's script to analyze PPN imported in Alma Community Zone](https://github.com/louxfaure/AlmaCZRecord_To_Sudoc_Record).

@@ -9,6 +9,10 @@ _Some previous changes will be added_
 
 ## [Unreleased]
 
+### Fixed
+
+* Put back the mention of Alexandre Faure original script (that I apprently deleted)
+
 ## [1.17.5] - 2024-04-11
 
 ### Fixed
