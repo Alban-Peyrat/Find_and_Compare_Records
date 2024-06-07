@@ -9,6 +9,20 @@ _Some previous changes will be added_
 
 ## [Unreleased]
 
+### Added
+
+* Documentation now states which library versions were used for development (due to issues with `PySimpleGUI` in this project and `pymarc` in another project)
+
+### Changed
+
+* Now developped for :
+  * Python 3.12 (3.11 before)
+  * `unidecode 1.3.8` (`1.3.6` before)
+  * `python-Levenshtein 0.25.1` (`0.23.0` before)
+  * `requests 2.32.3` (`2.28.1` before)
+  * `python-dotenv 1.0.1` (`1.0.0` before)
+* Changed graphic user interface library from `PySimpleGUI 4.2.2` to `FreeSimpleGUI 5.1.0`
+
 ### Fixed
 
 * Put back the mention of Alexandre Faure original script (that I apprently deleted)
