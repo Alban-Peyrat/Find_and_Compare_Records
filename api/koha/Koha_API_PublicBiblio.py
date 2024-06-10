@@ -45,7 +45,7 @@ class Koha_API_PublicBiblio(object):
             self.format = "application/marcxml+xml"
         else:
             self.format = format
-        if re.sub("\D", "", self.bibnb) != self.bibnb: # |||revoir cette conditin
+        if re.sub(r"\D", "", self.bibnb) != self.bibnb: # |||revoir cette conditin
             self.status = "Error"
             self.logger.error("{} :: Koha_API_PublicBiblio :: Biblionumber invalide".format(bibnb))
             self.error_msg = "Biblionumber invalide"

@@ -704,23 +704,23 @@ class SRU_Result_Search(object):
         if record_schema in [SRU_Record_Schemas.PICA_XML.value]:
             result = self.fix_angle_brackets()
             # result = re.sub("(?<=<\/ppxml:record>)\s*(?=[<srw:record>|<\/srw:records>])", "</record></srw:recordData></srw:record>", result)
-            result = re.sub("(?<=<\/ppxml:record>)\s*(?=(<srw:record>|<\/srw:records>))", self.closing_tags_fix, result)
+            result = re.sub(r"(?<=<\/ppxml:record>)\s*(?=(<srw:record>|<\/srw:records>))", self.closing_tags_fix, result)
         # Pica short (fcv XML)
         elif record_schema in [SRU_Record_Schemas.PICA_SHORT_FCV_XML.value]:
-            result = re.sub("(?<!<srw:records)>\s*(?=(<srw:record>|<\/srw:records>))", self.closing_tags_fix, result)
-            result = re.sub("(?<=<record>)\s*<", "", result)
-            result = re.sub(">\s*(?=<\/record>)", "", result) # useless ?
+            result = re.sub(r"(?<!<srw:records)>\s*(?=(<srw:record>|<\/srw:records>))", self.closing_tags_fix, result)
+            result = re.sub(r"(?<=<record>)\s*<", "", result)
+            result = re.sub(r">\s*(?=<\/record>)", "", result) # useless ?
         # Marc 21
         if record_schema in [SRU_Record_Schemas.MARC21.value]:
-            result = re.sub("(?<=<leader>)\s*R>", "", result)
-            result = re.sub("(<TD>|<TR>)", "", result)
-            result = re.sub("(?<=<\/leader>)\s*<\/record>\s*<\/srw:recordData>\s*<srw:recordPosition>\s*leader\s*<\/srw:recordPosition>\s*<\/srw:record>\s*(?!\s*(<srw:record>|<\/srw:records>))", "", result)
+            result = re.sub(r"(?<=<leader>)\s*R>", "", result)
+            result = re.sub(r"(<TD>|<TR>)", "", result)
+            result = re.sub(r"(?<=<\/leader>)\s*<\/record>\s*<\/srw:recordData>\s*<srw:recordPosition>\s*leader\s*<\/srw:recordPosition>\s*<\/srw:record>\s*(?!\s*(<srw:record>|<\/srw:records>))", "", result)
         # ISNI Basic & ISNI Extended
         elif record_schema in [SRU_Record_Schemas.ISNI_BASIC.value,
                 SRU_Record_Schemas.ISNI_EXTENDED.value,]:
             result = self.fix_angle_brackets()
-            result = re.sub("</a>\s*<TR>", "</a></TD></TR>", result)
-            result = re.sub("(?<=</TR>)\s*(?=(<srw:record>|<\/srw:records>))", self.closing_tags_fix, result)
+            result = re.sub(r"</a>\s*<TR>", "</a></TD></TR>", result)
+            result = re.sub(r"(?<=</TR>)\s*(?=(<srw:record>|<\/srw:records>))", self.closing_tags_fix, result)
         # Fix srw:query not correcting < and > and failing parsing
         fix_srw_query_pattern = r"(<srw:query>.*<\/srw:query>)"
         has_matched = re.search(fix_srw_query_pattern, result)
@@ -827,15 +827,15 @@ class SRU_Result_Search(object):
                 SRU_Record_Schemas.ISNI_BASIC.value,
                 SRU_Record_Schemas.ISNI_EXTENDED.value
             ]:
-                output.append(re.findall("(?<=https:\/\/www\.sudoc\.fr\/)\d{8}[\d|X]", record.find(".//TR/TD/a").attrib["href"])[0])
+                output.append(re.findall(r"(?<=https:\/\/www\.sudoc\.fr\/)\d{8}[\d|X]", record.find(".//TR/TD/a").attrib["href"])[0])
             elif self.record_schema in [SRU_Record_Schemas.MARC21.value]:
-                output.append(re.findall("(?<=https:\/\/www\.sudoc\.fr\/)\d{8}[\d|X]", record.find(".//leader/a").attrib["href"])[0])
+                output.append(re.findall(r"(?<=https:\/\/www\.sudoc\.fr\/)\d{8}[\d|X]", record.find(".//leader/a").attrib["href"])[0])
         return output
 
     def fix_angle_brackets(self):
         """Returns the result_as_string property deleting double brackets"""
-        output = re.sub("<\s*<+", "<", self.result_as_string)
-        output = re.sub(">\s*>+", ">", output)
+        output = re.sub(r"<\s*<+", "<", self.result_as_string)
+        output = re.sub(r">\s*>+", ">", output)
         return output
 
 # ---------- SRU Scan Result ----------
