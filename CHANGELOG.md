@@ -26,6 +26,7 @@ _Some previous changes will be added_
 ### Fixed
 
 * Put back the mention of Alexandre Faure original script (that I apprently deleted)
+* Fixed various sytnax warning with regular expressions
 
 ## [1.17.5] - 2024-04-11
 

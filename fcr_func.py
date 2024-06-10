@@ -19,7 +19,7 @@ def prep_string(_str:str, _noise = True, _multiplespaces = True) -> str:
         _str = re.sub(r"[\x21-\x2F]|[\x3A-\x40]|[\x5B-\x60]|[\x7B-\x7F]|[\u2010-\u2015]|\.|\,|\?|\!|\;|\/|\:|\=|\[|\]|\'|\-|\(|\)|\||\"|\<|\>|\+|\°", " ", _str, flags=re.IGNORECASE)
     # replace multiple spaces by ine in string if requested (default yes)
     if _multiplespaces:
-        _str = re.sub("\s+", " ", _str).strip()
+        _str = re.sub(r"\s+", " ", _str).strip()
     return _str.strip().lower()
 
 def nettoie_titre(titre:str) -> str:
@@ -62,7 +62,7 @@ def get_year(txt:str) -> str:
     """Returns all 4 consecutive digits included in the string as a list of strings.
     
     Takes as an argument a string."""
-    return re.findall("\d{4}", txt)
+    return re.findall(r"\d{4}", txt)
 
 # ---------- End of old prep_data ----------
 
