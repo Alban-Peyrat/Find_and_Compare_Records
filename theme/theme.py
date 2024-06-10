@@ -4,7 +4,7 @@ from enum import Enum
 class ArchiRes_Colors(Enum):
     RED = "#d6441c"
     GREY = "#575551"
-    LIGHT_GREY = "#efefef"
+    CREME = "#eae8e3"
     BLACK_FONTS = "#001111"
     WHITE = "#ffffff"
 
@@ -12,7 +12,7 @@ class ArchiRes_Colors(Enum):
 theme_name = "ArchiRes_Theme"
 theme = {'BACKGROUND': ArchiRes_Colors.GREY.value,
              'TEXT': ArchiRes_Colors.WHITE.value,
-             'INPUT': ArchiRes_Colors.LIGHT_GREY.value,
+             'INPUT': ArchiRes_Colors.CREME.value,
              'TEXT_INPUT': ArchiRes_Colors.BLACK_FONTS.value,
              'SCROLL': ArchiRes_Colors.BLACK_FONTS.value,
              'BUTTON': (ArchiRes_Colors.WHITE.value, ArchiRes_Colors.RED.value),
