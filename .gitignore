@@ -2,12 +2,11 @@ my_settings.json
 settings.json
 pbs
 info_reseau
-test.py
 .env
 my.env
-_test_gui.py
-test_marc_file.py
 old_releases/
+tests_private/
+test_*.py
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
