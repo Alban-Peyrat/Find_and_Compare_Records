@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 # External import
-import PySimpleGUI as sg
+import FreeSimpleGUI as sg
 import json
 import os
 import dotenv
