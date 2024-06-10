@@ -22,11 +22,17 @@ _Some previous changes will be added_
   * `requests 2.32.3` (`2.28.1` before)
   * `python-dotenv 1.0.1` (`1.0.0` before)
 * Changed graphic user interface library from `PySimpleGUI 4.2.2` to `FreeSimpleGUI 5.1.0`
+* _Light grey_ color was replaced by _creme_
+
+### Removed
+
+* Removed unecessary personnal Python test scripts
 
 ### Fixed
 
 * Put back the mention of Alexandre Faure original script (that I apprently deleted)
 * Fixed various sytnax warning with regular expressions
+
 
 ## [1.17.5] - 2024-04-11
 
