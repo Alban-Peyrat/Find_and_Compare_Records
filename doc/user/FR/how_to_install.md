@@ -5,13 +5,16 @@ Téléchargez l'application puis extrayez le contenu.
 ## Bibliothèques utilisées non incluses dans Python Standard Library
 
 Ces bibliothèques sont utilisées par le script mais absentes de la [Python Standard Library](https://docs.python.org/3/library/), il ets donc nécessaire de les installer dans un premier temps :
+
 * [`unidecode`](https://pypi.org/project/Unidecode/)
 * [`FuzzyWuzzy`](https://pypi.org/project/fuzzywuzzy/)
   * With [`python-Levenshtein`](https://pypi.org/project/python-Levenshtein/)
-* [`PySimpleGUI`](https://pypi.org/project/PySimpleGUI/)
+* [`PySimpleGUI`](https://pypi.org/project/PySimpleGUI/) : la version utilisée pour le développement de FCR était la `4.60.4`. Depuis la version 5, le module nécessite d'enregistrer une clef de Licence. Pour installer la version `4.60.5`, utilliser `pip install PySimpleGUI==4.60.5` (temporaire)
 * [`requests`](https://pypi.org/project/requests/)
 * [`python-dotenv`](https://pypi.org/project/python-dotenv/)
 * [`pymarc`](https://pypi.org/project/pymarc/)
+* [`pyisbn`](https://pypi.org/project/pyisbn) : `1.3.1`
+
 
 ## Fichier de configuration
 

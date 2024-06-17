@@ -12,6 +12,7 @@ _Some previous changes will be added_
 ### Added
 
 * Documentation now states which library versions were used for development (due to issues with `PySimpleGUI` in this project and `pymarc` in another project)
+* Now uses `pysisbn` library
 
 ### Changed
 
@@ -23,6 +24,8 @@ _Some previous changes will be added_
   * `python-dotenv 1.0.1` (`1.0.0` before)
 * Changed graphic user interface library from `PySimpleGUI 4.2.2` to `FreeSimpleGUI 5.1.0`
 * _Light grey_ color was replaced by _creme_
+* Replaced ISBN functions from `Abes_id2ppn` by `pyisbn` library
+* Updated `Abes_id2ppn` with lastest version
 
 ### Removed
 
@@ -32,6 +35,7 @@ _Some previous changes will be added_
 
 * Put back the mention of Alexandre Faure original script (that I apprently deleted)
 * Fixed various sytnax warning with regular expressions
+* Fixed fatal errors when trying to convert ISBN with more than just digits or `X`
 
 
 ## [1.17.5] - 2024-04-11

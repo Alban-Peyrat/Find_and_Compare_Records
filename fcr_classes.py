@@ -9,6 +9,7 @@ import csv
 import json
 import xml.etree.ElementTree as ET
 import pymarc
+import pyisbn
 import re
 from enum import EnumType
 from typing import Any, Dict, List, Tuple, Optional, Union
@@ -97,6 +98,13 @@ ERRORS_LIST = {
         msg={
             "eng":"No results fot this operation",
             "fre":"Aucun résultat pour cette opération"
+        }
+    ),
+    Errors.ISBN_979_CAN_NOT_BE_CONVERTED:Error(
+        error=Errors.ISBN_979_CAN_NOT_BE_CONVERTED,
+        msg={
+            "eng":"Can only convert ISBN 13 starting with 978",
+            "fre":"Seuls les ISBN 13 commençant par 978 peuvent être convertis"
         }
     )
 }
@@ -356,7 +364,7 @@ PROCESSINGS_LIST = {
 
 def get_instance_from_enum(member:Processing_Names|Operation_Names|Database_Names|Errors|str|int, enum:Enum=None) -> Processing|Operation|Database|Error:
     """Returns the wanted instance for the given enum member.
-    /!\ Works for Processing_Names, Operation_Names, Database_Names, Error
+    /!\\ Works for Processing_Names, Operation_Names, Database_Names, Error
     Argument can either be :
         - Enum member
         - Enum member name
@@ -1342,7 +1350,7 @@ class Matched_Records(object):
         # Action isbn2ppn
         elif action == Actions.ISBN2PPN:
             i2p = id2ppn.Abes_id2ppn(webservice=id2ppn.Webservice.ISBN, useJson=True)
-            res = i2p.get_matching_ppn(self.query)
+            res = i2p.get_matching_ppn(self.query, check_isbn_validity=True)
             thisTry.define_used_query(res.get_id_used())
             if res.status != id2ppn.Id2ppn_Status.SUCCESS:
                 thisTry.error_occured(res.get_error_msg())
@@ -1352,14 +1360,14 @@ class Matched_Records(object):
         # Action isbn2ppn with changed ISBN
         elif action == Actions.ISBN2PPN_MODIFIED_ISBN:
             # Converting the ISBN to 10<->13
-            new_query = None
-            if len(self.query) == 13:
-                new_query = self.query[3:-1]
-                new_query += id2ppn.compute_isbn_10_check_digit(list(str(new_query)))
-            elif len(self.query) == 10:
-                # Doesn't consider 979[...] as the original issue should only concern old ISBN
-                new_query = "978" + self.query[:-1]
-                new_query += id2ppn.compute_isbn_13_check_digit(list(str(new_query)))
+            isbn_validity, temp, new_query = id2ppn.validate_isbn(re.sub("[^0-9X]", "", str(self.query)))
+            if isbn_validity != id2ppn.Isbn_Validity.VALID:
+                thisTry.error_occured(Errors.ISBN_MODIFICATION_FAILED)
+                return
+            if new_query[:3] != "978" and len(new_query) == 13:
+                thisTry.error_occured(Errors.ISBN_979_CAN_NOT_BE_CONVERTED)
+                return
+            new_query = pyisbn.Isbn(re.sub("[^0-9X]", "", str(new_query))).convert()
 
             # Ensure ISBN is not empty 
             if not new_query:
@@ -1368,7 +1376,7 @@ class Matched_Records(object):
 
             # Same thing as Action ISBN2PPN
             i2p = id2ppn.Abes_id2ppn(useJson=True)
-            res = i2p.get_matching_ppn(new_query)
+            res = i2p.get_matching_ppn(new_query, check_isbn_validity=True)
             thisTry.define_used_query(res.get_id_used())
             if res.status != id2ppn.Id2ppn_Status.SUCCESS:
                 thisTry.error_occured(res.get_error_msg())

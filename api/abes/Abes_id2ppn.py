@@ -8,7 +8,9 @@ import logging
 import requests
 import xml.etree.ElementTree as ET
 import json
+import pyisbn
 import re
+from typing import Tuple, List
 
 # --------------- Enums ---------------
 
@@ -46,7 +48,7 @@ class Webservice(Enum):
 # --------------- Function definition ---------------
 
 # Adapted from https://www.oreilly.com/library/view/regular-expressions-cookbook/9780596802837/ch04s13.html
-def validate_isbn(isbn):
+def validate_isbn(isbn:str) -> Tuple[Isbn_Validity, str, str]:
     """Return if the ISBN is valid.
     
     Argument : ISBN
@@ -58,49 +60,39 @@ def validate_isbn(isbn):
     # `regex` checks for ISBN-10 or ISBN-13 format
     regex = re.compile("^(?:ISBN(?:-1[03])?:? )?(?=[-0-9 ]{17}$|[-0-9X ]{13}$|[0-9X]{10}$)(?:97[89][- ]?)?[0-9]{1,5}[- ]?(?:[0-9]+[- ]?){2}[0-9X]$")
 
-    if regex.search(isbn):
-        # Remove non ISBN digits, then split into an array
-        chars = list(re.sub("[^0-9X]", "", str(isbn)))
-        # Remove the final ISBN digit from `chars`, and assign it to `last`
-        last  = chars.pop()
-
-        if len(chars) == 9:
-            # Compute the ISBN-10 check digit
-            check = compute_isbn_10_check_digit(chars)
+    if regex.search(str(isbn)):
+        # Remove non ISBN digits
+        normalised = re.sub("[^0-9X]", "", str(isbn))
+        # Leave if it's an ISBN 13 with a X as a checksum
+        if normalised[-1:] == "X" and len(normalised) == 13:
+            return Isbn_Validity.INVALID_CHECK_ISBN, isbn, normalised
+        
+        isbn_inst = pyisbn.Isbn(normalised)
+        if (isbn_inst.validate()):
+            return Isbn_Validity.VALID, isbn, isbn_inst.isbn
         else:
-            # Compute the ISBN-13 check digit
-            check = compute_isbn_13_check_digit(chars)
-
-        if (str(check) == last):
-            return Isbn_Validity.VALID, isbn, "".join(chars)+last
-        else:
-            return Isbn_Validity.INVALID_CHECK_ISBN, isbn, "".join(chars)+last
+            return Isbn_Validity.INVALID_CHECK_ISBN, isbn, isbn_inst.isbn
     else:
         return Isbn_Validity.INVALID_ISBN, isbn, ""
 
-def compute_isbn_10_check_digit(chars):
-    """Returns the check as a string for an ISBN 10.
-    
-    Argument : {list of str} each digit of the ISBN except the check
-    """
-    val = sum((x + 2) * int(y) for x,y in enumerate(reversed(chars)))
-    check = 11 - (val % 11)
-    if check == 10:
-        check = "X"
-    elif check == 11:
-        check = "0"
-    return str(check)
 
-def compute_isbn_13_check_digit(chars):
-    """Returns the check as a string for an ISBN 13.
+def compute_isbn_10_check_digit(chars:List[str]) -> str:
+    """DEPRACTED, use pyisbn library directly
+    
+    Returns the check as a string for an ISBN 10.
     
     Argument : {list of str} each digit of the ISBN except the check
     """
-    val = sum((x % 2 * 2 + 1) * int(y) for x,y in enumerate(chars))
-    check = 10 - (val % 10)
-    if check == 10:
-        check = "0"
-    return str(check)
+    return pyisbn.Isbn("".join(chars) + "0").calculate_checksum()
+
+def compute_isbn_13_check_digit(chars:List[str]) -> str:
+    """DEPRACTED, use pyisbn library directly
+    
+    Returns the check as a string for an ISBN 13.
+    
+    Argument : {list of str} each digit of the ISBN except the check
+    """
+    return pyisbn.Isbn("".join(chars) + "0").calculate_checksum()
 
 # --------------- Result Class ---------------
 

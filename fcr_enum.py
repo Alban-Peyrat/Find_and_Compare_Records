@@ -13,6 +13,7 @@ class Errors(Enum):
     ISBN_MODIFICATION_FAILED = 5
     MARC_CHUNK_RAISED_EXCEPTION = 6
     OPERATION_NO_RESULT = 7
+    ISBN_979_CAN_NOT_BE_CONVERTED = 8
 
 # ---------- Execution settings (ES) ----------
 class FCR_Mapped_Fields(Enum):
