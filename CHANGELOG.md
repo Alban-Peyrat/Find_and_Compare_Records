@@ -13,6 +13,7 @@ _Some previous changes will be added_
 
 * Documentation now states which library versions were used for development (due to issues with `PySimpleGUI` in this project and `pymarc` in another project)
 * Now uses `pysisbn` library
+* Added error `ISBN_979_CAN_NOT_BE_CONVERTED` for ISBN 13 not starting with `978` if trying to convert them to ISBN 10
 
 ### Changed
 
