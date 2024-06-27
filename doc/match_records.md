@@ -60,8 +60,8 @@ Connectors, to work with `Find_And_Compare_Records`, need to be able to :
 
 * `Actions` define where `Find_And_Compare_Records` will be looking for and what will the query be
   * You can have multiple actions requesting from the same API if you want to modify the query : for example, you can have an action that queries `isbn2ppn` without modifying the input query, and another action that still queries `isbn2ppn` but this time the input query is changed into the 13/10 digits form of the ISBN
-* _In `fcr_enum.py`_, add a new entry in the `Enum Actions`
-* _In `fcr_classes.py`_ :
+* In `fcr_enum.py`, add a new entry in the `Enum Actions`
+* In `fcr_classes.py` :
   * First, if needed, import the connector to the webservice or other
   * Then, add in the `Match_records.request_action()` method a new `elif action == Actions.YOUR_NEW_ACTION`
     * In this `elif`, you call the API or other
