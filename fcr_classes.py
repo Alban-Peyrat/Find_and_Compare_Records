@@ -164,7 +164,8 @@ OPERATIONS_LIST = {
             Actions.ISBN2PPN,
             Actions.ISBN2PPN_MODIFIED_ISBN,
             Actions.ISBN2PPN_MODIFIED_ISBN_SAME_KEY,
-            Actions.SRU_SUDOC_ISBN
+            Actions.SRU_SUDOC_ISBN,
+            Actions.SRU_SUDOC_MTI
         ]
     ),
     Operation_Names.SEARCH_IN_SUDOC_BY_ISBN_ONLY_ISBN2PPN:Operation(
@@ -187,7 +188,8 @@ OPERATIONS_LIST = {
             Actions.SRU_SUDOC_MTI_AUT_EDI_APU_TDO_V,
             Actions.SRU_SUDOC_MTI_AUT_APU_TDO_V,
             Actions.SRU_SUDOC_TOU_TITLE_AUTHOR_PUBLISHER_DATE_TDO_V,
-            Actions.SRU_SUDOC_TOU_TITLE_AUTHOR_PUBLISHER_TDO_V
+            Actions.SRU_SUDOC_TOU_TITLE_AUTHOR_PUBLISHER_TDO_V,
+            Actions.SRU_SUDOC_MTI_TDO_V
         ]
     ),
     Operation_Names.SEARCH_IN_KOHA_SRU_VANILLA:Operation(
@@ -209,7 +211,8 @@ OPERATIONS_LIST = {
             Actions.SRU_SUDOC_MTI_AUT_EDI_APU_TDO_B,
             Actions.SRU_SUDOC_MTI_AUT_APU_TDO_B,
             Actions.SRU_SUDOC_TOU_TITLE_AUTHOR_PUBLISHER_DATE_TDO_B,
-            Actions.SRU_SUDOC_TOU_TITLE_AUTHOR_PUBLISHER_TDO_B
+            Actions.SRU_SUDOC_TOU_TITLE_AUTHOR_PUBLISHER_TDO_B,
+            Actions.SRU_SUDOC_MTI_TDO_B
         ]
     ),
     Operation_Names.SEARCH_IN_SUDOC_MAPS:Operation(
@@ -219,7 +222,8 @@ OPERATIONS_LIST = {
             Actions.SRU_SUDOC_MTI_AUT_EDI_APU_TDO_K,
             Actions.SRU_SUDOC_MTI_AUT_APU_TDO_K,
             Actions.SRU_SUDOC_TOU_TITLE_AUTHOR_PUBLISHER_DATE_TDO_K,
-            Actions.SRU_SUDOC_TOU_TITLE_AUTHOR_PUBLISHER_TDO_K
+            Actions.SRU_SUDOC_TOU_TITLE_AUTHOR_PUBLISHER_TDO_K,
+            Actions.SRU_SUDOC_MTI_TDO_K
         ]
     )
 }
@@ -2332,6 +2336,144 @@ class Matched_Records(object):
                 record_schema=ksru.SRU_Record_Schemas.MARCXML,
                 start_record=1,
                 maximum_records=100
+            )
+            if (res.status == "Error"):
+                thisTry.error_occured(res.get_error_msg())
+            else:
+                thisTry.add_returned_ids(res.get_records_id())
+                thisTry.add_returned_records(res.get_records())
+
+        # Action SRU SUdoc MTI title
+        elif action == Actions.SRU_SUDOC_MTI:
+            sru = ssru.Sudoc_SRU()
+            # Ensure no data is Empty 
+            if title.strip() == "":
+                thisTry.error_occured(Errors.REQUIRED_DATA_MISSING)
+                return
+            # Generate query
+            sru_request = [
+                ssru.Part_Of_Query(
+                    ssru.SRU_Indexes.MTI,
+                    ssru.SRU_Relations.EQUALS,
+                    title,
+                    ssru.SRU_Boolean_Operators.AND
+                )
+            ]
+            thisTry.define_used_query(sru.generate_query(sru_request))
+            res = sru.search(
+                thisTry.query,
+                record_schema=ssru.SRU_Record_Schemas.UNIMARC,
+                record_packing=ssru.SRU_Record_Packings.XML,
+                maximum_records=100,
+                start_record=1
+            )
+            if (res.status == "Error"):
+                thisTry.error_occured(res.get_error_msg())
+            else:
+                thisTry.add_returned_ids(res.get_records_id())
+                thisTry.add_returned_records(res.get_records())
+
+        # Action SRU SUdoc MTI title  TDO b
+        elif action == Actions.SRU_SUDOC_MTI_TDO_B:
+            sru = ssru.Sudoc_SRU()
+            # Ensure no data is Empty 
+            if title.strip() == "":
+                thisTry.error_occured(Errors.REQUIRED_DATA_MISSING)
+                return
+            # Generate query
+            sru_request = [
+                ssru.Part_Of_Query(
+                    ssru.SRU_Indexes.MTI,
+                    ssru.SRU_Relations.EQUALS,
+                    title,
+                    ssru.SRU_Boolean_Operators.AND
+                ),
+                ssru.Part_Of_Query(
+                    ssru.SRU_Filters.TDO,
+                    ssru.SRU_Relations.EQUALS,
+                    ssru.SRU_Filter_TDO.B,
+                    ssru.SRU_Boolean_Operators.AND
+                )
+            ]
+            thisTry.define_used_query(sru.generate_query(sru_request))
+            res = sru.search(
+                thisTry.query,
+                record_schema=ssru.SRU_Record_Schemas.UNIMARC,
+                record_packing=ssru.SRU_Record_Packings.XML,
+                maximum_records=100,
+                start_record=1
+            )
+            if (res.status == "Error"):
+                thisTry.error_occured(res.get_error_msg())
+            else:
+                thisTry.add_returned_ids(res.get_records_id())
+                thisTry.add_returned_records(res.get_records())
+
+        # Action SRU SUdoc MTI title  TDO k
+        elif action == Actions.SRU_SUDOC_MTI_TDO_K:
+            sru = ssru.Sudoc_SRU()
+            # Ensure no data is Empty 
+            if title.strip() == "":
+                thisTry.error_occured(Errors.REQUIRED_DATA_MISSING)
+                return
+            # Generate query
+            sru_request = [
+                ssru.Part_Of_Query(
+                    ssru.SRU_Indexes.MTI,
+                    ssru.SRU_Relations.EQUALS,
+                    title,
+                    ssru.SRU_Boolean_Operators.AND
+                ),
+                ssru.Part_Of_Query(
+                    ssru.SRU_Filters.TDO,
+                    ssru.SRU_Relations.EQUALS,
+                    ssru.SRU_Filter_TDO.K,
+                    ssru.SRU_Boolean_Operators.AND
+                )
+            ]
+            thisTry.define_used_query(sru.generate_query(sru_request))
+            res = sru.search(
+                thisTry.query,
+                record_schema=ssru.SRU_Record_Schemas.UNIMARC,
+                record_packing=ssru.SRU_Record_Packings.XML,
+                maximum_records=100,
+                start_record=1
+            )
+            if (res.status == "Error"):
+                thisTry.error_occured(res.get_error_msg())
+            else:
+                thisTry.add_returned_ids(res.get_records_id())
+                thisTry.add_returned_records(res.get_records())
+
+        # Action SRU SUdoc MTI title  TDO v
+        elif action == Actions.SRU_SUDOC_MTI_TDO_V:
+            sru = ssru.Sudoc_SRU()
+            # Ensure no data is Empty 
+            if title.strip() == "":
+                thisTry.error_occured(Errors.REQUIRED_DATA_MISSING)
+                return
+            # Generate query
+            sru_request = [
+                ssru.Part_Of_Query(
+                    ssru.SRU_Indexes.MTI,
+                    ssru.SRU_Relations.EQUALS,
+                    title,
+                    ssru.SRU_Boolean_Operators.AND
+                ),
+                ssru.Part_Of_Query(
+                    ssru.SRU_Filters.TDO,
+                    ssru.SRU_Relations.EQUALS,
+                    ssru.SRU_Filter_TDO.V,
+                    ssru.SRU_Boolean_Operators.AND
+                )
+            ]
+            thisTry.define_used_query(sru.generate_query(sru_request))
+            res = sru.search(
+                thisTry.query,
+                record_schema=ssru.SRU_Record_Schemas.UNIMARC,
+                record_packing=ssru.SRU_Record_Packings.XML,
+                maximum_records=100,
+                start_record=1
             )
             if (res.status == "Error"):
                 thisTry.error_occured(res.get_error_msg())
