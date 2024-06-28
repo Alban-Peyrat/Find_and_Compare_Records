@@ -46,36 +46,6 @@ Connectors, to work with `Find_And_Compare_Records`, need to be able to :
 
 # Add operations or actions (or other) to `Match_Records`
 
-## Add an operation
-
-* `Operations` define where and how `Find_And_Compare_Records` should look for matching records
-* _In `fcr_enum.py`_ :
-  * Add a new entry in the `Enum Operations`
-  * Add a new entry in the `Enum Try_Operations` using :
-    * A `Operations` entry's __name__ as a key
-    * A list of `Enum Actions` as value
-      * The order is important as if an action is successful, it will not execute the remaining ones
-
-## Add an action
-
-* `Actions` define where `Find_And_Compare_Records` will be looking for and what will the query be
-  * You can have multiple actions requesting from the same API if you want to modify the query : for example, you can have an action that queries `isbn2ppn` without modifying the input query, and another action that still queries `isbn2ppn` but this time the input query is changed into the 13/10 digits form of the ISBN
-* In `fcr_enum.py`, add a new entry in the `Enum Actions`
-* In `fcr_classes.py` :
-  * First, if needed, import the connector to the webservice or other
-  * Then, add in the `Match_records.request_action()` method a new `elif action == Actions.YOUR_NEW_ACTION`
-    * In this `elif`, you call the API or other
-    * Call `thistry.define_used_query` with as argument the used query as a `string` 
-    * Then, if an error occured, call `thisTry.error_occured()` with as argument :
-      * A `Enum Matched_Records_Errors` entry
-      * Or a `str` error message
-    * If there are other types of status than `Success` or `Error`, call `thisTry.define_special_status()` with :
-      * A `Try_Status` entry as first argument (if incorrect, then `Try_Status.UNKNOWN` will be set)
-      * A message as second argument
-    * If matched ids were returned, call `thisTry.add_returned_ids()` with the list of matched ids as argument
-      * Note that this will switch the status to `SUCCESS`, so if you do not want that to happen, assign the list of returned ids directly to `thisTry.returned_ids`
-    * If matched records were also returned, call `thistry.add_returned_records` with the list of matched records as argument
-
 ## Add a type of error
 
 * _In `bi_classes.py`_
