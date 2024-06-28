@@ -267,7 +267,7 @@ class Matched_Records(object):
             # ISBN
             if action_instance.use_isbn:
                 # Leave if empty
-                if isbn.strip() == "":
+                if self.query.strip() == "":
                     thisTry.error_occured(Errors.NO_ISBN_WAS_FOUND)
                     return
                 # Defines the right index
@@ -390,33 +390,9 @@ class Matched_Records(object):
                 thisTry.add_returned_ids(res.get_records_id())
                 thisTry.add_returned_records(res.get_records())
 
-        # Action Koha SRU ISBN
-        elif action == Action_Names.KOHA_SRU_IBSN:
-            # No ISBN was found, throw an error
-            if isbn == "":
-                thisTry.error_occured(Errors.NO_ISBN_WAS_FOUND)
-                return
-            sru = ksru.Koha_SRU(self.target_url, ksru.SRU_Version.V1_1)
-            sru_request = ksru.Part_Of_Query(
-                ksru.SRU_Indexes.ISBN,
-                ksru.SRU_Relations.EQUALS,
-                isbn
-            )
-            thisTry.define_used_query(sru.generate_query([sru_request]))
-            res = sru.search(
-                thisTry.query,
-                record_schema=ksru.SRU_Record_Schemas.MARCXML,
-                start_record=1,
-                maximum_records=100
-            )
-            if (res.status == "Error"):
-                thisTry.error_occured(res.get_error_msg())
-            else:
-                thisTry.add_returned_ids(res.get_records_id())
-                thisTry.add_returned_records(res.get_records())
-
-        # Action SRU Koha on data fields (Title, Author, Publisher, Date)
+        # Action SRU Koha on data fields (ISBN, Title, Author, Publisher, Date)
         elif action in [
+                    Action_Names.KOHA_SRU_IBSN,
                     Action_Names.KOHA_SRU_TITLE_AUTHOR_PUBLISHER_DATE,
                     Action_Names.KOHA_SRU_TITLE_AUTHOR_DATE,
                     Action_Names.KOHA_SRU_ANY_TITLE_AUTHOR_PUBLISHER_DATE,
@@ -431,6 +407,23 @@ class Matched_Records(object):
                 return
             sru = ksru.Koha_SRU(self.target_url, ksru.SRU_Version.V1_1)
             sru_request = []
+            # ISBN
+            if action_instance.use_isbn:
+                # Leave if empty
+                if isbn.strip() == "":
+                    thisTry.error_occured(Errors.NO_ISBN_WAS_FOUND)
+                    return
+                # Defines the right index
+                isbn_index = ksru.SRU_Indexes.ISBN
+                if not action_instance.specific_index:
+                    isbn_index = ksru.SRU_Indexes.ANY
+                # Append to query
+                sru_request.append(ksru.Part_Of_Query(
+                    isbn_index,
+                    ksru.SRU_Relations.EQUALS,
+                    isbn,
+                    ksru.SRU_Boolean_Operators.AND
+                ))
             # TITLE
             if action_instance.use_title:
                 # Leave if empty
