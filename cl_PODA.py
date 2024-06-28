@@ -41,6 +41,232 @@ class Action_Names(Enum):
     SRU_SUDOC_MTI_TDO_K = 28
     SRU_SUDOC_MTI_TDO_V = 29
 
+class Action(object):
+    def __init__(self, action:Action_Names, isbn:bool=False, ean:bool=False, title:bool=False, authors:bool=False, publisher:bool=False, date:bool=False, doctype:str="", specific_index:bool=True) -> None:
+        """
+        By default, all data are off
+        By default, will use the specific indexes"""
+        self.enum_member = action
+        self.name = action.name
+        self.id = action.value
+        self.use_isbn = isbn
+        self.use_ean = ean
+        self.use_title = title
+        self.use_authors = authors
+        self.use_publisher = publisher
+        self.use_date = date
+        self.use_doctype = False
+        self.doctype = doctype
+        if doctype != "":
+            self.use_doctype = True
+        self.specific_index = specific_index
+
+ACTIONS_LIST = {
+    Action_Names.ISBN2PPN: Action(
+        action=Action_Names.ISBN2PPN,
+        isbn=True
+    ),
+    Action_Names.ISBN2PPN_MODIFIED_ISBN: Action(
+        action=Action_Names.ISBN2PPN_MODIFIED_ISBN,
+        isbn=True
+    ),
+    Action_Names.SRU_SUDOC_ISBN: Action(
+        action=Action_Names.SRU_SUDOC_ISBN,
+        isbn=True
+    ),
+    Action_Names.EAN2PPN: Action(
+        action=Action_Names.EAN2PPN,
+        ean=True
+    ),
+    Action_Names.SRU_SUDOC_MTI_AUT_EDI_APU_TDO_V: Action(
+        action=Action_Names.SRU_SUDOC_MTI_AUT_EDI_APU_TDO_V,
+        title=True,
+        authors=True,
+        publisher=True,
+        date=True,
+        doctype="V"
+    ),
+    Action_Names.SRU_SUDOC_MTI_AUT_APU_TDO_V: Action(
+        action=Action_Names.SRU_SUDOC_MTI_AUT_APU_TDO_V,
+        title=True,
+        authors=True,
+        date=True,
+        doctype="V"
+    ),
+    Action_Names.SRU_SUDOC_TOU_TITLE_AUTHOR_PUBLISHER_DATE_TDO_V: Action(
+        action=Action_Names.SRU_SUDOC_TOU_TITLE_AUTHOR_PUBLISHER_DATE_TDO_V,
+        title=True,
+        authors=True,
+        publisher=True,
+        date=True,
+        doctype="V",
+        specific_index=False
+    ),
+    Action_Names.SRU_SUDOC_TOU_TITLE_AUTHOR_DATE_TDO_V: Action(
+        action=Action_Names.SRU_SUDOC_TOU_TITLE_AUTHOR_DATE_TDO_V,
+        title=True,
+        authors=True,
+        date=True,
+        doctype="V",
+        specific_index=False
+    ),
+    Action_Names.SRU_SUDOC_TOU_TITLE_AUTHOR_PUBLISHER_TDO_V: Action(
+        action=Action_Names.SRU_SUDOC_TOU_TITLE_AUTHOR_PUBLISHER_TDO_V,
+        title=True,
+        authors=True,
+        publisher=True,
+        doctype="V",
+        specific_index=False
+    ),
+    Action_Names.KOHA_SRU_IBSN: Action(
+        action=Action_Names.KOHA_SRU_IBSN,
+        isbn=True
+    ),
+    Action_Names.KOHA_SRU_TITLE_AUTHOR_PUBLISHER_DATE: Action(
+        action=Action_Names.KOHA_SRU_TITLE_AUTHOR_PUBLISHER_DATE,
+        title=True,
+        authors=True,
+        publisher=True,
+        date=True
+    ),
+    Action_Names.KOHA_SRU_TITLE_AUTHOR_DATE: Action(
+        action=Action_Names.KOHA_SRU_TITLE_AUTHOR_DATE,
+        title=True,
+        authors=True,
+        date=True
+    ),
+    Action_Names.KOHA_SRU_ANY_TITLE_AUTHOR_PUBLISHER_DATE: Action(
+        action=Action_Names.KOHA_SRU_ANY_TITLE_AUTHOR_PUBLISHER_DATE,
+        title=True,
+        authors=True,
+        publisher=True,
+        date=True,
+        specific_index=False
+    ),
+    Action_Names.KOHA_SRU_ANY_TITLE_AUTHOR_DATE: Action(
+        action=Action_Names.KOHA_SRU_ANY_TITLE_AUTHOR_DATE,
+        title=True,
+        authors=True,
+        date=True,
+        specific_index=False
+    ),
+    Action_Names.SRU_SUDOC_MTI_AUT_EDI_APU_TDO_B: Action(
+        action=Action_Names.SRU_SUDOC_MTI_AUT_EDI_APU_TDO_B,
+        title=True,
+        authors=True,
+        publisher=True,
+        date=True,
+        doctype="B"
+    ),
+    Action_Names.SRU_SUDOC_MTI_AUT_APU_TDO_B: Action(
+        action=Action_Names.SRU_SUDOC_MTI_AUT_APU_TDO_B,
+        title=True,
+        authors=True,
+        date=True,
+        doctype="B"
+    ),
+    Action_Names.SRU_SUDOC_TOU_TITLE_AUTHOR_PUBLISHER_DATE_TDO_B: Action(
+        action=Action_Names.SRU_SUDOC_TOU_TITLE_AUTHOR_PUBLISHER_DATE_TDO_B,
+        title=True,
+        authors=True,
+        publisher=True,
+        date=True,
+        doctype="B",
+        specific_index=False
+    ),
+    Action_Names.SRU_SUDOC_TOU_TITLE_AUTHOR_DATE_TDO_B: Action(
+        action=Action_Names.SRU_SUDOC_TOU_TITLE_AUTHOR_DATE_TDO_B,
+        title=True,
+        authors=True,
+        date=True,
+        doctype="B",
+        specific_index=False
+    ),
+    Action_Names.SRU_SUDOC_TOU_TITLE_AUTHOR_PUBLISHER_TDO_B: Action(
+        action=Action_Names.SRU_SUDOC_TOU_TITLE_AUTHOR_PUBLISHER_TDO_B,
+        title=True,
+        authors=True,
+        publisher=True,
+        doctype="B",
+        specific_index=False
+    ),
+    Action_Names.SRU_SUDOC_MTI_AUT_EDI_APU_TDO_K: Action(
+        action=Action_Names.SRU_SUDOC_MTI_AUT_EDI_APU_TDO_K,
+        title=True,
+        authors=True,
+        publisher=True,
+        date=True,
+        doctype="K"
+    ),
+    Action_Names.SRU_SUDOC_MTI_AUT_APU_TDO_K: Action(
+        action=Action_Names.SRU_SUDOC_MTI_AUT_APU_TDO_K,
+        title=True,
+        authors=True,
+        publisher=True,
+        date=True,
+        doctype="K"
+    ),
+    Action_Names.SRU_SUDOC_TOU_TITLE_AUTHOR_PUBLISHER_DATE_TDO_K: Action(
+        action=Action_Names.SRU_SUDOC_TOU_TITLE_AUTHOR_PUBLISHER_DATE_TDO_K,
+        title=True,
+        authors=True,
+        publisher=True,
+        date=True,
+        doctype="K",
+        specific_index=False
+    ),
+    Action_Names.SRU_SUDOC_TOU_TITLE_AUTHOR_DATE_TDO_K: Action(
+        action=Action_Names.SRU_SUDOC_TOU_TITLE_AUTHOR_DATE_TDO_K,
+        title=True,
+        authors=True,
+        date=True,
+        doctype="K",
+        specific_index=False
+    ),
+    Action_Names.SRU_SUDOC_TOU_TITLE_AUTHOR_PUBLISHER_TDO_K: Action(
+        action=Action_Names.SRU_SUDOC_TOU_TITLE_AUTHOR_PUBLISHER_TDO_K,
+        title=True,
+        authors=True,
+        publisher=True,
+        doctype="K",
+        specific_index=False
+    ),
+    Action_Names.ISBN2PPN_MODIFIED_ISBN_SAME_KEY: Action(
+        action=Action_Names.ISBN2PPN_MODIFIED_ISBN_SAME_KEY,
+        isbn=True
+    ),
+    Action_Names.KOHA_SRU_ANY_TITLE_PUBLISHER_DATE: Action(
+        action=Action_Names.KOHA_SRU_ANY_TITLE_PUBLISHER_DATE,
+        title=True,
+        publisher=True,
+        date=True,
+        specific_index=False
+    ),
+    Action_Names.KOHA_SRU_TITLE: Action(
+        action=Action_Names.KOHA_SRU_TITLE,
+        title=True
+    ),
+    Action_Names.SRU_SUDOC_MTI: Action(
+        action=Action_Names.SRU_SUDOC_MTI,
+        title=True
+    ),
+    Action_Names.SRU_SUDOC_MTI_TDO_B: Action(
+        action=Action_Names.SRU_SUDOC_MTI_TDO_B,
+        title=True,
+        doctype="B"
+    ),
+    Action_Names.SRU_SUDOC_MTI_TDO_K: Action(
+        action=Action_Names.SRU_SUDOC_MTI_TDO_K,
+        title=True,
+        doctype="K"
+    ),
+    Action_Names.SRU_SUDOC_MTI_TDO_V: Action(
+        action=Action_Names.SRU_SUDOC_MTI_TDO_V,
+        title=True,
+        doctype="V"
+    )
+}
+
 # --------------- Databases ---------------
 class Filters(Enum):
     """List of all filters"""
@@ -331,9 +557,8 @@ PROCESSINGS_LIST = {
 }
 
 # --------------- Function ---------------
-def get_PODA_instance(poda:Processing_Names|Operation_Names|Database_Names|str|int, enum:Enum=None) -> Processing|Operation|Database:
+def get_PODA_instance(poda:Processing_Names|Operation_Names|Database_Names|str|int, enum:Enum=None) -> Processing|Operation|Database|Action:
     """Returns the wanted instance for the given enum member.
-    /!\\ Works for Processing_Names, Operation_Names, Database_Names
     Argument can either be :
         - Enum member
         - Enum member name
@@ -346,6 +571,8 @@ def get_PODA_instance(poda:Processing_Names|Operation_Names|Database_Names|str|i
         return OPERATIONS_LIST[poda]
     elif type(poda) == Database_Names:
         return DATABASES_LIST[poda]
+    elif type(poda) == Action_Names:
+        return ACTIONS_LIST[poda]
     # Arg is not a memeber, check if we have the 2nd arg
     elif type(enum) == EnumType:
         # Get the LIST for this Enum
@@ -356,6 +583,8 @@ def get_PODA_instance(poda:Processing_Names|Operation_Names|Database_Names|str|i
             LIST = OPERATIONS_LIST
         elif enum.__name__ == "Database_Names":
             LIST = DATABASES_LIST
+        elif enum.__name__ == "Action_Names":
+            LIST = ACTIONS_LIST
         # Leave if Enum is incorrect
         if LIST == None:
             return None
