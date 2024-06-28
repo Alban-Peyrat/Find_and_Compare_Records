@@ -1425,9 +1425,7 @@ class Matched_Records(object):
             else:
                 thisTry.add_returned_ids(res.get_results(merge=True))
 
-
-
-        # Action SRU Sudoc on data fields (MTI, AUT, EDI, APU, TOU)
+        # Action SRU Sudoc on data fields (Title, Author, Publisher, Date or DocType)
         elif action in [
                 Actions.SRU_SUDOC_MTI_AUT_EDI_APU_TDO_V,
                 Actions.SRU_SUDOC_MTI_AUT_APU_TDO_V,
@@ -1568,7 +1566,7 @@ class Matched_Records(object):
                     newest_date,
                     ssru.SRU_Boolean_Operators.AND
                 ))
-            # FILTERS
+            # FILTERS We can use a IF - ELIF here
             # TDO B
             if action in [
                         Actions.SRU_SUDOC_MTI_AUT_EDI_APU_TDO_B,
@@ -1655,214 +1653,88 @@ class Matched_Records(object):
                 thisTry.add_returned_ids(res.get_records_id())
                 thisTry.add_returned_records(res.get_records())
 
-        # Action Koha SRU Title, author, publisher and date on their own indexes
-        elif action == Actions.KOHA_SRU_TITLE_AUTHOR_PUBLISHER_DATE:
+        # Action SRU Koha on data fields (Title, Author, Publisher, Date)
+        elif action in [
+                    Actions.KOHA_SRU_TITLE_AUTHOR_PUBLISHER_DATE,
+                    Actions.KOHA_SRU_TITLE_AUTHOR_DATE,
+                    Actions.KOHA_SRU_ANY_TITLE_AUTHOR_PUBLISHER_DATE,
+                    Actions.KOHA_SRU_ANY_TITLE_AUTHOR_DATE,
+                    Actions.KOHA_SRU_ANY_TITLE_PUBLISHER_DATE,
+                    Actions.KOHA_SRU_TITLE
+                ]:
             sru = ksru.Koha_SRU(self.target_url, ksru.SRU_Version.V1_1)
-            # Ensure no data is Empty 
-            if title.strip() == "" or author.strip() == "" or publisher.strip() == "" or len(dates) < 1:
-                thisTry.error_occured(Errors.REQUIRED_DATA_MISSING)
-                return
-            # Generate query
-            sru_request = [
-                ksru.Part_Of_Query(
+            sru_request = []
+            # TITLE
+            if action in [
+                        Actions.KOHA_SRU_TITLE_AUTHOR_PUBLISHER_DATE,
+                        Actions.KOHA_SRU_TITLE_AUTHOR_DATE,
+                        Actions.KOHA_SRU_ANY_TITLE_AUTHOR_PUBLISHER_DATE,
+                        Actions.KOHA_SRU_ANY_TITLE_AUTHOR_DATE,
+                        Actions.KOHA_SRU_ANY_TITLE_PUBLISHER_DATE,
+                        Actions.KOHA_SRU_TITLE
+                    ]:
+                # Leave if empty
+                if title.strip() == "":
+                    thisTry.error_occured(Errors.REQUIRED_DATA_MISSING)
+                    return
+                # Else, append to query
+                sru_request.append(ksru.Part_Of_Query(
                     ksru.SRU_Indexes.TITLE,
                     ksru.SRU_Relations.EQUALS,
                     title,
                     ksru.SRU_Boolean_Operators.AND
-                ),
-                ksru.Part_Of_Query(
+                ))
+            # AUTHORS
+            if action in [
+                        Actions.KOHA_SRU_TITLE_AUTHOR_PUBLISHER_DATE,
+                        Actions.KOHA_SRU_TITLE_AUTHOR_DATE,
+                        Actions.KOHA_SRU_ANY_TITLE_AUTHOR_PUBLISHER_DATE,
+                        Actions.KOHA_SRU_ANY_TITLE_AUTHOR_DATE
+                    ]:
+                # Leave if empty
+                if author.strip() == "":
+                    thisTry.error_occured(Errors.REQUIRED_DATA_MISSING)
+                    return
+                # Else, append to query
+                sru_request.append(ksru.Part_Of_Query(
                     ksru.SRU_Indexes.AUTHOR,
                     ksru.SRU_Relations.EQUALS,
                     author,
                     ksru.SRU_Boolean_Operators.AND
-                ),
-                ksru.Part_Of_Query(
+                ))
+            # PUBLISHER
+            if action in [
+                        Actions.KOHA_SRU_TITLE_AUTHOR_PUBLISHER_DATE,
+                        Actions.KOHA_SRU_ANY_TITLE_AUTHOR_PUBLISHER_DATE,
+                        Actions.KOHA_SRU_ANY_TITLE_PUBLISHER_DATE
+                    ]:
+                # Leave if empty
+                if publisher.strip() == "":
+                    thisTry.error_occured(Errors.REQUIRED_DATA_MISSING)
+                    return
+                # Else, append to query
+                sru_request.append(ksru.Part_Of_Query(
                     ksru.SRU_Indexes.PUBLISHER,
                     ksru.SRU_Relations.EQUALS,
                     publisher,
                     ksru.SRU_Boolean_Operators.AND
-                ),
-                f" and ({ksru.SRU_Indexes.DATE.value}={f' or {ksru.SRU_Indexes.DATE.value}='.join([str(num) for num in dates])})",
-            ]
-            thisTry.define_used_query(sru.generate_query(sru_request))
-            res = sru.search(
-                thisTry.query,
-                record_schema=ksru.SRU_Record_Schemas.MARCXML,
-                start_record=1,
-                maximum_records=100
-            )
-            if (res.status == "Error"):
-                thisTry.error_occured(res.get_error_msg())
-            else:
-                thisTry.add_returned_ids(res.get_records_id())
-                thisTry.add_returned_records(res.get_records())
-
-        # Action Koha SRU Title, author and date on their own indexes
-        elif action == Actions.KOHA_SRU_TITLE_AUTHOR_DATE:
-            sru = ksru.Koha_SRU(self.target_url, ksru.SRU_Version.V1_1)
-            # Ensure no data is Empty 
-            if title.strip() == "" or author.strip() == "" or len(dates) < 1:
-                thisTry.error_occured(Errors.REQUIRED_DATA_MISSING)
-                return
-            # Generate query
-            sru_request = [
-                ksru.Part_Of_Query(
-                    ksru.SRU_Indexes.TITLE,
-                    ksru.SRU_Relations.EQUALS,
-                    title,
-                    ksru.SRU_Boolean_Operators.AND
-                ),
-                ksru.Part_Of_Query(
-                    ksru.SRU_Indexes.AUTHOR,
-                    ksru.SRU_Relations.EQUALS,
-                    author,
-                    ksru.SRU_Boolean_Operators.AND
-                ),
-                f" and ({ksru.SRU_Indexes.DATE.value}={f' or {ksru.SRU_Indexes.DATE.value}='.join([str(num) for num in dates])})",
-            ]
-            thisTry.define_used_query(sru.generate_query(sru_request))
-            res = sru.search(
-                thisTry.query,
-                record_schema=ksru.SRU_Record_Schemas.MARCXML,
-                start_record=1,
-                maximum_records=100
-            )
-            if (res.status == "Error"):
-                thisTry.error_occured(res.get_error_msg())
-            else:
-                thisTry.add_returned_ids(res.get_records_id())
-                thisTry.add_returned_records(res.get_records())
-
-        # Action Koha SRU Title, author, publisher and date on index "any"
-        elif action == Actions.KOHA_SRU_ANY_TITLE_AUTHOR_PUBLISHER_DATE:
-            sru = ksru.Koha_SRU(self.target_url, ksru.SRU_Version.V1_1)
-            # Ensure no data is Empty 
-            if title.strip() == "" or author.strip() == "" or publisher.strip() == "" or len(dates) < 1:
-                thisTry.error_occured(Errors.REQUIRED_DATA_MISSING)
-                return
-            # Generate query
-            sru_request = [
-                ksru.Part_Of_Query(
-                    ksru.SRU_Indexes.ANY,
-                    ksru.SRU_Relations.EQUALS,
-                    title,
-                    ksru.SRU_Boolean_Operators.AND
-                ),
-                ksru.Part_Of_Query(
-                    ksru.SRU_Indexes.ANY,
-                    ksru.SRU_Relations.EQUALS,
-                    author,
-                    ksru.SRU_Boolean_Operators.AND
-                ),
-                ksru.Part_Of_Query(
-                    ksru.SRU_Indexes.ANY,
-                    ksru.SRU_Relations.EQUALS,
-                    publisher,
-                    ksru.SRU_Boolean_Operators.AND
-                ),
-                f" and ({ksru.SRU_Indexes.ANY.value}={f' or {ksru.SRU_Indexes.ANY.value}='.join([str(num) for num in dates])})",
-            ]
-            thisTry.define_used_query(sru.generate_query(sru_request))
-            res = sru.search(
-                thisTry.query,
-                record_schema=ksru.SRU_Record_Schemas.MARCXML,
-                start_record=1,
-                maximum_records=100
-            )
-            if (res.status == "Error"):
-                thisTry.error_occured(res.get_error_msg())
-            else:
-                thisTry.add_returned_ids(res.get_records_id())
-                thisTry.add_returned_records(res.get_records())
-
-        # Action Koha SRU Title, author and date on index "any"
-        elif action == Actions.KOHA_SRU_ANY_TITLE_AUTHOR_DATE:
-            sru = ksru.Koha_SRU(self.target_url, ksru.SRU_Version.V1_1)
-            # Ensure no data is Empty 
-            if title.strip() == "" or author.strip() == "" or len(dates) < 1:
-                thisTry.error_occured(Errors.REQUIRED_DATA_MISSING)
-                return
-            # Generate query
-            sru_request = [
-                ksru.Part_Of_Query(
-                    ksru.SRU_Indexes.ANY,
-                    ksru.SRU_Relations.EQUALS,
-                    title,
-                    ksru.SRU_Boolean_Operators.AND
-                ),
-                ksru.Part_Of_Query(
-                    ksru.SRU_Indexes.ANY,
-                    ksru.SRU_Relations.EQUALS,
-                    author,
-                    ksru.SRU_Boolean_Operators.AND
-                ),
-                f" and ({ksru.SRU_Indexes.ANY.value}={f' or {ksru.SRU_Indexes.ANY.value}='.join([str(num) for num in dates])})",
-            ]
-            thisTry.define_used_query(sru.generate_query(sru_request))
-            res = sru.search(
-                thisTry.query,
-                record_schema=ksru.SRU_Record_Schemas.MARCXML,
-                start_record=1,
-                maximum_records=100
-            )
-            if (res.status == "Error"):
-                thisTry.error_occured(res.get_error_msg())
-            else:
-                thisTry.add_returned_ids(res.get_records_id())
-                thisTry.add_returned_records(res.get_records())
-
-        # Action Koha SRU Title, publisher and date on index "any"
-        elif action == Actions.KOHA_SRU_ANY_TITLE_PUBLISHER_DATE:
-            sru = ksru.Koha_SRU(self.target_url, ksru.SRU_Version.V1_1)
-            # Ensure no data is Empty 
-            if title.strip() == "" or publisher.strip() == "" or len(dates) < 1:
-                thisTry.error_occured(Errors.REQUIRED_DATA_MISSING)
-                return
-            # Generate query
-            sru_request = [
-                ksru.Part_Of_Query(
-                    ksru.SRU_Indexes.ANY,
-                    ksru.SRU_Relations.EQUALS,
-                    title,
-                    ksru.SRU_Boolean_Operators.AND
-                ),
-                ksru.Part_Of_Query(
-                    ksru.SRU_Indexes.ANY,
-                    ksru.SRU_Relations.EQUALS,
-                    publisher,
-                    ksru.SRU_Boolean_Operators.AND
-                ),
-                f" and ({ksru.SRU_Indexes.ANY.value}={f' or {ksru.SRU_Indexes.ANY.value}='.join([str(num) for num in dates])})",
-            ]
-            thisTry.define_used_query(sru.generate_query(sru_request))
-            res = sru.search(
-                thisTry.query,
-                record_schema=ksru.SRU_Record_Schemas.MARCXML,
-                start_record=1,
-                maximum_records=100
-            )
-            if (res.status == "Error"):
-                thisTry.error_occured(res.get_error_msg())
-            else:
-                thisTry.add_returned_ids(res.get_records_id())
-                thisTry.add_returned_records(res.get_records())
-
-        # Action Koha SRU Title only
-        elif action == Actions.KOHA_SRU_TITLE:
-            sru = ksru.Koha_SRU(self.target_url, ksru.SRU_Version.V1_1)
-            # Ensure no data is Empty 
-            if title.strip() == "":
-                thisTry.error_occured(Errors.REQUIRED_DATA_MISSING)
-                return
-            # Generate query
-            sru_request = [
-                ksru.Part_Of_Query(
-                    ksru.SRU_Indexes.TITLE,
-                    ksru.SRU_Relations.EQUALS,
-                    title,
-                    ksru.SRU_Boolean_Operators.AND
-                )
-            ]
+                ))
+            # DATES        
+            if action in [
+                        Actions.KOHA_SRU_TITLE_AUTHOR_PUBLISHER_DATE,
+                        Actions.KOHA_SRU_TITLE_AUTHOR_DATE,
+                        Actions.KOHA_SRU_ANY_TITLE_AUTHOR_PUBLISHER_DATE,
+                        Actions.KOHA_SRU_ANY_TITLE_AUTHOR_DATE,
+                        Actions.KOHA_SRU_ANY_TITLE_PUBLISHER_DATE
+                    ]:
+                # Leave if empty
+                if len(dates) < 1:
+                    thisTry.error_occured(Errors.REQUIRED_DATA_MISSING)
+                    return
+                # Else, append to query
+                sru_request.append(f" and ({ksru.SRU_Indexes.DATE.value}={f' or {ksru.SRU_Indexes.DATE.value}='.join([str(num) for num in dates])})")
+            
+            # launch search
             thisTry.define_used_query(sru.generate_query(sru_request))
             res = sru.search(
                 thisTry.query,
