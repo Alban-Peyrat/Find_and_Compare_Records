@@ -28,6 +28,7 @@ _Some previous changes will be added_
 * _Light grey_ color was replaced by _creme_
 * Replaced ISBN functions from `Abes_id2ppn` by `pyisbn` library
 * Updated `Abes_id2ppn` with lastest version
+* Reworked `request_action` to avoid redundacy on Sudoc & Koha SRU
 
 ### Removed
 
