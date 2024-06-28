@@ -148,31 +148,8 @@ class Matched_Records(object):
         ean = self.local_record.utils.get_first_ean_as_string()
         isbn = self.local_record.utils.get_first_isbn_as_string()
 
-        # Action SRU SUdoc ISBN
-        if action == Action_Names.SRU_SUDOC_ISBN:
-            sru = ssru.Sudoc_SRU()
-            sru_request = ssru.Part_Of_Query(
-                ssru.SRU_Indexes.ISB,
-                ssru.SRU_Relations.EQUALS,
-                self.query
-            )
-            thisTry.define_used_query(sru.generate_query([sru_request]))
-            res = sru.search(
-                thisTry.query,
-                record_schema=ssru.SRU_Record_Schemas.UNIMARC,
-                record_packing=ssru.SRU_Record_Packings.XML,
-                maximum_records=100,
-                start_record=1
-            )
-            if (res.status == "Error"):
-                thisTry.error_occured(res.get_error_msg())
-            else:
-                thisTry.add_returned_ids(res.get_records_id())
-                thisTry.add_returned_records(res.get_records())
-
-
         # Action Sudoc's id2ppn webservice
-        elif action in [
+        if action in [
                 Action_Names.ISBN2PPN,
                 Action_Names.ISBN2PPN_MODIFIED_ISBN,
                 Action_Names.ISBN2PPN_MODIFIED_ISBN_SAME_KEY,
@@ -257,8 +234,9 @@ class Matched_Records(object):
             else:
                 thisTry.add_returned_ids(res.get_results(merge=True))
 
-        # Action SRU Sudoc on data fields (Title, Author, Publisher, Date or DocType)
+        # Action SRU Sudoc on data fields (ISBN, Title, Author, Publisher, Date or DocType)
         elif action in [
+                Action_Names.SRU_SUDOC_ISBN,
                 Action_Names.SRU_SUDOC_MTI_AUT_EDI_APU_TDO_V,
                 Action_Names.SRU_SUDOC_MTI_AUT_APU_TDO_V,
                 Action_Names.SRU_SUDOC_TOU_TITLE_AUTHOR_PUBLISHER_DATE_TDO_V,
@@ -286,6 +264,23 @@ class Matched_Records(object):
                 return
             sru = ssru.Sudoc_SRU()
             sru_request = []
+            # ISBN
+            if action_instance.use_isbn:
+                # Leave if empty
+                if isbn.strip() == "":
+                    thisTry.error_occured(Errors.NO_ISBN_WAS_FOUND)
+                    return
+                # Defines the right index
+                isbn_index = ssru.SRU_Indexes.ISB
+                if not action_instance.specific_index:
+                    isbn_index = ssru.SRU_Indexes.TOU
+                # Append to query
+                sru_request.append(ssru.Part_Of_Query(
+                    isbn_index,
+                    ssru.SRU_Relations.EQUALS,
+                    self.query,
+                    ssru.SRU_Boolean_Operators.AND
+                ))
             # TITLE
             if action_instance.use_title:
                 # Leave if empty
