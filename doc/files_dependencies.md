@@ -38,7 +38,7 @@ Needs :
 Needs :
 
 * `cl_error.py` for `Errors` & `get_error_instance()`
-* `cl_PODA.py` for `Operation` & `Action_Names`
+* `cl_PODA.py` for `Operation`, `Action_Names` & `get_PODA_instance()`
   * So `cl_UDE.py` too
 * `cl_DBR` for `Database_Record`
 * `func_string_manip.py` for `delete_for_sudoc()`

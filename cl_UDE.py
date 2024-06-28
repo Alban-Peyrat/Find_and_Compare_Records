@@ -163,11 +163,9 @@ class Universal_Data_Extractor(object):
     """Central class to extract data from a record.
     
     Takes as argument :
-        - the parsed record
+        - the parsed record (ET.ElementTree, JSON as dict, pymarc.Record)
         - Database_Names member
-        - is_target_db {bool} : determines if the database is ORIGIN_DATABSE/TARGET_DATABASE
-    in marc_fields.json
-        - es : execution settings"""
+        - marc_fields_json : the JSON config file PARSED AS A DICT"""
     def __init__(self, record: ET.ElementTree | dict | pymarc.record.Record, database: Database_Names, marc_fields_json: dict):
         self.record = record
         self.format = Record_Formats.UNKNOWN

@@ -15,6 +15,7 @@ _Some previous changes will be added_
 * Now uses `pysisbn` library
 * Added error `ISBN_979_CAN_NOT_BE_CONVERTED` for ISBN 13 not starting with `978` if trying to convert them to ISBN 10
 * Operations `SEARCH_IN_SUDOC_BY_ISBN`, `SEARCH_IN_SUDOC_DVD`, `SEARCH_IN_SUDOC_NO_ISBN` & `SEARCH_IN_SUDOC_MAPS` now have an additionnal last actions that queries only on title (and document type filter)
+* More specific erros were added if the title, the authors, the publisher or the dates were missing and they were required for the matching process and if the configured document type is not supported
 
 ### Changed
 
@@ -31,7 +32,7 @@ _Some previous changes will be added_
 * Splitted big files into smaller ones & reduce dependencies between them
   * Notably, `cl_UDE.py` can now be used alone
   * Added a `classes_dependencies.md` file explaining the dependencies
-* Reworked `request_action` to avoid redundacy on Sudoc & Koha SRU
+* Reworked `request_action` to avoid redundacy on Sudoc SRU, Koha SRU & Sudoc's ad2ppn webservice
 
 ### Removed
 

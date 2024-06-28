@@ -16,6 +16,12 @@ class Errors(Enum):
     MARC_CHUNK_RAISED_EXCEPTION = 6
     OPERATION_NO_RESULT = 7
     ISBN_979_CAN_NOT_BE_CONVERTED = 8
+    ACTION_IS_NOT_CORRECTLY_DEFINED = 9
+    REQUIRED_TITLE_MISSING = 10
+    REQUIRED_AUTHORS_MISSING = 11
+    REQUIRED_PUBLISHER_MISSING = 12
+    REQUIRED_DATE_MISSING = 13
+    UNSUPPORTED_DOCTYPE = 14
 
 class Error(object):
     def __init__(self, error:Errors, msg:Dict[str, str]) -> None:
@@ -95,6 +101,48 @@ ERRORS_LIST = {
         msg={
             "eng":"Can only convert ISBN 13 starting with 978",
             "fre":"Seuls les ISBN 13 commençant par 978 peuvent être convertis"
+        }
+    ),
+    Errors.ACTION_IS_NOT_CORRECTLY_DEFINED:Error(
+        error=Errors.ACTION_IS_NOT_CORRECTLY_DEFINED,
+        msg={
+            "eng":"Action is not defined in ACTION_LIST",
+            "fre":"Cette action n'est pas définie dans ACTION_LIST"
+        }
+    ),
+    Errors.REQUIRED_TITLE_MISSING:Error(
+        error=Errors.REQUIRED_TITLE_MISSING,
+        msg={
+            "eng":"Original record was missing a title (required)",
+            "fre":"Titre absent dans la notice originale (requis)"
+        }
+    ),
+    Errors.REQUIRED_AUTHORS_MISSING:Error(
+        error=Errors.REQUIRED_AUTHORS_MISSING,
+        msg={
+            "eng":"Original record was missing authors (required)",
+            "fre":"Auteurs absents dans la notice originale (requis)"
+        }
+    ),
+    Errors.REQUIRED_PUBLISHER_MISSING:Error(
+        error=Errors.REQUIRED_PUBLISHER_MISSING,
+        msg={
+            "eng":"Original record was missing a publisher (required)",
+            "fre":"Éditeur absent dans la notice originale (requis)"
+        }
+    ),
+    Errors.REQUIRED_DATE_MISSING:Error(
+        error=Errors.REQUIRED_DATE_MISSING,
+        msg={
+            "eng":"Original record was missing a date (required)",
+            "fre":"Date absente dans la notice originale (requis)"
+        }
+    ),
+    Errors.UNSUPPORTED_DOCTYPE:Errors(
+        error=Errors.UNSUPPORTED_DOCTYPE,
+        msg={
+            "eng":"This document type is not supported",
+            "fre":"Ce type de document n'est pas supporté"
         }
     )
 }
