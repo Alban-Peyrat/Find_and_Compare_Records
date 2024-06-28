@@ -7,13 +7,18 @@ import json
 # Internal import
 import api.abes.AbesXml as AbesXml
 import api.koha.Koha_API_PublicBiblio as Koha_API_PublicBiblio
-import fcr_classes as fcr
+from cl_error import Errors, get_error_instance
+from cl_ES import Execution_Settings, Analysis_Checks
+from cl_MR import Matched_Records
+from cl_DBR import Database_Record
+from cl_PODA import Processing_Names
+from cl_main import Original_Record, Processed_Id_State, Report, Report_Errors, Report_Success
 
 def temp_id(index:int):
     """Defines a temporary index"""
     return f"FCR INDEX {index}"
 
-def main(es: fcr.Execution_Settings):
+def main(es: Execution_Settings):
     """Main function.
     Takes as argument an Execution_Settings instance"""
 
@@ -49,19 +54,19 @@ def main(es: fcr.Execution_Settings):
     es.log.simple_info("Checks", str(results_list))
 
     # Init report
-    results_report = fcr.Report(es)
+    results_report = Report(es)
 
     es.log.simple_info("Processing", es.processing.name)
     if es.processing.enum_member in [
-        fcr.Processing_Names.BETTER_ITEM,
-        fcr.Processing_Names.BETTER_ITEM_DVD,
-        fcr.Processing_Names.BETTER_ITEM_NO_ISBN,
-        fcr.Processing_Names.BETTER_ITEM_MAPS
+        Processing_Names.BETTER_ITEM,
+        Processing_Names.BETTER_ITEM_DVD,
+        Processing_Names.BETTER_ITEM_NO_ISBN,
+        Processing_Names.BETTER_ITEM_MAPS
         ]:
         es.log.simple_info("Koha URL", es.origin_url)
         es.log.simple_info("ILN", es.iln)
         es.log.simple_info("RCR", es.rcr)
-    if es.processing.enum_member == fcr.Processing_Names.MARC_FILE_IN_KOHA_SRU:
+    if es.processing.enum_member == Processing_Names.MARC_FILE_IN_KOHA_SRU:
         es.log.simple_info("Koha URL", es.target_url)
     es.log.simple_info("Origin database", es.processing.origin_database.name)
     es.log.simple_info("Target database", es.processing.target_database.name)
@@ -89,8 +94,8 @@ def main(es: fcr.Execution_Settings):
             # Retrieve ISBN + KohaBibNb
             # 0 = ISBN, 1 = 915$a, 2 = 915$b, 3 = 930$c, 4 = 930$e,
             # 5 = 930$a, 6 = 930$j, 7 = 930$v, 8 = L035$a
-        rec = fcr.Original_Record(es.processing, es.get_records_settings(), es.lang, line)
-        rec.set_fcr_processed_id(index, fcr.Processed_Id_State.FAILED_BEFORE_ORIGIN_DB_GET)
+        rec = Original_Record(es.processing, es.get_records_settings(), es.lang, line)
+        rec.set_fcr_processed_id(index, Processed_Id_State.FAILED_BEFORE_ORIGIN_DB_GET)
         results_report.increase_processed() # report stats
 
         # Gets input query and original uid for BETTER_ITEMs
@@ -105,31 +110,31 @@ def main(es: fcr.Execution_Settings):
         # Get origin DB record
         # BETTER_ITEMs querying Koha Public biblio
         if es.processing.enum_member in [
-            fcr.Processing_Names.BETTER_ITEM,
-            fcr.Processing_Names.BETTER_ITEM_DVD,
-            fcr.Processing_Names.BETTER_ITEM_NO_ISBN,
-            fcr.Processing_Names.BETTER_ITEM_MAPS
+            Processing_Names.BETTER_ITEM,
+            Processing_Names.BETTER_ITEM_DVD,
+            Processing_Names.BETTER_ITEM_NO_ISBN,
+            Processing_Names.BETTER_ITEM_MAPS
             ]:
             origin_record = Koha_API_PublicBiblio.Koha_API_PublicBiblio(rec.original_uid, es.origin_url, service=es.service, format="application/marcxml+xml")
             if origin_record.status == 'Error' :
                 rec.trigger_error(f"Koha_API_PublicBiblio : {origin_record.error_msg}")
-                results_report.increase_step(fcr.Report_Errors.ORIGIN_DB_KOHA) # report stats
+                results_report.increase_step(Report_Errors.ORIGIN_DB_KOHA) # report stats
                 es.log.error(rec.error_message)
                 es.csv.write_line(rec, False)
                 results.append(rec.output.to_csv())
-                json_output.append(rec.output.to_json(fcr.Report_Errors.ORIGIN_DB_KOHA))
+                json_output.append(rec.output.to_json(Report_Errors.ORIGIN_DB_KOHA))
                 continue # skip to next line
             rec.get_origin_database_data(es.processing, origin_record.record_parsed)
         # MARC_FILE_IN_KOHA_SRU from the file
-        elif es.processing.enum_member == fcr.Processing_Names.MARC_FILE_IN_KOHA_SRU:
+        elif es.processing.enum_member == Processing_Names.MARC_FILE_IN_KOHA_SRU:
             origin_record = es.original_file_data[index]
             if origin_record is None:
-                rec.trigger_error(f"MARC file : {fcr.get_instance_from_enum(fcr.Errors.MARC_CHUNK_RAISED_EXCEPTION).get_msg(es.lang)}")
-                results_report.increase_step(fcr.Report_Errors.ORIGIN_DB_LOCAL_RECORD) # report stats
+                rec.trigger_error(f"MARC file : {get_error_instance(Errors.MARC_CHUNK_RAISED_EXCEPTION).get_msg(es.lang)}")
+                results_report.increase_step(Report_Errors.ORIGIN_DB_LOCAL_RECORD) # report stats
                 es.log.error(rec.error_message)
                 es.csv.write_line(rec, False)
                 results.append(rec.output.to_csv())
-                json_output.append(rec.output.to_json(fcr.Report_Errors.ORIGIN_DB_KOHA))
+                json_output.append(rec.output.to_json(Report_Errors.ORIGIN_DB_KOHA))
                 continue # skip to next line
             rec.get_origin_database_data(es.processing, origin_record)
             rec.original_uid = rec.origin_database_data.utils.get_id()
@@ -137,28 +142,28 @@ def main(es: fcr.Execution_Settings):
         # Successfully got origin DB record
         es.log.debug(f"Origin database ID : {rec.origin_database_data.utils.get_id()}")
         es.log.debug(f"Origin database cleaned title : {rec.origin_database_data.utils.get_first_title_as_string()}")
-        rec.set_fcr_processed_id(index, fcr.Processed_Id_State.FAILED_BEFORE_MATCH_RECORDS_GET)
-        results_report.increase_step(fcr.Report_Success.ORIGIN_DB) # report stats
+        rec.set_fcr_processed_id(index, Processed_Id_State.FAILED_BEFORE_MATCH_RECORDS_GET)
+        results_report.increase_step(Report_Success.ORIGIN_DB) # report stats
 
         # --------------- Match records ---------------
-        rec.get_matched_records_instance(fcr.Matched_Records(es.operation, rec.input_query, rec.origin_database_data, es.target_url, es.lang)) 
+        rec.get_matched_records_instance(Matched_Records(es.operation, rec.input_query, rec.origin_database_data, es.target_url, es.lang)) 
         if rec.nb_matched_records == 0:
-            rec.trigger_error(f"{es.operation.name} : {fcr.get_instance_from_enum(fcr.Errors.OPERATION_NO_RESULT).get_msg(es.lang)}")
+            rec.trigger_error(f"{es.operation.name} : {get_error_instance(Errors.OPERATION_NO_RESULT).get_msg(es.lang)}")
 
         if rec.error:
-            results_report.increase_step(fcr.Report_Errors.MATCH_RECORD_NO_MATCH) # report stats
+            results_report.increase_step(Report_Errors.MATCH_RECORD_NO_MATCH) # report stats
             results_report.increase_match_records_actions(rec.matched_record_instance.tries)
             es.log.error(rec.error_message)
             
             # Skip to next line
             es.csv.write_line(rec, False)
             results.append(rec.output.to_csv())
-            json_output.append(rec.output.to_json(fcr.Report_Errors.MATCH_RECORD_NO_MATCH))
+            json_output.append(rec.output.to_json(Report_Errors.MATCH_RECORD_NO_MATCH))
             continue
         
         # Match records was a success
-        rec.set_fcr_processed_id(index, fcr.Processed_Id_State.FAILED_BEFORE_TARGET_DB_LOOP)
-        results_report.increase_step(fcr.Report_Success.MATCH_RECORD_MATCHED) # report stats
+        rec.set_fcr_processed_id(index, Processed_Id_State.FAILED_BEFORE_TARGET_DB_LOOP)
+        results_report.increase_step(Report_Success.MATCH_RECORD_MATCHED) # report stats
         results_report.increase_match_records_actions(rec.matched_record_instance.tries) # report stats
         results_report.increase_match_record_nb_of_match(rec.matched_records_ids) # report stats
         es.log.debug(f"Query used for matched record : {rec.query_used}")
@@ -174,10 +179,10 @@ def main(es: fcr.Execution_Settings):
             list_is_id = False
             # Tiny brain can't comprehend how to mrege all the if so I'm nesting them
             if es.processing.enum_member in [
-                fcr.Processing_Names.BETTER_ITEM,
-                fcr.Processing_Names.BETTER_ITEM_DVD,
-                fcr.Processing_Names.BETTER_ITEM_NO_ISBN,
-                fcr.Processing_Names.BETTER_ITEM_MAPS
+                Processing_Names.BETTER_ITEM,
+                Processing_Names.BETTER_ITEM_DVD,
+                Processing_Names.BETTER_ITEM_NO_ISBN,
+                Processing_Names.BETTER_ITEM_MAPS
                 ]:
                 if "SRU_SUDOC" in rec.action_used.name:
                     record_list = rec.matched_records_ids
@@ -191,62 +196,62 @@ def main(es: fcr.Execution_Settings):
                 rec.set_matched_id(record_from_mr_list)
             else:
                 rec.set_matched_id(temp_id(ii))
-            rec.set_fcr_processed_id(index, fcr.Processed_Id_State.FAILED_TO_GET_TARGET_DB, ii)
+            rec.set_fcr_processed_id(index, Processed_Id_State.FAILED_TO_GET_TARGET_DB, ii)
 
             # --------------- TARGET DATABASE ---------------
             # Get target DB record
             # BETTER_ITEMs querying Sudoc XML
             if es.processing.enum_member in [
-                fcr.Processing_Names.BETTER_ITEM,
-                fcr.Processing_Names.BETTER_ITEM_DVD,
-                fcr.Processing_Names.BETTER_ITEM_NO_ISBN,
-                fcr.Processing_Names.BETTER_ITEM_MAPS
+                Processing_Names.BETTER_ITEM,
+                Processing_Names.BETTER_ITEM_DVD,
+                Processing_Names.BETTER_ITEM_NO_ISBN,
+                Processing_Names.BETTER_ITEM_MAPS
                 ]:
                 target_db_queried_record = AbesXml.AbesXml(rec.matched_id,service=es.service)
                 if target_db_queried_record.status == 'Error':
                     rec.trigger_error(f"Sudoc XML : {target_db_queried_record.error_msg}")
-                    results_report.increase_step(fcr.Report_Errors.TARGET_DB_SUDOC) # report stats
+                    results_report.increase_step(Report_Errors.TARGET_DB_SUDOC) # report stats
                     es.log.error(rec.error_message)
                     es.csv.write_line(rec, False)
                     results.append(rec.output.to_csv())
                     continue # skip to next line
                 rec.get_target_database_data(es.processing, rec.matched_id, target_db_queried_record.record_parsed)
             # MARC_FILE_IN_KOHA_SRU from the file
-            elif es.processing.enum_member == fcr.Processing_Names.MARC_FILE_IN_KOHA_SRU:
+            elif es.processing.enum_member == Processing_Names.MARC_FILE_IN_KOHA_SRU:
                 rec.get_target_database_data(es.processing, rec.matched_id, record_from_mr_list)
-                target_record:fcr.Database_Record = rec.target_database_data[f"FCR INDEX {ii}"] # for the IDE
+                target_record:Database_Record = rec.target_database_data[f"FCR INDEX {ii}"] # for the IDE
                 if target_record.utils.get_id().strip() != "":
                     rec.change_target_record_id(temp_id(ii), target_record.utils.get_id().strip())
 
             # Successfully got target db record
             rec.reset_error()
-            target_record:fcr.Database_Record = rec.target_database_data[rec.matched_id] # for the IDE
-            rec.set_fcr_processed_id(index, fcr.Processed_Id_State.FAILED_TO_ANALYZE_TARGET_DB, ii)
+            target_record:Database_Record = rec.target_database_data[rec.matched_id] # for the IDE
+            rec.set_fcr_processed_id(index, Processed_Id_State.FAILED_TO_ANALYZE_TARGET_DB, ii)
 
-            results_report.increase_step(fcr.Report_Success.TARGET_DB) # report stats
+            results_report.increase_step(Report_Success.TARGET_DB) # report stats
             es.log.debug(f"Target database ID : {rec.matched_id}")
             es.log.debug(f"Target database cleaned title : {target_record.utils.get_first_title_as_string()}")
 
             # --------------- ANALYSIS PROCESS ---------------
             # Garder les logs dans main
             target_record.compare_to(rec.origin_database_data)
-            rec.set_fcr_processed_id(index, fcr.Processed_Id_State.SUCCESS, ii)
-            results_report.increase_step(fcr.Report_Success.ANALYSIS) # report stats
+            rec.set_fcr_processed_id(index, Processed_Id_State.SUCCESS, ii)
+            results_report.increase_step(Report_Success.ANALYSIS) # report stats
             es.log.debug(f"Title scores : Simple ratio = {target_record.title_ratio}, Partial ratio = {target_record.title_partial_ratio}, Token sort ratio = {target_record.title_token_sort_ratio}, Token set ratio = {target_record.title_token_set_ratio}")
             es.log.debug(f"Dates matched ? {target_record.dates_matched}")
             es.log.debug(f"Publishers score = {target_record.publishers_score} (using \"{target_record.chosen_publisher}\" and \"{target_record.chosen_compared_publisher}\")")
             es.log.debug(f"Record ID included = {target_record.local_id_in_compared_record.name}")
 
             # --------------- END OF THIS LINE ---------------
-            es.log.debug(f"Results : {target_record.total_checks.name} (titles : {target_record.checks[fcr.Analysis_Checks.TITLE]}, publishers : {target_record.checks[fcr.Analysis_Checks.PUBLISHER]}, dates : {target_record.checks[fcr.Analysis_Checks.DATE]})")
+            es.log.debug(f"Results : {target_record.total_checks.name} (titles : {target_record.checks[Analysis_Checks.TITLE]}, publishers : {target_record.checks[Analysis_Checks.PUBLISHER]}, dates : {target_record.checks[Analysis_Checks.DATE]})")
             es.csv.write_line(rec, True)
             results.append(rec.output.to_csv())
-            results_report.increase_step(fcr.Report_Success.TARGET_RECORD_GLOBAL) # report stats
+            results_report.increase_step(Report_Success.TARGET_RECORD_GLOBAL) # report stats
 
         # JSON output
         json_output.append(rec.output.to_json())
 
-        results_report.increase_step(fcr.Report_Success.ORIGIN_RECORD_GLOBAL) # report stats
+        results_report.increase_step(Report_Success.ORIGIN_RECORD_GLOBAL) # report stats
     # Closes CSV file
     es.csv.close_file()
 
