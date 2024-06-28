@@ -28,6 +28,9 @@ _Some previous changes will be added_
 * _Light grey_ color was replaced by _creme_
 * Replaced ISBN functions from `Abes_id2ppn` by `pyisbn` library
 * Updated `Abes_id2ppn` with lastest version
+* Splitted big files into smaller ones & reduce dependencies between them
+  * Notably, `cl_UDE.py` can now be used alone
+  * Added a `classes_dependencies.md` file explaining the dependencies
 * Reworked `request_action` to avoid redundacy on Sudoc & Koha SRU
 
 ### Removed
@@ -39,6 +42,7 @@ _Some previous changes will be added_
 * Put back the mention of Alexandre Faure original script (that I apprently deleted)
 * Fixed various sytnax warning with regular expressions
 * Fixed fatal errors when trying to convert ISBN with more than just digits or `X`
+* Fixed the functions retruning instances from `Enum` (though the bug was not used in the main script I think)
 
 
 ## [1.17.5] - 2024-04-11
@@ -307,8 +311,8 @@ _Some previous changes will be added_
 ### Changed
 
 * Default analysis is now _Titles 80% (3 out of 4), publishers 80%, dates_
-* Checking if the ID from the origin database is in the target list of othre database IDs is now more precise ([see `Enum Other_Database_Id_In_Target` in `fcr_enum.py`](./fcr_enum.py "Open the file fcr_enum.py"))
-* Global validation has now 2 output columns : the previous one now returns values from [`Enum Analysis_Final_Results` in `fcr_enum.py`](./fcr_enum.py "Open the file fcr_enum.py") and the new one the number of successful checks
+* Checking if the ID from the origin database is in the target list of othre database IDs is now more precise (see `Enum Other_Database_Id_In_Target` in `fcr_enum.py`)
+* Global validation has now 2 output columns : the previous one now returns values from `Enum Analysis_Final_Results` in `fcr_enum.py` and the new one the number of successful checks
 
 ### Fixed
 

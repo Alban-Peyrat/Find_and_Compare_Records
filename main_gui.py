@@ -10,8 +10,9 @@ from typing import List, Dict
 
 # Internal import
 from theme.theme import *
+from cl_ES import Execution_Settings
+from cl_PODA import Processing_Names
 import main
-import fcr_classes as fcr
 from fcr_gui_lang import GUI_Text
 
 CURR_DIR = os.path.dirname(__file__)
@@ -25,7 +26,7 @@ sg.theme_add_new(theme_name, theme)
 sg.theme(theme_name)
 
 # Sets up an execution Settings instance
-VALLS = fcr.Execution_Settings(CURR_DIR)
+VALLS = Execution_Settings(CURR_DIR)
 VALLS.load_env_values()
 
 # --------------- Screen classes & enums ---------------
@@ -157,7 +158,7 @@ MAIN_SCREEN_LAYOUT = [
     # Processing
     [
         sg.Text(f"{GUI_Text.PROCESSING.value[VALLS.lang]} :", k=GUI_Text.PROCESSING.name),
-        sg.OptionMenu([processing.name for processing in fcr.Processing_Names], size=(30, 5), key="PROCESSING_VAL", default_value=VALLS.processing.name)
+        sg.OptionMenu([processing.name for processing in Processing_Names], size=(30, 5), key="PROCESSING_VAL", default_value=VALLS.processing.name)
     ],
 
     # Original file path
@@ -205,10 +206,10 @@ PROCESSING_CONFIGURATION_SCREEN_MAIN_TAB_LAYOUT = [
             k=GUI_Text.ORIGIGN_DATABASE_URL.name,
             metadata={"class":[
                 "PROCESSING_CONFIGURATION_MAIN",
-                fcr.Processing_Names.BETTER_ITEM.name,
-                fcr.Processing_Names.BETTER_ITEM_DVD.name,
-                fcr.Processing_Names.BETTER_ITEM_NO_ISBN.name,
-                fcr.Processing_Names.BETTER_ITEM_MAPS.name
+                Processing_Names.BETTER_ITEM.name,
+                Processing_Names.BETTER_ITEM_DVD.name,
+                Processing_Names.BETTER_ITEM_NO_ISBN.name,
+                Processing_Names.BETTER_ITEM_MAPS.name
             ]}
         )
     ],
@@ -219,10 +220,10 @@ PROCESSING_CONFIGURATION_SCREEN_MAIN_TAB_LAYOUT = [
             size=(80, None),
             metadata={"class":[
                 "PROCESSING_CONFIGURATION_MAIN",
-                fcr.Processing_Names.BETTER_ITEM.name,
-                fcr.Processing_Names.BETTER_ITEM_DVD.name,
-                fcr.Processing_Names.BETTER_ITEM_NO_ISBN.name,
-                fcr.Processing_Names.BETTER_ITEM_MAPS.name
+                Processing_Names.BETTER_ITEM.name,
+                Processing_Names.BETTER_ITEM_DVD.name,
+                Processing_Names.BETTER_ITEM_NO_ISBN.name,
+                Processing_Names.BETTER_ITEM_MAPS.name
             ]}
         )
     ],
@@ -235,7 +236,7 @@ PROCESSING_CONFIGURATION_SCREEN_MAIN_TAB_LAYOUT = [
             k=GUI_Text.TARGET_DATABASE_URL.name,
             metadata={"class":[
                 "PROCESSING_CONFIGURATION_MAIN",
-                fcr.Processing_Names.MARC_FILE_IN_KOHA_SRU.name
+                Processing_Names.MARC_FILE_IN_KOHA_SRU.name
             ]}
         )
     ],
@@ -246,7 +247,7 @@ PROCESSING_CONFIGURATION_SCREEN_MAIN_TAB_LAYOUT = [
             size=(80, None),
             metadata={"class":[
                 "PROCESSING_CONFIGURATION_MAIN",
-                fcr.Processing_Names.MARC_FILE_IN_KOHA_SRU.name
+                Processing_Names.MARC_FILE_IN_KOHA_SRU.name
             ]}
         )
     ],
@@ -259,10 +260,10 @@ PROCESSING_CONFIGURATION_SCREEN_MAIN_TAB_LAYOUT = [
             k=GUI_Text.ILN_TEXT.name,
             metadata={"class":[
                 "PROCESSING_CONFIGURATION_MAIN",
-                fcr.Processing_Names.BETTER_ITEM.name,
-                fcr.Processing_Names.BETTER_ITEM_DVD.name,
-                fcr.Processing_Names.BETTER_ITEM_NO_ISBN.name,
-                fcr.Processing_Names.BETTER_ITEM_MAPS.name
+                Processing_Names.BETTER_ITEM.name,
+                Processing_Names.BETTER_ITEM_DVD.name,
+                Processing_Names.BETTER_ITEM_NO_ISBN.name,
+                Processing_Names.BETTER_ITEM_MAPS.name
             ]}
         ),
         sg.Input(
@@ -271,10 +272,10 @@ PROCESSING_CONFIGURATION_SCREEN_MAIN_TAB_LAYOUT = [
             size=(4, None),
             metadata={"class":[
                 "PROCESSING_CONFIGURATION_MAIN",
-                fcr.Processing_Names.BETTER_ITEM.name,
-                fcr.Processing_Names.BETTER_ITEM_DVD.name,
-                fcr.Processing_Names.BETTER_ITEM_NO_ISBN.name,
-                fcr.Processing_Names.BETTER_ITEM_MAPS.name
+                Processing_Names.BETTER_ITEM.name,
+                Processing_Names.BETTER_ITEM_DVD.name,
+                Processing_Names.BETTER_ITEM_NO_ISBN.name,
+                Processing_Names.BETTER_ITEM_MAPS.name
             ]}
         ),
         sg.Text(
@@ -282,7 +283,7 @@ PROCESSING_CONFIGURATION_SCREEN_MAIN_TAB_LAYOUT = [
             k=GUI_Text.FILTER1_TEXT.name,
             metadata={"class":[
                 "PROCESSING_CONFIGURATION_MAIN",
-                fcr.Processing_Names.MARC_FILE_IN_KOHA_SRU.name
+                Processing_Names.MARC_FILE_IN_KOHA_SRU.name
             ]}
         ),
         sg.Input(
@@ -291,7 +292,7 @@ PROCESSING_CONFIGURATION_SCREEN_MAIN_TAB_LAYOUT = [
             size=(4, None),
             metadata={"class":[
                 "PROCESSING_CONFIGURATION_MAIN",
-                fcr.Processing_Names.MARC_FILE_IN_KOHA_SRU.name
+                Processing_Names.MARC_FILE_IN_KOHA_SRU.name
             ]}
         )
     ],
@@ -301,10 +302,10 @@ PROCESSING_CONFIGURATION_SCREEN_MAIN_TAB_LAYOUT = [
             k=GUI_Text.RCR_TEXT.name,
             metadata={"class":[
                 "PROCESSING_CONFIGURATION_MAIN",
-                fcr.Processing_Names.BETTER_ITEM.name,
-                fcr.Processing_Names.BETTER_ITEM_DVD.name,
-                fcr.Processing_Names.BETTER_ITEM_NO_ISBN.name,
-                fcr.Processing_Names.BETTER_ITEM_MAPS.name
+                Processing_Names.BETTER_ITEM.name,
+                Processing_Names.BETTER_ITEM_DVD.name,
+                Processing_Names.BETTER_ITEM_NO_ISBN.name,
+                Processing_Names.BETTER_ITEM_MAPS.name
             ]}
         ),
         sg.Input(
@@ -313,10 +314,10 @@ PROCESSING_CONFIGURATION_SCREEN_MAIN_TAB_LAYOUT = [
             size=(10, None),
             metadata={"class":[
                 "PROCESSING_CONFIGURATION_MAIN",
-                fcr.Processing_Names.BETTER_ITEM.name,
-                fcr.Processing_Names.BETTER_ITEM_DVD.name,
-                fcr.Processing_Names.BETTER_ITEM_NO_ISBN.name,
-                fcr.Processing_Names.BETTER_ITEM_MAPS.name
+                Processing_Names.BETTER_ITEM.name,
+                Processing_Names.BETTER_ITEM_DVD.name,
+                Processing_Names.BETTER_ITEM_NO_ISBN.name,
+                Processing_Names.BETTER_ITEM_MAPS.name
             ]}
         ),
         sg.Text(
@@ -324,7 +325,7 @@ PROCESSING_CONFIGURATION_SCREEN_MAIN_TAB_LAYOUT = [
             k=GUI_Text.FILTER2_TEXT.name,
             metadata={"class":[
                 "PROCESSING_CONFIGURATION_MAIN",
-                fcr.Processing_Names.MARC_FILE_IN_KOHA_SRU.name
+                Processing_Names.MARC_FILE_IN_KOHA_SRU.name
             ]}
         ),
         sg.Input(
@@ -333,7 +334,7 @@ PROCESSING_CONFIGURATION_SCREEN_MAIN_TAB_LAYOUT = [
             size=(4, None),
             metadata={"class":[
                 "PROCESSING_CONFIGURATION_MAIN",
-                fcr.Processing_Names.MARC_FILE_IN_KOHA_SRU.name
+                Processing_Names.MARC_FILE_IN_KOHA_SRU.name
             ]}
         )
     ],
@@ -346,7 +347,7 @@ PROCESSING_CONFIGURATION_SCREEN_MAIN_TAB_LAYOUT = [
             k=GUI_Text.FILTER3_TEXT.name,
             metadata={"class":[
                 "PROCESSING_CONFIGURATION_MAIN",
-                fcr.Processing_Names.MARC_FILE_IN_KOHA_SRU.name
+                Processing_Names.MARC_FILE_IN_KOHA_SRU.name
             ]}
         ),
         sg.Input(
@@ -355,7 +356,7 @@ PROCESSING_CONFIGURATION_SCREEN_MAIN_TAB_LAYOUT = [
             size=(4, None),
             metadata={"class":[
                 "PROCESSING_CONFIGURATION_MAIN",
-                fcr.Processing_Names.MARC_FILE_IN_KOHA_SRU.name
+                Processing_Names.MARC_FILE_IN_KOHA_SRU.name
             ]}
         )
     ],
