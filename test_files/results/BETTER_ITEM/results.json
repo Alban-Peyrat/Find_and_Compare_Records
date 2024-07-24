@@ -91,14 +91,14 @@
                 "status": "SUCCESS",
                 "error_type": null,
                 "msg": null,
-                "query": "mti=1 interieures exterieures menuiserie menuiseries maison",
+                "query": "mti=1 exterieures maison interieures menuiseries menuiserie",
                 "returned_ids": [
                     "020791909",
                     "198800398"
                 ]
             }
         },
-        "query_used": "mti=1 interieures exterieures menuiserie menuiseries maison",
+        "query_used": "mti=1 exterieures maison interieures menuiseries menuiserie",
         "action_used": "SRU_SUDOC_MTI",
         "nb_matched_records": 2,
         "matched_records_ids": [
@@ -2593,7 +2593,7 @@
                 "status": "SUCCESS",
                 "error_type": null,
                 "msg": null,
-                "query": "mti=marseille autrefois",
+                "query": "mti=autrefois marseille",
                 "returned_ids": [
                     "09762179X",
                     "27931115X",
@@ -2603,7 +2603,7 @@
                 ]
             }
         },
-        "query_used": "mti=marseille autrefois",
+        "query_used": "mti=autrefois marseille",
         "action_used": "SRU_SUDOC_MTI",
         "nb_matched_records": 5,
         "matched_records_ids": [
@@ -2970,13 +2970,13 @@
                 "status": "SUCCESS",
                 "error_type": null,
                 "msg": null,
-                "query": "mti=1 marseille autrefois",
+                "query": "mti=autrefois 1 marseille",
                 "returned_ids": [
                     "237276658"
                 ]
             }
         },
-        "query_used": "mti=1 marseille autrefois",
+        "query_used": "mti=autrefois 1 marseille",
         "action_used": "SRU_SUDOC_MTI",
         "nb_matched_records": 1,
         "matched_records_ids": [
@@ -3313,11 +3313,11 @@
                 "status": "SUCCESS",
                 "error_type": null,
                 "msg": null,
-                "query": "mti=mastering 2010 revit architecture",
+                "query": "mti=2010 mastering revit architecture",
                 "returned_ids": []
             }
         },
-        "query_used": "mti=mastering 2010 revit architecture",
+        "query_used": "mti=2010 mastering revit architecture",
         "action_used": "SRU_SUDOC_MTI",
         "nb_matched_records": 0,
         "matched_records_ids": []
@@ -4283,8 +4283,8 @@
                         ]
                     ],
                     "ERRONEOUS_ISBN": [
-                        "2-2200-37225-6",
-                        "2-2200-37224-8"
+                        "2-2200-37224-8",
+                        "2-2200-37225-6"
                     ],
                     "TITLE": [
                         "La Méditerranée et le monde méditerranéen à l'époque de Philippe II"
@@ -5102,8 +5102,8 @@
                     "Sanders Lena"
                 ],
                 "PUBLISHERS_NAME": [
-                    "Lavoisier",
-                    "Hermès science"
+                    "Hermès science",
+                    "Lavoisier"
                 ],
                 "EDITION_NOTES": [],
                 "PUBLICATION_DATES": [
@@ -5151,8 +5151,8 @@
                         "Sanders Lena"
                     ],
                     "PUBLISHERS_NAME": [
-                        "Lavoisier",
-                        "Hermès science"
+                        "Hermès science",
+                        "Lavoisier"
                     ],
                     "EDITION_NOTES": [],
                     "PUBLICATION_DATES": [
@@ -5175,8 +5175,8 @@
                     "dates": true,
                     "publishers": {
                         "score": 100,
-                        "target_db": "lavoisier",
-                        "origin_db": "lavoisier"
+                        "target_db": "hermes science",
+                        "origin_db": "hermes science"
                     },
                     "other_ids": {
                         "nb": 1,
@@ -5485,7 +5485,7 @@
                 "status": "SUCCESS",
                 "error_type": null,
                 "msg": null,
-                "query": "mti=michel mont saint",
+                "query": "mti=mont saint michel",
                 "returned_ids": [
                     "227178149",
                     "094851050",
@@ -5590,7 +5590,7 @@
                 ]
             }
         },
-        "query_used": "mti=michel mont saint",
+        "query_used": "mti=mont saint michel",
         "action_used": "SRU_SUDOC_MTI",
         "nb_matched_records": 100,
         "matched_records_ids": [
@@ -5825,8 +5825,8 @@
                         "Amis du Mont-Saint-Michel Mont-Saint-Michel"
                     ],
                     "PUBLISHERS_NAME": [
-                        "les Amis du Mont-Saint-Michel",
-                        "Anthèse"
+                        "Anthèse",
+                        "les Amis du Mont-Saint-Michel"
                     ],
                     "EDITION_NOTES": [],
                     "PUBLICATION_DATES": [
@@ -7386,9 +7386,9 @@
                     ],
                     "AUTHORS": [],
                     "PUBLISHERS_NAME": [
-                        "Totalfina Elf",
                         "EPHE",
-                        "CNRS"
+                        "CNRS",
+                        "Totalfina Elf"
                     ],
                     "EDITION_NOTES": [
                         "EPHE = École pratique des hautes études"
@@ -7824,8 +7824,8 @@
                         "Manufacture française des pneumatiques Michelin"
                     ],
                     "PUBLISHERS_NAME": [
-                        "Michelin travel partner",
-                        "IME by Estimprim"
+                        "IME by Estimprim",
+                        "Michelin travel partner"
                     ],
                     "EDITION_NOTES": [],
                     "PUBLICATION_DATES": [
@@ -9388,8 +9388,8 @@
                         "Estienne P. M."
                     ],
                     "PUBLISHERS_NAME": [
-                        "Pyrémonde",
-                        "Editions des régionalismes"
+                        "Editions des régionalismes",
+                        "Pyrémonde"
                     ],
                     "EDITION_NOTES": [],
                     "PUBLICATION_DATES": [
@@ -9987,8 +9987,8 @@
                         "Fumaroli Marc"
                     ],
                     "PUBLISHERS_NAME": [
-                        "Library of America",
-                        "Literary classics of the United States"
+                        "Literary classics of the United States",
+                        "Library of America"
                     ],
                     "EDITION_NOTES": [],
                     "PUBLICATION_DATES": [
@@ -10907,8 +10907,8 @@
                         "Bougy Catherine"
                     ],
                     "PUBLISHERS_NAME": [
-                        "Scriptorial",
-                        "Presses universitaires de Caen"
+                        "Presses universitaires de Caen",
+                        "Scriptorial"
                     ],
                     "EDITION_NOTES": [],
                     "PUBLICATION_DATES": [
@@ -13440,14 +13440,14 @@
                 "status": "SUCCESS",
                 "error_type": null,
                 "msg": null,
-                "query": "mti=planning handbook metric design data",
+                "query": "mti=handbook planning data design metric",
                 "returned_ids": [
                     "191158666",
                     "123455588"
                 ]
             }
         },
-        "query_used": "mti=planning handbook metric design data",
+        "query_used": "mti=handbook planning data design metric",
         "action_used": "SRU_SUDOC_MTI",
         "nb_matched_records": 2,
         "matched_records_ids": [
@@ -13526,8 +13526,8 @@
                         "Littlefield David"
                     ],
                     "PUBLISHERS_NAME": [
-                        "Elsevier",
-                        "Architectural Press"
+                        "Architectural Press",
+                        "Elsevier"
                     ],
                     "EDITION_NOTES": [],
                     "PUBLICATION_DATES": [
@@ -14406,8 +14406,8 @@
                     "Institut français d'architecture Paris"
                 ],
                 "PUBLISHERS_NAME": [
-                    "Institut français d'architecture",
-                    "Plan construction et architecture"
+                    "Plan construction et architecture",
+                    "Institut français d'architecture"
                 ],
                 "EDITION_NOTES": [],
                 "PUBLICATION_DATES": [
@@ -14458,8 +14458,8 @@
                         "Institut français d'architecture Paris"
                     ],
                     "PUBLISHERS_NAME": [
-                        "Institut français d'architecture",
-                        "Plan construction et architecture"
+                        "Plan construction et architecture",
+                        "Institut français d'architecture"
                     ],
                     "EDITION_NOTES": [],
                     "PUBLICATION_DATES": [
@@ -14482,8 +14482,8 @@
                     "dates": true,
                     "publishers": {
                         "score": 100,
-                        "target_db": "institut francais d architecture",
-                        "origin_db": "institut francais d architecture"
+                        "target_db": "plan construction et architecture",
+                        "origin_db": "plan construction et architecture"
                     },
                     "other_ids": {
                         "nb": 1,
@@ -14795,9 +14795,9 @@
                     "Troin Jean-François"
                 ],
                 "PUBLISHERS_NAME": [
-                    "Alif",
+                    "Toubkal",
                     "Édisud",
-                    "Toubkal"
+                    "Alif"
                 ],
                 "EDITION_NOTES": [],
                 "PUBLICATION_DATES": [
@@ -14845,9 +14845,9 @@
                         "Troin Jean-François"
                     ],
                     "PUBLISHERS_NAME": [
-                        "Alif",
+                        "Toubkal",
                         "Édisud",
-                        "Toubkal"
+                        "Alif"
                     ],
                     "EDITION_NOTES": [],
                     "PUBLICATION_DATES": [
@@ -14870,8 +14870,8 @@
                     "dates": true,
                     "publishers": {
                         "score": 100,
-                        "target_db": "alif",
-                        "origin_db": "alif"
+                        "target_db": "toubkal",
+                        "origin_db": "toubkal"
                     },
                     "other_ids": {
                         "nb": 1,
@@ -15108,8 +15108,8 @@
                 ],
                 "AUTHORS": [],
                 "PUBLISHERS_NAME": [
-                    "Academy",
-                    "Ernst & Sohn"
+                    "Ernst & Sohn",
+                    "Academy"
                 ],
                 "EDITION_NOTES": [],
                 "PUBLICATION_DATES": [
@@ -15155,8 +15155,8 @@
                     ],
                     "AUTHORS": [],
                     "PUBLISHERS_NAME": [
-                        "Academy",
-                        "Ernst & Sohn"
+                        "Ernst & Sohn",
+                        "Academy"
                     ],
                     "EDITION_NOTES": [],
                     "PUBLICATION_DATES": [
@@ -15179,8 +15179,8 @@
                     "dates": true,
                     "publishers": {
                         "score": 100,
-                        "target_db": "academy",
-                        "origin_db": "academy"
+                        "target_db": "ernst et sohn",
+                        "origin_db": "ernst et sohn"
                     },
                     "other_ids": {
                         "nb": 1,
@@ -16195,11 +16195,11 @@
                 "status": "SUCCESS",
                 "error_type": null,
                 "msg": null,
-                "query": "mti=michael graves 2 projects 1989 tome buildings 1982",
+                "query": "mti=1982 projects buildings graves tome 1989 2 michael",
                 "returned_ids": []
             }
         },
-        "query_used": "mti=michael graves 2 projects 1989 tome buildings 1982",
+        "query_used": "mti=1982 projects buildings graves tome 1989 2 michael",
         "action_used": "SRU_SUDOC_MTI",
         "nb_matched_records": 0,
         "matched_records_ids": []
@@ -16527,8 +16527,8 @@
                     "Bouttier Michel"
                 ],
                 "PUBLISHERS_NAME": [
-                    "Rempart",
-                    "Desclee de Brouwer"
+                    "Desclee de Brouwer",
+                    "Rempart"
                 ],
                 "EDITION_NOTES": [
                     "Autre(s) tirage(s) : 2000"
@@ -16580,8 +16580,8 @@
                         "Bouttier Michel"
                     ],
                     "PUBLISHERS_NAME": [
-                        "REMPART",
-                        "Deslée de Brouwer"
+                        "Deslée de Brouwer",
+                        "REMPART"
                     ],
                     "EDITION_NOTES": [],
                     "PUBLICATION_DATES": [
@@ -16634,8 +16634,8 @@
                         "Bouttier Michel"
                     ],
                     "PUBLISHERS_NAME": [
-                        "Rempart",
-                        "Desclee de Brouwer"
+                        "Desclee de Brouwer",
+                        "Rempart"
                     ],
                     "EDITION_NOTES": [
                         "Autre(s) tirage(s) : 2000"
@@ -16660,8 +16660,8 @@
                     "dates": true,
                     "publishers": {
                         "score": 100,
-                        "target_db": "rempart",
-                        "origin_db": "rempart"
+                        "target_db": "desclee de brouwer",
+                        "origin_db": "desclee de brouwer"
                     },
                     "other_ids": {
                         "nb": 1,
@@ -17584,8 +17584,8 @@
                         "1990"
                     ],
                     "OTHER_DB_ID": [
-                        "226927",
-                        "202660"
+                        "202660",
+                        "226927"
                     ],
                     "ITEMS_BARCODE": [],
                     "ITEMS": []
@@ -17963,7 +17963,7 @@
                 "status": "SUCCESS",
                 "error_type": null,
                 "msg": null,
-                "query": "mti=mots tout court",
+                "query": "mti=tout mots court",
                 "returned_ids": [
                     "270082867",
                     "232948690",
@@ -17972,7 +17972,7 @@
                 ]
             }
         },
-        "query_used": "mti=mots tout court",
+        "query_used": "mti=tout mots court",
         "action_used": "SRU_SUDOC_MTI",
         "nb_matched_records": 4,
         "matched_records_ids": [
