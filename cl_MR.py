@@ -452,7 +452,7 @@ class Matched_Records(object):
                 if not action_instance.specific_index:
                     authors_index = ksru.SRU_Indexes.ANY
                 # Append to query
-                sru_request.append(ssru.Part_Of_Query(
+                sru_request.append(ksru.Part_Of_Query(
                     authors_index,
                     ksru.SRU_Relations.EQUALS,
                     author,

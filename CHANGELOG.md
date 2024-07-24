@@ -33,6 +33,7 @@ _Some previous changes will be added_
   * Notably, `cl_UDE.py` can now be used alone
   * Added a `classes_dependencies.md` file explaining the dependencies
 * Reworked `request_action` to avoid redundacy on Sudoc SRU, Koha SRU & Sudoc's ad2ppn webservice
+* Documentation (developper & user) was updated (user english documentation was added)
 
 ### Removed
 
@@ -44,7 +45,7 @@ _Some previous changes will be added_
 * Fixed various sytnax warning with regular expressions
 * Fixed fatal errors when trying to convert ISBN with more than just digits or `X`
 * Fixed the functions retruning instances from `Enum` (though the bug was not used in the main script I think)
-
+* Fixed the interface not loading the saved language properly
 
 ## [1.17.5] - 2024-04-11
 
