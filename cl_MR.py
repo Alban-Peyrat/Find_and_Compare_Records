@@ -353,7 +353,7 @@ class Matched_Records(object):
                         ssru.SRU_Boolean_Operators.AND
                     ))
                 else:
-                    f" AND (tou={' or tou='.join([str(num) for num in dates])})",
+                    sru_request.append(f" AND (tou={' or tou='.join([str(num) for num in dates])})"),
             # Doctype filter
             if action_instance.use_doctype:
                 doctype_auth_val = None
