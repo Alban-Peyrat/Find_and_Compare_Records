@@ -138,7 +138,7 @@ ERRORS_LIST = {
             "fre":"Date absente dans la notice originale (requis)"
         }
     ),
-    Errors.UNSUPPORTED_DOCTYPE:Errors(
+    Errors.UNSUPPORTED_DOCTYPE:Error(
         error=Errors.UNSUPPORTED_DOCTYPE,
         msg={
             "eng":"This document type is not supported",

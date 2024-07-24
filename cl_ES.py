@@ -157,7 +157,7 @@ class Execution_Settings(object):
     def load_env_values(self):
         load_dotenv()
         # General
-        self.lang = os.getenv("SERVICE")
+        self.lang = os.getenv("LANG")
         if self.lang not in ["eng", "fre"]:
             self.lang = "eng"
         self.service = os.getenv("SERVICE")
