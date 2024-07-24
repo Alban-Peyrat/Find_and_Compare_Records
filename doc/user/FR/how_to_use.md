@@ -4,7 +4,7 @@ Une fois l'application téléchargée et le fichier `sample.env` renommé en `.e
 
 Pour ce faire :
 
-* Exécuter le fichier `RCR.bat` situé à la racine de l'application
+* Exécuter le fichier `FCR.bat` situé à la racine de l'application
 * Ou, avec l'invite de commande, placez-vous dans le répertoire de l'application (avec `cd`) et exécuter avec Python le fichier `main_gui.py`
 
 ## Étape 1 : configuration principale
@@ -60,7 +60,7 @@ Le bouton _Sauvegarder les paramètres principaux de ce traitement_ permet de sa
 Cet onglet est le plus complexe mais également celui qui, une fois sauvegardée, n'a plus besoin d'être reconfiguré.
 
 Il permet de configurer via une interface quelles données seront récupérées dans les notices bibliographiques (configurées dans le fichier `json_configs/marc_fields.json`).
-Pour plus d'informations sur comment configurer ces mappings, se référer à [la documentation sur l'extracteur de données universel](../../../doc/universal_data_extractor.md).
+Pour plus d'informations sur comment configurer ces mappings, se référer à [la documentation sur l'extracteur de données universel](../../../doc/UDE.md).
 
 Dans un premier temps, il est nécessaire de sélectionner le mapping que l'on souhaite modifier.
 Il est possible de créer un nouveau mapping à l'aide du bouton _Sauvegarder ce mapping comme un nouveau_, qui copiera l'ensemble des données actuellement configurées pour le mapping actuellement sélectionné vers le nouveau.

@@ -1,12 +1,6 @@
-# Instantiate a `Match_Records`
+# Match records
 
-Three arguments are required :
-
-* `operation` : the operation to execute as `Enum Operations` entry
-* `query` : the suery as a `string` 
-* `es` : the execution settings as a `bi_classes.execution_parameters` instance
-
-# Handle data returned from `Matched_Records`
+## Handle data returned from `Matched_Records`
 
 `Matched_Records` instances always have these properties :
 
@@ -44,17 +38,7 @@ Connectors, to work with `Find_And_Compare_Records`, need to be able to :
 * If they can return records too, return a __`list`__ of the matched records (types in the `list` do not matter as there is a universal data extractor)
 * Detect if an error occured, but this optionnal as the behaviour defined in `request_action` probably can bypass the absence if error detection in the connector
 
-# Add operations or actions (or other) to `Match_Records`
-
-## Add a type of error
-
-* _In `bi_classes.py`_
-* First, add a new entry in the `Enum Match_Records_Errors`
-* Then, add this entry in the `dict MATCH_RECORDS_ERROR_MESSAGES` :
-  * The key is the `Enum Match_Records_Errors` entry (everything, not only the name or value)
-  * The value must be a `str`
-
 ## Add a try status
 
-* _In `bi_classes.py`_
+* _In `cl_MR.py`_
 * Add a new entry in the `Enum Try_Status`

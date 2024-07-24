@@ -4,17 +4,17 @@ Téléchargez l'application puis extrayez le contenu.
 
 ## Bibliothèques utilisées non incluses dans Python Standard Library
 
-Ces bibliothèques sont utilisées par le script mais absentes de la [Python Standard Library](https://docs.python.org/3/library/), il ets donc nécessaire de les installer dans un premier temps :
+Ces bibliothèques sont utilisées par le script mais absentes de la [Python Standard Library](https://docs.python.org/3/library/), il est donc nécessaire de les installer dans un premier temps :
 
-* [`unidecode`](https://pypi.org/project/Unidecode/)
-* [`FuzzyWuzzy`](https://pypi.org/project/fuzzywuzzy/)
-  * With [`python-Levenshtein`](https://pypi.org/project/python-Levenshtein/)
-* [`PySimpleGUI`](https://pypi.org/project/PySimpleGUI/) : la version utilisée pour le développement de FCR était la `4.60.4`. Depuis la version 5, le module nécessite d'enregistrer une clef de Licence. Pour installer la version `4.60.5`, utilliser `pip install PySimpleGUI==4.60.5` (temporaire)
-* [`requests`](https://pypi.org/project/requests/)
-* [`python-dotenv`](https://pypi.org/project/python-dotenv/)
-* [`pymarc`](https://pypi.org/project/pymarc/)
-* [`pyisbn`](https://pypi.org/project/pyisbn) : `1.3.1`
-
+* _Rappel : sous Windows, ouvrir l'invite de commande, et taper les lignes de commandes suivantes après `py -m` (ou `pyhton -m`)_
+* [`unidecode`](https://pypi.org/project/Unidecode/) (`pip install Unidecode==1.3.8`)
+* [`FuzzyWuzzy`](https://pypi.org/project/fuzzywuzzy/) (`pip install fuzzywuzzy==0.18.0`)
+  * With [`python-Levenshtein`](https://pypi.org/project/python-Levenshtein/) (`pip install python-Levenshtein==0.25.1`), installé avec `rapidfuzz` `3.9.3`
+* [`FreeSimpleGUI`](https://pypi.org/project/FreeSimpleGUI/) (`pip install FreeSimpleGUI==5.1.0`)
+* [`requests`](https://pypi.org/project/requests/) (`pip install requests==2.32.3`)
+* [`python-dotenv`](https://pypi.org/project/python-dotenv/) (`pip install python-dotenv==1.0.1`)
+* [`pymarc`](https://pypi.org/project/pymarc/) (`pip install pymarc==4.2.2` __(ne pas utiliser les versions `5.X.X` parce que certaines fonctions ne sont pas rétrocompatibles)__)
+* [`pyisbn`](https://pypi.org/project/pyisbn) (`pip install pyisbn==1.3.1`)
 
 ## Fichier de configuration
 
@@ -41,6 +41,7 @@ Ou il faut créer un fichier `.env` avec les variables :
 * Configuration des journaux :
   * `LOGS_PATH` : chemin d'accès au dossier pour le fichiers des journaux
   * `LOGGER_LEVEL` : niveau de journalisation utilisé, __uniquement configurable directement dans ce fichier__. Prend les valeurs `DEBUG`, `INFO`, `WARNING`, `ERROR`, `CRITICAL`, avec `INFO` par défaut
+* Chemin d'accès au fichier de configuration de l'export CSV : `CSV_OUTPUT_JSON_CONFIG_PATH`
 * Configuration des chemins d'accès aux fichiers et dossiers :
   * `FILE_PATH` : chemin d'accès vers le fichier à traiter
   * `OUTPUT_PATH` : chemin d'accès vers le dossier qui contiendra les résultats
