@@ -1,6 +1,6 @@
 # Données exportées
 
-_Sont listées ici unqiuement les données calculées dans le programme._
+_Sont listées ici uniquement les données calculées dans le programme._
 _Les données qui ne sont qu'un simple export de la notice ne sont pas renseignées ici, il faut se référer à la configuration des champs dans les mappings sélectionnés._
 
 |Nom interne|Nom de la colonne (défaut)|Nom de la colonne (`BETTER_ITEM`)|Provenance de la donnée|

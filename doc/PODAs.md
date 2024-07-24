@@ -50,8 +50,41 @@ But they're somehow vital, so R.I.P.
 
 Also, they are dependant of UDE.
 
-||- Not finished
+To add a new database name :
 
+* _In `cl_UDE.py`_ :
+  * Add a new member in the `Enum Database_Names`
+  * _If the new database is using XML with a specific namespace_ :
+    * If necessary, add a new member in `Enum Xml_Namespaces`, using the namespace prefix as a value
+    * If necessary, add a new entry in `XML_NS`, using the prefix as key and the URI as value
+    * Add a new `elif` to `Universal_Data_Extractor.get_xml_namespace()` method and configure it so it returns `/{prefix}:`
+* _In `cl_PODA.py`_ :
+  * Added a new entry in `dict DATABASES_LIST`
+    * Use the `Database_Names` member as the key
+    * As a value, create a `class Database` instance :
+      * Define `database` as the `Database_Names` member
+      * Define `filters` as a `dict` :
+        * Use a `Mapped_Fields` (in `cl_UDE.py`) member as a key
+        * Use a `Filters` member as value
+        * _List all fields that should be filtered, the `Filters` member is which filter in the execution settings that will be used_
+
+### Adding new filters
+
+* _In `cl_PODA.py`_ :
+  * Add a new member to `Enum Filters`
+* _In `.env`_ :
+  * Add a new entry in `.env`, using the name of the `Enum Filters` member
+* _In `cl_ES.py`_ :
+  * In `Records_Settings.__init__()` :
+    * Add a new argument to the constructor
+    * Add a new property using the `Enum Filters` member name in lower case
+  * In `Execution_Settings` :
+    * In `load_env_values()`, add a new property using the `Enum Filters` member name in lower case that loads the environment variable set up earlier
+    * In `get_record_settings()`, change the `Records_Settings` call by adding the argument as configured earlier
+    * In `UI_update_processing_configuration_values()`, add a new property using the `Enum Filters` member name in lower case that loads the `val` property assigned to the environment variable set up earlier
+* In `main_gui.py` : see [in GUI documentation to add the new element](./GUI.md)
+
+Note : filter value checks if it __starts with__.
 
 ## Operation
 
