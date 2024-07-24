@@ -3,10 +3,13 @@ settings.json
 pbs
 info_reseau
 .env
-my.env
 old_releases/
 tests_private/
 test_*.py
+test_files/results/logs
+test_files/results/env
+test_files/results/*/results_report
+.vscode
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
