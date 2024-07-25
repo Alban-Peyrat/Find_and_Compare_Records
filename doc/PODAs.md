@@ -53,11 +53,8 @@ Also, they are dependant of UDE.
 To add a new database name :
 
 * _In `cl_UDE.py`_ :
-  * Add a new member in the `Enum Database_Names`
-  * _If the new database is using XML with a specific namespace_ :
-    * If necessary, add a new member in `Enum Xml_Namespaces`, using the namespace prefix as a value
-    * If necessary, add a new entry in `XML_NS`, using the prefix as key and the URI as value
-    * Add a new `elif` to `Universal_Data_Extractor.get_xml_namespace()` method and configure it so it returns `/{prefix}:`
+  * Add a new database ([_explained in `UDE.md`, part dedicated to adding a database_](./UDE.md#add-a-database))
+  * If the new database is using XML with a specific namespace, check how to configure it ([_explained in `UDE.md`, part dedicated to adding an XML data source with a new namespace_](./UDE.md#add-an-xml-data-source-with-new-namespaces))
 * _In `cl_PODA.py`_ :
   * Added a new entry in `dict DATABASES_LIST`
     * Use the `Database_Names` member as the key
@@ -83,8 +80,6 @@ To add a new database name :
     * In `get_record_settings()`, change the `Records_Settings` call by adding the argument as configured earlier
     * In `UI_update_processing_configuration_values()`, add a new property using the `Enum Filters` member name in lower case that loads the `val` property assigned to the environment variable set up earlier
 * In `main_gui.py` : see [in GUI documentation to add the new element](./GUI.md)
-
-Note : filter value checks if it __starts with__.
 
 ## Operation
 
