@@ -14,14 +14,14 @@ _Les données qui ne sont qu'un simple export de la notice ne sont pas renseign�
 |`GLOBAL_VALIDATION_TITLE_CHECK`|_Validation des titres_|_Validation des titres_|[Voir le fichier dédié à l'analyse](./analysis.md#résultats-de-lanalyse)|
 |`GLOBAL_VALIDATION_PUBLISHER_CHECK`|_Validation des éditeurs_|_Validation des éditeurs_|[Voir le fichier dédié à l'analyse](./analysis.md#résultats-de-lanalyse)|
 |`GLOBAL_VALIDATION_DATE_CHECK`|_Validation des dates_|_Validation des dates_|[Voir le fichier dédié à l'analyse](./analysis.md#résultats-de-lanalyse)|
-|`MATCH_RECORDS_QUERY`|_Requête pour recherche de correspondances_|_Requête pour recherche de correspondances_||
+|`MATCH_RECORDS_QUERY`|_Requête pour recherche de correspondances_|_Requête pour recherche de correspondances_|Requête utilisée pour rechercher une correspondance|
 |`FCR_ACTION_USED`|_Action FCR utilisée_|_Action FCR utilisée_|Dernière action utilisée (donc, celle qui a réussi en cas de correspondance trouvée)|
 |`MATCH_RECORDS_NB_RESULTS`|_Nombre de correspondances_|_Nombre de PPN trouvés_|Nombre de correspondances trouvées|
 |`MATCH_RECORDS_RESULTS`|_IDs correspondants_|_PPN trouvés_|Liste des identifiants des notices correspondantes trouvées|
 |`MATCHED_ID`|_ID en cours de traitement_|_PPN en cours de traitement_|Identifiant de la notice de la base de destination traitée|
 |`TARGET_DB_NB_OTHER_ID`|_Nombre d'IDs d'autres bases de données BDD de destination_|_Nombre de biblionumbers dans Sudoc_|Nombre d'identifiants d'autres bases de données trouvés|
-|`IS_ORIGIN_ID_IN_TARGET_OTHER_DB_IDS`|_ID BDD d'origine compris dans les IDs d'auters bases de données BDD de destination ?_|_Biblionumber Koha dans le Sudoc ?_|L'identifiant de la base de données d'origine est-il présent dans la liste des identifiants d'autres bases de données trouvées|
-|`TARGET_DB_HAS_ITEMS`|_Déjà des exemplaires dans BDD de destination ?_|_Déjà des exemplaires dans Sudoc ?_|La base de données de destination possède-t-elle déjà des exemplaires|
+|`IS_ORIGIN_ID_IN_TARGET_OTHER_DB_IDS`|_ID BDD d'origine compris dans les IDs d'auters bases de données BDD de destination ?_|_Biblionumber Koha dans le Sudoc ?_|L'identifiant de la base de données d'origine est-il présent dans la liste des identifiants d'autres bases de données trouvées ?|
+|`TARGET_DB_HAS_ITEMS`|_Déjà des exemplaires dans BDD de destination ?_|_Déjà des exemplaires dans Sudoc ?_|La base de données de destination possède-t-elle déjà des exemplaires ?|
 |`ORIGIN_DB_TITLE_KEY`|_Clef de titre BDD d'origine_|_Clef de titre Koha_|Clef de titre de la base de données d'origine (notamment utilisé pour l'analyse)|
 |`TARGET_DB_TITLE_KEY`|_Clef de titre BDD de destination_|_Clef de titre Sudoc_|Clef de titre de la base de données de destination (notamment utilisé pour l'analyse)|
 |`ORIGIN_DB_CHOSEN_PUBLISHER`|_Clef d'éditeur choisi BDD d'origine_|_Clef d'éditeur choisi Koha_|Clef de l'éditeur choisi de la base de données d'origine (notamment utilisé pour l'analyse)|
