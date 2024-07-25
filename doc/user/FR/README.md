@@ -5,5 +5,5 @@
 * [Comment exécuter _Find and Compare Records_](./how_to_use.md)
 * [Liste et informations sur les traitements possibles](./processings.md)
 * [Documentation sur les analyses effectuées](./analysis.md)
-* || à actualiser [Documentation sur les fichiers de résultats](./output_files.md)
-* || à actualiser [Documentation sur les champs modifiés par FCR dans les résultats](./output_data.md)
+* [Documentation sur les fichiers de résultats](./output_files.md)
+* [Documentation sur les champs modifiés par FCR dans les résultats](./output_data.md)

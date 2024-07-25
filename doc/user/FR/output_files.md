@@ -1,6 +1,7 @@
 # Forme des fichiers de sorties
 
 Le script génère 3 fichiers de sortie et 1 fichier de logs :
+
 * [`results.csv`](#fichier-csv)
 * [`results.json`](#fichier-json)
 * [`results_report`](#fichier-texte)
@@ -14,7 +15,7 @@ Pour les données conservant des listes, toutes les valeurs de la liste sont con
 
 ## Fichier JSON
 
-Contient les informations du traitment d'une manière plus complète et représentative du fonctionnement de FCR que l'export CSV.
+Contient les informations du traitement d'une manière plus complète et représentative du fonctionnement de FCR que l'export CSV.
 
 Entre autres :
 
@@ -28,6 +29,6 @@ Ce fichier contient un rapport sur l'analyse, rappelant les paramétrages et que
 
 ## Journaux
 
-Le fichier contient un rappel des informations paramétrées, le rapport final et des inforamtions extraites durant la récupération de données ou l'analyse.
+Le fichier contient un rappel des informations paramétrées, le rapport final et des informations extraites durant la récupération de données ou l'analyse.
 
 L'utilité première est de consulter pourquoi certaines erreurs journalisées ont eu lieu ou obtenir des pistes sur la partie de FCR qui aurait dysfonctionné.
