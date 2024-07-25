@@ -1,24 +1,24 @@
 # Input file documentation
 
-Le fichier à traiter varie selon le traitement sélectionné :
+The input file changes depending on the processing :
 
-* [Suite `BETTER_ITEM`](#suite-better_item) (`BETTER_ITEM`, `BETTER_ITEM_DVD`, `BETTER_ITEM_NO_ISBN`, `BETTER_ITEM_MAPS`)
+* [`BETTER_ITEM` suite](#better_item-suite) (`BETTER_ITEM`, `BETTER_ITEM_DVD`, `BETTER_ITEM_NO_ISBN`, `BETTER_ITEM_MAPS`)
 * [`MARC_FILE_IN_KOHA_SRU`](#marc_file_in_koha_sru)
 
-## Suite `BETTER_ITEM`
+## `BETTER_ITEM` suite
 
-Le fichier utilisé est un fichier de type CSV utilisant un `;` comme délimiteur.
+The file used is a CSV like, using `;` as separator.
 
-Celui-ci contient les informations d'un exemplaire, l'identifiant dans la base de donnée d'origine et (parfois) un identifiant pour certaines requêtes.
-Ce dernier identifiant est utilisé unisuement pour le traitement `BETTER_ITEM` et doit être un ISBN.
+This file contains informations about an item, the origin database identifier and (sometimes) an identifier used in some queries.
+This last identifer is only used in the `BETTER_ITEM` processing and must be an ISBN.
 
-Le fichier doit __forcément__ avoir comme :
+The file __has to__ have as :
 
-* Première colonne la colonne contenant l'identifiant pour les reqûetes (l'ISBN pour `BETTER_ITEM`, une colonne vide ou avec un autre donnée pour les autres)
-* Dernière colonne celle contenant l'identifiant de la base de donnée d'origine
+* First column the column using the identifier for queries (ISBN for `BETTER_ITEM`, empty columns or with another data for the other processings)
+* Last column is the one containing origin database identifier
 
-Toutes les colonnes du fichier seront exportées à la fin du fichier de sortie.
+Every column of the file will be exported at the end of the CSV export.
 
 ## `MARC_FILE_IN_KOHA_SRU`
 
-Le fichier utilisé est un simple fichier de notices en ISO 2709, contenant les exemplaires.
+File used is a simple records file in ISO 2709, containing items.

@@ -10,11 +10,11 @@ Le fichier à traiter varie selon le traitement sélectionné :
 Le fichier utilisé est un fichier de type CSV utilisant un `;` comme délimiteur.
 
 Celui-ci contient les informations d'un exemplaire, l'identifiant dans la base de donnée d'origine et (parfois) un identifiant pour certaines requêtes.
-Ce dernier identifiant est utilisé unisuement pour le traitement `BETTER_ITEM` et doit être un ISBN.
+Ce dernier identifiant est utilisé uniquement pour le traitement `BETTER_ITEM` et doit être un ISBN.
 
 Le fichier doit __forcément__ avoir comme :
 
-* Première colonne la colonne contenant l'identifiant pour les reqûetes (l'ISBN pour `BETTER_ITEM`, une colonne vide ou avec un autre donnée pour les autres)
+* Première colonne la colonne contenant l'identifiant pour les requêtes (l'ISBN pour `BETTER_ITEM`, une colonne vide ou avec un autre donnée pour les autres)
 * Dernière colonne celle contenant l'identifiant de la base de donnée d'origine
 
 Toutes les colonnes du fichier seront exportées à la fin du fichier de sortie.
