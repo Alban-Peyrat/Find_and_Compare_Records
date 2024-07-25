@@ -42,6 +42,8 @@ To add an action :
       * Note that this will switch the status to `SUCCESS`, so if you do not want that to happen, assign the list of returned ids directly to `thisTry.returned_ids`
     * If matched records were also returned, call `thistry.add_returned_records` with the list of matched records as argument
 
+_Note : to this day, only actions starting with `ISBN2PPN` use data retrieve from the first input file data_
+
 ## Database
 
 Database are a weirdly nammed thing but defines a type of database, part of how to connect to them and if they can be filtered.
@@ -77,7 +79,7 @@ To add a new database name :
     * Add a new property using the `Enum Filters` member name in lower case
   * In `Execution_Settings` :
     * In `load_env_values()`, add a new property using the `Enum Filters` member name in lower case that loads the environment variable set up earlier
-    * In `get_record_settings()`, change the `Records_Settings` call by adding the argument as configured earlier
+    * In `get_records_settings()`, change the `Records_Settings` call by adding the argument as configured earlier
     * In `UI_update_processing_configuration_values()`, add a new property using the `Enum Filters` member name in lower case that loads the `val` property assigned to the environment variable set up earlier
 * In `main_gui.py` : see [in GUI documentation to add the new element](./GUI.md)
 

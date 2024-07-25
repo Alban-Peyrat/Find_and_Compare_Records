@@ -1,21 +1,72 @@
 # Liste des traitements
 
-## `BETTER_ITEM`
+## Suite `BETTER_ITEM`
 
-À partir d'une liste de données pour ITEM, recherche et vérifie que les correspondances PPN / ISBN du [webservice `isbn2ppn` de l'Abes](https://documentation.abes.fr/sudoc/manuels/administration/aidewebservices/index.html#isbn2ppn) (ou du [service SRU du Sudoc](https://abes.fr/reseau-sudoc/reutiliser-les-donnees-sudoc/service-sru/)) correpondent bien aux documents enregistrés dans Koha.
+À partir d'une liste de données pour ITEM, recherche et vérifie que les correspondances trouvées via les [webservice `id2ppn` de l'Abes](https://documentation.abes.fr/sudoc/manuels/administration/aidewebservices/index.html#isbn2ppn) (ou du [service SRU du Sudoc](https://abes.fr/reseau-sudoc/reutiliser-les-donnees-sudoc/service-sru/)) correpondent bien aux documents enregistrés dans Koha.
 
-### Validation de l'ISBN
+Cette suite calcule une colonne particulière pour indiquer si le Sudoc possède déjà des exemplaires sur une notice pour le RCR renseigné.
 
-Pour chaque ligne dans le document à traiter, le script vérifie [si l'ISBN est valide](https://www.oreilly.com/library/view/regular-expressions-cookbook/9780596802837/ch04s13.html).
-S'il ne l'est pas, soit par sa forme, soit car la clef de contrôle est erronée, renvoie une erreur et passe à la prochaine ligne.
+### `BETTER_ITEM`
 
-### Recherche des notices correspondantes
+Ce traitement recherche majoritairement à l'aide de l'ISBN renseigné dans le fichier à traiter.
 
-Si l'ISBN est valide, interroge le webservice `isbn2ppn` de l'Abesavec l'ISBN nettoyé (seul les chiffres et `X` sont conservés) pour récupérer le ou les PPNs associés à cet ISBN.
-Si le script ne parvient pas à se connecter au service ou si aucun PPN n'est renvoyé, transforme l'ISBN 10/13 en son équivalent 13/10 et ralnce la requête.
-En cas de nouvel échec, interroge le service SRU du Sudoc sur l'index `ISB`, ce qui permet également d'interroger les ISBN erronnés.
-En cas de nouvel échec, renvoie une erreur et passe à la prochaine ligne.
+Il lance jusqu'à 5 actions différentes pour un même document :
+
+* Si l'ISBN est valide, il interroge le webservice `isbn2ppn` de l'Abes avec un ISBN nettoyé
+* Il convertit l'ISBN en 10<->13 et, si ce nouvel ISBN est valide, il réinterroge le webservice `isbn2ppn` de l'Abes avec
+* Il convertit l'ISBN en 10<->13 __en conservant la clef de contrôle originale, et il réinterroge le webservice `isbn2ppn` de l'Abes avec (cete fois-ci, il ne vérifie pas si l'ISBN est valide)
+* Il interroge le SRU de l'Abes sur l'index dédié aux ISBN
+* Il interroge le SRU de l'Abes en utilisant uniquement le titre (sur l'index du titre)
+
+### `BETTER_ITEM_DVD`
+
+Ce traitement recherche uniquement à partir des informations contenues dans la notice de la base de données d'origine récupérée par FCR.
+
+Il lance jusqu'à 6 actions différentes pour un même document :
+
+* Il interroge le webservice `ean2ppn` de l'Abes
+* Il interroge le SRU de l'Abes sur les documents audio-visuels avec le titre, les auteurs, l'éditeur et les dates de publications sur leurs index spécifiques __si toutes ces données sont présentes dans la notice__
+* Il interroge le SRU de l'Abes sur les documents audio-visuels avec le titre, les auteurs et les dates de publications sur leurs index spécifiques __si toutes ces données sont présentes dans la notice__
+* Il interroge le SRU de l'Abes sur les documents audio-visuels avec le titre, les auteurs, l'éditeur et les dates de publications sur l'index général __si toutes ces données sont présentes dans la notice__
+* Il interroge le SRU de l'Abes sur les documents audio-visuels avec le titre, les auteurs et l'éditeur sur l'index général __si toutes ces données sont présentes dans la notice__
+* Il interroge le SRU de l'Abes sur les documents audio-visuels avec le titre sur son index spécifique
+
+### `BETTER_ITEM_NO_ISBN`
+
+Ce traitement recherche uniquement à partir des informations contenues dans la notice de la base de données d'origine récupérée par FCR.
+
+Il lance jusqu'à 6 actions différentes pour un même document :
+
+* Il interroge le webservice `ean2ppn` de l'Abes
+* Il interroge le SRU de l'Abes sur les monographies imprimées avec le titre, les auteurs, l'éditeur et les dates de publications sur leurs index spécifiques __si toutes ces données sont présentes dans la notice__
+* Il interroge le SRU de l'Abes sur les monographies imprimées avec le titre, les auteurs et les dates de publications sur leurs index spécifiques __si toutes ces données sont présentes dans la notice__
+* Il interroge le SRU de l'Abes sur les monographies imprimées avec le titre, les auteurs, l'éditeur et les dates de publications sur l'index général __si toutes ces données sont présentes dans la notice__
+* Il interroge le SRU de l'Abes sur les monographies imprimées avec le titre, les auteurs et l'éditeur sur l'index général __si toutes ces données sont présentes dans la notice__
+* Il interroge le SRU de l'Abes sur les monographies imprimées avec le titre sur son index spécifique
+
+### `BETTER_ITEM_NO_MAPS`
+
+Ce traitement recherche uniquement à partir des informations contenues dans la notice de la base de données d'origine récupérée par FCR.
+
+Il lance jusqu'à 6 actions différentes pour un même document :
+
+* Il interroge le webservice `ean2ppn` de l'Abes
+* Il interroge le SRU de l'Abes sur les cartes avec le titre, les auteurs, l'éditeur et les dates de publications sur leurs index spécifiques __si toutes ces données sont présentes dans la notice__
+* Il interroge le SRU de l'Abes sur les cartes avec le titre, les auteurs et les dates de publications sur leurs index spécifiques __si toutes ces données sont présentes dans la notice__
+* Il interroge le SRU de l'Abes sur les cartes avec le titre, les auteurs, l'éditeur et les dates de publications sur l'index général __si toutes ces données sont présentes dans la notice__
+* Il interroge le SRU de l'Abes sur les cartes avec le titre, les auteurs et l'éditeur sur l'index général __si toutes ces données sont présentes dans la notice__
+* Il interroge le SRU de l'Abes sur les cartes avec le titre sur son index spécifique
 
 ## `MARC_FILE_IN_KOHA_SRU`
 
-Le filtre 1 est utilisé pour filtrer les données d'exemplaires dans le SRU de Koha (`995$b`)
+Ce traitement recherche uniquement à partir des informations contenues dans la notice du fichier à traiter.
+
+Il lance jusqu'à 7 actions différentes pour un même document :
+
+* Il interroge le SRU de Koha avec l'ISBN sur son index spécifique __si l'ISBN est présent dans la notice d'origine__
+* Il interroge le SRU de Koha avec le titre, les auteurs, l'éditeur et les dates de publications sur leurs index spécifiques __si toutes ces données sont présentes dans la notice__
+* Il interroge le SRU de Koha avec le titre, les auteurs et les dates de publications sur leurs index spécifiques __si toutes ces données sont présentes dans la notice__
+* Il interroge le SRU de Koha avec le titre, les auteurs, l'éditeur et les dates de publications sur l'index général __si toutes ces données sont présentes dans la notice__
+* Il interroge le SRU de Koha avec le titre, les auteurs et les dates de publications sur l'index général __si toutes ces données sont présentes dans la notice__
+* Il interroge le SRU de Koha avec le titre, l'éditeur et les dates de publications sur l'index général __si toutes ces données sont présentes dans la notice__
+* Il interroge le SRU de Koha avec le titre sur son index spécifique
