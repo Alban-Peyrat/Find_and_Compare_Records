@@ -373,7 +373,7 @@ _Some previous changes will be added_
 * Internal changes to start implementing classes
 * Report is now broken
 
-## [1.8.0] - 2022-09-07
+## [1.8.0] - 2023-09-07
 
 ### Added
 
