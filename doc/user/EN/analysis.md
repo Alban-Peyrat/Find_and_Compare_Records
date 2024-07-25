@@ -1,84 +1,84 @@
 # Analysis documentation
 
-## Comparaison des données entre les bases
+## Comparing data bewteen databases
 
-Une fois toutes les informations récupérées, compare les données entre les deux bases :
+Once all data is retrieved, compares data between the two databases :
 
-* Pour le titre : génère un score de similarité, d'appartenance, d'inversion et d'inversion appartenance à l'aide de [la distance de Levenshtein](https://fr.wikipedia.org/wiki/Distance_de_Levenshtein)
-* Pour les dates de publication : vérifie si l'un des dates de la base de données d'origine est comprise dans l'une des dates de la base de données de destination (ne compare pas si les dates ne sont pas renseignées)
-* Pour les éditeurs : compare chaque éditeur de la base de données d'origine avec chaque éditeur de la base de donnée de destination en génèrant un score de similarité, puis renvoie la paire avec le score le plus élevé.
+* Title : generate a simple ratio, a partial ratio, a token sort ratio and a token set ratio using [Levenshtein distance](https://en.wikipedia.org/wiki/Levenshtein_distance)
+* Publication dates : checks if one of the origin database date is equal to one of the target databes date (does not check if no dates are found)
+* Publisher : compares every publisher from the origin database record to every publisher from the target database record using a simple ratio, then returns the couple with the highest ratio
 
-Ensuite, le script valide ou non chaque critère de comparaison de l'analyse choisie et indique un degré de validation pour cette comparaison.
+Then, the script validate or not every comparison criteria for the chosen analysis and outputs a validation grade for this comparison.
 
-## Analyse des résultats des correspondances
+## Matching results analysis
 
-L'analyse des résultats des correspondances se base sur 3 critères :
+The matching results analysis is based on 3 criterias :
 
-1. sur les 4 formes du titre étudiée, la correspondance des titres est supérieure à un seuil minimum pour au moins X d'entre eux
-1. la correspondance des éditeurs est supérieure à un seuil minimum
-1. la correspondance des dates de publication est prise en compte ou non
+1. Of the 4 title ratios used, at least X of them meet the required floor
+1. The publishers ratio meet the required floor
+1. The publication date is used
 
-## Résultats de l'analyse
+## Analysis results
 
-L'analyse renvoie 5 données :
+The analysis output 5 data :
 
-* _Validation globale_ : résultat final de l'analyse, prend la valeur :
-  * _Vérifications complètes_ : tous les critères sélectionnés sont validés
-  * _Vérifications partielles_ : une partie des critères sélectionnés sont validés
-  * _Vérifications KO_ : aucun des critères sélectionnés n'a été validé
-  * _Pas de vérification_ : l'analyse choisie n'effectue aucune vérification
-  * Si rien ne s'affiche, l'analyse n'a pas eu lieu
-* _Nombre de validations réussies_ : le nombre de critéères sélectionnés qui ont été validés
-* _Validation des titres_ :
-  * `True` si le nombre de formes du titre ayant un score supérieur ou égal au seuil minimum requis est supérieur ou égal au nombre minimum requis
-  * `False` si ce n'est pas le cas
-* _Validation des éditeurs_
-  * `True` si le score de correspondance de la pair d'éditeur choisie est supérieur ou égal au seuil minimum requis
-  * `False` si ce n'est pas le cas
-* _Validation des dates_
-  * `True` si l'une des dates de Koha correspond à l'une de celles du Sudoc
-  * `False` si ce n'est pas le cas
+* _Global validation result_ : analysis final result, can be :
+  * _All checks were successful_
+  * _Checks partially successful_ : only some checks were succesful
+  * _All checks failed_
+  * _No checks_ : chosen analysis does not check any criteria
+  * If nothing is displayed, the analysis did not happen
+* _Number of successful checks_ : the number of checks that were OK
+* _Title check_ :
+  * `True` if the number of title checks was superir or aquel to the minimum required
+  * `False` if it was nto the case
+* _Publishers check_
+  * `True` if the publishers ratio is superior or equal to the required floor
+  * `False` if it was nto the case
+* _Dates check_
+  * `True` if one of the origin database date matches one of the target database ones
+  * `False` if it was nto the case
 
-_Note : les détails (notamment les scores de similarités) sont disponibles à la fin des colonnes udu fichier de sortie_
+_Note : details (notably ratios) are available at the end of CSV export columns_
 
-## Configurations des analyses par défaut
+## Default analysis configuration
 
-_Si les seuils minimum sont configurés à 0, l'analyse ignorera le critère en question._
+_If the floor are configured to `0`, the critera will be ignored_
 
-### Analyse 0 : Aucune analyse
+### Analysis 0 : Aucune analyse
 
-* Seuil minimum pour la correspondance des titres : `0`
-* Nombre minimum de formes du titre devant être supérieur au seuil : `0`
-* Seuil minimum pour la correspondance des éditeurs : `0`
-* Utilisation de la date de publication : `NON`
+* Floor ratio for title match : `0`
+* Minimum ratio number matching : `0`
+* Floor ratiofor publisher match : `0`
+* Use publication date : `NON`
 
-### Analyse 1 : Titre 80 (3/4), Editeurs 80, Dates
+### Analysis 1 : Titre 80 (3/4), Editeurs 80, Dates
 
-* Seuil minimum pour la correspondance des titres : `80`
-* Nombre minimum de formes du titre devant être supérieur au seuil : `3`
-* Seuil minimum pour la correspondance des éditeurs : `80`
-* Utilisation de la date de publication : `OUI`
+* Floor ratio for title match : `80`
+* Minimum ratio number matching : `3`
+* Floor ratiofor publisher match : `80`
+* Use publication date : `OUI`
 
-### Analyse 2 : Titre 90
+### Analysis 2 : Titre 90
 
-* Seuil minimum pour la correspondance des titres : `90`
-* Nombre minimum de formes du titre devant être supérieur au seuil : `4`
-* Seuil minimum pour la correspondance des éditeurs : `0`
-* Utilisation de la date de publication : `NON`
+* Floor ratio for title match : `90`
+* Minimum ratio number matching : `4`
+* Floor ratiofor publisher match : `0`
+* Use publication date : `NON`
 
-### Analyse 3 : Titre 95, Editeurs 95
+### Analysis 3 : Titre 95, Editeurs 95
 
-* Seuil minimum pour la correspondance des titres : `95`
-* Nombre minimum de formes du titre devant être supérieur au seuil : `4`
-* Seuil minimum pour la correspondance des éditeurs : `95`
-* Utilisation de la date de publication : `NON`
+* Floor ratio for title match : `95`
+* Minimum ratio number matching : `4`
+* Floor ratiofor publisher match : `95`
+* Use publication date : `NON`
 
-## Configurer une analyse
+## Configure an analysis
 
-Pour ajouter une nouvelle analyse, il faut rajouter un nouvel objet dans `analysis.json` avec les clefs suivantes :
+To add a new analysis, add a new object in `analysis.json` with the following keys :
 
-* `name` `(str)`: nom de l'analyse qui s'affichera dans les interfaces
-* `TITLE_MIN_SCORE` (`int`) : seuil minimum requis pour que la correspondances des titres soit considérée comme OK
-* `NB_TITLE_OK` (`int`) : nombre minimum de correspondance de formes de titre requis pour que le critère de correspondance des titres soit considéré comme OK
-* `PUBLISHER_MIN_SCORE` (`int`) : seuil minimum requis pour que la correspondances des éditeurs soit considérée comme OK
-* `USE_DATE` (`bool`) : utilisation du critère correspondance des dates de publication
+* `name` `(str)`: interface displayed analysis name
+* `TITLE_MIN_SCORE` (`int`) : floor ratio for title matching to be OK
+* `NB_TITLE_OK` (`int`) : minimum number of title matches for considering the entire title criteria to be OK
+* `PUBLISHER_MIN_SCORE` (`int`) : floor ratio for publishers matching to be OK
+* `USE_DATE` (`bool`) : use publication date

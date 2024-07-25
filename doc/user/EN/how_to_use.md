@@ -1,71 +1,71 @@
 # How to use _Find and Compare Records_
 
-Une fois l'application téléchargée et le fichier `sample.env` renommé en `.env`, vous pouvez exécuter l'application.
+Once the application downloaded et the `sample.env` file renammed to `.env`, you can execute the application.
 
-Pour ce faire :
+To do it :
 
-* Exécuter le fichier `FCR.bat` situé à la racine de l'application
-* Ou, avec l'invite de commande, placez-vous dans le répertoire de l'application (avec `cd`) et exécuter avec Python le fichier `main_gui.py`
+* Execute the file `FCR.bat` found at the root of the application
+* Or, using the command terminal, go to the application folder (using `cd`) and execute with Python the file `main_gui.py`
 
-## Étape 1 : configuration principale
+## Step 1 : main configuration
 
-![Écran principal de _Find and Compare Records_](./img/UI_main_screen.png)
+![_Find and Compare Records_ main screen](./img/UI_main_screen.png)
 
-_Le bouton en haut à droite permet de changer la langue de l'interface du entre le français et l'anglais._
+_The top-right button allows to switch language between french and english._
 
-Cet écran permet de configurer les paramètres généraux de l'application à savoir :
+This screen is used to configure the main settings of the application :
 
-* Le traitement qui sera exécuté _([voir plus d'informations sur les traitements disponibles](./processings.md))_
-* Les chemins d'accès :
-  * Au fichier à analyser _([voir plus d'informations sur ce fichier](./input_file.md))_
-  * Au dossier qui contiendra les fichiers de résultats
-  * Au dossier qui contiendra le fichier des journaux
-* Le nom du service (qui sert uniquement pour les journaux, notamment pour nommer le fichier)
-* Le niveau de journalisation
+* The processing to use _([see more about available processings](./processings.md))_
+* Files path :
+  * To the input file _([see more about the input file](./input_file.md))_
+  * To the output folder
+  * To the folder containing the log file
+* The service name (only used for logs, notable namming the file)
+* The log level
 
-Le bouton _Sauvegarder ces paramètres d'exécution_ permet de sauvegarder les paramètres actuellement définis sur l'interface pour une prochaine exécution (langue comprise).
+The _Save these executon settigs_ button can be used to save the settings currently displayed for a future execution (including language).
 
-Une fois cet écran correctement paramétré (voire sauvegardé), le bouton _Suivant (configuration du traitement)_ permet de passer à la seconde étape.
+Once this screen correctly configured (and possibly saved), the _Next (processing configuration)_ button is used to go to nest step.
 
-## Étape 2 : configuration du traitement
+## Step 2 : processing configuration
 
-Ce nouvel écran contient 3 onglets :
+This new screen has 3 tabs :
 
-* _Configuration principale du traitement_
-* _Configuration des mappings_
-* _Choix des mappings de BDD_
+* _Processing main configuration_
+* _Mapping configuration_
+* _Chose database mappings_
 
-Par ailleurs, sous le titre de l'écran, le traitement choisi est rappelé.
+A text under the screen title reminds which processing will be used.
 
-Une fois la configuration de tous les onglets terminée, le bouton _Lancer l'analyse_ permet de passer à la troisième et dernière étape.
+Once every tab is correctly configured, the _Start analysis_ button is used to go to the third and last step.
 
-### Onglet _Configuration principale du traitement_
+### _Processing main configuration_ tab
 
-Cet onglet n'affiche pas les mêmes options selon le traitement choisi.
+This tab displayes settings is based on the chosen processing.
 
-Le bouton _Sauvegarder les paramètres principaux de ce traitement_ permet de sauvegarder les paramètres actuellement définis sur l'interface pour une prochaine exécution.
+The _Save main processing configuration settings_ button is used to saved currently displayed settings for a fututre execution.
 
 
-#### Suite `BETTER_ITEM`
+#### `BETTER_ITEM` suite
 
-![Écran de configuration du traitement, onglet de configuration principale pour `BETTER_ITEM`](./img/UI_processing_conf_main_tab_better_item.png)
+![Processing configuration screen, main configuration tab for `BETTER_ITEM`](./img/UI_processing_conf_main_tab_better_item.png)
 
-* URL de la base de données d'origine : ce traitement récupère les données de la base de données d'origine via les APIs de celle-ci, il faut donc indiquer __le nom de domaine qui permet d'exécuter les APIs__
-* ILN : l'ILN de l'établissement concerné _(utilisé pour filtrer les identifiants dans les autres bases de données)_
-* RCR : le RCR de la bibliothèque concernée _(utilisé pour filtrer les exempalires et code-barres d'exemplaires)_
+* Origin database URL : this processing retrieve data from the origin database through its APIs, the URL should be the __domain name for API exution__
+* ILN : library ILN _(used to filter identifiers in other databases)_
+* RCR : library RCR _(used to filter items & items barcodes)_
 
 #### `MARC_FILE_IN_KOHA_SRU`
 
-![Écran de configuration du traitement, onglet de configuration principale pour `MARC_FILE_IN_KOHA_SRU`](./img/UI_processing_conf_main_tab_marc_file_in_koha_sru.png)
+![Processing configuration screen, main configuration tab for `MARC_FILE_IN_KOHA_SRU`](./img/UI_processing_conf_main_tab_marc_file_in_koha_sru.png)
 
-* URL de la base de données de destination : ce traitement récupère les données de la base de données de destination via les APIs de celle-ci, il faut donc indiquer __le nom de domaine qui permet d'exécuter les APIs__ (ou se connecter au SRU si c'est via le SRU)
-* Filtre 1, 2 & 3 : filtre libres, configurables en fonction de la base de données de destination (ou d'origine)
-  * Le filtre 1 est utilisé pour filtrer les exempalires et code-barres d'exemplaires
-  * Pour lier des filtres à des données, il est nécessaire de modifier le code dans `cl_PODA.py` ([voir la documentation développeur sur les PODAs à ce sujet](../../PODAs.md#database))
+* Target database URL : this processing retrieve data from the origin database through its APIs, the URL should be the __domain name for API exution__ (or the SRU if it is used)
+* Filter 1, 2 & 3 : free filters, configurable based on target database (or origin)
+  * Filter 1 is used to filter items & items barcodes
+  * To link filters to data, the code in `cl_PODA.py` needs to be edited ([see developper documentation about PODAs on that subject](../../PODAs.md#database))
 
-### Onglet _Configuration des mappings_
+### _Mapping configuration_ tab
 
-![Écran de configuration du traitement, onglet de configuration des mappings](./img/UI_processing_conf_db_conf_tab.png)
+![Processing configuration screen, mapping configuration tab](./img/UI_processing_conf_db_conf_tab.png)
 
 Cet onglet est le plus complexe mais également celui qui, une fois sauvegardée, n'a plus besoin d'être reconfiguré.
 
@@ -105,18 +105,18 @@ Renseignez dedans le numéro du champ voulu.
 Pour sauvegarder la modification effectuée sur le champ, cliquez sur le bouton _Sauvegarder ce champ MARC_.
 Cette opération est nécessaire __pour chaque champ__, sinon les données ne seront pas sauvegardées.
 
-### Onglet _Choix des mappings de BDD_
+### _Chose database mappings_ tab
 
-![Écran de configuration du traitement, onglet de choix des mappings de base de données](./img/UI_processing_conf_chose_mapping_tab.png)
+![Processing configuration screen, chosing database mappings tab](./img/UI_processing_conf_chose_mapping_tab.png)
 
-Cet onglet est le plus simple puisqu'il suffit de choisir le mapping que l'on souhaite attribuer à la base de donnée d'origine et à la base de donnée de destination.
+This tab is the easiest as it only requires to chose the mapping we want to use for the origin database & for the target database.
 
-Le bouton _Sauvegarder les mappings de BDD choisis_ permet de sauvegarder les paramètres actuellement définis sur l'interface pour une prochaine exécution.
+The _Save chosen database mappings_ button is used to save currently displayed settings for future execution.
 
-## Étape 3 : choisir l'analyse
+## Step 3 : chosing the analysis
 
-![Fenêtre de choix de l'analyse](./img/UI_chose_analysis.png)
+![Chosing the analysis screen](./img/UI_chose_analysis.png)
 
-Cette dernière fenêtre permet de choisir l'analyse voulue parmis celles définies dans le fichier `json_configs/analysis.json`.
+This last screen is used to chose the analysis we want to execute, from the ones defined in the `json_configs/analysis.json` file.
 
-Le bouton _Lancer le script principal_ permet (enfin) de lancer le script.
+The _Start main script_ button is used to start the script.

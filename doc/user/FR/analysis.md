@@ -14,9 +14,9 @@ Ensuite, le script valide ou non chaque critère de comparaison de l'analyse cho
 
 L'analyse des résultats des correspondances se base sur 3 critères :
 
-1. sur les 4 formes du titre étudiée, la correspondance des titres est supérieure à un seuil minimum pour au moins X d'entre eux
-1. la correspondance des éditeurs est supérieure à un seuil minimum
-1. la correspondance des dates de publication est prise en compte ou non
+1. Sur les 4 formes du titre étudiée, la correspondance des titres est supérieure à un seuil minimum pour au moins X d'entre eux
+1. La correspondance des éditeurs est supérieure à un seuil minimum
+1. La correspondance des dates de publication est prise en compte ou non
 
 ## Résultats de l'analyse
 
@@ -36,10 +36,10 @@ L'analyse renvoie 5 données :
   * `True` si le score de correspondance de la pair d'éditeur choisie est supérieur ou égal au seuil minimum requis
   * `False` si ce n'est pas le cas
 * _Validation des dates_
-  * `True` si l'une des dates de Koha correspond à l'une de celles du Sudoc
+  * `True` si l'une des dates de la base de données d'origine correspond à l'une de celles de la base de données de destination
   * `False` si ce n'est pas le cas
 
-_Note : les détails (notamment les scores de similarités) sont disponibles à la fin des colonnes udu fichier de sortie_
+_Note : les détails (notamment les scores de similarités) sont disponibles à la fin des colonnes du fichier de sortie_
 
 ## Configurations des analyses par défaut
 

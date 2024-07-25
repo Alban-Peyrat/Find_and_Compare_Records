@@ -52,7 +52,7 @@ Le bouton _Sauvegarder les paramètres principaux de ce traitement_ permet de sa
 
 * URL de la base de données d'origine : ce traitement récupère les données de la base de données d'origine via les APIs de celle-ci, il faut donc indiquer __le nom de domaine qui permet d'exécuter les APIs__
 * ILN : l'ILN de l'établissement concerné _(utilisé pour filtrer les identifiants dans les autres bases de données)_
-* RCR : le RCR de la bibliothèque concernée _(utilisé pour filtrer les exempalires et code-barres d'exemplaires)_
+* RCR : le RCR de la bibliothèque concernée _(utilisé pour filtrer les exemplaires et code-barres d'exemplaires)_
 
 #### `MARC_FILE_IN_KOHA_SRU`
 
@@ -60,7 +60,7 @@ Le bouton _Sauvegarder les paramètres principaux de ce traitement_ permet de sa
 
 * URL de la base de données de destination : ce traitement récupère les données de la base de données de destination via les APIs de celle-ci, il faut donc indiquer __le nom de domaine qui permet d'exécuter les APIs__ (ou se connecter au SRU si c'est via le SRU)
 * Filtre 1, 2 & 3 : filtre libres, configurables en fonction de la base de données de destination (ou d'origine)
-  * Le filtre 1 est utilisé pour filtrer les exempalires et code-barres d'exemplaires
+  * Le filtre 1 est utilisé pour filtrer les exemplaires et code-barres d'exemplaires
   * Pour lier des filtres à des données, il est nécessaire de modifier le code dans `cl_PODA.py` ([voir la documentation développeur sur les PODAs à ce sujet](../../PODAs.md#database))
 
 ### Onglet _Configuration des mappings_
