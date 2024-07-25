@@ -14,9 +14,9 @@ Il lance jusqu'à 5 actions différentes pour un même document :
 
 * Si l'ISBN est valide, il interroge le webservice `isbn2ppn` de l'Abes avec un ISBN nettoyé
 * Il convertit l'ISBN en 10<->13 et, si ce nouvel ISBN est valide, il réinterroge le webservice `isbn2ppn` de l'Abes avec
-* Il convertit l'ISBN en 10<->13 __en conservant la clef de contrôle originale, et il réinterroge le webservice `isbn2ppn` de l'Abes avec (cete fois-ci, il ne vérifie pas si l'ISBN est valide)
-* Il interroge le SRU de l'Abes sur l'index dédié aux ISBN
-* Il interroge le SRU de l'Abes en utilisant uniquement le titre (sur l'index du titre)
+* Il convertit l'ISBN en 10<->13 __en conservant la clef de contrôle originale__, et il réinterroge le webservice `isbn2ppn` de l'Abes avec (cette fois-ci, il ne vérifie pas si l'ISBN est valide)
+* Il interroge le SRU du Sudoc sur l'index dédié aux ISBN
+* Il interroge le SRU du Sudoc en utilisant uniquement le titre (sur l'index du titre)
 
 ### `BETTER_ITEM_DVD`
 
@@ -25,11 +25,11 @@ Ce traitement recherche uniquement à partir des informations contenues dans la 
 Il lance jusqu'à 6 actions différentes pour un même document :
 
 * Il interroge le webservice `ean2ppn` de l'Abes
-* Il interroge le SRU de l'Abes sur les documents audio-visuels avec le titre, les auteurs, l'éditeur et les dates de publications sur leurs index spécifiques __si toutes ces données sont présentes dans la notice__
-* Il interroge le SRU de l'Abes sur les documents audio-visuels avec le titre, les auteurs et les dates de publications sur leurs index spécifiques __si toutes ces données sont présentes dans la notice__
-* Il interroge le SRU de l'Abes sur les documents audio-visuels avec le titre, les auteurs, l'éditeur et les dates de publications sur l'index général __si toutes ces données sont présentes dans la notice__
-* Il interroge le SRU de l'Abes sur les documents audio-visuels avec le titre, les auteurs et l'éditeur sur l'index général __si toutes ces données sont présentes dans la notice__
-* Il interroge le SRU de l'Abes sur les documents audio-visuels avec le titre sur son index spécifique
+* Il interroge le SRU du Sudoc sur les documents audio-visuels avec le titre, les auteurs, l'éditeur et les dates de publications sur leurs index spécifiques __si toutes ces données sont présentes dans la notice__
+* Il interroge le SRU du Sudoc sur les documents audio-visuels avec le titre, les auteurs et les dates de publications sur leurs index spécifiques __si toutes ces données sont présentes dans la notice__
+* Il interroge le SRU du Sudoc sur les documents audio-visuels avec le titre, les auteurs, l'éditeur et les dates de publications sur l'index général __si toutes ces données sont présentes dans la notice__
+* Il interroge le SRU du Sudoc sur les documents audio-visuels avec le titre, les auteurs et l'éditeur sur l'index général __si toutes ces données sont présentes dans la notice__
+* Il interroge le SRU du Sudoc sur les documents audio-visuels avec le titre sur son index spécifique
 
 ### `BETTER_ITEM_NO_ISBN`
 
@@ -38,11 +38,11 @@ Ce traitement recherche uniquement à partir des informations contenues dans la 
 Il lance jusqu'à 6 actions différentes pour un même document :
 
 * Il interroge le webservice `ean2ppn` de l'Abes
-* Il interroge le SRU de l'Abes sur les monographies imprimées avec le titre, les auteurs, l'éditeur et les dates de publications sur leurs index spécifiques __si toutes ces données sont présentes dans la notice__
-* Il interroge le SRU de l'Abes sur les monographies imprimées avec le titre, les auteurs et les dates de publications sur leurs index spécifiques __si toutes ces données sont présentes dans la notice__
-* Il interroge le SRU de l'Abes sur les monographies imprimées avec le titre, les auteurs, l'éditeur et les dates de publications sur l'index général __si toutes ces données sont présentes dans la notice__
-* Il interroge le SRU de l'Abes sur les monographies imprimées avec le titre, les auteurs et l'éditeur sur l'index général __si toutes ces données sont présentes dans la notice__
-* Il interroge le SRU de l'Abes sur les monographies imprimées avec le titre sur son index spécifique
+* Il interroge le SRU du Sudoc sur les monographies imprimées avec le titre, les auteurs, l'éditeur et les dates de publications sur leurs index spécifiques __si toutes ces données sont présentes dans la notice__
+* Il interroge le SRU du Sudoc sur les monographies imprimées avec le titre, les auteurs et les dates de publications sur leurs index spécifiques __si toutes ces données sont présentes dans la notice__
+* Il interroge le SRU du Sudoc sur les monographies imprimées avec le titre, les auteurs, l'éditeur et les dates de publications sur l'index général __si toutes ces données sont présentes dans la notice__
+* Il interroge le SRU du Sudoc sur les monographies imprimées avec le titre, les auteurs et l'éditeur sur l'index général __si toutes ces données sont présentes dans la notice__
+* Il interroge le SRU du Sudoc sur les monographies imprimées avec le titre sur son index spécifique
 
 ### `BETTER_ITEM_NO_MAPS`
 
@@ -51,11 +51,11 @@ Ce traitement recherche uniquement à partir des informations contenues dans la 
 Il lance jusqu'à 6 actions différentes pour un même document :
 
 * Il interroge le webservice `ean2ppn` de l'Abes
-* Il interroge le SRU de l'Abes sur les cartes avec le titre, les auteurs, l'éditeur et les dates de publications sur leurs index spécifiques __si toutes ces données sont présentes dans la notice__
-* Il interroge le SRU de l'Abes sur les cartes avec le titre, les auteurs et les dates de publications sur leurs index spécifiques __si toutes ces données sont présentes dans la notice__
-* Il interroge le SRU de l'Abes sur les cartes avec le titre, les auteurs, l'éditeur et les dates de publications sur l'index général __si toutes ces données sont présentes dans la notice__
-* Il interroge le SRU de l'Abes sur les cartes avec le titre, les auteurs et l'éditeur sur l'index général __si toutes ces données sont présentes dans la notice__
-* Il interroge le SRU de l'Abes sur les cartes avec le titre sur son index spécifique
+* Il interroge le SRU du Sudoc sur les cartes avec le titre, les auteurs, l'éditeur et les dates de publications sur leurs index spécifiques __si toutes ces données sont présentes dans la notice__
+* Il interroge le SRU du Sudoc sur les cartes avec le titre, les auteurs et les dates de publications sur leurs index spécifiques __si toutes ces données sont présentes dans la notice__
+* Il interroge le SRU du Sudoc sur les cartes avec le titre, les auteurs, l'éditeur et les dates de publications sur l'index général __si toutes ces données sont présentes dans la notice__
+* Il interroge le SRU du Sudoc sur les cartes avec le titre, les auteurs et l'éditeur sur l'index général __si toutes ces données sont présentes dans la notice__
+* Il interroge le SRU du Sudoc sur les cartes avec le titre sur son index spécifique
 
 ## `MARC_FILE_IN_KOHA_SRU`
 
