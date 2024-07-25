@@ -67,43 +67,43 @@ The _Save main processing configuration settings_ button is used to saved curren
 
 ![Processing configuration screen, mapping configuration tab](./img/UI_processing_conf_db_conf_tab.png)
 
-Cet onglet est le plus complexe mais également celui qui, une fois sauvegardée, n'a plus besoin d'être reconfiguré.
+This tab is the most complex one, but also the one who does not need to be reconfigured once it is saved.
 
-Il permet de configurer via une interface quelles données seront récupérées dans les notices bibliographiques (configurées dans le fichier `json_configs/marc_fields.json`).
-Pour plus d'informations sur comment configurer ces mappings, se référer à [la documentation sur l'extracteur de données universel](../../../doc/UDE.md).
+It is used to configure which data will be retrieved from records (graphic interface to configure `json_configs/marc_fields.json`).
+For more information on how to configure those mapping, see [universal data extractor docuemention](../../../doc/UDE.md).
 
-Dans un premier temps, il est nécessaire de sélectionner le mapping que l'on souhaite modifier.
-Il est possible de créer un nouveau mapping à l'aide du bouton _Sauvegarder ce mapping comme un nouveau_, qui copiera l'ensemble des données actuellement configurées pour le mapping actuellement sélectionné vers le nouveau.
-Le bouton ouvrira une boîte de dialogue vous demandant de renseigner le nom du nouveau mapping, il faudra ensuite valider avec `Ok` pour procéder à la sauvegarde.
+Firstly, you need to select which ampping to edit.
+It is possible to add a new mapping using the _Save this mpping as a new one_ button, which will copy the whole curent mapping under a new name.
+The button will open a dialog window asking for the name of the new mapping, which is saved using the _OK_ button.
 
-![Boîte de dialogue pour enregistrer le nouveau mapping](./img/UI_save_new_mapping.png)
+![Dialog window to save a new mapping](./img/UI_save_new_mapping.png)
 
-Dans un second temps, il est nécessaire de choisir la donnée à configurer.
-Il est possible de renommer cette donnée pour la langue actuelle avec le bouton _Renommer_.
-Le bouton ouvrira une boîte de dialogue vous demandant de renseigner le nouveau nom de la donnée, il faudra ensuite valider avec `Ok` pour procéder à la sauvegarde.
-Pour s'assurer de la donnée qui est en cours d'édition, entre parenthèses se trouve l'identifiant de la donnée.
+Secondly, you need to chose which data to configure.
+This data can be renammed for the current langauge using the _Rename_ button.
+The button will open a new dialog window asking for the new name, which then needs to be confirmed using the _OK_ button to save.
+To make sure which data is currently being renammed, its internal id is written between parenthesis.
 
-![Boîte de dialogue pour enregistrer le nouveau nom de la donnée](./img/UI_save_new_data_name.png)
+![Dialog window to save the data rename](./img/UI_save_new_data_name.png)
 
-Dans un troisième temps, il est nécessaire de choisir le champ UNIMARC à configurer.
-Pour chaque champ, quatre données sont à remplir (ou non) :
+Thirdly, you need to chose a MARC field to configure.
+For each field, 4 data can be set up (or not) :
 
-* Est une donnée codée en une ligne : permet de déterminer si le champ est une donnée codée présente dans un seul sous-champ (exemple `100`)
-* Sous-champ filtre : permet de renseigner le sous-champ qui doit permettre d'exclure les champs non voulus (exemple : uniquement traiter les exemplaires de la bibliothèque renseignée)
-* Sous-champs à exporter : la liste des sous-champs à exporter, qui doivent être séparés par des virgules (les espaces entre les virgules ne sont pas pris en compte)
-* Positions à exporter :
-  * La liste des positions à exporter, qui doivent être séparées par des virgules (les espaces entre les virgules ne sont pas pris en compte)
-  * Cette information n'est utile que si le champ est déterminé comme étant une donnée codée en une seule ligne
-  * Pour extraire un caractère uniquement, renseigner sa position
-  * Pour extraire une chaîne de caractères, renseigner la première position à exporter et la dernière position à exporter, séparées par un tiret
+* Is single line coded data : is used if the field is a coded data in only one subfield (example : UNIMARC `100`)
+* Filtering subfield : is used to set up which subfield must be used to rule out unwanted fields (example : keeping only items for a library)
+* Subfields to export : the subfield list to export, separated with commas (spaces bewteen commas will be deleted)
+* Positions to export :
+  * Positions list to export, separated with commas (spaces bewteen commas will be deleted)
+  * This information is only used if the field is set as a single line coded data
+  * To extract only 1 character, write it's position
+  * Ro extract a strinf of characters, write the first position to export and the last position to export, separated by a dash
 
-Pour ajouter des nouveaux champs, sélectionner le champ `Ajouter un nouveau champ`, qui fera apparaître une nouvelle donnée à remplir à côté de lui.
-Renseignez dedans le numéro du champ voulu.
+To add new fields, select the field _Add new field_, which will make a new completable data appear next to it.
+Input the field tag in that new text input.
 
-![Configuration d'un nouveau champ](./img/UI_add_new_field.png)
+![New field configuration](./img/UI_add_new_field.png)
 
-Pour sauvegarder la modification effectuée sur le champ, cliquez sur le bouton _Sauvegarder ce champ MARC_.
-Cette opération est nécessaire __pour chaque champ__, sinon les données ne seront pas sauvegardées.
+To save a modification on a field, clic on the _Save this MARC field button_
+This operation is needed __for every field__, otherwise the modifications will not be saved.
 
 ### _Chose database mappings_ tab
 

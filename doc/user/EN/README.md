@@ -1,7 +1,5 @@
 # User documentation
 
-_Note : english documentation is not fully translated yet_
-
 * [How to install _Find and Compare Records_](./how_to_install.md)
 * [Input file documentation](./input_file.md)
 * [How to use _Find and Compare Records_](./how_to_use.md)
