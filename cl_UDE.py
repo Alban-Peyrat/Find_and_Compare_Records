@@ -389,8 +389,6 @@ class Universal_Data_Extractor(object):
             return self.get_physical_description(filter_value)    
         elif mapped_field == Mapped_Fields.CONTENTS_NOTES:
             return self.get_contents_notes(filter_value)
-        elif mapped_field == Mapped_Fields.GENERAL_PROCESSING_DATA_DATES:
-            return self.get_general_processing_data_dates(filter_value)
         elif mapped_field == Mapped_Fields.OTHER_ED_IN_OTHER_MEDIUM_BIBG_ID:
             return self.get_other_edition_in_other_medium_bibliographic_id(filter_value)
         elif mapped_field == Mapped_Fields.LINKING_PIECE:

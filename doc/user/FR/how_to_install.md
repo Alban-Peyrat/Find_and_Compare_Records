@@ -24,24 +24,24 @@ Ou il faut créer un fichier `.env` avec les variables :
 * Variables générales :
     * `SERVICE` : nom du service (pour les journaux, dont le nom du fichier)
     * `LANG` : la langue de l'interface au format ISO 639-2 (seuls `fre` et `eng` sont supportés)
-    * `PROCESSING_VAL` : `BETTER_ITEM` ou `OTHER_DB_IN_LOCAL_DB` (au 22/11/2023, seul `BETTER_ITEM` est supporté)
+    * `PROCESSING_VAL` : `BETTER_ITEM`, `MARC_FILE_IN_KOHA_SRU`, `BETTER_ITEM_DVD`, `BETTER_ITEM_NO_ISBN` ou `BETTER_ITEM_MAPS`
 * URL des bases de données :
   * `ORIGIN_URL` : URL (nom de domaine) de la base de donnée d'origine
   * `TARGET_URL` : URL (nom de domaine) de la base de donnée de destination
-* Variables du traitement `BETTER_ITEM` :
+* Variables des traitements de la suite `BETTER_ITEM` :
   * `ILN` : ILN de l'établissement voulu
   * `RCR` : RCR de la bibliothèque voulue
-* Variables du traitement `OTHER_DB_IN_LOCAL_DB` :
+* Variables du traitement `MARC_FILE_IN_KOHA_SRU` :
   * `FILTER1`
   * `FILTER2`
   * `FILTER3`
 * Mapping des bases de données :
-  * `ORIGIN_DATABASE_MAPPING` : nom du mapping de la base de données d'origine
-  * `TARGET_DATABASE_MAPPING` : nom du mapping de la base de données de destination
+  * `ORIGIN_DATABASE_MAPPING` : nom du mapping de la base de données d'origine (`ORIGIN_DATABASE` par défaut)
+  * `TARGET_DATABASE_MAPPING` : nom du mapping de la base de données de destination (`TARGET_DATABASE` par défaut)
 * Configuration des journaux :
   * `LOGS_PATH` : chemin d'accès au dossier pour le fichiers des journaux
-  * `LOGGER_LEVEL` : niveau de journalisation utilisé, __uniquement configurable directement dans ce fichier__. Prend les valeurs `DEBUG`, `INFO`, `WARNING`, `ERROR`, `CRITICAL`, avec `INFO` par défaut
-* Chemin d'accès au fichier de configuration de l'export CSV : `CSV_OUTPUT_JSON_CONFIG_PATH`
-* Configuration des chemins d'accès aux fichiers et dossiers :
+  * `LOG_LEVEL` : niveau de journalisation utilisé : `DEBUG`, `INFO`, `WARNING`, `ERROR`, `CRITICAL` (`INFO` par défaut)
+* Chemin d'accès aux fichiers & dossiers :
+  * `CSV_OUTPUT_JSON_CONFIG_PATH` : fichier de configuration de l'export CSV
   * `FILE_PATH` : chemin d'accès vers le fichier à traiter
   * `OUTPUT_PATH` : chemin d'accès vers le dossier qui contiendra les résultats

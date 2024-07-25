@@ -15,16 +15,17 @@ _Le bouton en haut à droite permet de changer la langue de l'interface du entre
 
 Cet écran permet de configurer les paramètres généraux de l'application à savoir :
 
-* Le traitement qui sera exécuté _(au 22/11/2023, seul `BETTER_ITEM` est supporté)_ _([voir plus d'informations sur les traitements disponibles](./processings.md))_
+* Le traitement qui sera exécuté _([voir plus d'informations sur les traitements disponibles](./processings.md))_
 * Les chemins d'accès :
   * Au fichier à analyser _([voir plus d'informations sur ce fichier](./input_file.md))_
   * Au dossier qui contiendra les fichiers de résultats
   * Au dossier qui contiendra le fichier des journaux
 * Le nom du service (qui sert uniquement pour les journaux, notamment pour nommer le fichier)
+* Le niveau de journalisation
 
 Le bouton _Sauvegarder ces paramètres d'exécution_ permet de sauvegarder les paramètres actuellement définis sur l'interface pour une prochaine exécution (langue comprise).
 
-Une fois cet écran correctement paramétré (voire sauvegarder), le bouton _Suivant (configuration du traitement)_ permet de passer à la seconde étape.
+Une fois cet écran correctement paramétré (voire sauvegardé), le bouton _Suivant (configuration du traitement)_ permet de passer à la seconde étape.
 
 ## Étape 2 : configuration du traitement
 
@@ -34,24 +35,33 @@ Ce nouvel écran contient 3 onglets :
 * _Configuration des mappings_
 * _Choix des mappings de BDD_
 
+Par ailleurs, sous le titre de l'écran, le traitement choisi est rappelé.
+
 Une fois la configuration de tous les onglets terminée, le bouton _Lancer l'analyse_ permet de passer à la troisième et dernière étape.
 
 ### Onglet _Configuration principale du traitement_
 
-![Écran de configuration du traitement, onglet de configuration principale pour `BETTER_ITEM`](./img/UI_processing_conf_main_tab_better_item.png)
-
-![Écran de configuration du traitement, onglet de configuration principale pour `OTHER_DB_IN_LOCAL_DB`](./img/UI_processing_conf_main_tab_other_db_in_local_db.png)
-
-Cet onglet n'affiche pas les mêmes options selon le traitement choisi :
-
-* __`BETTER_ITEM`__ :
-  * URL de la base de données d'origine : ce traitement récupère les données de la base de données d'origine via les APIs de celle-ci, il faut donc indiquer __le nom de domaine qui permet d'exécuter les APIs__ (seul Koha est supporté pour le moment)
-  * ILN : l'ILN de l'établissement concerné
-  * RCR : le RCR de la bibliothèque concernée
-* __`OTHER_DB_IN_LOCAL_DB`__ :
-  * _Traitement non configuré pour le moment_
+Cet onglet n'affiche pas les mêmes options selon le traitement choisi.
 
 Le bouton _Sauvegarder les paramètres principaux de ce traitement_ permet de sauvegarder les paramètres actuellement définis sur l'interface pour une prochaine exécution.
+
+
+#### Suite `BETTER_ITEM`
+
+![Écran de configuration du traitement, onglet de configuration principale pour `BETTER_ITEM`](./img/UI_processing_conf_main_tab_better_item.png)
+
+* URL de la base de données d'origine : ce traitement récupère les données de la base de données d'origine via les APIs de celle-ci, il faut donc indiquer __le nom de domaine qui permet d'exécuter les APIs__
+* ILN : l'ILN de l'établissement concerné _(utilisé pour filtrer les identifiants dans les autres bases de données)_
+* RCR : le RCR de la bibliothèque concernée _(utilisé pour filtrer les exempalires et code-barres d'exemplaires)_
+
+#### `MARC_FILE_IN_KOHA_SRU`
+
+![Écran de configuration du traitement, onglet de configuration principale pour `MARC_FILE_IN_KOHA_SRU`](./img/UI_processing_conf_main_tab_marc_file_in_koha_sru.png)
+
+* URL de la base de données de destination : ce traitement récupère les données de la base de données de destination via les APIs de celle-ci, il faut donc indiquer __le nom de domaine qui permet d'exécuter les APIs__ (ou se connecter au SRU si c'est via le SRU)
+* Filtre 1, 2 & 3 : filtre libres, configurables en fonction de la base de données de destination (ou d'origine)
+  * Le filtre 1 est utilisé pour filtrer les exempalires et code-barres d'exemplaires
+  * Pour lier des filtres à des données, il est nécessaire de modifier le code dans `cl_PODA.py` ([voir la documentation développeur sur les PODAs à ce sujet](../../PODAs.md#database))
 
 ### Onglet _Configuration des mappings_
 
@@ -109,4 +119,4 @@ Le bouton _Sauvegarder les mappings de BDD choisis_ permet de sauvegarder les pa
 
 Cette dernière fenêtre permet de choisir l'analyse voulue parmis celles définies dans le fichier `json_configs/analysis.json`.
 
-Le buton _Lancer le script principal_ permet (enfin) de lancer le script.
+Le bouton _Lancer le script principal_ permet (enfin) de lancer le script.
