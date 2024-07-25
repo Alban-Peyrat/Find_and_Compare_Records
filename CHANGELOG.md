@@ -9,12 +9,14 @@ _Some previous changes will be added_
 
 ## [Unreleased]
 
+## [2.0.0] - 2024-07-25
+
 ### Added
 
 * Documentation now states which library versions were used for development (due to issues with `PySimpleGUI` in this project and `pymarc` in another project)
 * Now uses `pysisbn` library
 * Added error `ISBN_979_CAN_NOT_BE_CONVERTED` for ISBN 13 not starting with `978` if trying to convert them to ISBN 10
-* Operations `SEARCH_IN_SUDOC_BY_ISBN`, `SEARCH_IN_SUDOC_DVD`, `SEARCH_IN_SUDOC_NO_ISBN` & `SEARCH_IN_SUDOC_MAPS` now have an additionnal last actions that queries only on title (and document type filter)
+* Operations `SEARCH_IN_SUDOC_BY_ISBN`, `SEARCH_IN_SUDOC_DVD`, `SEARCH_IN_SUDOC_NO_ISBN` & `SEARCH_IN_SUDOC_MAPS` now have an additionnal last action that queries only on title on the title index (and document type filter)
 * More specific erros were added if the title, the authors, the publisher or the dates were missing and they were required for the matching process and if the configured document type is not supported
 
 ### Changed
@@ -30,21 +32,21 @@ _Some previous changes will be added_
 * Replaced ISBN functions from `Abes_id2ppn` by `pyisbn` library
 * Updated `Abes_id2ppn` with lastest version
 * Splitted big files into smaller ones & reduce dependencies between them
-  * Notably, `cl_UDE.py` can now be used alone
+  * Notably, `cl_UDE.py` can now be used alone as it was originnally intended
   * Added a `classes_dependencies.md` file explaining the dependencies
-* Reworked `request_action` to avoid redundacy on Sudoc SRU, Koha SRU & Sudoc's ad2ppn webservice
+* Reworked `request_action` to avoid redundacy on Sudoc SRU, Koha SRU & Sudoc's id2ppn webservice
 * Documentation (developper & user) was updated (user english documentation was added)
 
 ### Removed
 
-* Removed unecessary personnal Python test scripts
+* Removed unecessary personnal Python test scripts and files
 
 ### Fixed
 
-* Put back the mention of Alexandre Faure original script (that I apprently deleted)
-* Fixed various sytnax warning with regular expressions
+* Put back the mention of Alexandre Faure original script (that I apparently deleted)
+* Fixed various syntax warning with regular expressions
 * Fixed fatal errors when trying to convert ISBN with more than just digits or `X`
-* Fixed the functions retruning instances from `Enum` (though the bug was not used in the main script I think)
+* Fixed the functions returning instances from `Enum` (though the bug was not used in the main script I think)
 * Fixed the interface not loading the saved language properly
 
 ## [1.17.5] - 2024-04-11
