@@ -6,7 +6,7 @@ Téléchargez l'application puis extrayez le contenu.
 
 Ces bibliothèques sont utilisées par le script mais absentes de la [Python Standard Library](https://docs.python.org/3/library/), il est donc nécessaire de les installer dans un premier temps :
 
-* _Rappel : sous Windows, ouvrir l'invite de commande, et taper les lignes de commandes suivantes après `py -m` (ou `pyhton -m`)_
+* _Rappel : sous Windows, ouvrir l'invite de commande, et taper les lignes de commandes suivantes après `py -m` (ou `pyhton -m`). Par exemple, pour installer `pyisbn`, taper `py -m pip install pyisbn==1.3.1`_
 * [`unidecode`](https://pypi.org/project/Unidecode/) (`pip install Unidecode==1.3.8`)
 * [`FuzzyWuzzy`](https://pypi.org/project/fuzzywuzzy/) (`pip install fuzzywuzzy==0.18.0`)
   * With [`python-Levenshtein`](https://pypi.org/project/python-Levenshtein/) (`pip install python-Levenshtein==0.25.1`), installé avec `rapidfuzz` `3.9.3`

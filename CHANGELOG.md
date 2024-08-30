@@ -9,6 +9,10 @@ _Some previous changes will be added_
 
 ## [Unreleased]
 
+### Added
+
+* User documentation now has an example showing how to install a library in Python
+
 ## [2.0.0] - 2024-07-25
 
 ### Added

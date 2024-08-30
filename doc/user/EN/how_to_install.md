@@ -6,7 +6,7 @@ Download the application and extract its content.
 
 Those libraries are used by the script but are not in the [Python Standard Library](https://docs.python.org/3/library/), all of them should be installed first :
 
-* _Reminder : with Windows, open the command terminal and write the following command lines after `py -m` (or `pyhton -m`)_
+* _Reminder : with Windows, open the command terminal and write the following command lines after `py -m` (or `pyhton -m`). For example, to install `pyisbn`, write `py -m pip install pyisbn==1.3.1`_
 * [`unidecode`](https://pypi.org/project/Unidecode/) (`pip install Unidecode==1.3.8`)
 * [`FuzzyWuzzy`](https://pypi.org/project/fuzzywuzzy/) (`pip install fuzzywuzzy==0.18.0`)
   * With [`python-Levenshtein`](https://pypi.org/project/python-Levenshtein/) (`pip install python-Levenshtein==0.25.1`), installed with `rapidfuzz` `3.9.3`
