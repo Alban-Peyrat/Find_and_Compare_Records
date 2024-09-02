@@ -44,7 +44,7 @@ It launches up to 6 different actions for the same record :
 * Queries Sudoc SRU on printed books using title, authors & the publisher on the _any_ index __if they were all found in the record__
 * Queries Sudoc SRU on printed books using title on its specific index
 
-### `BETTER_ITEM_NO_MAPS`
+### `BETTER_ITEM_MAPS`
 
 This processing only searches based on data from the origin database record retrieved by FCR.
 

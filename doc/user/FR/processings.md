@@ -44,7 +44,7 @@ Il lance jusqu'à 6 actions différentes pour un même document :
 * Il interroge le SRU du Sudoc sur les monographies imprimées avec le titre, les auteurs et l'éditeur sur l'index général __si toutes ces données sont présentes dans la notice__
 * Il interroge le SRU du Sudoc sur les monographies imprimées avec le titre sur son index spécifique
 
-### `BETTER_ITEM_NO_MAPS`
+### `BETTER_ITEM_MAPS`
 
 Ce traitement recherche uniquement à partir des informations contenues dans la notice de la base de données d'origine récupérée par FCR.
 
