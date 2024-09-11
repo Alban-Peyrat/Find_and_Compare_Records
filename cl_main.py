@@ -142,7 +142,7 @@ class Original_Record(object):
             out[f"{db}_{Mapped_Fields.PUBLICATION_DATES}"] = list_as_string(out[f"{db}_{Mapped_Fields.PUBLICATION_DATES}"])
             return out
 
-        def __special_better_item(self, out:dict, origin_db=True) -> dict:
+        def __special_better_item(self, out:dict, processing:Processing_Names, origin_db=True) -> dict:
             """Special function for BETTER_ITEM, to transform some data form"""
             par:Original_Record = self.parent
             db = "ORIGIN_DB"
@@ -152,7 +152,11 @@ class Original_Record(object):
                 db_data = par.target_database_data[par.matched_id]
                 out[CSV_Cols.TARGET_DB_HAS_ITEMS.name] = len(db_data.data[Mapped_Fields.ITEMS]) > 0
             # Dates in physical description
-            if origin_db:
+            # Opt-in → Only for BETTER_ITEM vanilla & BETTER_ITEM_NO_ISBN (#AR607)
+            if origin_db and processing in [
+                    Processing_Names.BETTER_ITEM,
+                    Processing_Names.BETTER_ITEM_NO_ISBN
+                ]:
                 out[f"{db}_{Mapped_Fields.PHYSICAL_DESCRIPTION.name}"] = []
                 for desc_str in db_data.data[Mapped_Fields.PHYSICAL_DESCRIPTION]: #AR259
                     out[f"{db}_{Mapped_Fields.PHYSICAL_DESCRIPTION.name}"] += get_year(desc_str)
@@ -241,7 +245,7 @@ class Original_Record(object):
                     Processing_Names.BETTER_ITEM_NO_ISBN,
                     Processing_Names.BETTER_ITEM_MAPS
                     ]:
-                    out = self.__special_better_item(out)
+                    out = self.__special_better_item(out, processing=par.processing.enum_member)
 
                 # Match records
                 out[CSV_Cols.MATCH_RECORDS_QUERY.name] = par.query_used
@@ -264,7 +268,7 @@ class Original_Record(object):
                     Processing_Names.BETTER_ITEM_NO_ISBN.name,
                     Processing_Names.BETTER_ITEM_MAPS.name
                     ]:
-                    out = self.__special_better_item(out, False)
+                    out = self.__special_better_item(out, processing=par.processing.enum_member, origin_db=False)
 
                 # Analysis
                 # Title

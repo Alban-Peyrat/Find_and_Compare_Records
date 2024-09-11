@@ -17,6 +17,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 ### Fixed
 
 * User documentation now correctly uses `BETTER_ITEM_MAPS` instead of `BETTER_ITEM_NO_MAPS`
+* Processings `BETTER_ITEM_DVD` & `BETTER_ITEM_MAPS` do not look anymore only for dates in the origin database physical description (method `__special_better_item()`)
+  * This behaviour is now an opt-in, the default one is keeping the raw data
 
 ## [2.0.0] - 2024-07-25
 

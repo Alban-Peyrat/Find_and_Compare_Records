@@ -91,14 +91,14 @@
                 "status": "SUCCESS",
                 "error_type": null,
                 "msg": null,
-                "query": "mti=1 exterieures maison interieures menuiseries menuiserie",
+                "query": "mti=1 menuiseries interieures exterieures menuiserie maison",
                 "returned_ids": [
                     "020791909",
                     "198800398"
                 ]
             }
         },
-        "query_used": "mti=1 exterieures maison interieures menuiseries menuiserie",
+        "query_used": "mti=1 menuiseries interieures exterieures menuiserie maison",
         "action_used": "SRU_SUDOC_MTI",
         "nb_matched_records": 2,
         "matched_records_ids": [
@@ -351,16 +351,18 @@
                     ],
                     "ERRONEOUS_ISBN": [],
                     "TITLE": [
-                        "Menuiseries de fenêtres sans dormant Volume 1 2 Première moitié du XVIe siècle"
+                        "Menuiseries de fenêtres (sans dormant) Volume 1** Première moitié du XVIe siècle"
                     ],
                     "AUTHORS": [
                         "Bontemps Daniel",
-                        "Centre de recherches sur les monuments historiques France"
+                        "Centre de recherches sur les Monuments historiques France"
                     ],
                     "PUBLISHERS_NAME": [
-                        "Ministère de l'éducation nationale et de la culture, Direction du patrimoine"
+                        "Ministère de l'Education Nationale et de la Culture, Direction du Patrimoine"
                     ],
-                    "EDITION_NOTES": [],
+                    "EDITION_NOTES": [
+                        "Autre tirage : 1990"
+                    ],
                     "PUBLICATION_DATES": [
                         "1992"
                     ],
@@ -371,9 +373,9 @@
                 "fcr_processed_id": "00001Y001",
                 "analysis": {
                     "title": {
-                        "title_ratio": 63,
+                        "title_ratio": 64,
                         "title_partial_ratio": 100,
-                        "title_token_sort_ratio": 63,
+                        "title_token_sort_ratio": 64,
                         "title_token_set_ratio": 100
                     },
                     "dates": true,
@@ -1763,8 +1765,8 @@
                     "Mellinand Philippe"
                 ],
                 "PUBLISHERS_NAME": [
-                    "Centre des monuments nationaux",
-                    "Éd. du Patrimoine"
+                    "Éd. du Patrimoine",
+                    "Centre des monuments nationaux"
                 ],
                 "EDITION_NOTES": [
                     "Réimpression : 2009"
@@ -1818,8 +1820,8 @@
                         "Mellinand Philippe"
                     ],
                     "PUBLISHERS_NAME": [
-                        "Centre des monuments nationaux",
-                        "Éd. du Patrimoine"
+                        "Éd. du Patrimoine",
+                        "Centre des monuments nationaux"
                     ],
                     "EDITION_NOTES": [
                         "Réimpression : 2009"
@@ -1844,8 +1846,8 @@
                     "dates": true,
                     "publishers": {
                         "score": 100,
-                        "target_db": "centre des monuments nationaux",
-                        "origin_db": "centre des monuments nationaux"
+                        "target_db": "du patrimoine",
+                        "origin_db": "du patrimoine"
                     },
                     "other_ids": {
                         "nb": 1,
@@ -2280,8 +2282,8 @@
                     "Giraudy Danièle"
                 ],
                 "PUBLISHERS_NAME": [
-                    "Ed. Parenthèses",
-                    "Musées de Marseille"
+                    "Musées de Marseille",
+                    "Ed. Parenthèses"
                 ],
                 "EDITION_NOTES": [],
                 "PUBLICATION_DATES": [
@@ -2329,8 +2331,8 @@
                         "Giraudy Danièle"
                     ],
                     "PUBLISHERS_NAME": [
-                        "Ed. Parenthèses",
-                        "Musées de Marseille"
+                        "Musées de Marseille",
+                        "Ed. Parenthèses"
                     ],
                     "EDITION_NOTES": [],
                     "PUBLICATION_DATES": [
@@ -2353,8 +2355,8 @@
                     "dates": true,
                     "publishers": {
                         "score": 100,
-                        "target_db": "parentheses",
-                        "origin_db": "parentheses"
+                        "target_db": "musees de marseille",
+                        "origin_db": "musees de marseille"
                     },
                     "other_ids": {
                         "nb": 1,
@@ -2593,7 +2595,7 @@
                 "status": "SUCCESS",
                 "error_type": null,
                 "msg": null,
-                "query": "mti=autrefois marseille",
+                "query": "mti=marseille autrefois",
                 "returned_ids": [
                     "09762179X",
                     "27931115X",
@@ -2603,7 +2605,7 @@
                 ]
             }
         },
-        "query_used": "mti=autrefois marseille",
+        "query_used": "mti=marseille autrefois",
         "action_used": "SRU_SUDOC_MTI",
         "nb_matched_records": 5,
         "matched_records_ids": [
@@ -2970,13 +2972,13 @@
                 "status": "SUCCESS",
                 "error_type": null,
                 "msg": null,
-                "query": "mti=autrefois 1 marseille",
+                "query": "mti=1 marseille autrefois",
                 "returned_ids": [
                     "237276658"
                 ]
             }
         },
-        "query_used": "mti=autrefois 1 marseille",
+        "query_used": "mti=1 marseille autrefois",
         "action_used": "SRU_SUDOC_MTI",
         "nb_matched_records": 1,
         "matched_records_ids": [
@@ -3313,11 +3315,11 @@
                 "status": "SUCCESS",
                 "error_type": null,
                 "msg": null,
-                "query": "mti=2010 mastering revit architecture",
+                "query": "mti=2010 revit mastering architecture",
                 "returned_ids": []
             }
         },
-        "query_used": "mti=2010 mastering revit architecture",
+        "query_used": "mti=2010 revit mastering architecture",
         "action_used": "SRU_SUDOC_MTI",
         "nb_matched_records": 0,
         "matched_records_ids": []
@@ -4283,8 +4285,8 @@
                         ]
                     ],
                     "ERRONEOUS_ISBN": [
-                        "2-2200-37224-8",
-                        "2-2200-37225-6"
+                        "2-2200-37225-6",
+                        "2-2200-37224-8"
                     ],
                     "TITLE": [
                         "La Méditerranée et le monde méditerranéen à l'époque de Philippe II"
@@ -5102,8 +5104,8 @@
                     "Sanders Lena"
                 ],
                 "PUBLISHERS_NAME": [
-                    "Hermès science",
-                    "Lavoisier"
+                    "Lavoisier",
+                    "Hermès science"
                 ],
                 "EDITION_NOTES": [],
                 "PUBLICATION_DATES": [
@@ -5151,8 +5153,8 @@
                         "Sanders Lena"
                     ],
                     "PUBLISHERS_NAME": [
-                        "Hermès science",
-                        "Lavoisier"
+                        "Lavoisier",
+                        "Hermès science"
                     ],
                     "EDITION_NOTES": [],
                     "PUBLICATION_DATES": [
@@ -5175,8 +5177,8 @@
                     "dates": true,
                     "publishers": {
                         "score": 100,
-                        "target_db": "hermes science",
-                        "origin_db": "hermes science"
+                        "target_db": "lavoisier",
+                        "origin_db": "lavoisier"
                     },
                     "other_ids": {
                         "nb": 1,
@@ -5485,7 +5487,7 @@
                 "status": "SUCCESS",
                 "error_type": null,
                 "msg": null,
-                "query": "mti=mont saint michel",
+                "query": "mti=saint michel mont",
                 "returned_ids": [
                     "227178149",
                     "094851050",
@@ -5505,6 +5507,7 @@
                     "000366684",
                     "085389021",
                     "099519712",
+                    "279948638",
                     "180799878",
                     "112381111",
                     "060499656",
@@ -5585,12 +5588,11 @@
                     "085398152",
                     "135297826",
                     "134229150",
-                    "08858268X",
-                    "277501717"
+                    "08858268X"
                 ]
             }
         },
-        "query_used": "mti=mont saint michel",
+        "query_used": "mti=saint michel mont",
         "action_used": "SRU_SUDOC_MTI",
         "nb_matched_records": 100,
         "matched_records_ids": [
@@ -5612,6 +5614,7 @@
             "000366684",
             "085389021",
             "099519712",
+            "279948638",
             "180799878",
             "112381111",
             "060499656",
@@ -5692,8 +5695,7 @@
             "085398152",
             "135297826",
             "134229150",
-            "08858268X",
-            "277501717"
+            "08858268X"
         ],
         "target_database": {
             "227178149": {
@@ -6667,6 +6669,62 @@
                     }
                 }
             },
+            "279948638": {
+                "data": {
+                    "GENERAL_PROCESSING_DATA_DATES": [
+                        [
+                            "2024",
+                            "    "
+                        ]
+                    ],
+                    "ERRONEOUS_ISBN": [],
+                    "TITLE": [
+                        "Mont-Saint-Michel"
+                    ],
+                    "AUTHORS": [
+                        "Esser Elger",
+                        "Conésa Héloïse",
+                        "Queffélec Yann"
+                    ],
+                    "PUBLISHERS_NAME": [
+                        "Schirmer/Mosel"
+                    ],
+                    "EDITION_NOTES": [],
+                    "PUBLICATION_DATES": [
+                        "",
+                        "C 2024"
+                    ],
+                    "OTHER_DB_ID": [],
+                    "ITEMS_BARCODE": [],
+                    "ITEMS": []
+                },
+                "fcr_processed_id": "00040Y018",
+                "analysis": {
+                    "title": {
+                        "title_ratio": 92,
+                        "title_partial_ratio": 100,
+                        "title_token_sort_ratio": 92,
+                        "title_token_set_ratio": 100
+                    },
+                    "dates": false,
+                    "publishers": {
+                        "score": 28,
+                        "target_db": "schirmer mosel",
+                        "origin_db": "du patrimoine centre des monuments nationaux"
+                    },
+                    "other_ids": {
+                        "nb": 0,
+                        "result": "NO_OTHER_DB_ID"
+                    },
+                    "global": {
+                        "result": "PARTIAL_MATCH",
+                        "nb_succesful_checks": 1,
+                        "title": true,
+                        "publisher": false,
+                        "date": false
+                    }
+                }
+            },
             "180799878": {
                 "data": {
                     "GENERAL_PROCESSING_DATA_DATES": [],
@@ -6682,7 +6740,7 @@
                     "ITEMS_BARCODE": [],
                     "ITEMS": []
                 },
-                "fcr_processed_id": "00040Y018",
+                "fcr_processed_id": "00040Y019",
                 "analysis": {
                     "title": {
                         "title_ratio": 82,
@@ -6746,7 +6804,7 @@
                     "ITEMS_BARCODE": [],
                     "ITEMS": []
                 },
-                "fcr_processed_id": "00040Y019",
+                "fcr_processed_id": "00040Y020",
                 "analysis": {
                     "title": {
                         "title_ratio": 35,
@@ -6800,7 +6858,7 @@
                     "ITEMS_BARCODE": [],
                     "ITEMS": []
                 },
-                "fcr_processed_id": "00040Y020",
+                "fcr_processed_id": "00040Y021",
                 "analysis": {
                     "title": {
                         "title_ratio": 26,
@@ -6853,11 +6911,13 @@
                         "",
                         "C 1966"
                     ],
-                    "OTHER_DB_ID": [],
+                    "OTHER_DB_ID": [
+                        "389666"
+                    ],
                     "ITEMS_BARCODE": [],
                     "ITEMS": []
                 },
-                "fcr_processed_id": "00040Y021",
+                "fcr_processed_id": "00040Y022",
                 "analysis": {
                     "title": {
                         "title_ratio": 27,
@@ -6872,8 +6932,8 @@
                         "origin_db": "du patrimoine centre des monuments nationaux"
                     },
                     "other_ids": {
-                        "nb": 0,
-                        "result": "NO_OTHER_DB_ID"
+                        "nb": 1,
+                        "result": "THIS_ID_NOT_INCLUDED"
                     },
                     "global": {
                         "result": "NO_MATCH",
@@ -6910,7 +6970,7 @@
                     "ITEMS_BARCODE": [],
                     "ITEMS": []
                 },
-                "fcr_processed_id": "00040Y022",
+                "fcr_processed_id": "00040Y023",
                 "analysis": {
                     "title": {
                         "title_ratio": 20,
@@ -6966,7 +7026,7 @@
                     "ITEMS_BARCODE": [],
                     "ITEMS": []
                 },
-                "fcr_processed_id": "00040Y023",
+                "fcr_processed_id": "00040Y024",
                 "analysis": {
                     "title": {
                         "title_ratio": 27,
@@ -7020,7 +7080,7 @@
                     "ITEMS_BARCODE": [],
                     "ITEMS": []
                 },
-                "fcr_processed_id": "00040Y024",
+                "fcr_processed_id": "00040Y025",
                 "analysis": {
                     "title": {
                         "title_ratio": 50,
@@ -7076,7 +7136,7 @@
                     "ITEMS_BARCODE": [],
                     "ITEMS": []
                 },
-                "fcr_processed_id": "00040Y025",
+                "fcr_processed_id": "00040Y026",
                 "analysis": {
                     "title": {
                         "title_ratio": 50,
@@ -7130,7 +7190,7 @@
                     "ITEMS_BARCODE": [],
                     "ITEMS": []
                 },
-                "fcr_processed_id": "00040Y026",
+                "fcr_processed_id": "00040Y027",
                 "analysis": {
                     "title": {
                         "title_ratio": 41,
@@ -7184,7 +7244,7 @@
                     "ITEMS_BARCODE": [],
                     "ITEMS": []
                 },
-                "fcr_processed_id": "00040Y027",
+                "fcr_processed_id": "00040Y028",
                 "analysis": {
                     "title": {
                         "title_ratio": 31,
@@ -7237,7 +7297,7 @@
                     "ITEMS_BARCODE": [],
                     "ITEMS": []
                 },
-                "fcr_processed_id": "00040Y028",
+                "fcr_processed_id": "00040Y029",
                 "analysis": {
                     "title": {
                         "title_ratio": 26,
@@ -7290,7 +7350,7 @@
                     "ITEMS_BARCODE": [],
                     "ITEMS": []
                 },
-                "fcr_processed_id": "00040Y029",
+                "fcr_processed_id": "00040Y030",
                 "analysis": {
                     "title": {
                         "title_ratio": 26,
@@ -7345,7 +7405,7 @@
                     "ITEMS_BARCODE": [],
                     "ITEMS": []
                 },
-                "fcr_processed_id": "00040Y030",
+                "fcr_processed_id": "00040Y031",
                 "analysis": {
                     "title": {
                         "title_ratio": 26,
@@ -7387,8 +7447,8 @@
                     "AUTHORS": [],
                     "PUBLISHERS_NAME": [
                         "EPHE",
-                        "CNRS",
-                        "Totalfina Elf"
+                        "Totalfina Elf",
+                        "CNRS"
                     ],
                     "EDITION_NOTES": [
                         "EPHE = École pratique des hautes études"
@@ -7400,7 +7460,7 @@
                     "ITEMS_BARCODE": [],
                     "ITEMS": []
                 },
-                "fcr_processed_id": "00040Y031",
+                "fcr_processed_id": "00040Y032",
                 "analysis": {
                     "title": {
                         "title_ratio": 16,
@@ -7454,7 +7514,7 @@
                     "ITEMS_BARCODE": [],
                     "ITEMS": []
                 },
-                "fcr_processed_id": "00040Y032",
+                "fcr_processed_id": "00040Y033",
                 "analysis": {
                     "title": {
                         "title_ratio": 24,
@@ -7508,7 +7568,7 @@
                     "ITEMS_BARCODE": [],
                     "ITEMS": []
                 },
-                "fcr_processed_id": "00040Y033",
+                "fcr_processed_id": "00040Y034",
                 "analysis": {
                     "title": {
                         "title_ratio": 20,
@@ -7561,7 +7621,7 @@
                     "ITEMS_BARCODE": [],
                     "ITEMS": []
                 },
-                "fcr_processed_id": "00040Y034",
+                "fcr_processed_id": "00040Y035",
                 "analysis": {
                     "title": {
                         "title_ratio": 18,
@@ -7615,7 +7675,7 @@
                     "ITEMS_BARCODE": [],
                     "ITEMS": []
                 },
-                "fcr_processed_id": "00040Y035",
+                "fcr_processed_id": "00040Y036",
                 "analysis": {
                     "title": {
                         "title_ratio": 18,
@@ -7666,7 +7726,7 @@
                     "ITEMS_BARCODE": [],
                     "ITEMS": []
                 },
-                "fcr_processed_id": "00040Y036",
+                "fcr_processed_id": "00040Y037",
                 "analysis": {
                     "title": {
                         "title_ratio": 18,
@@ -7724,7 +7784,7 @@
                     "ITEMS_BARCODE": [],
                     "ITEMS": []
                 },
-                "fcr_processed_id": "00040Y037",
+                "fcr_processed_id": "00040Y038",
                 "analysis": {
                     "title": {
                         "title_ratio": 24,
@@ -7781,7 +7841,7 @@
                     "ITEMS_BARCODE": [],
                     "ITEMS": []
                 },
-                "fcr_processed_id": "00040Y038",
+                "fcr_processed_id": "00040Y039",
                 "analysis": {
                     "title": {
                         "title_ratio": 28,
@@ -7836,7 +7896,7 @@
                     "ITEMS_BARCODE": [],
                     "ITEMS": []
                 },
-                "fcr_processed_id": "00040Y039",
+                "fcr_processed_id": "00040Y040",
                 "analysis": {
                     "title": {
                         "title_ratio": 71,
@@ -7892,7 +7952,7 @@
                     "ITEMS_BARCODE": [],
                     "ITEMS": []
                 },
-                "fcr_processed_id": "00040Y040",
+                "fcr_processed_id": "00040Y041",
                 "analysis": {
                     "title": {
                         "title_ratio": 57,
@@ -7946,7 +8006,7 @@
                     "ITEMS_BARCODE": [],
                     "ITEMS": []
                 },
-                "fcr_processed_id": "00040Y041",
+                "fcr_processed_id": "00040Y042",
                 "analysis": {
                     "title": {
                         "title_ratio": 40,
@@ -8005,7 +8065,7 @@
                     "ITEMS_BARCODE": [],
                     "ITEMS": []
                 },
-                "fcr_processed_id": "00040Y042",
+                "fcr_processed_id": "00040Y043",
                 "analysis": {
                     "title": {
                         "title_ratio": 31,
@@ -8060,7 +8120,7 @@
                     "ITEMS_BARCODE": [],
                     "ITEMS": []
                 },
-                "fcr_processed_id": "00040Y043",
+                "fcr_processed_id": "00040Y044",
                 "analysis": {
                     "title": {
                         "title_ratio": 39,
@@ -8115,7 +8175,7 @@
                     "ITEMS_BARCODE": [],
                     "ITEMS": []
                 },
-                "fcr_processed_id": "00040Y044",
+                "fcr_processed_id": "00040Y045",
                 "analysis": {
                     "title": {
                         "title_ratio": 22,
@@ -8172,7 +8232,7 @@
                     "ITEMS_BARCODE": [],
                     "ITEMS": []
                 },
-                "fcr_processed_id": "00040Y045",
+                "fcr_processed_id": "00040Y046",
                 "analysis": {
                     "title": {
                         "title_ratio": 36,
@@ -8230,7 +8290,7 @@
                     "ITEMS_BARCODE": [],
                     "ITEMS": []
                 },
-                "fcr_processed_id": "00040Y046",
+                "fcr_processed_id": "00040Y047",
                 "analysis": {
                     "title": {
                         "title_ratio": 35,
@@ -8286,7 +8346,7 @@
                     "ITEMS_BARCODE": [],
                     "ITEMS": []
                 },
-                "fcr_processed_id": "00040Y047",
+                "fcr_processed_id": "00040Y048",
                 "analysis": {
                     "title": {
                         "title_ratio": 100,
@@ -8340,7 +8400,7 @@
                     "ITEMS_BARCODE": [],
                     "ITEMS": []
                 },
-                "fcr_processed_id": "00040Y048",
+                "fcr_processed_id": "00040Y049",
                 "analysis": {
                     "title": {
                         "title_ratio": 38,
@@ -8395,7 +8455,7 @@
                     "ITEMS_BARCODE": [],
                     "ITEMS": []
                 },
-                "fcr_processed_id": "00040Y049",
+                "fcr_processed_id": "00040Y050",
                 "analysis": {
                     "title": {
                         "title_ratio": 29,
@@ -8449,7 +8509,7 @@
                     "ITEMS_BARCODE": [],
                     "ITEMS": []
                 },
-                "fcr_processed_id": "00040Y050",
+                "fcr_processed_id": "00040Y051",
                 "analysis": {
                     "title": {
                         "title_ratio": 36,
@@ -8502,7 +8562,7 @@
                     "ITEMS_BARCODE": [],
                     "ITEMS": []
                 },
-                "fcr_processed_id": "00040Y051",
+                "fcr_processed_id": "00040Y052",
                 "analysis": {
                     "title": {
                         "title_ratio": 25,
@@ -8555,7 +8615,7 @@
                     "ITEMS_BARCODE": [],
                     "ITEMS": []
                 },
-                "fcr_processed_id": "00040Y052",
+                "fcr_processed_id": "00040Y053",
                 "analysis": {
                     "title": {
                         "title_ratio": 29,
@@ -8608,7 +8668,7 @@
                     "ITEMS_BARCODE": [],
                     "ITEMS": []
                 },
-                "fcr_processed_id": "00040Y053",
+                "fcr_processed_id": "00040Y054",
                 "analysis": {
                     "title": {
                         "title_ratio": 24,
@@ -8661,7 +8721,7 @@
                     "ITEMS_BARCODE": [],
                     "ITEMS": []
                 },
-                "fcr_processed_id": "00040Y054",
+                "fcr_processed_id": "00040Y055",
                 "analysis": {
                     "title": {
                         "title_ratio": 23,
@@ -8714,7 +8774,7 @@
                     "ITEMS_BARCODE": [],
                     "ITEMS": []
                 },
-                "fcr_processed_id": "00040Y055",
+                "fcr_processed_id": "00040Y056",
                 "analysis": {
                     "title": {
                         "title_ratio": 77,
@@ -8767,7 +8827,7 @@
                     "ITEMS_BARCODE": [],
                     "ITEMS": []
                 },
-                "fcr_processed_id": "00040Y056",
+                "fcr_processed_id": "00040Y057",
                 "analysis": {
                     "title": {
                         "title_ratio": 65,
@@ -8809,7 +8869,7 @@
                     "AUTHORS": [
                         "Néel Henry",
                         "Loucel Gérard",
-                        "Larousse"
+                        "Larousse 1852-...."
                     ],
                     "PUBLISHERS_NAME": [
                         "Larousse"
@@ -8822,7 +8882,7 @@
                     "ITEMS_BARCODE": [],
                     "ITEMS": []
                 },
-                "fcr_processed_id": "00040Y057",
+                "fcr_processed_id": "00040Y058",
                 "analysis": {
                     "title": {
                         "title_ratio": 63,
@@ -8875,7 +8935,7 @@
                     "ITEMS_BARCODE": [],
                     "ITEMS": []
                 },
-                "fcr_processed_id": "00040Y058",
+                "fcr_processed_id": "00040Y059",
                 "analysis": {
                     "title": {
                         "title_ratio": 87,
@@ -8928,7 +8988,7 @@
                     "ITEMS_BARCODE": [],
                     "ITEMS": []
                 },
-                "fcr_processed_id": "00040Y059",
+                "fcr_processed_id": "00040Y060",
                 "analysis": {
                     "title": {
                         "title_ratio": 100,
@@ -8981,7 +9041,7 @@
                     "ITEMS_BARCODE": [],
                     "ITEMS": []
                 },
-                "fcr_processed_id": "00040Y060",
+                "fcr_processed_id": "00040Y061",
                 "analysis": {
                     "title": {
                         "title_ratio": 42,
@@ -9034,7 +9094,7 @@
                     "ITEMS_BARCODE": [],
                     "ITEMS": []
                 },
-                "fcr_processed_id": "00040Y061",
+                "fcr_processed_id": "00040Y062",
                 "analysis": {
                     "title": {
                         "title_ratio": 100,
@@ -9087,7 +9147,7 @@
                     "ITEMS_BARCODE": [],
                     "ITEMS": []
                 },
-                "fcr_processed_id": "00040Y062",
+                "fcr_processed_id": "00040Y063",
                 "analysis": {
                     "title": {
                         "title_ratio": 63,
@@ -9140,7 +9200,7 @@
                     "ITEMS_BARCODE": [],
                     "ITEMS": []
                 },
-                "fcr_processed_id": "00040Y063",
+                "fcr_processed_id": "00040Y064",
                 "analysis": {
                     "title": {
                         "title_ratio": 40,
@@ -9182,7 +9242,7 @@
                     "ITEMS_BARCODE": [],
                     "ITEMS": []
                 },
-                "fcr_processed_id": "00040Y064",
+                "fcr_processed_id": "00040Y065",
                 "analysis": {
                     "title": {
                         "title_ratio": 83,
@@ -9237,7 +9297,7 @@
                     "ITEMS_BARCODE": [],
                     "ITEMS": []
                 },
-                "fcr_processed_id": "00040Y065",
+                "fcr_processed_id": "00040Y066",
                 "analysis": {
                     "title": {
                         "title_ratio": 63,
@@ -9291,7 +9351,7 @@
                     "ITEMS_BARCODE": [],
                     "ITEMS": []
                 },
-                "fcr_processed_id": "00040Y066",
+                "fcr_processed_id": "00040Y067",
                 "analysis": {
                     "title": {
                         "title_ratio": 67,
@@ -9345,7 +9405,7 @@
                     "ITEMS_BARCODE": [],
                     "ITEMS": []
                 },
-                "fcr_processed_id": "00040Y067",
+                "fcr_processed_id": "00040Y068",
                 "analysis": {
                     "title": {
                         "title_ratio": 68,
@@ -9399,7 +9459,7 @@
                     "ITEMS_BARCODE": [],
                     "ITEMS": []
                 },
-                "fcr_processed_id": "00040Y068",
+                "fcr_processed_id": "00040Y069",
                 "analysis": {
                     "title": {
                         "title_ratio": 71,
@@ -9453,7 +9513,7 @@
                     "ITEMS_BARCODE": [],
                     "ITEMS": []
                 },
-                "fcr_processed_id": "00040Y069",
+                "fcr_processed_id": "00040Y070",
                 "analysis": {
                     "title": {
                         "title_ratio": 68,
@@ -9507,7 +9567,7 @@
                     "ITEMS_BARCODE": [],
                     "ITEMS": []
                 },
-                "fcr_processed_id": "00040Y070",
+                "fcr_processed_id": "00040Y071",
                 "analysis": {
                     "title": {
                         "title_ratio": 100,
@@ -9560,7 +9620,7 @@
                     "ITEMS_BARCODE": [],
                     "ITEMS": []
                 },
-                "fcr_processed_id": "00040Y071",
+                "fcr_processed_id": "00040Y072",
                 "analysis": {
                     "title": {
                         "title_ratio": 45,
@@ -9613,7 +9673,7 @@
                     "ITEMS_BARCODE": [],
                     "ITEMS": []
                 },
-                "fcr_processed_id": "00040Y072",
+                "fcr_processed_id": "00040Y073",
                 "analysis": {
                     "title": {
                         "title_ratio": 43,
@@ -9664,7 +9724,7 @@
                     "ITEMS_BARCODE": [],
                     "ITEMS": []
                 },
-                "fcr_processed_id": "00040Y073",
+                "fcr_processed_id": "00040Y074",
                 "analysis": {
                     "title": {
                         "title_ratio": 82,
@@ -9721,7 +9781,7 @@
                     "ITEMS_BARCODE": [],
                     "ITEMS": []
                 },
-                "fcr_processed_id": "00040Y074",
+                "fcr_processed_id": "00040Y075",
                 "analysis": {
                     "title": {
                         "title_ratio": 42,
@@ -9783,7 +9843,7 @@
                     "ITEMS_BARCODE": [],
                     "ITEMS": []
                 },
-                "fcr_processed_id": "00040Y075",
+                "fcr_processed_id": "00040Y076",
                 "analysis": {
                     "title": {
                         "title_ratio": 41,
@@ -9834,7 +9894,7 @@
                     "ITEMS_BARCODE": [],
                     "ITEMS": []
                 },
-                "fcr_processed_id": "00040Y076",
+                "fcr_processed_id": "00040Y077",
                 "analysis": {
                     "title": {
                         "title_ratio": 73,
@@ -9887,7 +9947,7 @@
                     "ITEMS_BARCODE": [],
                     "ITEMS": []
                 },
-                "fcr_processed_id": "00040Y077",
+                "fcr_processed_id": "00040Y078",
                 "analysis": {
                     "title": {
                         "title_ratio": 29,
@@ -9941,7 +10001,7 @@
                     "ITEMS_BARCODE": [],
                     "ITEMS": []
                 },
-                "fcr_processed_id": "00040Y078",
+                "fcr_processed_id": "00040Y079",
                 "analysis": {
                     "title": {
                         "title_ratio": 75,
@@ -9987,8 +10047,8 @@
                         "Fumaroli Marc"
                     ],
                     "PUBLISHERS_NAME": [
-                        "Literary classics of the United States",
-                        "Library of America"
+                        "Library of America",
+                        "Literary classics of the United States"
                     ],
                     "EDITION_NOTES": [],
                     "PUBLICATION_DATES": [
@@ -9998,7 +10058,7 @@
                     "ITEMS_BARCODE": [],
                     "ITEMS": []
                 },
-                "fcr_processed_id": "00040Y079",
+                "fcr_processed_id": "00040Y080",
                 "analysis": {
                     "title": {
                         "title_ratio": 66,
@@ -10053,7 +10113,7 @@
                     "ITEMS_BARCODE": [],
                     "ITEMS": []
                 },
-                "fcr_processed_id": "00040Y080",
+                "fcr_processed_id": "00040Y081",
                 "analysis": {
                     "title": {
                         "title_ratio": 58,
@@ -10109,7 +10169,7 @@
                     "ITEMS_BARCODE": [],
                     "ITEMS": []
                 },
-                "fcr_processed_id": "00040Y081",
+                "fcr_processed_id": "00040Y082",
                 "analysis": {
                     "title": {
                         "title_ratio": 44,
@@ -10163,7 +10223,7 @@
                     "ITEMS_BARCODE": [],
                     "ITEMS": []
                 },
-                "fcr_processed_id": "00040Y082",
+                "fcr_processed_id": "00040Y083",
                 "analysis": {
                     "title": {
                         "title_ratio": 77,
@@ -10216,7 +10276,7 @@
                     "ITEMS_BARCODE": [],
                     "ITEMS": []
                 },
-                "fcr_processed_id": "00040Y083",
+                "fcr_processed_id": "00040Y084",
                 "analysis": {
                     "title": {
                         "title_ratio": 36,
@@ -10271,7 +10331,7 @@
                     "ITEMS_BARCODE": [],
                     "ITEMS": []
                 },
-                "fcr_processed_id": "00040Y084",
+                "fcr_processed_id": "00040Y085",
                 "analysis": {
                     "title": {
                         "title_ratio": 60,
@@ -10325,7 +10385,7 @@
                     "ITEMS_BARCODE": [],
                     "ITEMS": []
                 },
-                "fcr_processed_id": "00040Y085",
+                "fcr_processed_id": "00040Y086",
                 "analysis": {
                     "title": {
                         "title_ratio": 47,
@@ -10378,7 +10438,7 @@
                     "ITEMS_BARCODE": [],
                     "ITEMS": []
                 },
-                "fcr_processed_id": "00040Y086",
+                "fcr_processed_id": "00040Y087",
                 "analysis": {
                     "title": {
                         "title_ratio": 52,
@@ -10432,7 +10492,7 @@
                     "ITEMS_BARCODE": [],
                     "ITEMS": []
                 },
-                "fcr_processed_id": "00040Y087",
+                "fcr_processed_id": "00040Y088",
                 "analysis": {
                     "title": {
                         "title_ratio": 67,
@@ -10487,7 +10547,7 @@
                     "ITEMS_BARCODE": [],
                     "ITEMS": []
                 },
-                "fcr_processed_id": "00040Y088",
+                "fcr_processed_id": "00040Y089",
                 "analysis": {
                     "title": {
                         "title_ratio": 44,
@@ -10542,7 +10602,7 @@
                     "ITEMS_BARCODE": [],
                     "ITEMS": []
                 },
-                "fcr_processed_id": "00040Y089",
+                "fcr_processed_id": "00040Y090",
                 "analysis": {
                     "title": {
                         "title_ratio": 60,
@@ -10595,7 +10655,7 @@
                     "ITEMS_BARCODE": [],
                     "ITEMS": []
                 },
-                "fcr_processed_id": "00040Y090",
+                "fcr_processed_id": "00040Y091",
                 "analysis": {
                     "title": {
                         "title_ratio": 43,
@@ -10649,7 +10709,7 @@
                     "ITEMS_BARCODE": [],
                     "ITEMS": []
                 },
-                "fcr_processed_id": "00040Y091",
+                "fcr_processed_id": "00040Y092",
                 "analysis": {
                     "title": {
                         "title_ratio": 22,
@@ -10702,7 +10762,7 @@
                     "ITEMS_BARCODE": [],
                     "ITEMS": []
                 },
-                "fcr_processed_id": "00040Y092",
+                "fcr_processed_id": "00040Y093",
                 "analysis": {
                     "title": {
                         "title_ratio": 47,
@@ -10755,7 +10815,7 @@
                     "ITEMS_BARCODE": [],
                     "ITEMS": []
                 },
-                "fcr_processed_id": "00040Y093",
+                "fcr_processed_id": "00040Y094",
                 "analysis": {
                     "title": {
                         "title_ratio": 56,
@@ -10808,7 +10868,7 @@
                     "ITEMS_BARCODE": [],
                     "ITEMS": []
                 },
-                "fcr_processed_id": "00040Y094",
+                "fcr_processed_id": "00040Y095",
                 "analysis": {
                     "title": {
                         "title_ratio": 49,
@@ -10863,7 +10923,7 @@
                     "ITEMS_BARCODE": [],
                     "ITEMS": []
                 },
-                "fcr_processed_id": "00040Y095",
+                "fcr_processed_id": "00040Y096",
                 "analysis": {
                     "title": {
                         "title_ratio": 54,
@@ -10918,7 +10978,7 @@
                     "ITEMS_BARCODE": [],
                     "ITEMS": []
                 },
-                "fcr_processed_id": "00040Y096",
+                "fcr_processed_id": "00040Y097",
                 "analysis": {
                     "title": {
                         "title_ratio": 66,
@@ -10972,7 +11032,7 @@
                     "ITEMS_BARCODE": [],
                     "ITEMS": []
                 },
-                "fcr_processed_id": "00040Y097",
+                "fcr_processed_id": "00040Y098",
                 "analysis": {
                     "title": {
                         "title_ratio": 53,
@@ -11027,7 +11087,7 @@
                     "ITEMS_BARCODE": [],
                     "ITEMS": []
                 },
-                "fcr_processed_id": "00040Y098",
+                "fcr_processed_id": "00040Y099",
                 "analysis": {
                     "title": {
                         "title_ratio": 53,
@@ -11039,59 +11099,6 @@
                     "publishers": {
                         "score": 28,
                         "target_db": "p lethielleux",
-                        "origin_db": "du patrimoine centre des monuments nationaux"
-                    },
-                    "other_ids": {
-                        "nb": 0,
-                        "result": "NO_OTHER_DB_ID"
-                    },
-                    "global": {
-                        "result": "NO_MATCH",
-                        "nb_succesful_checks": 0,
-                        "title": false,
-                        "publisher": false,
-                        "date": false
-                    }
-                }
-            },
-            "277501717": {
-                "data": {
-                    "GENERAL_PROCESSING_DATA_DATES": [
-                        [
-                            "2023",
-                            "    "
-                        ]
-                    ],
-                    "ERRONEOUS_ISBN": [],
-                    "TITLE": [
-                        "Chroniques de Mur-de-Barrez pièce médiocre en deux parties suivi de Le Mont-Saint-Michel dans le lointain"
-                    ],
-                    "AUTHORS": [
-                        "Fabre Jérémie"
-                    ],
-                    "PUBLISHERS_NAME": [
-                        "Domens"
-                    ],
-                    "EDITION_NOTES": [],
-                    "PUBLICATION_DATES": [
-                        "DL 2023"
-                    ],
-                    "OTHER_DB_ID": [],
-                    "ITEMS_BARCODE": [],
-                    "ITEMS": []
-                },
-                "fcr_processed_id": "00040Y099",
-                "analysis": {
-                    "title": {
-                        "title_ratio": 32,
-                        "title_partial_ratio": 100,
-                        "title_token_sort_ratio": 32,
-                        "title_token_set_ratio": 100
-                    },
-                    "dates": false,
-                    "publishers": {
-                        "score": 24,
-                        "target_db": "domens",
                         "origin_db": "du patrimoine centre des monuments nationaux"
                     },
                     "other_ids": {
@@ -11544,8 +11551,8 @@
                     "Jollivet Marcel"
                 ],
                 "PUBLISHERS_NAME": [
-                    "NSS-Dialogues",
-                    "Éd. Quæ"
+                    "Éd. Quæ",
+                    "NSS-Dialogues"
                 ],
                 "EDITION_NOTES": [],
                 "PUBLICATION_DATES": [
@@ -11595,8 +11602,8 @@
                         "Jollivet Marcel"
                     ],
                     "PUBLISHERS_NAME": [
-                        "NSS-Dialogues",
-                        "Éd. Quæ"
+                        "Éd. Quæ",
+                        "NSS-Dialogues"
                     ],
                     "EDITION_NOTES": [],
                     "PUBLICATION_DATES": [
@@ -11619,8 +11626,8 @@
                     "dates": true,
                     "publishers": {
                         "score": 100,
-                        "target_db": "nss dialogues",
-                        "origin_db": "nss dialogues"
+                        "target_db": "quae",
+                        "origin_db": "quae"
                     },
                     "other_ids": {
                         "nb": 1,
@@ -13440,14 +13447,14 @@
                 "status": "SUCCESS",
                 "error_type": null,
                 "msg": null,
-                "query": "mti=handbook planning data design metric",
+                "query": "mti=design handbook data metric planning",
                 "returned_ids": [
                     "191158666",
                     "123455588"
                 ]
             }
         },
-        "query_used": "mti=handbook planning data design metric",
+        "query_used": "mti=design handbook data metric planning",
         "action_used": "SRU_SUDOC_MTI",
         "nb_matched_records": 2,
         "matched_records_ids": [
@@ -14796,8 +14803,8 @@
                 ],
                 "PUBLISHERS_NAME": [
                     "Toubkal",
-                    "Édisud",
-                    "Alif"
+                    "Alif",
+                    "Édisud"
                 ],
                 "EDITION_NOTES": [],
                 "PUBLICATION_DATES": [
@@ -14846,8 +14853,8 @@
                     ],
                     "PUBLISHERS_NAME": [
                         "Toubkal",
-                        "Édisud",
-                        "Alif"
+                        "Alif",
+                        "Édisud"
                     ],
                     "EDITION_NOTES": [],
                     "PUBLICATION_DATES": [
@@ -16195,11 +16202,11 @@
                 "status": "SUCCESS",
                 "error_type": null,
                 "msg": null,
-                "query": "mti=1982 projects buildings graves tome 1989 2 michael",
+                "query": "mti=graves tome 1982 1989 michael buildings projects 2",
                 "returned_ids": []
             }
         },
-        "query_used": "mti=1982 projects buildings graves tome 1989 2 michael",
+        "query_used": "mti=graves tome 1982 1989 michael buildings projects 2",
         "action_used": "SRU_SUDOC_MTI",
         "nb_matched_records": 0,
         "matched_records_ids": []
@@ -16527,8 +16534,8 @@
                     "Bouttier Michel"
                 ],
                 "PUBLISHERS_NAME": [
-                    "Desclee de Brouwer",
-                    "Rempart"
+                    "Rempart",
+                    "Desclee de Brouwer"
                 ],
                 "EDITION_NOTES": [
                     "Autre(s) tirage(s) : 2000"
@@ -16580,8 +16587,8 @@
                         "Bouttier Michel"
                     ],
                     "PUBLISHERS_NAME": [
-                        "Deslée de Brouwer",
-                        "REMPART"
+                        "REMPART",
+                        "Deslée de Brouwer"
                     ],
                     "EDITION_NOTES": [],
                     "PUBLICATION_DATES": [
@@ -16634,8 +16641,8 @@
                         "Bouttier Michel"
                     ],
                     "PUBLISHERS_NAME": [
-                        "Desclee de Brouwer",
-                        "Rempart"
+                        "Rempart",
+                        "Desclee de Brouwer"
                     ],
                     "EDITION_NOTES": [
                         "Autre(s) tirage(s) : 2000"
@@ -16660,8 +16667,8 @@
                     "dates": true,
                     "publishers": {
                         "score": 100,
-                        "target_db": "desclee de brouwer",
-                        "origin_db": "desclee de brouwer"
+                        "target_db": "rempart",
+                        "origin_db": "rempart"
                     },
                     "other_ids": {
                         "nb": 1,
@@ -16833,8 +16840,8 @@
                         "Rudel Jean"
                     ],
                     "PUBLISHERS_NAME": [
-                        "Bordas",
-                        "Impr. Édit'offset"
+                        "Impr. Édit'offset",
+                        "Bordas"
                     ],
                     "EDITION_NOTES": [],
                     "PUBLICATION_DATES": [
@@ -17963,7 +17970,7 @@
                 "status": "SUCCESS",
                 "error_type": null,
                 "msg": null,
-                "query": "mti=tout mots court",
+                "query": "mti=court mots tout",
                 "returned_ids": [
                     "270082867",
                     "232948690",
@@ -17972,7 +17979,7 @@
                 ]
             }
         },
-        "query_used": "mti=tout mots court",
+        "query_used": "mti=court mots tout",
         "action_used": "SRU_SUDOC_MTI",
         "nb_matched_records": 4,
         "matched_records_ids": [

@@ -65,7 +65,7 @@
                 "status": "SUCCESS",
                 "error_type": null,
                 "msg": null,
-                "query": "mti=maison 1 interieures exterieures menuiserie menuiseries and aut=crochemore jean and edi=eyrolles and apu>=1992 and apu<=1992 and tdo=b",
+                "query": "mti=interieures 1 maison menuiseries menuiserie exterieures and aut=crochemore jean and edi=eyrolles and apu>=1992 and apu<=1992 and tdo=b",
                 "returned_ids": []
             },
             "2": {
@@ -74,7 +74,7 @@
                 "status": "SUCCESS",
                 "error_type": null,
                 "msg": null,
-                "query": "mti=maison 1 interieures exterieures menuiserie menuiseries and aut=crochemore jean and apu>=1992 and apu<=1992 and tdo=b",
+                "query": "mti=interieures 1 maison menuiseries menuiserie exterieures and aut=crochemore jean and apu>=1992 and apu<=1992 and tdo=b",
                 "returned_ids": []
             },
             "3": {
@@ -83,7 +83,7 @@
                 "status": "SUCCESS",
                 "error_type": null,
                 "msg": null,
-                "query": "tou=maison 1 interieures exterieures menuiserie menuiseries and tou=crochemore jean and tou=eyrolles AND (tou=1992) and tdo=b",
+                "query": "tou=interieures 1 maison menuiseries menuiserie exterieures and tou=crochemore jean and tou=eyrolles AND (tou=1992) and tdo=b",
                 "returned_ids": []
             },
             "4": {
@@ -92,14 +92,14 @@
                 "status": "SUCCESS",
                 "error_type": null,
                 "msg": null,
-                "query": "tou=maison 1 interieures exterieures menuiserie menuiseries and tou=crochemore jean and tou=eyrolles and tdo=b",
+                "query": "tou=interieures 1 maison menuiseries menuiserie exterieures and tou=crochemore jean and tou=eyrolles and tdo=b",
                 "returned_ids": [
                     "020791909",
                     "198800398"
                 ]
             }
         },
-        "query_used": "tou=maison 1 interieures exterieures menuiserie menuiseries and tou=crochemore jean and tou=eyrolles and tdo=b",
+        "query_used": "tou=interieures 1 maison menuiseries menuiserie exterieures and tou=crochemore jean and tou=eyrolles and tdo=b",
         "action_used": "SRU_SUDOC_TOU_TITLE_AUTHOR_PUBLISHER_TDO_B",
         "nb_matched_records": 2,
         "matched_records_ids": [
@@ -284,13 +284,13 @@
                 "status": "SUCCESS",
                 "error_type": null,
                 "msg": null,
-                "query": "mti=menuiseries dormant fenetres and aut=monuments daniel bontemps centre france recherches historiques and edi=patrimoine direction ministere culture education nationale and apu>=1992 and apu<=1992 and tdo=b",
+                "query": "mti=dormant menuiseries fenetres and aut=daniel france monuments recherches bontemps historiques centre and edi=culture education patrimoine nationale direction ministere and apu>=1992 and apu<=1992 and tdo=b",
                 "returned_ids": [
                     "002786095"
                 ]
             }
         },
-        "query_used": "mti=menuiseries dormant fenetres and aut=monuments daniel bontemps centre france recherches historiques and edi=patrimoine direction ministere culture education nationale and apu>=1992 and apu<=1992 and tdo=b",
+        "query_used": "mti=dormant menuiseries fenetres and aut=daniel france monuments recherches bontemps historiques centre and edi=culture education patrimoine nationale direction ministere and apu>=1992 and apu<=1992 and tdo=b",
         "action_used": "SRU_SUDOC_MTI_AUT_EDI_APU_TDO_B",
         "nb_matched_records": 1,
         "matched_records_ids": [
@@ -310,16 +310,18 @@
                     ],
                     "ERRONEOUS_ISBN": [],
                     "TITLE": [
-                        "Menuiseries de fenêtres sans dormant Volume 1 2 Première moitié du XVIe siècle"
+                        "Menuiseries de fenêtres (sans dormant) Volume 1** Première moitié du XVIe siècle"
                     ],
                     "AUTHORS": [
                         "Bontemps Daniel",
-                        "Centre de recherches sur les monuments historiques France"
+                        "Centre de recherches sur les Monuments historiques France"
                     ],
                     "PUBLISHERS_NAME": [
-                        "Ministère de l'éducation nationale et de la culture, Direction du patrimoine"
+                        "Ministère de l'Education Nationale et de la Culture, Direction du Patrimoine"
                     ],
-                    "EDITION_NOTES": [],
+                    "EDITION_NOTES": [
+                        "Autre tirage : 1990"
+                    ],
                     "PUBLICATION_DATES": [
                         "1992"
                     ],
@@ -330,9 +332,9 @@
                 "fcr_processed_id": "00001Y000",
                 "analysis": {
                     "title": {
-                        "title_ratio": 63,
+                        "title_ratio": 64,
                         "title_partial_ratio": 100,
-                        "title_token_sort_ratio": 63,
+                        "title_token_sort_ratio": 64,
                         "title_token_set_ratio": 100
                     },
                     "dates": true,
@@ -424,13 +426,13 @@
                 "status": "SUCCESS",
                 "error_type": null,
                 "msg": null,
-                "query": "mti=marseille and aut=amsellem olivier and edi=poles be and apu>=2013 and apu<=2013 and tdo=b",
+                "query": "mti=marseille and aut=amsellem olivier and edi=be poles and apu>=2013 and apu<=2013 and tdo=b",
                 "returned_ids": [
                     "168485737"
                 ]
             }
         },
-        "query_used": "mti=marseille and aut=amsellem olivier and edi=poles be and apu>=2013 and apu<=2013 and tdo=b",
+        "query_used": "mti=marseille and aut=amsellem olivier and edi=be poles and apu>=2013 and apu<=2013 and tdo=b",
         "action_used": "SRU_SUDOC_MTI_AUT_EDI_APU_TDO_B",
         "nb_matched_records": 1,
         "matched_records_ids": [
@@ -698,13 +700,13 @@
                 "status": "SUCCESS",
                 "error_type": null,
                 "msg": null,
-                "query": "mti=ancient material pre technology traditional culture industrial introduction mechanics and aut=johan kamminga brian cotterell and edi=press university cambridge and apu>=1990 and apu<=1990 and tdo=b",
+                "query": "mti=culture pre industrial ancient introduction mechanics material traditional technology and aut=johan brian kamminga cotterell and edi=cambridge university press and apu>=1990 and apu<=1990 and tdo=b",
                 "returned_ids": [
                     "020862792"
                 ]
             }
         },
-        "query_used": "mti=ancient material pre technology traditional culture industrial introduction mechanics and aut=johan kamminga brian cotterell and edi=press university cambridge and apu>=1990 and apu<=1990 and tdo=b",
+        "query_used": "mti=culture pre industrial ancient introduction mechanics material traditional technology and aut=johan brian kamminga cotterell and edi=cambridge university press and apu>=1990 and apu<=1990 and tdo=b",
         "action_used": "SRU_SUDOC_MTI_AUT_EDI_APU_TDO_B",
         "nb_matched_records": 1,
         "matched_records_ids": [
@@ -841,13 +843,13 @@
                 "status": "SUCCESS",
                 "error_type": null,
                 "msg": null,
-                "query": "mti=archeologie trames gyptis 5 colloque actes paysages international novembre urbains roi marseille 1999 3 rene and aut=henri patrimoine cote service colloque regional international azur atelier archeologie marc centre bouches alpes camille aix bouiron rhone provence treziny jullian marseille and edi=edisud and apu>=2001 and apu<=2001 and tdo=b",
+                "query": "mti=roi 1999 marseille 5 novembre actes international gyptis rene 3 colloque trames archeologie urbains paysages and aut=atelier jullian patrimoine treziny international service marc rhone alpes bouches regional bouiron aix archeologie henri azur marseille camille cote colloque provence centre and edi=edisud and apu>=2001 and apu<=2001 and tdo=b",
                 "returned_ids": [
                     "059925272"
                 ]
             }
         },
-        "query_used": "mti=archeologie trames gyptis 5 colloque actes paysages international novembre urbains roi marseille 1999 3 rene and aut=henri patrimoine cote service colloque regional international azur atelier archeologie marc centre bouches alpes camille aix bouiron rhone provence treziny jullian marseille and edi=edisud and apu>=2001 and apu<=2001 and tdo=b",
+        "query_used": "mti=roi 1999 marseille 5 novembre actes international gyptis rene 3 colloque trames archeologie urbains paysages and aut=atelier jullian patrimoine treziny international service marc rhone alpes bouches regional bouiron aix archeologie henri azur marseille camille cote colloque provence centre and edi=edisud and apu>=2001 and apu<=2001 and tdo=b",
         "action_used": "SRU_SUDOC_MTI_AUT_EDI_APU_TDO_B",
         "nb_matched_records": 1,
         "matched_records_ids": [
@@ -1133,7 +1135,7 @@
                 "status": "SUCCESS",
                 "error_type": null,
                 "msg": null,
-                "query": "mti=langage methode linguistique marxisme essai application sociologique philosophie and aut=yaguello iakobson roman mihajlovic mihail marina osipovich bahtin and edi=minuit and apu>=1977 and apu<=1977 and tdo=b",
+                "query": "mti=methode marxisme linguistique essai langage philosophie sociologique application and aut=bahtin mihajlovic roman mihail osipovich marina yaguello iakobson and edi=minuit and apu>=1977 and apu<=1977 and tdo=b",
                 "returned_ids": []
             },
             "2": {
@@ -1142,7 +1144,7 @@
                 "status": "SUCCESS",
                 "error_type": null,
                 "msg": null,
-                "query": "mti=langage methode linguistique marxisme essai application sociologique philosophie and aut=yaguello iakobson roman mihajlovic mihail marina osipovich bahtin and apu>=1977 and apu<=1977 and tdo=b",
+                "query": "mti=methode marxisme linguistique essai langage philosophie sociologique application and aut=bahtin mihajlovic roman mihail osipovich marina yaguello iakobson and apu>=1977 and apu<=1977 and tdo=b",
                 "returned_ids": []
             },
             "3": {
@@ -1151,7 +1153,7 @@
                 "status": "SUCCESS",
                 "error_type": null,
                 "msg": null,
-                "query": "tou=langage methode linguistique marxisme essai application sociologique philosophie and tou=yaguello iakobson roman mihajlovic mihail marina osipovich bahtin and tou=minuit AND (tou=1977) and tdo=b",
+                "query": "tou=methode marxisme linguistique essai langage philosophie sociologique application and tou=bahtin mihajlovic roman mihail osipovich marina yaguello iakobson and tou=minuit AND (tou=1977) and tdo=b",
                 "returned_ids": []
             },
             "4": {
@@ -1160,7 +1162,7 @@
                 "status": "SUCCESS",
                 "error_type": null,
                 "msg": null,
-                "query": "tou=langage methode linguistique marxisme essai application sociologique philosophie and tou=yaguello iakobson roman mihajlovic mihail marina osipovich bahtin and tou=minuit and tdo=b",
+                "query": "tou=methode marxisme linguistique essai langage philosophie sociologique application and tou=bahtin mihajlovic roman mihail osipovich marina yaguello iakobson and tou=minuit and tdo=b",
                 "returned_ids": []
             },
             "5": {
@@ -1169,13 +1171,13 @@
                 "status": "SUCCESS",
                 "error_type": null,
                 "msg": null,
-                "query": "mti=langage methode linguistique marxisme essai application sociologique philosophie and tdo=b",
+                "query": "mti=methode marxisme linguistique essai langage philosophie sociologique application and tdo=b",
                 "returned_ids": [
                     "000576328"
                 ]
             }
         },
-        "query_used": "mti=langage methode linguistique marxisme essai application sociologique philosophie and tdo=b",
+        "query_used": "mti=methode marxisme linguistique essai langage philosophie sociologique application and tdo=b",
         "action_used": "SRU_SUDOC_MTI_TDO_B",
         "nb_matched_records": 1,
         "matched_records_ids": [
@@ -1841,8 +1843,8 @@
                     "Mellinand Philippe"
                 ],
                 "PUBLISHERS_NAME": [
-                    "Centre des monuments nationaux",
-                    "Éd. du Patrimoine"
+                    "Éd. du Patrimoine",
+                    "Centre des monuments nationaux"
                 ],
                 "EDITION_NOTES": [
                     "Réimpression : 2009"
@@ -1899,8 +1901,8 @@
                         "Mellinand Philippe"
                     ],
                     "PUBLISHERS_NAME": [
-                        "Centre des monuments nationaux",
-                        "Éd. du Patrimoine"
+                        "Éd. du Patrimoine",
+                        "Centre des monuments nationaux"
                     ],
                     "EDITION_NOTES": [
                         "Réimpression : 2009"
@@ -1925,8 +1927,8 @@
                     "dates": true,
                     "publishers": {
                         "score": 100,
-                        "target_db": "centre des monuments nationaux",
-                        "origin_db": "centre des monuments nationaux"
+                        "target_db": "du patrimoine",
+                        "origin_db": "du patrimoine"
                     },
                     "other_ids": {
                         "nb": 1,
@@ -2311,11 +2313,11 @@
                 "status": "SUCCESS",
                 "error_type": null,
                 "msg": null,
-                "query": "mti=kong fuksas doriana house mandrell chater massimiliano hong emporio armani and tdo=b",
+                "query": "mti=mandrell hong kong armani house massimiliano doriana fuksas chater emporio and tdo=b",
                 "returned_ids": []
             }
         },
-        "query_used": "mti=kong fuksas doriana house mandrell chater massimiliano hong emporio armani and tdo=b",
+        "query_used": "mti=mandrell hong kong armani house massimiliano doriana fuksas chater emporio and tdo=b",
         "action_used": "SRU_SUDOC_MTI_TDO_B",
         "nb_matched_records": 0,
         "matched_records_ids": []
@@ -2360,8 +2362,8 @@
                     "Giraudy Danièle"
                 ],
                 "PUBLISHERS_NAME": [
-                    "Musées de Marseille",
-                    "Ed. Parenthèses"
+                    "Ed. Parenthèses",
+                    "Musées de Marseille"
                 ],
                 "EDITION_NOTES": [],
                 "PUBLICATION_DATES": [
@@ -2389,13 +2391,13 @@
                 "status": "SUCCESS",
                 "error_type": null,
                 "msg": null,
-                "query": "mti=2 2002 janvier temps nadar vieux 31 exposition novembre 2001 musee marseille and aut=daniele giraudy and edi=musees marseille parentheses and apu>=2001 and apu<=2001 and tdo=b",
+                "query": "mti=nadar vieux 2001 2 marseille musee 2002 exposition janvier temps novembre 31 and aut=daniele giraudy and edi=parentheses musees marseille and apu>=2001 and apu<=2001 and tdo=b",
                 "returned_ids": [
                     "069644837"
                 ]
             }
         },
-        "query_used": "mti=2 2002 janvier temps nadar vieux 31 exposition novembre 2001 musee marseille and aut=daniele giraudy and edi=musees marseille parentheses and apu>=2001 and apu<=2001 and tdo=b",
+        "query_used": "mti=nadar vieux 2001 2 marseille musee 2002 exposition janvier temps novembre 31 and aut=daniele giraudy and edi=parentheses musees marseille and apu>=2001 and apu<=2001 and tdo=b",
         "action_used": "SRU_SUDOC_MTI_AUT_EDI_APU_TDO_B",
         "nb_matched_records": 1,
         "matched_records_ids": [
@@ -2419,8 +2421,8 @@
                         "Giraudy Danièle"
                     ],
                     "PUBLISHERS_NAME": [
-                        "Musées de Marseille",
-                        "Ed. Parenthèses"
+                        "Ed. Parenthèses",
+                        "Musées de Marseille"
                     ],
                     "EDITION_NOTES": [],
                     "PUBLICATION_DATES": [
@@ -2443,8 +2445,8 @@
                     "dates": true,
                     "publishers": {
                         "score": 100,
-                        "target_db": "musees de marseille",
-                        "origin_db": "musees de marseille"
+                        "target_db": "parentheses",
+                        "origin_db": "parentheses"
                     },
                     "other_ids": {
                         "nb": 1,
@@ -2663,7 +2665,7 @@
                 "status": "SUCCESS",
                 "error_type": null,
                 "msg": null,
-                "query": "mti=autrefois marseille and aut=simone lambert and edi=generale librairie diffusion and apu>=1975 and apu<=1975 and tdo=b",
+                "query": "mti=autrefois marseille and aut=lambert simone and edi=diffusion generale librairie and apu>=1975 and apu<=1975 and tdo=b",
                 "returned_ids": []
             },
             "2": {
@@ -2672,7 +2674,7 @@
                 "status": "SUCCESS",
                 "error_type": null,
                 "msg": null,
-                "query": "mti=autrefois marseille and aut=simone lambert and apu>=1975 and apu<=1975 and tdo=b",
+                "query": "mti=autrefois marseille and aut=lambert simone and apu>=1975 and apu<=1975 and tdo=b",
                 "returned_ids": []
             },
             "3": {
@@ -2681,7 +2683,7 @@
                 "status": "SUCCESS",
                 "error_type": null,
                 "msg": null,
-                "query": "tou=autrefois marseille and tou=simone lambert and tou=generale librairie diffusion AND (tou=1975) and tdo=b",
+                "query": "tou=autrefois marseille and tou=lambert simone and tou=diffusion generale librairie AND (tou=1975) and tdo=b",
                 "returned_ids": []
             },
             "4": {
@@ -2690,7 +2692,7 @@
                 "status": "SUCCESS",
                 "error_type": null,
                 "msg": null,
-                "query": "tou=autrefois marseille and tou=simone lambert and tou=generale librairie diffusion and tdo=b",
+                "query": "tou=autrefois marseille and tou=lambert simone and tou=diffusion generale librairie and tdo=b",
                 "returned_ids": []
             },
             "5": {
@@ -3057,7 +3059,7 @@
                 "status": "SUCCESS",
                 "error_type": null,
                 "msg": null,
-                "query": "mti=autrefois 1 marseille and aut=simone lambert and edi=generale librairie diffusion and apu>=1975 and apu<=1975 and tdo=b",
+                "query": "mti=autrefois marseille 1 and aut=lambert simone and edi=diffusion generale librairie and apu>=1975 and apu<=1975 and tdo=b",
                 "returned_ids": []
             },
             "2": {
@@ -3066,7 +3068,7 @@
                 "status": "SUCCESS",
                 "error_type": null,
                 "msg": null,
-                "query": "mti=autrefois 1 marseille and aut=simone lambert and apu>=1975 and apu<=1975 and tdo=b",
+                "query": "mti=autrefois marseille 1 and aut=lambert simone and apu>=1975 and apu<=1975 and tdo=b",
                 "returned_ids": []
             },
             "3": {
@@ -3075,7 +3077,7 @@
                 "status": "SUCCESS",
                 "error_type": null,
                 "msg": null,
-                "query": "tou=autrefois 1 marseille and tou=simone lambert and tou=generale librairie diffusion AND (tou=1975) and tdo=b",
+                "query": "tou=autrefois marseille 1 and tou=lambert simone and tou=diffusion generale librairie AND (tou=1975) and tdo=b",
                 "returned_ids": []
             },
             "4": {
@@ -3084,7 +3086,7 @@
                 "status": "SUCCESS",
                 "error_type": null,
                 "msg": null,
-                "query": "tou=autrefois 1 marseille and tou=simone lambert and tou=generale librairie diffusion and tdo=b",
+                "query": "tou=autrefois marseille 1 and tou=lambert simone and tou=diffusion generale librairie and tdo=b",
                 "returned_ids": []
             },
             "5": {
@@ -3093,13 +3095,13 @@
                 "status": "SUCCESS",
                 "error_type": null,
                 "msg": null,
-                "query": "mti=autrefois 1 marseille and tdo=b",
+                "query": "mti=autrefois marseille 1 and tdo=b",
                 "returned_ids": [
                     "237276658"
                 ]
             }
         },
-        "query_used": "mti=autrefois 1 marseille and tdo=b",
+        "query_used": "mti=autrefois marseille 1 and tdo=b",
         "action_used": "SRU_SUDOC_MTI_TDO_B",
         "nb_matched_records": 1,
         "matched_records_ids": [
@@ -3362,7 +3364,7 @@
                 "status": "SUCCESS",
                 "error_type": null,
                 "msg": null,
-                "query": "mti=architecture revit 2010 mastering and aut=demchak eddy krygiel greg dzambazova tatjana and edi=wiley and apu>=2009 and apu<=2009 and tdo=b",
+                "query": "mti=mastering 2010 architecture revit and aut=demchak krygiel greg dzambazova eddy tatjana and edi=wiley and apu>=2009 and apu<=2009 and tdo=b",
                 "returned_ids": []
             },
             "2": {
@@ -3371,7 +3373,7 @@
                 "status": "SUCCESS",
                 "error_type": null,
                 "msg": null,
-                "query": "mti=architecture revit 2010 mastering and aut=demchak eddy krygiel greg dzambazova tatjana and apu>=2009 and apu<=2009 and tdo=b",
+                "query": "mti=mastering 2010 architecture revit and aut=demchak krygiel greg dzambazova eddy tatjana and apu>=2009 and apu<=2009 and tdo=b",
                 "returned_ids": []
             },
             "3": {
@@ -3380,7 +3382,7 @@
                 "status": "SUCCESS",
                 "error_type": null,
                 "msg": null,
-                "query": "tou=architecture revit 2010 mastering and tou=demchak eddy krygiel greg dzambazova tatjana and tou=wiley AND (tou=2009) and tdo=b",
+                "query": "tou=mastering 2010 architecture revit and tou=demchak krygiel greg dzambazova eddy tatjana and tou=wiley AND (tou=2009) and tdo=b",
                 "returned_ids": []
             },
             "4": {
@@ -3389,7 +3391,7 @@
                 "status": "SUCCESS",
                 "error_type": null,
                 "msg": null,
-                "query": "tou=architecture revit 2010 mastering and tou=demchak eddy krygiel greg dzambazova tatjana and tou=wiley and tdo=b",
+                "query": "tou=mastering 2010 architecture revit and tou=demchak krygiel greg dzambazova eddy tatjana and tou=wiley and tdo=b",
                 "returned_ids": []
             },
             "5": {
@@ -3398,11 +3400,11 @@
                 "status": "SUCCESS",
                 "error_type": null,
                 "msg": null,
-                "query": "mti=architecture revit 2010 mastering and tdo=b",
+                "query": "mti=mastering 2010 architecture revit and tdo=b",
                 "returned_ids": []
             }
         },
-        "query_used": "mti=architecture revit 2010 mastering and tdo=b",
+        "query_used": "mti=mastering 2010 architecture revit and tdo=b",
         "action_used": "SRU_SUDOC_MTI_TDO_B",
         "nb_matched_records": 0,
         "matched_records_ids": []
@@ -3475,13 +3477,13 @@
                 "status": "SUCCESS",
                 "error_type": null,
                 "msg": null,
-                "query": "mti=luminous designing light house masters and aut=hyatt peter and edi=images and apu>=2007 and apu<=2007 and tdo=b",
+                "query": "mti=designing house luminous masters light and aut=hyatt peter and edi=images and apu>=2007 and apu<=2007 and tdo=b",
                 "returned_ids": [
                     "139312358"
                 ]
             }
         },
-        "query_used": "mti=luminous designing light house masters and aut=hyatt peter and edi=images and apu>=2007 and apu<=2007 and tdo=b",
+        "query_used": "mti=designing house luminous masters light and aut=hyatt peter and edi=images and apu>=2007 and apu<=2007 and tdo=b",
         "action_used": "SRU_SUDOC_MTI_AUT_EDI_APU_TDO_B",
         "nb_matched_records": 1,
         "matched_records_ids": [
@@ -3615,13 +3617,13 @@
                 "status": "SUCCESS",
                 "error_type": null,
                 "msg": null,
-                "query": "mti=2000 2007 matali spaces crasset and aut=emmanuelle lallement and edi=daab and apu>=2007 and apu<=2007 and tdo=b",
+                "query": "mti=spaces 2000 crasset matali 2007 and aut=lallement emmanuelle and edi=daab and apu>=2007 and apu<=2007 and tdo=b",
                 "returned_ids": [
                     "11973835X"
                 ]
             }
         },
-        "query_used": "mti=2000 2007 matali spaces crasset and aut=emmanuelle lallement and edi=daab and apu>=2007 and apu<=2007 and tdo=b",
+        "query_used": "mti=spaces 2000 crasset matali 2007 and aut=lallement emmanuelle and edi=daab and apu>=2007 and apu<=2007 and tdo=b",
         "action_used": "SRU_SUDOC_MTI_AUT_EDI_APU_TDO_B",
         "nb_matched_records": 1,
         "matched_records_ids": [
@@ -3756,13 +3758,13 @@
                 "status": "SUCCESS",
                 "error_type": null,
                 "msg": null,
-                "query": "mti=mediterranean greece houses and aut=costas demetres philippides manolis and edi=gili gustavo and apu>=1994 and apu<=1994 and tdo=b",
+                "query": "mti=mediterranean greece houses and aut=manolis philippides demetres costas and edi=gili gustavo and apu>=1994 and apu<=1994 and tdo=b",
                 "returned_ids": [
                     "139367438"
                 ]
             }
         },
-        "query_used": "mti=mediterranean greece houses and aut=costas demetres philippides manolis and edi=gili gustavo and apu>=1994 and apu<=1994 and tdo=b",
+        "query_used": "mti=mediterranean greece houses and aut=manolis philippides demetres costas and edi=gili gustavo and apu>=1994 and apu<=1994 and tdo=b",
         "action_used": "SRU_SUDOC_MTI_AUT_EDI_APU_TDO_B",
         "nb_matched_records": 1,
         "matched_records_ids": [
@@ -3897,13 +3899,13 @@
                 "status": "SUCCESS",
                 "error_type": null,
                 "msg": null,
-                "query": "mti=italy mediterranean houses and aut=giovanni monti nicolas albera and edi=gili editorial gustavo and apu>=1992 and apu<=1992 and tdo=b",
+                "query": "mti=italy mediterranean houses and aut=monti nicolas giovanni albera and edi=gili editorial gustavo and apu>=1992 and apu<=1992 and tdo=b",
                 "returned_ids": [
                     "13930567X"
                 ]
             }
         },
-        "query_used": "mti=italy mediterranean houses and aut=giovanni monti nicolas albera and edi=gili editorial gustavo and apu>=1992 and apu<=1992 and tdo=b",
+        "query_used": "mti=italy mediterranean houses and aut=monti nicolas giovanni albera and edi=gili editorial gustavo and apu>=1992 and apu<=1992 and tdo=b",
         "action_used": "SRU_SUDOC_MTI_AUT_EDI_APU_TDO_B",
         "nb_matched_records": 1,
         "matched_records_ids": [
@@ -4175,13 +4177,13 @@
                 "status": "SUCCESS",
                 "error_type": null,
                 "msg": null,
-                "query": "mti=mediterraneen epoque monde tome 1 mediterranee ii philippe and aut=braudel fernand and edi=colin and apu>=1985 and apu<=1985 and tdo=b",
+                "query": "mti=epoque 1 monde mediterranee mediterraneen tome ii philippe and aut=braudel fernand and edi=colin and apu>=1985 and apu<=1985 and tdo=b",
                 "returned_ids": [
                     "05141645X"
                 ]
             }
         },
-        "query_used": "mti=mediterraneen epoque monde tome 1 mediterranee ii philippe and aut=braudel fernand and edi=colin and apu>=1985 and apu<=1985 and tdo=b",
+        "query_used": "mti=epoque 1 monde mediterranee mediterraneen tome ii philippe and aut=braudel fernand and edi=colin and apu>=1985 and apu<=1985 and tdo=b",
         "action_used": "SRU_SUDOC_MTI_AUT_EDI_APU_TDO_B",
         "nb_matched_records": 1,
         "matched_records_ids": [
@@ -4473,13 +4475,13 @@
                 "status": "SUCCESS",
                 "error_type": null,
                 "msg": null,
-                "query": "mti=grenoble rencontres internationales fait 3e actes institut qui urbanisme mobilite ville and aut=transports paulhiac etudes rencontres centre france florence internationales 2013 1994 reseaux publiques constructions yves urbanisme chalas and edi=certu and apu>=2008 and apu<=2008 and tdo=b",
+                "query": "mti=grenoble 3e institut mobilite rencontres urbanisme internationales fait ville qui actes and aut=transports constructions france chalas 2013 florence publiques rencontres urbanisme etudes paulhiac 1994 yves internationales reseaux centre and edi=certu and apu>=2008 and apu<=2008 and tdo=b",
                 "returned_ids": [
                     "131020609"
                 ]
             }
         },
-        "query_used": "mti=grenoble rencontres internationales fait 3e actes institut qui urbanisme mobilite ville and aut=transports paulhiac etudes rencontres centre france florence internationales 2013 1994 reseaux publiques constructions yves urbanisme chalas and edi=certu and apu>=2008 and apu<=2008 and tdo=b",
+        "query_used": "mti=grenoble 3e institut mobilite rencontres urbanisme internationales fait ville qui actes and aut=transports constructions france chalas 2013 florence publiques rencontres urbanisme etudes paulhiac 1994 yves internationales reseaux centre and edi=certu and apu>=2008 and apu<=2008 and tdo=b",
         "action_used": "SRU_SUDOC_MTI_AUT_EDI_APU_TDO_B",
         "nb_matched_records": 1,
         "matched_records_ids": [
@@ -5848,7 +5850,7 @@
                 "status": "SUCCESS",
                 "error_type": null,
                 "msg": null,
-                "query": "mti=pluies construction ecoulement projet modelisation reseaux guide utilisation and aut=technique france service equipements hemain division jean urbanisme urbains claude and edi=technique service division urbanisme urbains equipements and apu>=1986 and apu<=1986 and tdo=b",
+                "query": "mti=guide pluies projet modelisation reseaux construction utilisation ecoulement and aut=france hemain technique equipements service urbanisme jean claude division urbains and edi=technique service urbanisme equipements division urbains and apu>=1986 and apu<=1986 and tdo=b",
                 "returned_ids": []
             },
             "2": {
@@ -5857,13 +5859,13 @@
                 "status": "SUCCESS",
                 "error_type": null,
                 "msg": null,
-                "query": "mti=pluies construction ecoulement projet modelisation reseaux guide utilisation and aut=technique france service equipements hemain division jean urbanisme urbains claude and apu>=1986 and apu<=1986 and tdo=b",
+                "query": "mti=guide pluies projet modelisation reseaux construction utilisation ecoulement and aut=france hemain technique equipements service urbanisme jean claude division urbains and apu>=1986 and apu<=1986 and tdo=b",
                 "returned_ids": [
                     "120122685"
                 ]
             }
         },
-        "query_used": "mti=pluies construction ecoulement projet modelisation reseaux guide utilisation and aut=technique france service equipements hemain division jean urbanisme urbains claude and apu>=1986 and apu<=1986 and tdo=b",
+        "query_used": "mti=guide pluies projet modelisation reseaux construction utilisation ecoulement and aut=france hemain technique equipements service urbanisme jean claude division urbains and apu>=1986 and apu<=1986 and tdo=b",
         "action_used": "SRU_SUDOC_MTI_AUT_APU_TDO_B",
         "nb_matched_records": 1,
         "matched_records_ids": [
@@ -5973,8 +5975,8 @@
                     "Jollivet Marcel"
                 ],
                 "PUBLISHERS_NAME": [
-                    "Éd. Quæ",
-                    "NSS-Dialogues"
+                    "NSS-Dialogues",
+                    "Éd. Quæ"
                 ],
                 "EDITION_NOTES": [],
                 "PUBLICATION_DATES": [
@@ -6027,8 +6029,8 @@
                         "Jollivet Marcel"
                     ],
                     "PUBLISHERS_NAME": [
-                        "Éd. Quæ",
-                        "NSS-Dialogues"
+                        "NSS-Dialogues",
+                        "Éd. Quæ"
                     ],
                     "EDITION_NOTES": [],
                     "PUBLICATION_DATES": [
@@ -6051,8 +6053,8 @@
                     "dates": true,
                     "publishers": {
                         "score": 100,
-                        "target_db": "quae",
-                        "origin_db": "quae"
+                        "target_db": "nss dialogues",
+                        "origin_db": "nss dialogues"
                     },
                     "other_ids": {
                         "nb": 1,
@@ -6155,13 +6157,13 @@
                 "status": "SUCCESS",
                 "error_type": null,
                 "msg": null,
-                "query": "mti=steel house modern and aut=jackson neil and edi=spon fn and apu>=1996 and apu<=1996 and tdo=b",
+                "query": "mti=house steel modern and aut=neil jackson and edi=fn spon and apu>=1996 and apu<=1996 and tdo=b",
                 "returned_ids": [
                     "026330156"
                 ]
             }
         },
-        "query_used": "mti=steel house modern and aut=jackson neil and edi=spon fn and apu>=1996 and apu<=1996 and tdo=b",
+        "query_used": "mti=house steel modern and aut=neil jackson and edi=fn spon and apu>=1996 and apu<=1996 and tdo=b",
         "action_used": "SRU_SUDOC_MTI_AUT_EDI_APU_TDO_B",
         "nb_matched_records": 1,
         "matched_records_ids": [
@@ -6595,13 +6597,13 @@
                 "status": "SUCCESS",
                 "error_type": null,
                 "msg": null,
-                "query": "mti=alpes forez canton rhone loire montbrison and aut=guibaud service regional hartmann caroline gourbin cherblanc monnet thierry eric alpes jourdan simone paul rhone genevieve didier dessert inventaire nussbaum general and edi=dits lieux and apu>=2008 and apu<=2008 and tdo=b",
+                "query": "mti=alpes rhone canton loire forez montbrison and aut=service inventaire nussbaum rhone gourbin alpes caroline hartmann monnet paul dessert regional thierry guibaud didier genevieve general simone cherblanc eric jourdan and edi=dits lieux and apu>=2008 and apu<=2008 and tdo=b",
                 "returned_ids": [
                     "129575585"
                 ]
             }
         },
-        "query_used": "mti=alpes forez canton rhone loire montbrison and aut=guibaud service regional hartmann caroline gourbin cherblanc monnet thierry eric alpes jourdan simone paul rhone genevieve didier dessert inventaire nussbaum general and edi=dits lieux and apu>=2008 and apu<=2008 and tdo=b",
+        "query_used": "mti=alpes rhone canton loire forez montbrison and aut=service inventaire nussbaum rhone gourbin alpes caroline hartmann monnet paul dessert regional thierry guibaud didier genevieve general simone cherblanc eric jourdan and edi=dits lieux and apu>=2008 and apu<=2008 and tdo=b",
         "action_used": "SRU_SUDOC_MTI_AUT_EDI_APU_TDO_B",
         "nb_matched_records": 1,
         "matched_records_ids": [
@@ -7165,13 +7167,13 @@
                 "status": "SUCCESS",
                 "error_type": null,
                 "msg": null,
-                "query": "mti=mini now house and aut=losantos agata and edi=collins design and apu>=2006 and apu<=2006 and tdo=b",
+                "query": "mti=house now mini and aut=losantos agata and edi=design collins and apu>=2006 and apu<=2006 and tdo=b",
                 "returned_ids": [
                     "139319859"
                 ]
             }
         },
-        "query_used": "mti=mini now house and aut=losantos agata and edi=collins design and apu>=2006 and apu<=2006 and tdo=b",
+        "query_used": "mti=house now mini and aut=losantos agata and edi=design collins and apu>=2006 and apu<=2006 and tdo=b",
         "action_used": "SRU_SUDOC_MTI_AUT_EDI_APU_TDO_B",
         "nb_matched_records": 1,
         "matched_records_ids": [
@@ -7304,13 +7306,13 @@
                 "status": "SUCCESS",
                 "error_type": null,
                 "msg": null,
-                "query": "mti=mini lofts and aut=alejandro bahamon and edi=proxima artemis and apu>=2003 and apu<=2003 and tdo=b",
+                "query": "mti=lofts mini and aut=alejandro bahamon and edi=proxima artemis and apu>=2003 and apu<=2003 and tdo=b",
                 "returned_ids": [
                     "139387870"
                 ]
             }
         },
-        "query_used": "mti=mini lofts and aut=alejandro bahamon and edi=proxima artemis and apu>=2003 and apu<=2003 and tdo=b",
+        "query_used": "mti=lofts mini and aut=alejandro bahamon and edi=proxima artemis and apu>=2003 and apu<=2003 and tdo=b",
         "action_used": "SRU_SUDOC_MTI_AUT_EDI_APU_TDO_B",
         "nb_matched_records": 1,
         "matched_records_ids": [
@@ -7445,13 +7447,13 @@
                 "status": "SUCCESS",
                 "error_type": null,
                 "msg": null,
-                "query": "mti=architecture mini concours eloge 2003 2004 jouer cartes postales petit maousse resultats micro and aut=architecture paris institut francais fiona meadows and edi=ifa and apu>=2004 and apu<=2004 and tdo=b",
+                "query": "mti=2004 2003 resultats architecture mini postales eloge petit maousse micro cartes concours jouer and aut=paris fiona institut architecture francais meadows and edi=ifa and apu>=2004 and apu<=2004 and tdo=b",
                 "returned_ids": [
                     "264255178"
                 ]
             }
         },
-        "query_used": "mti=architecture mini concours eloge 2003 2004 jouer cartes postales petit maousse resultats micro and aut=architecture paris institut francais fiona meadows and edi=ifa and apu>=2004 and apu<=2004 and tdo=b",
+        "query_used": "mti=2004 2003 resultats architecture mini postales eloge petit maousse micro cartes concours jouer and aut=paris fiona institut architecture francais meadows and edi=ifa and apu>=2004 and apu<=2004 and tdo=b",
         "action_used": "SRU_SUDOC_MTI_AUT_EDI_APU_TDO_B",
         "nb_matched_records": 1,
         "matched_records_ids": [
@@ -7868,7 +7870,7 @@
                 "status": "SUCCESS",
                 "error_type": null,
                 "msg": null,
-                "query": "mti=data planning metric handbook design and aut=david adler and edi=press architectural and apu>=1999 and apu<=1999 and tdo=b",
+                "query": "mti=handbook metric planning design data and aut=adler david and edi=architectural press and apu>=1999 and apu<=1999 and tdo=b",
                 "returned_ids": []
             },
             "2": {
@@ -7877,7 +7879,7 @@
                 "status": "SUCCESS",
                 "error_type": null,
                 "msg": null,
-                "query": "mti=data planning metric handbook design and aut=david adler and apu>=1999 and apu<=1999 and tdo=b",
+                "query": "mti=handbook metric planning design data and aut=adler david and apu>=1999 and apu<=1999 and tdo=b",
                 "returned_ids": []
             },
             "3": {
@@ -7886,7 +7888,7 @@
                 "status": "SUCCESS",
                 "error_type": null,
                 "msg": null,
-                "query": "tou=data planning metric handbook design and tou=david adler and tou=press architectural AND (tou=1999) and tdo=b",
+                "query": "tou=handbook metric planning design data and tou=adler david and tou=architectural press AND (tou=1999) and tdo=b",
                 "returned_ids": []
             },
             "4": {
@@ -7895,7 +7897,7 @@
                 "status": "SUCCESS",
                 "error_type": null,
                 "msg": null,
-                "query": "tou=data planning metric handbook design and tou=david adler and tou=press architectural and tdo=b",
+                "query": "tou=handbook metric planning design data and tou=adler david and tou=architectural press and tdo=b",
                 "returned_ids": []
             },
             "5": {
@@ -7904,14 +7906,14 @@
                 "status": "SUCCESS",
                 "error_type": null,
                 "msg": null,
-                "query": "mti=data planning metric handbook design and tdo=b",
+                "query": "mti=handbook metric planning design data and tdo=b",
                 "returned_ids": [
                     "191158666",
                     "123455588"
                 ]
             }
         },
-        "query_used": "mti=data planning metric handbook design and tdo=b",
+        "query_used": "mti=handbook metric planning design data and tdo=b",
         "action_used": "SRU_SUDOC_MTI_TDO_B",
         "nb_matched_records": 2,
         "matched_records_ids": [
@@ -7996,8 +7998,8 @@
                         "Littlefield David"
                     ],
                     "PUBLISHERS_NAME": [
-                        "Elsevier",
-                        "Architectural Press"
+                        "Architectural Press",
+                        "Elsevier"
                     ],
                     "EDITION_NOTES": [],
                     "PUBLICATION_DATES": [
@@ -8245,13 +8247,13 @@
                 "status": "SUCCESS",
                 "error_type": null,
                 "msg": null,
-                "query": "mti=2005 mini carnet concours 2 route 2006 microarchitecture maousse and aut=architecture grands paris patrimoine isle ateliers cite fiona meadows abeau and edi=cite architecture patrimoine and apu>=2006 and apu<=2006 and tdo=b",
+                "query": "mti=concours 2006 2 2005 mini carnet maousse route microarchitecture and aut=paris grands fiona architecture ateliers cite patrimoine abeau isle meadows and edi=architecture cite patrimoine and apu>=2006 and apu<=2006 and tdo=b",
                 "returned_ids": [
                     "139321578"
                 ]
             }
         },
-        "query_used": "mti=2005 mini carnet concours 2 route 2006 microarchitecture maousse and aut=architecture grands paris patrimoine isle ateliers cite fiona meadows abeau and edi=cite architecture patrimoine and apu>=2006 and apu<=2006 and tdo=b",
+        "query_used": "mti=concours 2006 2 2005 mini carnet maousse route microarchitecture and aut=paris grands fiona architecture ateliers cite patrimoine abeau isle meadows and edi=architecture cite patrimoine and apu>=2006 and apu<=2006 and tdo=b",
         "action_used": "SRU_SUDOC_MTI_AUT_EDI_APU_TDO_B",
         "nb_matched_records": 1,
         "matched_records_ids": [
@@ -8675,13 +8677,13 @@
                 "status": "SUCCESS",
                 "error_type": null,
                 "msg": null,
-                "query": "mti=aspetti statici monumenti restauro terremoti and aut=giuffre antonino and edi=multigrafica editrice and apu>=1988 and apu<=1988 and tdo=b",
+                "query": "mti=terremoti aspetti restauro monumenti statici and aut=antonino giuffre and edi=editrice multigrafica and apu>=1988 and apu<=1988 and tdo=b",
                 "returned_ids": [
                     "023417935"
                 ]
             }
         },
-        "query_used": "mti=aspetti statici monumenti restauro terremoti and aut=giuffre antonino and edi=multigrafica editrice and apu>=1988 and apu<=1988 and tdo=b",
+        "query_used": "mti=terremoti aspetti restauro monumenti statici and aut=antonino giuffre and edi=editrice multigrafica and apu>=1988 and apu<=1988 and tdo=b",
         "action_used": "SRU_SUDOC_MTI_AUT_EDI_APU_TDO_B",
         "nb_matched_records": 1,
         "matched_records_ids": [
@@ -8952,13 +8954,13 @@
                 "status": "SUCCESS",
                 "error_type": null,
                 "msg": null,
-                "query": "mti=politique 1944 ministere urbanisme 1954 reconstruction logement and aut=architecture vayssiere paris bruno institut candre manuel francais daniele voldman and edi=architecture construction institut plan francais and apu>=1995 and apu<=1995 and tdo=b",
+                "query": "mti=1944 urbanisme logement 1954 reconstruction politique ministere and aut=paris manuel bruno institut candre voldman architecture daniele francais vayssiere and edi=institut architecture plan francais construction and apu>=1995 and apu<=1995 and tdo=b",
                 "returned_ids": [
                     "004735900"
                 ]
             }
         },
-        "query_used": "mti=politique 1944 ministere urbanisme 1954 reconstruction logement and aut=architecture vayssiere paris bruno institut candre manuel francais daniele voldman and edi=architecture construction institut plan francais and apu>=1995 and apu<=1995 and tdo=b",
+        "query_used": "mti=1944 urbanisme logement 1954 reconstruction politique ministere and aut=paris manuel bruno institut candre voldman architecture daniele francais vayssiere and edi=institut architecture plan francais construction and apu>=1995 and apu<=1995 and tdo=b",
         "action_used": "SRU_SUDOC_MTI_AUT_EDI_APU_TDO_B",
         "nb_matched_records": 1,
         "matched_records_ids": [
@@ -9095,13 +9097,13 @@
                 "status": "SUCCESS",
                 "error_type": null,
                 "msg": null,
-                "query": "mti=temps modernite esprit and aut=architecture biennale paris section and edi=equerre and apu>=1982 and apu<=1982 and tdo=b",
+                "query": "mti=temps modernite esprit and aut=paris section architecture biennale and edi=equerre and apu>=1982 and apu<=1982 and tdo=b",
                 "returned_ids": [
                     "025300520"
                 ]
             }
         },
-        "query_used": "mti=temps modernite esprit and aut=architecture biennale paris section and edi=equerre and apu>=1982 and apu<=1982 and tdo=b",
+        "query_used": "mti=temps modernite esprit and aut=paris section architecture biennale and edi=equerre and apu>=1982 and apu<=1982 and tdo=b",
         "action_used": "SRU_SUDOC_MTI_AUT_EDI_APU_TDO_B",
         "nb_matched_records": 1,
         "matched_records_ids": [
@@ -9342,9 +9344,9 @@
                     "Troin Jean-François"
                 ],
                 "PUBLISHERS_NAME": [
+                    "Alif",
                     "Édisud",
-                    "Toubkal",
-                    "Alif"
+                    "Toubkal"
                 ],
                 "EDITION_NOTES": [],
                 "PUBLICATION_DATES": [
@@ -9395,9 +9397,9 @@
                         "Troin Jean-François"
                     ],
                     "PUBLISHERS_NAME": [
+                        "Alif",
                         "Édisud",
-                        "Toubkal",
-                        "Alif"
+                        "Toubkal"
                     ],
                     "EDITION_NOTES": [],
                     "PUBLICATION_DATES": [
@@ -9420,8 +9422,8 @@
                     "dates": true,
                     "publishers": {
                         "score": 100,
-                        "target_db": "edisud",
-                        "origin_db": "edisud"
+                        "target_db": "alif",
+                        "origin_db": "alif"
                     },
                     "other_ids": {
                         "nb": 1,
@@ -9610,8 +9612,8 @@
                 ],
                 "AUTHORS": [],
                 "PUBLISHERS_NAME": [
-                    "Ernst & Sohn",
-                    "Academy"
+                    "Academy",
+                    "Ernst & Sohn"
                 ],
                 "EDITION_NOTES": [],
                 "PUBLICATION_DATES": [
@@ -9675,7 +9677,7 @@
                 "status": "SUCCESS",
                 "error_type": null,
                 "msg": null,
-                "query": "mti=yudell moore ruble and tdo=b",
+                "query": "mti=moore yudell ruble and tdo=b",
                 "returned_ids": [
                     "139316140",
                     "139313397",
@@ -9705,7 +9707,7 @@
                 ]
             }
         },
-        "query_used": "mti=yudell moore ruble and tdo=b",
+        "query_used": "mti=moore yudell ruble and tdo=b",
         "action_used": "SRU_SUDOC_MTI_TDO_B",
         "nb_matched_records": 25,
         "matched_records_ids": [
@@ -9754,8 +9756,8 @@
                         "Olds Margaret"
                     ],
                     "PUBLISHERS_NAME": [
-                        "Millennium House",
-                        "How Books"
+                        "How Books",
+                        "Millennium House"
                     ],
                     "EDITION_NOTES": [],
                     "PUBLICATION_DATES": [
@@ -10149,8 +10151,8 @@
                         "Oostenbrink Marjan"
                     ],
                     "PUBLISHERS_NAME": [
-                        "[diff. les Belles lettres]",
-                        "Tectum"
+                        "Tectum",
+                        "[diff. les Belles lettres]"
                     ],
                     "EDITION_NOTES": [],
                     "PUBLICATION_DATES": [
@@ -10207,8 +10209,8 @@
                     ],
                     "AUTHORS": [],
                     "PUBLISHERS_NAME": [
-                        "Ernst & Sohn",
-                        "Academy"
+                        "Academy",
+                        "Ernst & Sohn"
                     ],
                     "EDITION_NOTES": [],
                     "PUBLICATION_DATES": [
@@ -10231,8 +10233,8 @@
                     "dates": true,
                     "publishers": {
                         "score": 100,
-                        "target_db": "ernst et sohn",
-                        "origin_db": "ernst et sohn"
+                        "target_db": "academy",
+                        "origin_db": "academy"
                     },
                     "other_ids": {
                         "nb": 1,
@@ -10829,8 +10831,8 @@
                         "Steele James"
                     ],
                     "PUBLISHERS_NAME": [
-                        "Distributed to the trade in the U.S. by National Book Network",
-                        "Academy Editions"
+                        "Academy Editions",
+                        "Distributed to the trade in the U.S. by National Book Network"
                     ],
                     "EDITION_NOTES": [],
                     "PUBLICATION_DATES": [
@@ -10886,8 +10888,8 @@
                         "Steele James"
                     ],
                     "PUBLISHERS_NAME": [
-                        "Distributed to the trade in the U.S. by St. Martin's Press",
                         "Academy Editions",
+                        "Distributed to the trade in the U.S. by St. Martin's Press",
                         "Ernst & Sohn"
                     ],
                     "EDITION_NOTES": [],
@@ -11350,14 +11352,14 @@
                 "status": "SUCCESS",
                 "error_type": null,
                 "msg": null,
-                "query": "mti=oeuvre batiment mise travaux beton and aut=prevention france publics professionnel travaux batiment organisme and edi=oppbtp and apu>=1986 and apu<=1986 and tdo=b",
+                "query": "mti=batiment mise travaux beton oeuvre and aut=batiment france travaux prevention publics organisme professionnel and edi=oppbtp and apu>=1986 and apu<=1986 and tdo=b",
                 "returned_ids": [
                     "169896617",
                     "081674694"
                 ]
             }
         },
-        "query_used": "mti=oeuvre batiment mise travaux beton and aut=prevention france publics professionnel travaux batiment organisme and edi=oppbtp and apu>=1986 and apu<=1986 and tdo=b",
+        "query_used": "mti=batiment mise travaux beton oeuvre and aut=batiment france travaux prevention publics organisme professionnel and edi=oppbtp and apu>=1986 and apu<=1986 and tdo=b",
         "action_used": "SRU_SUDOC_MTI_AUT_EDI_APU_TDO_B",
         "nb_matched_records": 2,
         "matched_records_ids": [
@@ -11686,13 +11688,13 @@
                 "status": "SUCCESS",
                 "error_type": null,
                 "msg": null,
-                "query": "mti=nueva mexico arquitectura 2 and aut=anibal antonio castrejon figueroa toca fernandez and edi=gili gustavo and apu>=1993 and apu<=1993 and tdo=b",
+                "query": "mti=2 arquitectura mexico nueva and aut=antonio figueroa toca anibal castrejon fernandez and edi=gili gustavo and apu>=1993 and apu<=1993 and tdo=b",
                 "returned_ids": [
                     "139367012"
                 ]
             }
         },
-        "query_used": "mti=nueva mexico arquitectura 2 and aut=anibal antonio castrejon figueroa toca fernandez and edi=gili gustavo and apu>=1993 and apu<=1993 and tdo=b",
+        "query_used": "mti=2 arquitectura mexico nueva and aut=antonio figueroa toca anibal castrejon fernandez and edi=gili gustavo and apu>=1993 and apu<=1993 and tdo=b",
         "action_used": "SRU_SUDOC_MTI_AUT_EDI_APU_TDO_B",
         "nb_matched_records": 1,
         "matched_records_ids": [
@@ -12101,13 +12103,13 @@
                 "status": "SUCCESS",
                 "error_type": null,
                 "msg": null,
-                "query": "mti=morphosis and aut=k thom val mayne warke and edi=phaidon and apu>=2003 and apu<=2003 and tdo=b",
+                "query": "mti=morphosis and aut=k warke thom val mayne and edi=phaidon and apu>=2003 and apu<=2003 and tdo=b",
                 "returned_ids": [
                     "074429469"
                 ]
             }
         },
-        "query_used": "mti=morphosis and aut=k thom val mayne warke and edi=phaidon and apu>=2003 and apu<=2003 and tdo=b",
+        "query_used": "mti=morphosis and aut=k warke thom val mayne and edi=phaidon and apu>=2003 and apu<=2003 and tdo=b",
         "action_used": "SRU_SUDOC_MTI_AUT_EDI_APU_TDO_B",
         "nb_matched_records": 1,
         "matched_records_ids": [
@@ -12271,11 +12273,11 @@
                 "status": "SUCCESS",
                 "error_type": null,
                 "msg": null,
-                "query": "mti=michael buildings 2 tome graves 1989 projects 1982 and tdo=b",
+                "query": "mti=graves 1989 2 projects buildings tome michael 1982 and tdo=b",
                 "returned_ids": []
             }
         },
-        "query_used": "mti=michael buildings 2 tome graves 1989 projects 1982 and tdo=b",
+        "query_used": "mti=graves 1989 2 projects buildings tome michael 1982 and tdo=b",
         "action_used": "SRU_SUDOC_MTI_TDO_B",
         "nb_matched_records": 0,
         "matched_records_ids": []
@@ -12368,13 +12370,13 @@
                 "status": "SUCCESS",
                 "error_type": null,
                 "msg": null,
-                "query": "mti=eglise france mission siecle xviie marseille and aut=chui yan mas sanchez michel jean richard quan rene and edi=thune and apu>=1996 and apu<=1996 and tdo=b",
+                "query": "mti=france eglise marseille mission siecle xviie and aut=richard chui mas jean sanchez yan rene quan michel and edi=thune and apu>=1996 and apu<=1996 and tdo=b",
                 "returned_ids": [
                     "276719530"
                 ]
             }
         },
-        "query_used": "mti=eglise france mission siecle xviie marseille and aut=chui yan mas sanchez michel jean richard quan rene and edi=thune and apu>=1996 and apu<=1996 and tdo=b",
+        "query_used": "mti=france eglise marseille mission siecle xviie and aut=richard chui mas jean sanchez yan rene quan michel and edi=thune and apu>=1996 and apu<=1996 and tdo=b",
         "action_used": "SRU_SUDOC_MTI_AUT_EDI_APU_TDO_B",
         "nb_matched_records": 1,
         "matched_records_ids": [
@@ -12792,7 +12794,7 @@
                 "status": "SUCCESS",
                 "error_type": null,
                 "msg": null,
-                "query": "mti=civilisations monde histoire contemporain terminales classes and aut=sorlin jacques pierre rudel jean bouillon and edi=bordas and apu>=1968 and apu<=1968 and tdo=b",
+                "query": "mti=classes contemporain terminales monde civilisations histoire and aut=bouillon rudel pierre jacques jean sorlin and edi=bordas and apu>=1968 and apu<=1968 and tdo=b",
                 "returned_ids": []
             },
             "2": {
@@ -12801,7 +12803,7 @@
                 "status": "SUCCESS",
                 "error_type": null,
                 "msg": null,
-                "query": "mti=civilisations monde histoire contemporain terminales classes and aut=sorlin jacques pierre rudel jean bouillon and apu>=1968 and apu<=1968 and tdo=b",
+                "query": "mti=classes contemporain terminales monde civilisations histoire and aut=bouillon rudel pierre jacques jean sorlin and apu>=1968 and apu<=1968 and tdo=b",
                 "returned_ids": []
             },
             "3": {
@@ -12810,7 +12812,7 @@
                 "status": "SUCCESS",
                 "error_type": null,
                 "msg": null,
-                "query": "tou=civilisations monde histoire contemporain terminales classes and tou=sorlin jacques pierre rudel jean bouillon and tou=bordas AND (tou=1968) and tdo=b",
+                "query": "tou=classes contemporain terminales monde civilisations histoire and tou=bouillon rudel pierre jacques jean sorlin and tou=bordas AND (tou=1968) and tdo=b",
                 "returned_ids": []
             },
             "4": {
@@ -12819,7 +12821,7 @@
                 "status": "SUCCESS",
                 "error_type": null,
                 "msg": null,
-                "query": "tou=civilisations monde histoire contemporain terminales classes and tou=sorlin jacques pierre rudel jean bouillon and tou=bordas and tdo=b",
+                "query": "tou=classes contemporain terminales monde civilisations histoire and tou=bouillon rudel pierre jacques jean sorlin and tou=bordas and tdo=b",
                 "returned_ids": [
                     "090169786",
                     "185075002",
@@ -12827,7 +12829,7 @@
                 ]
             }
         },
-        "query_used": "tou=civilisations monde histoire contemporain terminales classes and tou=sorlin jacques pierre rudel jean bouillon and tou=bordas and tdo=b",
+        "query_used": "tou=classes contemporain terminales monde civilisations histoire and tou=bouillon rudel pierre jacques jean sorlin and tou=bordas and tdo=b",
         "action_used": "SRU_SUDOC_TOU_TITLE_AUTHOR_PUBLISHER_TDO_B",
         "nb_matched_records": 3,
         "matched_records_ids": [
@@ -13481,13 +13483,13 @@
                 "status": "SUCCESS",
                 "error_type": null,
                 "msg": null,
-                "query": "mti=architecture mixite and aut=transports france 1991 ministere lucien brossy equipement 1989 vincent mer touzery logement and edi=transports ministere equipement mer logement and apu>=1990 and apu<=1990 and tdo=b",
+                "query": "mti=architecture mixite and aut=touzery transports france equipement 1989 mer lucien brossy logement 1991 ministere vincent and edi=transports equipement logement mer ministere and apu>=1990 and apu<=1990 and tdo=b",
                 "returned_ids": [
                     "185743641"
                 ]
             }
         },
-        "query_used": "mti=architecture mixite and aut=transports france 1991 ministere lucien brossy equipement 1989 vincent mer touzery logement and edi=transports ministere equipement mer logement and apu>=1990 and apu<=1990 and tdo=b",
+        "query_used": "mti=architecture mixite and aut=touzery transports france equipement 1989 mer lucien brossy logement 1991 ministere vincent and edi=transports equipement logement mer ministere and apu>=1990 and apu<=1990 and tdo=b",
         "action_used": "SRU_SUDOC_MTI_AUT_EDI_APU_TDO_B",
         "nb_matched_records": 1,
         "matched_records_ids": [
@@ -13885,7 +13887,7 @@
                 "status": "SUCCESS",
                 "error_type": null,
                 "msg": null,
-                "query": "mti=court mots tout and aut=marie sens jeanne and edi=sens tonka and apu>=1993 and apu<=1993 and tdo=b",
+                "query": "mti=court tout mots and aut=sens jeanne marie and edi=sens tonka and apu>=1993 and apu<=1993 and tdo=b",
                 "returned_ids": []
             },
             "2": {
@@ -13894,7 +13896,7 @@
                 "status": "SUCCESS",
                 "error_type": null,
                 "msg": null,
-                "query": "mti=court mots tout and aut=marie sens jeanne and apu>=1993 and apu<=1993 and tdo=b",
+                "query": "mti=court tout mots and aut=sens jeanne marie and apu>=1993 and apu<=1993 and tdo=b",
                 "returned_ids": []
             },
             "3": {
@@ -13903,7 +13905,7 @@
                 "status": "SUCCESS",
                 "error_type": null,
                 "msg": null,
-                "query": "tou=court mots tout and tou=marie sens jeanne and tou=sens tonka AND (tou=1993) and tdo=b",
+                "query": "tou=court tout mots and tou=sens jeanne marie and tou=sens tonka AND (tou=1993) and tdo=b",
                 "returned_ids": []
             },
             "4": {
@@ -13912,13 +13914,13 @@
                 "status": "SUCCESS",
                 "error_type": null,
                 "msg": null,
-                "query": "tou=court mots tout and tou=marie sens jeanne and tou=sens tonka and tdo=b",
+                "query": "tou=court tout mots and tou=sens jeanne marie and tou=sens tonka and tdo=b",
                 "returned_ids": [
                     "003966291"
                 ]
             }
         },
-        "query_used": "tou=court mots tout and tou=marie sens jeanne and tou=sens tonka and tdo=b",
+        "query_used": "tou=court tout mots and tou=sens jeanne marie and tou=sens tonka and tdo=b",
         "action_used": "SRU_SUDOC_TOU_TITLE_AUTHOR_PUBLISHER_TDO_B",
         "nb_matched_records": 1,
         "matched_records_ids": [
@@ -14073,13 +14075,13 @@
                 "status": "SUCCESS",
                 "error_type": null,
                 "msg": null,
-                "query": "mti=van rohe mies barcelona pavilion and aut=cirici morales ignacio fernando ramos cristian sola and edi=gili and apu>=1993 and apu<=1993 and tdo=b",
+                "query": "mti=barcelona van pavilion mies rohe and aut=cristian sola morales fernando ignacio cirici ramos and edi=gili and apu>=1993 and apu<=1993 and tdo=b",
                 "returned_ids": [
                     "188049398"
                 ]
             }
         },
-        "query_used": "mti=van rohe mies barcelona pavilion and aut=cirici morales ignacio fernando ramos cristian sola and edi=gili and apu>=1993 and apu<=1993 and tdo=b",
+        "query_used": "mti=barcelona van pavilion mies rohe and aut=cristian sola morales fernando ignacio cirici ramos and edi=gili and apu>=1993 and apu<=1993 and tdo=b",
         "action_used": "SRU_SUDOC_MTI_AUT_EDI_APU_TDO_B",
         "nb_matched_records": 1,
         "matched_records_ids": [
@@ -14219,13 +14221,13 @@
                 "status": "SUCCESS",
                 "error_type": null,
                 "msg": null,
-                "query": "mti=1945 van illinois rohe house mies 50 farnsworth plano and aut=lohan dirk and edi=edita and apu>=1976 and apu<=1976 and tdo=b",
+                "query": "mti=farnsworth 50 1945 van illinois house mies rohe plano and aut=dirk lohan and edi=edita and apu>=1976 and apu<=1976 and tdo=b",
                 "returned_ids": [
                     "139665781"
                 ]
             }
         },
-        "query_used": "mti=1945 van illinois rohe house mies 50 farnsworth plano and aut=lohan dirk and edi=edita and apu>=1976 and apu<=1976 and tdo=b",
+        "query_used": "mti=farnsworth 50 1945 van illinois house mies rohe plano and aut=dirk lohan and edi=edita and apu>=1976 and apu<=1976 and tdo=b",
         "action_used": "SRU_SUDOC_MTI_AUT_EDI_APU_TDO_B",
         "nb_matched_records": 1,
         "matched_records_ids": [
