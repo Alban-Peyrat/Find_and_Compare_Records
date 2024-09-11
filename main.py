@@ -13,6 +13,7 @@ from cl_MR import Matched_Records
 from cl_DBR import Database_Record
 from cl_PODA import Processing_Names
 from cl_main import Original_Record, Processed_Id_State, Report, Report_Errors, Report_Success
+from func_file_check import check_file_existence, check_dir_existence
 
 def temp_id(index:int):
     """Defines a temporary index"""
@@ -22,22 +23,37 @@ def main(es: Execution_Settings):
     """Main function.
     Takes as argument an Execution_Settings instance"""
 
-# Init logger
+    # Check if log dir exists
+    if not check_dir_existence(es.logs_path, create=False):
+        # Attempt creating it 
+        if check_dir_existence(es.logs_path, create=True):
+            print("Log directory did not exist : created it")
+        # Attempt failed, leave
+        else:
+            print("Fatal error : log directory does not exist and failed to create it")
+            exit()
+    # Init logger
     es.init_logger()
     es.log.big_info("<(~.~)> <(~.~)> Starting main script <(~.~)> <(~.~)>")
     es.log.simple_info("Log level", es.log_level)
 
     # Leaves if the file doesn't exists
     es.log.simple_info("File", es.file_path)
-    if not os.path.exists(es.file_path):
+    if not check_file_existence(es.file_path):
         es.log.critical("Input file does not exist")
         print("Fatal error : input file does not exist")
         exit()
 
-    # Creates output dir if needed
-    if not os.path.exists(es.output_path):
-        os.makedirs(es.output_path)
-        es.log.info("Output directory did not exist : created it")
+    # Check if output dir exists
+    if not check_dir_existence(es.output_path, create=False):
+        # Attempt creating it 
+        if check_dir_existence(es.output_path, create=True):
+            es.log.info("Output directory did not exist : created it")
+        # Attempt failed, leave
+        else:
+            es.log.critical("Output directory did not exist : failed to create it")
+            print("Fatal error : output directory does not exist and failed to create it")
+            exit()
 
     # At this point, everything is OK, loads and initialise all vars
     es.generate_files_path()

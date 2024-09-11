@@ -4,14 +4,19 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
-_Some previous changes will be added_
-
-
 ## [Unreleased]
 
 ### Added
 
 * User documentation now has an example showing how to install a library in Python
+* The user interface now checks if the input file, the output folder and the log folder exist or can be created
+  * If one of them does not exist, the user will stay in the main configuration window
+  * If one of the folder was created, the information will be written in the error pop-up or an informative pop-up if there was no error
+* The main function now properly checks and displays in the terminal (and logs if available) if the input file, output folder or log folder does not exist or can not be created
+
+### Fixed
+
+* User documentation now correctly uses `BETTER_ITEM_MAPS` instead of `BETTER_ITEM_NO_MAPS`
 
 ## [2.0.0] - 2024-07-25
 

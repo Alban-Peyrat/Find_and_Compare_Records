@@ -194,3 +194,23 @@ class GUI_Text(Enum):
         "eng":"Filter 3",
         "fre":"Filtre 3"
     }
+    FILE_CHECK_ERROR_CONFIG = {
+        "eng":"Configuration error",
+        "fre":"Erreur de configuration"
+    }
+    FILE_CHECK_INFO_CONFIG = {
+        "eng":"Configuration information",
+        "fre":"Information sur la configuration"
+    }
+    FILE_CHECK_FILE_DOES_NOT_EXIST = {
+        "eng":"file does not exist",
+        "fre":"fichier inexistant"
+    }
+    FILE_CHECK_FAILED_TO_CREATE_FOLDER = {
+        "eng":"directory does not exist, failed to create it",
+        "fre":"dossier inexistant, échec de sa création"
+    }
+    FILE_CHECK_CREATED_FOLDER = {
+        "eng":"directory did not exist, created it",
+        "fre":"dossier inexistant, créé avec succès"
+    }

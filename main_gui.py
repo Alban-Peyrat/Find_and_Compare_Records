@@ -14,6 +14,7 @@ from cl_ES import Execution_Settings
 from cl_PODA import Processing_Names
 import main
 from fcr_gui_lang import GUI_Text
+from func_file_check import check_dir_existence, check_file_existence
 
 CURR_DIR = os.path.dirname(__file__)
 # Load env var
@@ -779,10 +780,39 @@ while True:
 
     # --------------- Continue to processign configuration ---------------
     if event == GUI_Text.GO_TO_PROCESSING_CONFIGURATION.name:
-        VALLS.UI_update_main_screen_values(val)
-        curr_screen = get_screen(Screen_Names.PROCESSING_CONFIGURATION_SCREEN)
-        open_screen(window, curr_screen)
-        toggle_UI_elems_for_new_marc_field(False, window)
+        # Checks if the paths are valid
+        invalid_file_paths = []
+        info_file_paths = []
+        # --- Input file
+        if not check_file_existence(val["FILE_PATH"]):
+            invalid_file_paths.append(f"- {GUI_Text.FILE_TO_ANALYZE.value[VALLS.lang]} : {GUI_Text.FILE_CHECK_FILE_DOES_NOT_EXIST.value[VALLS.lang]} ({val['FILE_PATH']})")
+        # --- Output folder
+        for path_gui_key in ["OUTPUT_PATH", "LOGS_PATH"]:
+            path_gui_text = GUI_Text.OUTPUT_FOLDER.value[VALLS.lang]
+            if path_gui_key == "LOGS_PATH":
+                path_gui_text = GUI_Text.LOG_FOLDER.value[VALLS.lang]
+            if not check_dir_existence(val[path_gui_key], create=False):
+                # Attempt creating it 
+                if check_dir_existence(val[path_gui_key], create=True):
+                    info_file_paths.append(f"- {path_gui_text} : {GUI_Text.FILE_CHECK_CREATED_FOLDER.value[VALLS.lang]} ({val[path_gui_key]})")
+                # Attempt failed
+                else:
+                    invalid_file_paths.append(f"- {path_gui_text} : {GUI_Text.FILE_CHECK_FAILED_TO_CREATE_FOLDER.value[VALLS.lang]} ({val[path_gui_key]})")
+        # If paths are OK, go to next screen
+        if invalid_file_paths == []:
+            # If some folders were created, show an info pop-up
+            if info_file_paths != []:
+                sg.popup(f"{GUI_Text.FILE_CHECK_INFO_CONFIG.value[VALLS.lang]} :", "\n".join(info_file_paths), title=GUI_Text.FILE_CHECK_INFO_CONFIG.value[VALLS.lang])
+            VALLS.UI_update_main_screen_values(val)
+            curr_screen = get_screen(Screen_Names.PROCESSING_CONFIGURATION_SCREEN)
+            open_screen(window, curr_screen)
+            toggle_UI_elems_for_new_marc_field(False, window)
+        else:
+            info_txt = ""
+            if info_file_paths != []:
+                info_txt = f"{GUI_Text.FILE_CHECK_INFO_CONFIG.value[VALLS.lang]} :\n" + "\n".join(info_file_paths)
+            sg.popup(f"{GUI_Text.FILE_CHECK_ERROR_CONFIG.value[VALLS.lang]} :", "\n".join(invalid_file_paths), info_txt, title=GUI_Text.FILE_CHECK_ERROR_CONFIG.value[VALLS.lang])
+            
 
     # --------------- User selected a mapping ---------------
     if event == "DATABASE_MAPPING" and not is_updating_marc_database:

@@ -12,7 +12,6 @@ from typing import List, Tuple
 from cl_PODA import Processing, Processing_Data_Target, Filters, Mapped_Fields
 from cl_ES import Records_Settings, Analysis_Checks
 from cl_UDE import Universal_Data_Extractor
-# import func_string_manip as fcf
 from func_string_manip import list_as_string, clean_publisher, nettoie_titre, get_year
 
 # -------------------- Enums --------------------
