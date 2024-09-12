@@ -6,19 +6,21 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ## [Unreleased]
 
+## [2.0.1] - 2024-09-12
+
 ### Added
 
 * User documentation now has an example showing how to install a library in Python
 * The user interface now checks if the input file, the output folder and the log folder exist or can be created
-  * If one of them does not exist, the user will stay in the main configuration window
-  * If one of the folder was created, the information will be written in the error pop-up or an informative pop-up if there was no error
-* The main function now properly checks and displays in the terminal (and logs if available) if the input file, output folder or log folder does not exist or can not be created
+  * If one of them does not exist, the user will stay in the main configuration window and an error pop-up will open
+  * If one of the folder was created, the information will be written in the error pop-up or an informative pop-up (if there was no error)
+* The main function now properly checks and displays in the terminal (and logs if available) if the input file, output folder or log folder do not exist or can not be created
 
 ### Fixed
 
 * User documentation now correctly uses `BETTER_ITEM_MAPS` instead of `BETTER_ITEM_NO_MAPS`
 * Processings `BETTER_ITEM_DVD` & `BETTER_ITEM_MAPS` do not look anymore only for dates in the origin database physical description (method `__special_better_item()`)
-  * This behaviour is now an opt-in, the default one is keeping the raw data
+  * This behaviour is now an opt-in, the default one is keeping the data raw
 
 ## [2.0.0] - 2024-07-25
 
