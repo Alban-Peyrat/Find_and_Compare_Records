@@ -162,7 +162,8 @@ def main(es: Execution_Settings):
         results_report.increase_step(Report_Success.ORIGIN_DB) # report stats
 
         # --------------- Match records ---------------
-        rec.get_matched_records_instance(Matched_Records(es.operation, rec.input_query, rec.origin_database_data, es.target_url, es.lang)) 
+        es.log.info("Starting record matching process...")
+        rec.get_matched_records_instance(Matched_Records(es.operation, rec.input_query, rec.origin_database_data, es.target_url, es.lang, es.service)) 
         if rec.nb_matched_records == 0:
             rec.trigger_error(f"{es.operation.name} : {get_error_instance(Errors.OPERATION_NO_RESULT).get_msg(es.lang)}")
 

@@ -83,7 +83,7 @@ class Matched_Records(object):
     
     Takes as argument :
         - operation {Operation Instance}"""
-    def __init__(self, operation: Operation, query: str, local_record:Database_Record, target_url:str, lang:str):
+    def __init__(self, operation: Operation, query: str, local_record:Database_Record, target_url:str, lang:str, service:str):
         self.error = None
         self.error_msg = None
         self.tries:List[Request_Try] = []
@@ -95,6 +95,7 @@ class Matched_Records(object):
         self.local_record = local_record
         self.target_url = target_url
         self.lang = lang
+        self.service = service
 
         # Calls the operation
         self.execute_operation()
@@ -202,7 +203,7 @@ class Matched_Records(object):
                 webservice = id2ppn.Webservice.EAN
             
             # Sets up the class
-            i2p = id2ppn.Abes_id2ppn(webservice=webservice, useJson=True)
+            i2p = id2ppn.Abes_id2ppn(webservice=webservice, useJson=True, service=self.service)
 
             # Defines the correct query
             query = self.query
@@ -262,7 +263,7 @@ class Matched_Records(object):
             if action_instance == None:
                 thisTry.error_occured(Errors.ACTION_IS_NOT_CORRECTLY_DEFINED)
                 return
-            sru = ssru.Sudoc_SRU()
+            sru = ssru.Sudoc_SRU(service=self.service)
             sru_request = []
             # ISBN
             if action_instance.use_isbn:
@@ -405,7 +406,7 @@ class Matched_Records(object):
             if action_instance == None:
                 thisTry.error_occured(Errors.ACTION_IS_NOT_CORRECTLY_DEFINED)
                 return
-            sru = ksru.Koha_SRU(self.target_url, ksru.SRU_Version.V1_1)
+            sru = ksru.Koha_SRU(self.target_url, ksru.SRU_Version.V1_1, service=self.service)
             sru_request = []
             # ISBN
             if action_instance.use_isbn:

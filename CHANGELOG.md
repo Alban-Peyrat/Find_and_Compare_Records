@@ -6,6 +6,17 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ## [Unreleased]
 
+## [2.0.2] - 2025-03-14
+
+### Added
+
+* Added an info statement in logs to properly display when the matching process starts
+
+### Fixed
+
+* Updated `Koha_SRU` & `Abes_SRU` versions, including a fix preventing crashes when a generic exception was caught
+* The matching process now supports logs from the modules it is using
+
 ## [2.0.1] - 2024-09-12
 
 ### Added
