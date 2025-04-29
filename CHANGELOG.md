@@ -6,6 +6,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ## [Unreleased]
 
+## [2.0.3] - 2025-04-09
+
+### Fixed
+
+* `~` is now considered as noise
+* Function `nettoie_titre()` now also remove noise after using `unidecode()` as the latter can reintroduce noise
+
 ## [2.0.2] - 2025-03-14
 
 ### Added

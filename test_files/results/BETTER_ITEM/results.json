@@ -91,14 +91,14 @@
                 "status": "SUCCESS",
                 "error_type": null,
                 "msg": null,
-                "query": "mti=1 menuiseries interieures exterieures menuiserie maison",
+                "query": "mti=menuiserie exterieures maison interieures 1 menuiseries",
                 "returned_ids": [
                     "020791909",
                     "198800398"
                 ]
             }
         },
-        "query_used": "mti=1 menuiseries interieures exterieures menuiserie maison",
+        "query_used": "mti=menuiserie exterieures maison interieures 1 menuiseries",
         "action_used": "SRU_SUDOC_MTI",
         "nb_matched_records": 2,
         "matched_records_ids": [
@@ -1765,8 +1765,8 @@
                     "Mellinand Philippe"
                 ],
                 "PUBLISHERS_NAME": [
-                    "Éd. du Patrimoine",
-                    "Centre des monuments nationaux"
+                    "Centre des monuments nationaux",
+                    "Éd. du Patrimoine"
                 ],
                 "EDITION_NOTES": [
                     "Réimpression : 2009"
@@ -1820,8 +1820,8 @@
                         "Mellinand Philippe"
                     ],
                     "PUBLISHERS_NAME": [
-                        "Éd. du Patrimoine",
-                        "Centre des monuments nationaux"
+                        "Centre des monuments nationaux",
+                        "Éd. du Patrimoine"
                     ],
                     "EDITION_NOTES": [
                         "Réimpression : 2009"
@@ -1846,8 +1846,8 @@
                     "dates": true,
                     "publishers": {
                         "score": 100,
-                        "target_db": "du patrimoine",
-                        "origin_db": "du patrimoine"
+                        "target_db": "centre des monuments nationaux",
+                        "origin_db": "centre des monuments nationaux"
                     },
                     "other_ids": {
                         "nb": 1,
@@ -2972,13 +2972,13 @@
                 "status": "SUCCESS",
                 "error_type": null,
                 "msg": null,
-                "query": "mti=1 marseille autrefois",
+                "query": "mti=marseille autrefois 1",
                 "returned_ids": [
                     "237276658"
                 ]
             }
         },
-        "query_used": "mti=1 marseille autrefois",
+        "query_used": "mti=marseille autrefois 1",
         "action_used": "SRU_SUDOC_MTI",
         "nb_matched_records": 1,
         "matched_records_ids": [
@@ -3188,7 +3188,9 @@
                     "PUBLICATION_DATES": [
                         "1981"
                     ],
-                    "OTHER_DB_ID": [],
+                    "OTHER_DB_ID": [
+                        "146318"
+                    ],
                     "ITEMS_BARCODE": [],
                     "ITEMS": []
                 },
@@ -3207,8 +3209,8 @@
                         "origin_db": "centro di"
                     },
                     "other_ids": {
-                        "nb": 0,
-                        "result": "NO_OTHER_DB_ID"
+                        "nb": 1,
+                        "result": "THIS_ID_NOT_INCLUDED"
                     },
                     "global": {
                         "result": "PARTIAL_MATCH",
@@ -4070,7 +4072,7 @@
                     "A. Colin"
                 ],
                 "EDITION_NOTES": [
-                    "Autres tirages: 1986"
+                    "Autres tirages: 1986, 1990"
                 ],
                 "PUBLICATION_DATES": [
                     "DL 1985"
@@ -4351,7 +4353,7 @@
                         "A. Colin"
                     ],
                     "EDITION_NOTES": [
-                        "Autres tirages: 1986"
+                        "Autres tirages: 1986, 1990"
                     ],
                     "PUBLICATION_DATES": [
                         "DL 1985"
@@ -4559,7 +4561,7 @@
                 ],
                 "EDITION_NOTES": [],
                 "PUBLICATION_DATES": [
-                    "impr. 2007"
+                    "DL 2007"
                 ],
                 "PHYSICAL_DESCRIPTION": [
                     "1 vol. (284 p.-XVI p. de pl.)"
@@ -4608,7 +4610,7 @@
                     ],
                     "EDITION_NOTES": [],
                     "PUBLICATION_DATES": [
-                        "impr. 2007"
+                        "DL 2007"
                     ],
                     "OTHER_DB_ID": [
                         "226759"
@@ -5487,7 +5489,7 @@
                 "status": "SUCCESS",
                 "error_type": null,
                 "msg": null,
-                "query": "mti=saint michel mont",
+                "query": "mti=michel saint mont",
                 "returned_ids": [
                     "227178149",
                     "094851050",
@@ -5496,7 +5498,6 @@
                     "221031456",
                     "058874917",
                     "002961016",
-                    "174458169",
                     "014092069",
                     "269451560",
                     "012661554",
@@ -5521,6 +5522,7 @@
                     "066574803",
                     "250467534",
                     "201852918",
+                    "283119004",
                     "078467500",
                     "09789978X",
                     "011871342",
@@ -5530,6 +5532,7 @@
                     "135714516",
                     "059513403",
                     "250439123",
+                    "269273816",
                     "237632470",
                     "116214678",
                     "161497470",
@@ -5587,12 +5590,11 @@
                     "092683169",
                     "085398152",
                     "135297826",
-                    "134229150",
-                    "08858268X"
+                    "134229150"
                 ]
             }
         },
-        "query_used": "mti=saint michel mont",
+        "query_used": "mti=michel saint mont",
         "action_used": "SRU_SUDOC_MTI",
         "nb_matched_records": 100,
         "matched_records_ids": [
@@ -5603,7 +5605,6 @@
             "221031456",
             "058874917",
             "002961016",
-            "174458169",
             "014092069",
             "269451560",
             "012661554",
@@ -5628,6 +5629,7 @@
             "066574803",
             "250467534",
             "201852918",
+            "283119004",
             "078467500",
             "09789978X",
             "011871342",
@@ -5637,6 +5639,7 @@
             "135714516",
             "059513403",
             "250439123",
+            "269273816",
             "237632470",
             "116214678",
             "161497470",
@@ -5694,8 +5697,7 @@
             "092683169",
             "085398152",
             "135297826",
-            "134229150",
-            "08858268X"
+            "134229150"
         ],
         "target_database": {
             "227178149": {
@@ -6084,64 +6086,6 @@
                     }
                 }
             },
-            "174458169": {
-                "data": {
-                    "GENERAL_PROCESSING_DATA_DATES": [
-                        [
-                            "2013",
-                            "2013"
-                        ]
-                    ],
-                    "ERRONEOUS_ISBN": [],
-                    "TITLE": [
-                        "Expression paysagère = New French landscape design 2 2"
-                    ],
-                    "AUTHORS": [
-                        "Chien Chia-ling",
-                        "Brizault Nicolas",
-                        "Culliford Alison",
-                        "Racine Michel"
-                    ],
-                    "PUBLISHERS_NAME": [
-                        "ICI Interface"
-                    ],
-                    "EDITION_NOTES": [],
-                    "PUBLICATION_DATES": [
-                        "DL 2013"
-                    ],
-                    "OTHER_DB_ID": [
-                        "231673"
-                    ],
-                    "ITEMS_BARCODE": [],
-                    "ITEMS": []
-                },
-                "fcr_processed_id": "00040Y007",
-                "analysis": {
-                    "title": {
-                        "title_ratio": 31,
-                        "title_partial_ratio": 40,
-                        "title_token_sort_ratio": 31,
-                        "title_token_set_ratio": 31
-                    },
-                    "dates": false,
-                    "publishers": {
-                        "score": 25,
-                        "target_db": "ici interface",
-                        "origin_db": "du patrimoine centre des monuments nationaux"
-                    },
-                    "other_ids": {
-                        "nb": 1,
-                        "result": "THIS_ID_NOT_INCLUDED"
-                    },
-                    "global": {
-                        "result": "NO_MATCH",
-                        "nb_succesful_checks": 0,
-                        "title": false,
-                        "publisher": false,
-                        "date": false
-                    }
-                }
-            },
             "014092069": {
                 "data": {
                     "GENERAL_PROCESSING_DATA_DATES": [
@@ -6162,7 +6106,7 @@
                     "ITEMS_BARCODE": [],
                     "ITEMS": []
                 },
-                "fcr_processed_id": "00040Y008",
+                "fcr_processed_id": "00040Y007",
                 "analysis": {
                     "title": {
                         "title_ratio": 62,
@@ -6216,7 +6160,7 @@
                     "ITEMS_BARCODE": [],
                     "ITEMS": []
                 },
-                "fcr_processed_id": "00040Y009",
+                "fcr_processed_id": "00040Y008",
                 "analysis": {
                     "title": {
                         "title_ratio": 29,
@@ -6270,7 +6214,7 @@
                     "ITEMS_BARCODE": [],
                     "ITEMS": []
                 },
-                "fcr_processed_id": "00040Y010",
+                "fcr_processed_id": "00040Y009",
                 "analysis": {
                     "title": {
                         "title_ratio": 30,
@@ -6323,7 +6267,7 @@
                     "ITEMS_BARCODE": [],
                     "ITEMS": []
                 },
-                "fcr_processed_id": "00040Y011",
+                "fcr_processed_id": "00040Y010",
                 "analysis": {
                     "title": {
                         "title_ratio": 38,
@@ -6377,7 +6321,7 @@
                     "ITEMS_BARCODE": [],
                     "ITEMS": []
                 },
-                "fcr_processed_id": "00040Y012",
+                "fcr_processed_id": "00040Y011",
                 "analysis": {
                     "title": {
                         "title_ratio": 16,
@@ -6430,7 +6374,7 @@
                     "ITEMS_BARCODE": [],
                     "ITEMS": []
                 },
-                "fcr_processed_id": "00040Y013",
+                "fcr_processed_id": "00040Y012",
                 "analysis": {
                     "title": {
                         "title_ratio": 65,
@@ -6483,7 +6427,7 @@
                     "ITEMS_BARCODE": [],
                     "ITEMS": []
                 },
-                "fcr_processed_id": "00040Y014",
+                "fcr_processed_id": "00040Y013",
                 "analysis": {
                     "title": {
                         "title_ratio": 60,
@@ -6536,7 +6480,7 @@
                     "ITEMS_BARCODE": [],
                     "ITEMS": []
                 },
-                "fcr_processed_id": "00040Y015",
+                "fcr_processed_id": "00040Y014",
                 "analysis": {
                     "title": {
                         "title_ratio": 23,
@@ -6589,7 +6533,7 @@
                     "ITEMS_BARCODE": [],
                     "ITEMS": []
                 },
-                "fcr_processed_id": "00040Y016",
+                "fcr_processed_id": "00040Y015",
                 "analysis": {
                     "title": {
                         "title_ratio": 21,
@@ -6642,7 +6586,7 @@
                     "ITEMS_BARCODE": [],
                     "ITEMS": []
                 },
-                "fcr_processed_id": "00040Y017",
+                "fcr_processed_id": "00040Y016",
                 "analysis": {
                     "title": {
                         "title_ratio": 29,
@@ -6698,7 +6642,7 @@
                     "ITEMS_BARCODE": [],
                     "ITEMS": []
                 },
-                "fcr_processed_id": "00040Y018",
+                "fcr_processed_id": "00040Y017",
                 "analysis": {
                     "title": {
                         "title_ratio": 92,
@@ -6740,7 +6684,7 @@
                     "ITEMS_BARCODE": [],
                     "ITEMS": []
                 },
-                "fcr_processed_id": "00040Y019",
+                "fcr_processed_id": "00040Y018",
                 "analysis": {
                     "title": {
                         "title_ratio": 82,
@@ -6804,7 +6748,7 @@
                     "ITEMS_BARCODE": [],
                     "ITEMS": []
                 },
-                "fcr_processed_id": "00040Y020",
+                "fcr_processed_id": "00040Y019",
                 "analysis": {
                     "title": {
                         "title_ratio": 35,
@@ -6858,7 +6802,7 @@
                     "ITEMS_BARCODE": [],
                     "ITEMS": []
                 },
-                "fcr_processed_id": "00040Y021",
+                "fcr_processed_id": "00040Y020",
                 "analysis": {
                     "title": {
                         "title_ratio": 26,
@@ -6917,7 +6861,7 @@
                     "ITEMS_BARCODE": [],
                     "ITEMS": []
                 },
-                "fcr_processed_id": "00040Y022",
+                "fcr_processed_id": "00040Y021",
                 "analysis": {
                     "title": {
                         "title_ratio": 27,
@@ -6970,7 +6914,7 @@
                     "ITEMS_BARCODE": [],
                     "ITEMS": []
                 },
-                "fcr_processed_id": "00040Y023",
+                "fcr_processed_id": "00040Y022",
                 "analysis": {
                     "title": {
                         "title_ratio": 20,
@@ -7026,7 +6970,7 @@
                     "ITEMS_BARCODE": [],
                     "ITEMS": []
                 },
-                "fcr_processed_id": "00040Y024",
+                "fcr_processed_id": "00040Y023",
                 "analysis": {
                     "title": {
                         "title_ratio": 27,
@@ -7080,7 +7024,7 @@
                     "ITEMS_BARCODE": [],
                     "ITEMS": []
                 },
-                "fcr_processed_id": "00040Y025",
+                "fcr_processed_id": "00040Y024",
                 "analysis": {
                     "title": {
                         "title_ratio": 50,
@@ -7136,7 +7080,7 @@
                     "ITEMS_BARCODE": [],
                     "ITEMS": []
                 },
-                "fcr_processed_id": "00040Y026",
+                "fcr_processed_id": "00040Y025",
                 "analysis": {
                     "title": {
                         "title_ratio": 50,
@@ -7190,7 +7134,7 @@
                     "ITEMS_BARCODE": [],
                     "ITEMS": []
                 },
-                "fcr_processed_id": "00040Y027",
+                "fcr_processed_id": "00040Y026",
                 "analysis": {
                     "title": {
                         "title_ratio": 41,
@@ -7244,7 +7188,7 @@
                     "ITEMS_BARCODE": [],
                     "ITEMS": []
                 },
-                "fcr_processed_id": "00040Y028",
+                "fcr_processed_id": "00040Y027",
                 "analysis": {
                     "title": {
                         "title_ratio": 31,
@@ -7297,7 +7241,7 @@
                     "ITEMS_BARCODE": [],
                     "ITEMS": []
                 },
-                "fcr_processed_id": "00040Y029",
+                "fcr_processed_id": "00040Y028",
                 "analysis": {
                     "title": {
                         "title_ratio": 26,
@@ -7350,7 +7294,7 @@
                     "ITEMS_BARCODE": [],
                     "ITEMS": []
                 },
-                "fcr_processed_id": "00040Y030",
+                "fcr_processed_id": "00040Y029",
                 "analysis": {
                     "title": {
                         "title_ratio": 26,
@@ -7405,7 +7349,7 @@
                     "ITEMS_BARCODE": [],
                     "ITEMS": []
                 },
-                "fcr_processed_id": "00040Y031",
+                "fcr_processed_id": "00040Y030",
                 "analysis": {
                     "title": {
                         "title_ratio": 26,
@@ -7418,6 +7362,55 @@
                         "score": 25,
                         "target_db": "ouest france",
                         "origin_db": "du patrimoine centre des monuments nationaux"
+                    },
+                    "other_ids": {
+                        "nb": 0,
+                        "result": "NO_OTHER_DB_ID"
+                    },
+                    "global": {
+                        "result": "NO_MATCH",
+                        "nb_succesful_checks": 0,
+                        "title": false,
+                        "publisher": false,
+                        "date": false
+                    }
+                }
+            },
+            "283119004": {
+                "data": {
+                    "GENERAL_PROCESSING_DATA_DATES": [
+                        [
+                            "1648",
+                            "1649"
+                        ]
+                    ],
+                    "ERRONEOUS_ISBN": [],
+                    "TITLE": [
+                        "Recveil vniversel et cvrievx de tovtes les pieces dv temps. Sur les mouuemens arriuez és Années 1648. & 1649."
+                    ],
+                    "AUTHORS": [],
+                    "PUBLISHERS_NAME": [],
+                    "EDITION_NOTES": [],
+                    "PUBLICATION_DATES": [
+                        ""
+                    ],
+                    "OTHER_DB_ID": [],
+                    "ITEMS_BARCODE": [],
+                    "ITEMS": []
+                },
+                "fcr_processed_id": "00040Y031",
+                "analysis": {
+                    "title": {
+                        "title_ratio": 21,
+                        "title_partial_ratio": 50,
+                        "title_token_sort_ratio": 23,
+                        "title_token_set_ratio": 23
+                    },
+                    "dates": false,
+                    "publishers": {
+                        "score": -1,
+                        "target_db": "",
+                        "origin_db": ""
                     },
                     "other_ids": {
                         "nb": 0,
@@ -7446,9 +7439,9 @@
                     ],
                     "AUTHORS": [],
                     "PUBLISHERS_NAME": [
-                        "EPHE",
+                        "CNRS",
                         "Totalfina Elf",
-                        "CNRS"
+                        "EPHE"
                     ],
                     "EDITION_NOTES": [
                         "EPHE = École pratique des hautes études"
@@ -7555,7 +7548,7 @@
                     ],
                     "AUTHORS": [
                         "Congrès",
-                        "Centre d'études médiévales Amiens ....-2008"
+                        "Centre d'études médiévales Amiens 1974-2008"
                     ],
                     "PUBLISHERS_NAME": [
                         "Reineke"
@@ -7828,7 +7821,7 @@
                         "Leniaud Jean-Michel",
                         "Dectot Xavier",
                         "Bouquillard Jocelyn",
-                        "École nationale des chartes Paris"
+                        "École nationale des chartes Paris 1821-...."
                     ],
                     "PUBLISHERS_NAME": [
                         "École des Chartes"
@@ -7884,8 +7877,8 @@
                         "Manufacture française des pneumatiques Michelin"
                     ],
                     "PUBLISHERS_NAME": [
-                        "IME by Estimprim",
-                        "Michelin travel partner"
+                        "Michelin travel partner",
+                        "IME by Estimprim"
                     ],
                     "EDITION_NOTES": [],
                     "PUBLICATION_DATES": [
@@ -7908,6 +7901,59 @@
                     "publishers": {
                         "score": 36,
                         "target_db": "michelin travel partner",
+                        "origin_db": "du patrimoine centre des monuments nationaux"
+                    },
+                    "other_ids": {
+                        "nb": 0,
+                        "result": "NO_OTHER_DB_ID"
+                    },
+                    "global": {
+                        "result": "NO_MATCH",
+                        "nb_succesful_checks": 0,
+                        "title": false,
+                        "publisher": false,
+                        "date": false
+                    }
+                }
+            },
+            "269273816": {
+                "data": {
+                    "GENERAL_PROCESSING_DATA_DATES": [
+                        [
+                            "2023",
+                            "2023"
+                        ]
+                    ],
+                    "ERRONEOUS_ISBN": [],
+                    "TITLE": [
+                        "Mont Saint-Michel et Saint-Malo"
+                    ],
+                    "AUTHORS": [
+                        "Follet Jean-Philippe"
+                    ],
+                    "PUBLISHERS_NAME": [
+                        "Hachette"
+                    ],
+                    "EDITION_NOTES": [],
+                    "PUBLICATION_DATES": [
+                        "DL 2023"
+                    ],
+                    "OTHER_DB_ID": [],
+                    "ITEMS_BARCODE": [],
+                    "ITEMS": []
+                },
+                "fcr_processed_id": "00040Y041",
+                "analysis": {
+                    "title": {
+                        "title_ratio": 67,
+                        "title_partial_ratio": 85,
+                        "title_token_sort_ratio": 75,
+                        "title_token_set_ratio": 92
+                    },
+                    "dates": false,
+                    "publishers": {
+                        "score": 19,
+                        "target_db": "hachette",
                         "origin_db": "du patrimoine centre des monuments nationaux"
                     },
                     "other_ids": {
@@ -7952,7 +7998,7 @@
                     "ITEMS_BARCODE": [],
                     "ITEMS": []
                 },
-                "fcr_processed_id": "00040Y041",
+                "fcr_processed_id": "00040Y042",
                 "analysis": {
                     "title": {
                         "title_ratio": 57,
@@ -8006,7 +8052,7 @@
                     "ITEMS_BARCODE": [],
                     "ITEMS": []
                 },
-                "fcr_processed_id": "00040Y042",
+                "fcr_processed_id": "00040Y043",
                 "analysis": {
                     "title": {
                         "title_ratio": 40,
@@ -8065,7 +8111,7 @@
                     "ITEMS_BARCODE": [],
                     "ITEMS": []
                 },
-                "fcr_processed_id": "00040Y043",
+                "fcr_processed_id": "00040Y044",
                 "analysis": {
                     "title": {
                         "title_ratio": 31,
@@ -8120,7 +8166,7 @@
                     "ITEMS_BARCODE": [],
                     "ITEMS": []
                 },
-                "fcr_processed_id": "00040Y044",
+                "fcr_processed_id": "00040Y045",
                 "analysis": {
                     "title": {
                         "title_ratio": 39,
@@ -8175,7 +8221,7 @@
                     "ITEMS_BARCODE": [],
                     "ITEMS": []
                 },
-                "fcr_processed_id": "00040Y045",
+                "fcr_processed_id": "00040Y046",
                 "analysis": {
                     "title": {
                         "title_ratio": 22,
@@ -8232,7 +8278,7 @@
                     "ITEMS_BARCODE": [],
                     "ITEMS": []
                 },
-                "fcr_processed_id": "00040Y046",
+                "fcr_processed_id": "00040Y047",
                 "analysis": {
                     "title": {
                         "title_ratio": 36,
@@ -8290,7 +8336,7 @@
                     "ITEMS_BARCODE": [],
                     "ITEMS": []
                 },
-                "fcr_processed_id": "00040Y047",
+                "fcr_processed_id": "00040Y048",
                 "analysis": {
                     "title": {
                         "title_ratio": 35,
@@ -8346,7 +8392,7 @@
                     "ITEMS_BARCODE": [],
                     "ITEMS": []
                 },
-                "fcr_processed_id": "00040Y048",
+                "fcr_processed_id": "00040Y049",
                 "analysis": {
                     "title": {
                         "title_ratio": 100,
@@ -8400,7 +8446,7 @@
                     "ITEMS_BARCODE": [],
                     "ITEMS": []
                 },
-                "fcr_processed_id": "00040Y049",
+                "fcr_processed_id": "00040Y050",
                 "analysis": {
                     "title": {
                         "title_ratio": 38,
@@ -8455,7 +8501,7 @@
                     "ITEMS_BARCODE": [],
                     "ITEMS": []
                 },
-                "fcr_processed_id": "00040Y050",
+                "fcr_processed_id": "00040Y051",
                 "analysis": {
                     "title": {
                         "title_ratio": 29,
@@ -8509,7 +8555,7 @@
                     "ITEMS_BARCODE": [],
                     "ITEMS": []
                 },
-                "fcr_processed_id": "00040Y051",
+                "fcr_processed_id": "00040Y052",
                 "analysis": {
                     "title": {
                         "title_ratio": 36,
@@ -8562,7 +8608,7 @@
                     "ITEMS_BARCODE": [],
                     "ITEMS": []
                 },
-                "fcr_processed_id": "00040Y052",
+                "fcr_processed_id": "00040Y053",
                 "analysis": {
                     "title": {
                         "title_ratio": 25,
@@ -8615,7 +8661,7 @@
                     "ITEMS_BARCODE": [],
                     "ITEMS": []
                 },
-                "fcr_processed_id": "00040Y053",
+                "fcr_processed_id": "00040Y054",
                 "analysis": {
                     "title": {
                         "title_ratio": 29,
@@ -8668,7 +8714,7 @@
                     "ITEMS_BARCODE": [],
                     "ITEMS": []
                 },
-                "fcr_processed_id": "00040Y054",
+                "fcr_processed_id": "00040Y055",
                 "analysis": {
                     "title": {
                         "title_ratio": 24,
@@ -8721,7 +8767,7 @@
                     "ITEMS_BARCODE": [],
                     "ITEMS": []
                 },
-                "fcr_processed_id": "00040Y055",
+                "fcr_processed_id": "00040Y056",
                 "analysis": {
                     "title": {
                         "title_ratio": 23,
@@ -8774,7 +8820,7 @@
                     "ITEMS_BARCODE": [],
                     "ITEMS": []
                 },
-                "fcr_processed_id": "00040Y056",
+                "fcr_processed_id": "00040Y057",
                 "analysis": {
                     "title": {
                         "title_ratio": 77,
@@ -8827,7 +8873,7 @@
                     "ITEMS_BARCODE": [],
                     "ITEMS": []
                 },
-                "fcr_processed_id": "00040Y057",
+                "fcr_processed_id": "00040Y058",
                 "analysis": {
                     "title": {
                         "title_ratio": 65,
@@ -8882,7 +8928,7 @@
                     "ITEMS_BARCODE": [],
                     "ITEMS": []
                 },
-                "fcr_processed_id": "00040Y058",
+                "fcr_processed_id": "00040Y059",
                 "analysis": {
                     "title": {
                         "title_ratio": 63,
@@ -8935,7 +8981,7 @@
                     "ITEMS_BARCODE": [],
                     "ITEMS": []
                 },
-                "fcr_processed_id": "00040Y059",
+                "fcr_processed_id": "00040Y060",
                 "analysis": {
                     "title": {
                         "title_ratio": 87,
@@ -8988,7 +9034,7 @@
                     "ITEMS_BARCODE": [],
                     "ITEMS": []
                 },
-                "fcr_processed_id": "00040Y060",
+                "fcr_processed_id": "00040Y061",
                 "analysis": {
                     "title": {
                         "title_ratio": 100,
@@ -9041,7 +9087,7 @@
                     "ITEMS_BARCODE": [],
                     "ITEMS": []
                 },
-                "fcr_processed_id": "00040Y061",
+                "fcr_processed_id": "00040Y062",
                 "analysis": {
                     "title": {
                         "title_ratio": 42,
@@ -9094,7 +9140,7 @@
                     "ITEMS_BARCODE": [],
                     "ITEMS": []
                 },
-                "fcr_processed_id": "00040Y062",
+                "fcr_processed_id": "00040Y063",
                 "analysis": {
                     "title": {
                         "title_ratio": 100,
@@ -9147,7 +9193,7 @@
                     "ITEMS_BARCODE": [],
                     "ITEMS": []
                 },
-                "fcr_processed_id": "00040Y063",
+                "fcr_processed_id": "00040Y064",
                 "analysis": {
                     "title": {
                         "title_ratio": 63,
@@ -9200,7 +9246,7 @@
                     "ITEMS_BARCODE": [],
                     "ITEMS": []
                 },
-                "fcr_processed_id": "00040Y064",
+                "fcr_processed_id": "00040Y065",
                 "analysis": {
                     "title": {
                         "title_ratio": 40,
@@ -9242,7 +9288,7 @@
                     "ITEMS_BARCODE": [],
                     "ITEMS": []
                 },
-                "fcr_processed_id": "00040Y065",
+                "fcr_processed_id": "00040Y066",
                 "analysis": {
                     "title": {
                         "title_ratio": 83,
@@ -9297,7 +9343,7 @@
                     "ITEMS_BARCODE": [],
                     "ITEMS": []
                 },
-                "fcr_processed_id": "00040Y066",
+                "fcr_processed_id": "00040Y067",
                 "analysis": {
                     "title": {
                         "title_ratio": 63,
@@ -9351,7 +9397,7 @@
                     "ITEMS_BARCODE": [],
                     "ITEMS": []
                 },
-                "fcr_processed_id": "00040Y067",
+                "fcr_processed_id": "00040Y068",
                 "analysis": {
                     "title": {
                         "title_ratio": 67,
@@ -9405,7 +9451,7 @@
                     "ITEMS_BARCODE": [],
                     "ITEMS": []
                 },
-                "fcr_processed_id": "00040Y068",
+                "fcr_processed_id": "00040Y069",
                 "analysis": {
                     "title": {
                         "title_ratio": 68,
@@ -9448,8 +9494,8 @@
                         "Estienne P. M."
                     ],
                     "PUBLISHERS_NAME": [
-                        "Editions des régionalismes",
-                        "Pyrémonde"
+                        "Pyrémonde",
+                        "Editions des régionalismes"
                     ],
                     "EDITION_NOTES": [],
                     "PUBLICATION_DATES": [
@@ -9459,7 +9505,7 @@
                     "ITEMS_BARCODE": [],
                     "ITEMS": []
                 },
-                "fcr_processed_id": "00040Y069",
+                "fcr_processed_id": "00040Y070",
                 "analysis": {
                     "title": {
                         "title_ratio": 71,
@@ -9513,7 +9559,7 @@
                     "ITEMS_BARCODE": [],
                     "ITEMS": []
                 },
-                "fcr_processed_id": "00040Y070",
+                "fcr_processed_id": "00040Y071",
                 "analysis": {
                     "title": {
                         "title_ratio": 68,
@@ -9567,7 +9613,7 @@
                     "ITEMS_BARCODE": [],
                     "ITEMS": []
                 },
-                "fcr_processed_id": "00040Y071",
+                "fcr_processed_id": "00040Y072",
                 "analysis": {
                     "title": {
                         "title_ratio": 100,
@@ -9620,7 +9666,7 @@
                     "ITEMS_BARCODE": [],
                     "ITEMS": []
                 },
-                "fcr_processed_id": "00040Y072",
+                "fcr_processed_id": "00040Y073",
                 "analysis": {
                     "title": {
                         "title_ratio": 45,
@@ -9673,7 +9719,7 @@
                     "ITEMS_BARCODE": [],
                     "ITEMS": []
                 },
-                "fcr_processed_id": "00040Y073",
+                "fcr_processed_id": "00040Y074",
                 "analysis": {
                     "title": {
                         "title_ratio": 43,
@@ -9724,7 +9770,7 @@
                     "ITEMS_BARCODE": [],
                     "ITEMS": []
                 },
-                "fcr_processed_id": "00040Y074",
+                "fcr_processed_id": "00040Y075",
                 "analysis": {
                     "title": {
                         "title_ratio": 82,
@@ -9781,7 +9827,7 @@
                     "ITEMS_BARCODE": [],
                     "ITEMS": []
                 },
-                "fcr_processed_id": "00040Y075",
+                "fcr_processed_id": "00040Y076",
                 "analysis": {
                     "title": {
                         "title_ratio": 42,
@@ -9843,7 +9889,7 @@
                     "ITEMS_BARCODE": [],
                     "ITEMS": []
                 },
-                "fcr_processed_id": "00040Y076",
+                "fcr_processed_id": "00040Y077",
                 "analysis": {
                     "title": {
                         "title_ratio": 41,
@@ -9894,7 +9940,7 @@
                     "ITEMS_BARCODE": [],
                     "ITEMS": []
                 },
-                "fcr_processed_id": "00040Y077",
+                "fcr_processed_id": "00040Y078",
                 "analysis": {
                     "title": {
                         "title_ratio": 73,
@@ -9947,7 +9993,7 @@
                     "ITEMS_BARCODE": [],
                     "ITEMS": []
                 },
-                "fcr_processed_id": "00040Y078",
+                "fcr_processed_id": "00040Y079",
                 "analysis": {
                     "title": {
                         "title_ratio": 29,
@@ -10001,7 +10047,7 @@
                     "ITEMS_BARCODE": [],
                     "ITEMS": []
                 },
-                "fcr_processed_id": "00040Y079",
+                "fcr_processed_id": "00040Y080",
                 "analysis": {
                     "title": {
                         "title_ratio": 75,
@@ -10058,7 +10104,7 @@
                     "ITEMS_BARCODE": [],
                     "ITEMS": []
                 },
-                "fcr_processed_id": "00040Y080",
+                "fcr_processed_id": "00040Y081",
                 "analysis": {
                     "title": {
                         "title_ratio": 66,
@@ -10113,7 +10159,7 @@
                     "ITEMS_BARCODE": [],
                     "ITEMS": []
                 },
-                "fcr_processed_id": "00040Y081",
+                "fcr_processed_id": "00040Y082",
                 "analysis": {
                     "title": {
                         "title_ratio": 58,
@@ -10169,7 +10215,7 @@
                     "ITEMS_BARCODE": [],
                     "ITEMS": []
                 },
-                "fcr_processed_id": "00040Y082",
+                "fcr_processed_id": "00040Y083",
                 "analysis": {
                     "title": {
                         "title_ratio": 44,
@@ -10223,7 +10269,7 @@
                     "ITEMS_BARCODE": [],
                     "ITEMS": []
                 },
-                "fcr_processed_id": "00040Y083",
+                "fcr_processed_id": "00040Y084",
                 "analysis": {
                     "title": {
                         "title_ratio": 77,
@@ -10276,7 +10322,7 @@
                     "ITEMS_BARCODE": [],
                     "ITEMS": []
                 },
-                "fcr_processed_id": "00040Y084",
+                "fcr_processed_id": "00040Y085",
                 "analysis": {
                     "title": {
                         "title_ratio": 36,
@@ -10331,7 +10377,7 @@
                     "ITEMS_BARCODE": [],
                     "ITEMS": []
                 },
-                "fcr_processed_id": "00040Y085",
+                "fcr_processed_id": "00040Y086",
                 "analysis": {
                     "title": {
                         "title_ratio": 60,
@@ -10385,7 +10431,7 @@
                     "ITEMS_BARCODE": [],
                     "ITEMS": []
                 },
-                "fcr_processed_id": "00040Y086",
+                "fcr_processed_id": "00040Y087",
                 "analysis": {
                     "title": {
                         "title_ratio": 47,
@@ -10438,7 +10484,7 @@
                     "ITEMS_BARCODE": [],
                     "ITEMS": []
                 },
-                "fcr_processed_id": "00040Y087",
+                "fcr_processed_id": "00040Y088",
                 "analysis": {
                     "title": {
                         "title_ratio": 52,
@@ -10492,7 +10538,7 @@
                     "ITEMS_BARCODE": [],
                     "ITEMS": []
                 },
-                "fcr_processed_id": "00040Y088",
+                "fcr_processed_id": "00040Y089",
                 "analysis": {
                     "title": {
                         "title_ratio": 67,
@@ -10547,7 +10593,7 @@
                     "ITEMS_BARCODE": [],
                     "ITEMS": []
                 },
-                "fcr_processed_id": "00040Y089",
+                "fcr_processed_id": "00040Y090",
                 "analysis": {
                     "title": {
                         "title_ratio": 44,
@@ -10602,7 +10648,7 @@
                     "ITEMS_BARCODE": [],
                     "ITEMS": []
                 },
-                "fcr_processed_id": "00040Y090",
+                "fcr_processed_id": "00040Y091",
                 "analysis": {
                     "title": {
                         "title_ratio": 60,
@@ -10655,7 +10701,7 @@
                     "ITEMS_BARCODE": [],
                     "ITEMS": []
                 },
-                "fcr_processed_id": "00040Y091",
+                "fcr_processed_id": "00040Y092",
                 "analysis": {
                     "title": {
                         "title_ratio": 43,
@@ -10709,7 +10755,7 @@
                     "ITEMS_BARCODE": [],
                     "ITEMS": []
                 },
-                "fcr_processed_id": "00040Y092",
+                "fcr_processed_id": "00040Y093",
                 "analysis": {
                     "title": {
                         "title_ratio": 22,
@@ -10762,7 +10808,7 @@
                     "ITEMS_BARCODE": [],
                     "ITEMS": []
                 },
-                "fcr_processed_id": "00040Y093",
+                "fcr_processed_id": "00040Y094",
                 "analysis": {
                     "title": {
                         "title_ratio": 47,
@@ -10815,7 +10861,7 @@
                     "ITEMS_BARCODE": [],
                     "ITEMS": []
                 },
-                "fcr_processed_id": "00040Y094",
+                "fcr_processed_id": "00040Y095",
                 "analysis": {
                     "title": {
                         "title_ratio": 56,
@@ -10868,7 +10914,7 @@
                     "ITEMS_BARCODE": [],
                     "ITEMS": []
                 },
-                "fcr_processed_id": "00040Y095",
+                "fcr_processed_id": "00040Y096",
                 "analysis": {
                     "title": {
                         "title_ratio": 49,
@@ -10923,7 +10969,7 @@
                     "ITEMS_BARCODE": [],
                     "ITEMS": []
                 },
-                "fcr_processed_id": "00040Y096",
+                "fcr_processed_id": "00040Y097",
                 "analysis": {
                     "title": {
                         "title_ratio": 54,
@@ -10967,8 +11013,8 @@
                         "Bougy Catherine"
                     ],
                     "PUBLISHERS_NAME": [
-                        "Presses universitaires de Caen",
-                        "Scriptorial"
+                        "Scriptorial",
+                        "Presses universitaires de Caen"
                     ],
                     "EDITION_NOTES": [],
                     "PUBLICATION_DATES": [
@@ -10978,7 +11024,7 @@
                     "ITEMS_BARCODE": [],
                     "ITEMS": []
                 },
-                "fcr_processed_id": "00040Y097",
+                "fcr_processed_id": "00040Y098",
                 "analysis": {
                     "title": {
                         "title_ratio": 66,
@@ -11032,7 +11078,7 @@
                     "ITEMS_BARCODE": [],
                     "ITEMS": []
                 },
-                "fcr_processed_id": "00040Y098",
+                "fcr_processed_id": "00040Y099",
                 "analysis": {
                     "title": {
                         "title_ratio": 53,
@@ -11044,61 +11090,6 @@
                     "publishers": {
                         "score": 38,
                         "target_db": "presses universitaires de caen",
-                        "origin_db": "du patrimoine centre des monuments nationaux"
-                    },
-                    "other_ids": {
-                        "nb": 0,
-                        "result": "NO_OTHER_DB_ID"
-                    },
-                    "global": {
-                        "result": "NO_MATCH",
-                        "nb_succesful_checks": 0,
-                        "title": false,
-                        "publisher": false,
-                        "date": false
-                    }
-                }
-            },
-            "08858268X": {
-                "data": {
-                    "GENERAL_PROCESSING_DATA_DATES": [
-                        [
-                            "1967",
-                            "    "
-                        ]
-                    ],
-                    "ERRONEOUS_ISBN": [],
-                    "TITLE": [
-                        "Le trésor des reliques de l'abbaye du Mont Saint-Michel"
-                    ],
-                    "AUTHORS": [
-                        "Dubois Jacques"
-                    ],
-                    "PUBLISHERS_NAME": [
-                        "P. Lethielleux"
-                    ],
-                    "EDITION_NOTES": [
-                        "Extrait de : \"Millénaire monastique du Mont Saint-Michel. I : Histoire et vie monastique\""
-                    ],
-                    "PUBLICATION_DATES": [
-                        "1967"
-                    ],
-                    "OTHER_DB_ID": [],
-                    "ITEMS_BARCODE": [],
-                    "ITEMS": []
-                },
-                "fcr_processed_id": "00040Y099",
-                "analysis": {
-                    "title": {
-                        "title_ratio": 53,
-                        "title_partial_ratio": 90,
-                        "title_token_sort_ratio": 53,
-                        "title_token_set_ratio": 100
-                    },
-                    "dates": false,
-                    "publishers": {
-                        "score": 28,
-                        "target_db": "p lethielleux",
                         "origin_db": "du patrimoine centre des monuments nationaux"
                     },
                     "other_ids": {
@@ -13447,14 +13438,14 @@
                 "status": "SUCCESS",
                 "error_type": null,
                 "msg": null,
-                "query": "mti=design handbook data metric planning",
+                "query": "mti=metric planning data design handbook",
                 "returned_ids": [
                     "191158666",
                     "123455588"
                 ]
             }
         },
-        "query_used": "mti=design handbook data metric planning",
+        "query_used": "mti=metric planning data design handbook",
         "action_used": "SRU_SUDOC_MTI",
         "nb_matched_records": 2,
         "matched_records_ids": [
@@ -13533,8 +13524,8 @@
                         "Littlefield David"
                     ],
                     "PUBLISHERS_NAME": [
-                        "Architectural Press",
-                        "Elsevier"
+                        "Elsevier",
+                        "Architectural Press"
                     ],
                     "EDITION_NOTES": [],
                     "PUBLICATION_DATES": [
@@ -14413,8 +14404,8 @@
                     "Institut français d'architecture Paris"
                 ],
                 "PUBLISHERS_NAME": [
-                    "Plan construction et architecture",
-                    "Institut français d'architecture"
+                    "Institut français d'architecture",
+                    "Plan construction et architecture"
                 ],
                 "EDITION_NOTES": [],
                 "PUBLICATION_DATES": [
@@ -14465,8 +14456,8 @@
                         "Institut français d'architecture Paris"
                     ],
                     "PUBLISHERS_NAME": [
-                        "Plan construction et architecture",
-                        "Institut français d'architecture"
+                        "Institut français d'architecture",
+                        "Plan construction et architecture"
                     ],
                     "EDITION_NOTES": [],
                     "PUBLICATION_DATES": [
@@ -14489,8 +14480,8 @@
                     "dates": true,
                     "publishers": {
                         "score": 100,
-                        "target_db": "plan construction et architecture",
-                        "origin_db": "plan construction et architecture"
+                        "target_db": "institut francais d architecture",
+                        "origin_db": "institut francais d architecture"
                     },
                     "other_ids": {
                         "nb": 1,
@@ -14802,9 +14793,9 @@
                     "Troin Jean-François"
                 ],
                 "PUBLISHERS_NAME": [
+                    "Édisud",
                     "Toubkal",
-                    "Alif",
-                    "Édisud"
+                    "Alif"
                 ],
                 "EDITION_NOTES": [],
                 "PUBLICATION_DATES": [
@@ -14852,9 +14843,9 @@
                         "Troin Jean-François"
                     ],
                     "PUBLISHERS_NAME": [
+                        "Édisud",
                         "Toubkal",
-                        "Alif",
-                        "Édisud"
+                        "Alif"
                     ],
                     "EDITION_NOTES": [],
                     "PUBLICATION_DATES": [
@@ -14877,8 +14868,8 @@
                     "dates": true,
                     "publishers": {
                         "score": 100,
-                        "target_db": "toubkal",
-                        "origin_db": "toubkal"
+                        "target_db": "edisud",
+                        "origin_db": "edisud"
                     },
                     "other_ids": {
                         "nb": 1,
@@ -15113,17 +15104,19 @@
                 "TITLE": [
                     "Moore Ruble Yudell"
                 ],
-                "AUTHORS": [],
+                "AUTHORS": [
+                    "Steele James"
+                ],
                 "PUBLISHERS_NAME": [
                     "Ernst & Sohn",
-                    "Academy"
+                    "Academy editions"
                 ],
                 "EDITION_NOTES": [],
                 "PUBLICATION_DATES": [
                     "1993"
                 ],
                 "PHYSICAL_DESCRIPTION": [
-                    "1 vol. (300 p.)"
+                    "1 volume (300 pages)"
                 ]
             },
             "fcr_processed_id": "00073A000"
@@ -15160,10 +15153,12 @@
                     "TITLE": [
                         "Moore Ruble Yudell"
                     ],
-                    "AUTHORS": [],
+                    "AUTHORS": [
+                        "Steele James"
+                    ],
                     "PUBLISHERS_NAME": [
                         "Ernst & Sohn",
-                        "Academy"
+                        "Academy editions"
                     ],
                     "EDITION_NOTES": [],
                     "PUBLICATION_DATES": [
@@ -16202,11 +16197,11 @@
                 "status": "SUCCESS",
                 "error_type": null,
                 "msg": null,
-                "query": "mti=graves tome 1982 1989 michael buildings projects 2",
+                "query": "mti=1982 michael graves buildings 2 1989 projects tome",
                 "returned_ids": []
             }
         },
-        "query_used": "mti=graves tome 1982 1989 michael buildings projects 2",
+        "query_used": "mti=1982 michael graves buildings 2 1989 projects tome",
         "action_used": "SRU_SUDOC_MTI",
         "nb_matched_records": 0,
         "matched_records_ids": []
@@ -18331,7 +18326,9 @@
                     "PUBLICATION_DATES": [
                         "2000"
                     ],
-                    "OTHER_DB_ID": [],
+                    "OTHER_DB_ID": [
+                        "286790"
+                    ],
                     "ITEMS_BARCODE": [],
                     "ITEMS": []
                 },
@@ -18350,8 +18347,8 @@
                         "origin_db": "g gili"
                     },
                     "other_ids": {
-                        "nb": 0,
-                        "result": "NO_OTHER_DB_ID"
+                        "nb": 1,
+                        "result": "THIS_ID_NOT_INCLUDED"
                     },
                     "global": {
                         "result": "PARTIAL_MATCH",

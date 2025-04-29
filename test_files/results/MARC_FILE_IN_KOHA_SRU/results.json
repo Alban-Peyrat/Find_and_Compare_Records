@@ -61,13 +61,13 @@
                 "status": "SUCCESS",
                 "error_type": null,
                 "msg": null,
-                "query": "dc.title=fare paysage fonctionnel chainon berre etang varie territoire and dc.author=olga dadone arnal miguel pistoresi guerin catherine pighiera cecile delphine and dc.publisher=provence universite publications and (dc.date=2000)",
+                "query": "dc.title=chainon fare territoire fonctionnel varie berre paysage etang and dc.author=catherine dadone guerin olga cecile miguel arnal delphine pighiera pistoresi and dc.publisher=provence universite publications and (dc.date=2000)",
                 "returned_ids": [
                     "532618"
                 ]
             }
         },
-        "query_used": "dc.title=fare paysage fonctionnel chainon berre etang varie territoire and dc.author=olga dadone arnal miguel pistoresi guerin catherine pighiera cecile delphine and dc.publisher=provence universite publications and (dc.date=2000)",
+        "query_used": "dc.title=chainon fare territoire fonctionnel varie berre paysage etang and dc.author=catherine dadone guerin olga cecile miguel arnal delphine pighiera pistoresi and dc.publisher=provence universite publications and (dc.date=2000)",
         "action_used": "KOHA_SRU_TITLE_AUTHOR_PUBLISHER_DATE",
         "nb_matched_records": 1,
         "matched_records_ids": [
@@ -208,88 +208,21 @@
                 "status": "SUCCESS",
                 "error_type": null,
                 "msg": null,
-                "query": "dc.title=deplacements paysagere amenagement demarche infrastructures and dc.author=szumanski danard agnes christiane and dc.publisher=etudes centre reseaux transports urbanisme and (dc.date=1985)",
+                "query": "dc.title=infrastructures amenagement demarche deplacements paysagere and dc.author=christiane danard szumanski agnes and dc.publisher=centre urbanisme reseaux transports etudes and (dc.date=1985)",
                 "returned_ids": [
-                    "562364",
-                    "532619"
+                    "532619",
+                    "562364"
                 ]
             }
         },
-        "query_used": "dc.title=deplacements paysagere amenagement demarche infrastructures and dc.author=szumanski danard agnes christiane and dc.publisher=etudes centre reseaux transports urbanisme and (dc.date=1985)",
+        "query_used": "dc.title=infrastructures amenagement demarche deplacements paysagere and dc.author=christiane danard szumanski agnes and dc.publisher=centre urbanisme reseaux transports etudes and (dc.date=1985)",
         "action_used": "KOHA_SRU_TITLE_AUTHOR_PUBLISHER_DATE",
         "nb_matched_records": 2,
         "matched_records_ids": [
-            "562364",
-            "532619"
+            "532619",
+            "562364"
         ],
         "target_database": {
-            "562364": {
-                "data": {
-                    "ID": [
-                        "562364"
-                    ],
-                    "PPN": [],
-                    "DOCUMENT_TYPE": [
-                        "LIV"
-                    ],
-                    "ISBN": [],
-                    "GENERAL_PROCESSING_DATA_DATES": [
-                        [
-                            "1985",
-                            "    "
-                        ]
-                    ],
-                    "ERRONEOUS_ISBN": [],
-                    "TITLE": [
-                        "Démarche paysagère Pour l'aménagement des infrastructures de déplacements"
-                    ],
-                    "AUTHORS": [
-                        "DANARD (Christiane)",
-                        "SZUMANSKI (Agnès)"
-                    ],
-                    "PUBLISHERS_NAME": [
-                        "CENTRE D'ETUDES SUR LES RESEAUX, LES TRANSPORTS, L'URBANISME"
-                    ],
-                    "EDITION_NOTES": [],
-                    "PHYSICAL_DESCRIPTION": [
-                        "1 vol. (96 p.)"
-                    ],
-                    "PUBLICATION_DATES": [
-                        "1985"
-                    ],
-                    "LINKING_PIECE": [],
-                    "EXPORTED_TO_DIGITAL_LIBRARY": [
-                        "0"
-                    ],
-                    "ITEMS_BARCODE": []
-                },
-                "fcr_processed_id": "00001Y000",
-                "analysis": {
-                    "title": {
-                        "title_ratio": 100,
-                        "title_partial_ratio": 100,
-                        "title_token_sort_ratio": 100,
-                        "title_token_set_ratio": 100
-                    },
-                    "dates": false,
-                    "publishers": {
-                        "score": 100,
-                        "target_db": "centre d etudes sur les reseaux les transports l urbanisme",
-                        "origin_db": "centre d etudes sur les reseaux les transports l urbanisme"
-                    },
-                    "other_ids": {
-                        "nb": 0,
-                        "result": "SKIPPED"
-                    },
-                    "global": {
-                        "result": "PARTIAL_MATCH",
-                        "nb_succesful_checks": 2,
-                        "title": true,
-                        "publisher": true,
-                        "date": false
-                    }
-                }
-            },
             "532619": {
                 "data": {
                     "ID": [
@@ -331,6 +264,73 @@
                     "ITEMS_BARCODE": [
                         "ENSP_0007578"
                     ]
+                },
+                "fcr_processed_id": "00001Y000",
+                "analysis": {
+                    "title": {
+                        "title_ratio": 100,
+                        "title_partial_ratio": 100,
+                        "title_token_sort_ratio": 100,
+                        "title_token_set_ratio": 100
+                    },
+                    "dates": false,
+                    "publishers": {
+                        "score": 100,
+                        "target_db": "centre d etudes sur les reseaux les transports l urbanisme",
+                        "origin_db": "centre d etudes sur les reseaux les transports l urbanisme"
+                    },
+                    "other_ids": {
+                        "nb": 0,
+                        "result": "SKIPPED"
+                    },
+                    "global": {
+                        "result": "PARTIAL_MATCH",
+                        "nb_succesful_checks": 2,
+                        "title": true,
+                        "publisher": true,
+                        "date": false
+                    }
+                }
+            },
+            "562364": {
+                "data": {
+                    "ID": [
+                        "562364"
+                    ],
+                    "PPN": [],
+                    "DOCUMENT_TYPE": [
+                        "LIV"
+                    ],
+                    "ISBN": [],
+                    "GENERAL_PROCESSING_DATA_DATES": [
+                        [
+                            "1985",
+                            "    "
+                        ]
+                    ],
+                    "ERRONEOUS_ISBN": [],
+                    "TITLE": [
+                        "Démarche paysagère Pour l'aménagement des infrastructures de déplacements"
+                    ],
+                    "AUTHORS": [
+                        "DANARD (Christiane)",
+                        "SZUMANSKI (Agnès)"
+                    ],
+                    "PUBLISHERS_NAME": [
+                        "CENTRE D'ETUDES SUR LES RESEAUX, LES TRANSPORTS, L'URBANISME"
+                    ],
+                    "EDITION_NOTES": [],
+                    "PHYSICAL_DESCRIPTION": [
+                        "1 vol. (96 p.)"
+                    ],
+                    "PUBLICATION_DATES": [
+                        "1985"
+                    ],
+                    "LINKING_PIECE": [],
+                    "EXPORTED_TO_DIGITAL_LIBRARY": [
+                        "0"
+                    ],
+                    "ITEMS_BARCODE": []
                 },
                 "fcr_processed_id": "00001Y001",
                 "analysis": {
@@ -464,13 +464,13 @@
                 "status": "SUCCESS",
                 "error_type": null,
                 "msg": null,
-                "query": "dc.title=sensibles alger paysages beyrouth naples marseille",
+                "query": "dc.title=naples marseille alger beyrouth paysages sensibles",
                 "returned_ids": [
                     "532620"
                 ]
             }
         },
-        "query_used": "dc.title=sensibles alger paysages beyrouth naples marseille",
+        "query_used": "dc.title=naples marseille alger beyrouth paysages sensibles",
         "action_used": "KOHA_SRU_TITLE",
         "nb_matched_records": 1,
         "matched_records_ids": [
@@ -603,14 +603,14 @@
                 "status": "SUCCESS",
                 "error_type": null,
                 "msg": null,
-                "query": "dc.title=dicovert and dc.author=anne camus philippe thebaud and dc.publisher=arcature and (dc.date=1993)",
+                "query": "dc.title=dicovert and dc.author=anne philippe thebaud camus and dc.publisher=arcature and (dc.date=1993)",
                 "returned_ids": [
                     "532621",
                     "125630"
                 ]
             }
         },
-        "query_used": "dc.title=dicovert and dc.author=anne camus philippe thebaud and dc.publisher=arcature and (dc.date=1993)",
+        "query_used": "dc.title=dicovert and dc.author=anne philippe thebaud camus and dc.publisher=arcature and (dc.date=1993)",
         "action_used": "KOHA_SRU_TITLE_AUTHOR_PUBLISHER_DATE",
         "nb_matched_records": 2,
         "matched_records_ids": [
@@ -1582,13 +1582,13 @@
                 "status": "SUCCESS",
                 "error_type": null,
                 "msg": null,
-                "query": "dc.title=annuaire nouvelles villes and dc.author=francaise association nouvelles villes and dc.publisher=francaise association nouvelles villes and (dc.date=1995)",
+                "query": "dc.title=annuaire nouvelles villes and dc.author=nouvelles villes francaise association and dc.publisher=nouvelles villes francaise association and (dc.date=1995)",
                 "returned_ids": [
                     "532623"
                 ]
             }
         },
-        "query_used": "dc.title=annuaire nouvelles villes and dc.author=francaise association nouvelles villes and dc.publisher=francaise association nouvelles villes and (dc.date=1995)",
+        "query_used": "dc.title=annuaire nouvelles villes and dc.author=nouvelles villes francaise association and dc.publisher=nouvelles villes francaise association and (dc.date=1995)",
         "action_used": "KOHA_SRU_TITLE_AUTHOR_PUBLISHER_DATE",
         "nb_matched_records": 1,
         "matched_records_ids": [
@@ -1760,7 +1760,7 @@
                 "status": "SUCCESS",
                 "error_type": null,
                 "msg": null,
-                "query": "cql.serverChoice=loire creations pays revue 303 recherches arts 14 and cql.serverChoice=recherches creations 303 and (cql.serverChoice=1987)",
+                "query": "cql.serverChoice=303 creations revue loire recherches pays arts 14 and cql.serverChoice=303 recherches creations and (cql.serverChoice=1987)",
                 "returned_ids": [
                     "136",
                     "552796",
@@ -1768,7 +1768,7 @@
                 ]
             }
         },
-        "query_used": "cql.serverChoice=loire creations pays revue 303 recherches arts 14 and cql.serverChoice=recherches creations 303 and (cql.serverChoice=1987)",
+        "query_used": "cql.serverChoice=303 creations revue loire recherches pays arts 14 and cql.serverChoice=303 recherches creations and (cql.serverChoice=1987)",
         "action_used": "KOHA_SRU_ANY_TITLE_PUBLISHER_DATE",
         "nb_matched_records": 3,
         "matched_records_ids": [
@@ -2189,13 +2189,13 @@
                 "status": "SUCCESS",
                 "error_type": null,
                 "msg": null,
-                "query": "dc.title=pratiques inondables gestions vaison paysages romaine nouvelles aval and dc.author=alexandre petzold and dc.publisher=superieure paysage nationale ecole and (dc.date=1994)",
+                "query": "dc.title=pratiques aval vaison gestions nouvelles paysages inondables romaine and dc.author=alexandre petzold and dc.publisher=superieure ecole paysage nationale and (dc.date=1994)",
                 "returned_ids": [
                     "532625"
                 ]
             }
         },
-        "query_used": "dc.title=pratiques inondables gestions vaison paysages romaine nouvelles aval and dc.author=alexandre petzold and dc.publisher=superieure paysage nationale ecole and (dc.date=1994)",
+        "query_used": "dc.title=pratiques aval vaison gestions nouvelles paysages inondables romaine and dc.author=alexandre petzold and dc.publisher=superieure ecole paysage nationale and (dc.date=1994)",
         "action_used": "KOHA_SRU_TITLE_AUTHOR_PUBLISHER_DATE",
         "nb_matched_records": 1,
         "matched_records_ids": [
@@ -2331,13 +2331,13 @@
                 "status": "SUCCESS",
                 "error_type": null,
                 "msg": null,
-                "query": "dc.title=reconquete ville amont paysage inondables espaces ouveze urbaines lit vaison majeur romaine rehabilitation rives vaucluse oued and dc.author=retif bertrand and dc.publisher=superieure paysage nationale ecole and (dc.date=1994)",
+                "query": "dc.title=amont rives espaces vaison lit majeur vaucluse oued urbaines inondables rehabilitation reconquete paysage ville ouveze romaine and dc.author=retif bertrand and dc.publisher=superieure ecole paysage nationale and (dc.date=1994)",
                 "returned_ids": [
                     "532626"
                 ]
             }
         },
-        "query_used": "dc.title=reconquete ville amont paysage inondables espaces ouveze urbaines lit vaison majeur romaine rehabilitation rives vaucluse oued and dc.author=retif bertrand and dc.publisher=superieure paysage nationale ecole and (dc.date=1994)",
+        "query_used": "dc.title=amont rives espaces vaison lit majeur vaucluse oued urbaines inondables rehabilitation reconquete paysage ville ouveze romaine and dc.author=retif bertrand and dc.publisher=superieure ecole paysage nationale and (dc.date=1994)",
         "action_used": "KOHA_SRU_TITLE_AUTHOR_PUBLISHER_DATE",
         "nb_matched_records": 1,
         "matched_records_ids": [
@@ -2473,13 +2473,13 @@
                 "status": "SUCCESS",
                 "error_type": null,
                 "msg": null,
-                "query": "dc.title=evolution jardin senegalais origine and dc.author=abdoulaye dieye and dc.publisher=superieure paysage nationale ecole and (dc.date=1981)",
+                "query": "dc.title=origine senegalais evolution jardin and dc.author=dieye abdoulaye and dc.publisher=superieure ecole paysage nationale and (dc.date=1981)",
                 "returned_ids": [
                     "532627"
                 ]
             }
         },
-        "query_used": "dc.title=evolution jardin senegalais origine and dc.author=abdoulaye dieye and dc.publisher=superieure paysage nationale ecole and (dc.date=1981)",
+        "query_used": "dc.title=origine senegalais evolution jardin and dc.author=dieye abdoulaye and dc.publisher=superieure ecole paysage nationale and (dc.date=1981)",
         "action_used": "KOHA_SRU_TITLE_AUTHOR_PUBLISHER_DATE",
         "nb_matched_records": 1,
         "matched_records_ids": [
@@ -2595,8 +2595,8 @@
                     "0"
                 ],
                 "ITEMS_BARCODE": [
-                    "ENSP_0005786",
-                    "ENSP_0006076"
+                    "ENSP_0006076",
+                    "ENSP_0005786"
                 ]
             },
             "fcr_processed_id": "00015A000"
@@ -2617,13 +2617,13 @@
                 "status": "SUCCESS",
                 "error_type": null,
                 "msg": null,
-                "query": "dc.title=lieu logique humaine oeuvre and dc.author=berque nys philippe augustin and dc.publisher=ousia and (dc.date=1997)",
+                "query": "dc.title=lieu humaine logique oeuvre and dc.author=philippe berque nys augustin and dc.publisher=ousia and (dc.date=1997)",
                 "returned_ids": [
                     "124381"
                 ]
             }
         },
-        "query_used": "dc.title=lieu logique humaine oeuvre and dc.author=berque nys philippe augustin and dc.publisher=ousia and (dc.date=1997)",
+        "query_used": "dc.title=lieu humaine logique oeuvre and dc.author=philippe berque nys augustin and dc.publisher=ousia and (dc.date=1997)",
         "action_used": "KOHA_SRU_TITLE_AUTHOR_PUBLISHER_DATE",
         "nb_matched_records": 1,
         "matched_records_ids": [
@@ -2682,8 +2682,8 @@
                         ""
                     ],
                     "ITEMS_BARCODE": [
-                        "ENSP_0005786",
-                        "ENSP_0006076"
+                        "ENSP_0006076",
+                        "ENSP_0005786"
                     ]
                 },
                 "fcr_processed_id": "00015Y000",
@@ -2810,7 +2810,7 @@
                 "status": "SUCCESS",
                 "error_type": null,
                 "msg": null,
-                "query": "cql.serverChoice=diversification continue profession formation architectes and cql.serverChoice=ministere culture and (cql.serverChoice=1997)",
+                "query": "cql.serverChoice=continue profession formation diversification architectes and cql.serverChoice=ministere culture and (cql.serverChoice=1997)",
                 "returned_ids": [
                     "379051",
                     "532628",
@@ -2818,7 +2818,7 @@
                 ]
             }
         },
-        "query_used": "cql.serverChoice=diversification continue profession formation architectes and cql.serverChoice=ministere culture and (cql.serverChoice=1997)",
+        "query_used": "cql.serverChoice=continue profession formation diversification architectes and cql.serverChoice=ministere culture and (cql.serverChoice=1997)",
         "action_used": "KOHA_SRU_ANY_TITLE_PUBLISHER_DATE",
         "nb_matched_records": 3,
         "matched_records_ids": [
@@ -3443,13 +3443,13 @@
                 "status": "SUCCESS",
                 "error_type": null,
                 "msg": null,
-                "query": "dc.title=observation paysage petit guide and dc.author=deffontaines ritter joachim pierre jean and (dc.date=2006)",
+                "query": "dc.title=petit paysage observation guide and dc.author=pierre jean joachim ritter deffontaines and (dc.date=2006)",
                 "returned_ids": [
                     "532631"
                 ]
             }
         },
-        "query_used": "dc.title=observation paysage petit guide and dc.author=deffontaines ritter joachim pierre jean and (dc.date=2006)",
+        "query_used": "dc.title=petit paysage observation guide and dc.author=pierre jean joachim ritter deffontaines and (dc.date=2006)",
         "action_used": "KOHA_SRU_TITLE_AUTHOR_DATE",
         "nb_matched_records": 1,
         "matched_records_ids": [
@@ -3587,7 +3587,7 @@
                 "status": "SUCCESS",
                 "error_type": null,
                 "msg": null,
-                "query": "dc.title=paysage paysages revue 1997 observatoire sequences and dc.author=stefulesco caroline and dc.publisher=hazan and (dc.date=1997)",
+                "query": "dc.title=observatoire sequences revue 1997 paysages paysage and dc.author=caroline stefulesco and dc.publisher=hazan and (dc.date=1997)",
                 "returned_ids": []
             },
             "2": {
@@ -3596,7 +3596,7 @@
                 "status": "SUCCESS",
                 "error_type": null,
                 "msg": null,
-                "query": "dc.title=paysage paysages revue 1997 observatoire sequences and dc.author=stefulesco caroline and (dc.date=1997)",
+                "query": "dc.title=observatoire sequences revue 1997 paysages paysage and dc.author=caroline stefulesco and (dc.date=1997)",
                 "returned_ids": []
             },
             "3": {
@@ -3605,7 +3605,7 @@
                 "status": "SUCCESS",
                 "error_type": null,
                 "msg": null,
-                "query": "cql.serverChoice=paysage paysages revue 1997 observatoire sequences and cql.serverChoice=stefulesco caroline and cql.serverChoice=hazan and (cql.serverChoice=1997)",
+                "query": "cql.serverChoice=observatoire sequences revue 1997 paysages paysage and cql.serverChoice=caroline stefulesco and cql.serverChoice=hazan and (cql.serverChoice=1997)",
                 "returned_ids": []
             },
             "4": {
@@ -3614,7 +3614,7 @@
                 "status": "SUCCESS",
                 "error_type": null,
                 "msg": null,
-                "query": "cql.serverChoice=paysage paysages revue 1997 observatoire sequences and cql.serverChoice=stefulesco caroline and (cql.serverChoice=1997)",
+                "query": "cql.serverChoice=observatoire sequences revue 1997 paysages paysage and cql.serverChoice=caroline stefulesco and (cql.serverChoice=1997)",
                 "returned_ids": []
             },
             "5": {
@@ -3623,13 +3623,13 @@
                 "status": "SUCCESS",
                 "error_type": null,
                 "msg": null,
-                "query": "cql.serverChoice=paysage paysages revue 1997 observatoire sequences and cql.serverChoice=hazan and (cql.serverChoice=1997)",
+                "query": "cql.serverChoice=observatoire sequences revue 1997 paysages paysage and cql.serverChoice=hazan and (cql.serverChoice=1997)",
                 "returned_ids": [
                     "118926"
                 ]
             }
         },
-        "query_used": "cql.serverChoice=paysage paysages revue 1997 observatoire sequences and cql.serverChoice=hazan and (cql.serverChoice=1997)",
+        "query_used": "cql.serverChoice=observatoire sequences revue 1997 paysages paysage and cql.serverChoice=hazan and (cql.serverChoice=1997)",
         "action_used": "KOHA_SRU_ANY_TITLE_PUBLISHER_DATE",
         "nb_matched_records": 1,
         "matched_records_ids": [
@@ -3665,8 +3665,8 @@
                         "Observatoire photographique du paysage France"
                     ],
                     "PUBLISHERS_NAME": [
-                        "Hazan",
-                        "Ministère de l'environnement"
+                        "Ministère de l'environnement",
+                        "Hazan"
                     ],
                     "EDITION_NOTES": [],
                     "PHYSICAL_DESCRIPTION": [
@@ -3959,13 +3959,13 @@
                 "status": "SUCCESS",
                 "error_type": null,
                 "msg": null,
-                "query": "dc.title=bleue serie lambesc",
+                "query": "dc.title=lambesc serie bleue",
                 "returned_ids": [
                     "532634"
                 ]
             }
         },
-        "query_used": "dc.title=bleue serie lambesc",
+        "query_used": "dc.title=lambesc serie bleue",
         "action_used": "KOHA_SRU_TITLE",
         "nb_matched_records": 1,
         "matched_records_ids": [
@@ -4134,14 +4134,14 @@
                 "status": "SUCCESS",
                 "error_type": null,
                 "msg": null,
-                "query": "cql.serverChoice=ciotat bleue aubagne and cql.serverChoice=geographique national institut and (cql.serverChoice=1988)",
+                "query": "cql.serverChoice=ciotat bleue aubagne and cql.serverChoice=national institut geographique and (cql.serverChoice=1988)",
                 "returned_ids": [
                     "533158",
                     "532635"
                 ]
             }
         },
-        "query_used": "cql.serverChoice=ciotat bleue aubagne and cql.serverChoice=geographique national institut and (cql.serverChoice=1988)",
+        "query_used": "cql.serverChoice=ciotat bleue aubagne and cql.serverChoice=national institut geographique and (cql.serverChoice=1988)",
         "action_used": "KOHA_SRU_ANY_TITLE_PUBLISHER_DATE",
         "nb_matched_records": 2,
         "matched_records_ids": [
@@ -4560,13 +4560,13 @@
                 "status": "SUCCESS",
                 "error_type": null,
                 "msg": null,
-                "query": "dc.title=jardins arbres and dc.author=cuisance roy lancaster and dc.publisher=floraisse and (dc.date=1974)",
+                "query": "dc.title=arbres jardins and dc.author=roy cuisance lancaster and dc.publisher=floraisse and (dc.date=1974)",
                 "returned_ids": [
                     "532637"
                 ]
             }
         },
-        "query_used": "dc.title=jardins arbres and dc.author=cuisance roy lancaster and dc.publisher=floraisse and (dc.date=1974)",
+        "query_used": "dc.title=arbres jardins and dc.author=roy cuisance lancaster and dc.publisher=floraisse and (dc.date=1974)",
         "action_used": "KOHA_SRU_TITLE_AUTHOR_PUBLISHER_DATE",
         "nb_matched_records": 1,
         "matched_records_ids": [
@@ -4704,13 +4704,13 @@
                 "status": "SUCCESS",
                 "error_type": null,
                 "msg": null,
-                "query": "dc.title=ornement arbustes and dc.author=cuisance peter seabrook and dc.publisher=floraisse and (dc.date=1973)",
+                "query": "dc.title=arbustes ornement and dc.author=peter seabrook cuisance and dc.publisher=floraisse and (dc.date=1973)",
                 "returned_ids": [
                     "532638"
                 ]
             }
         },
-        "query_used": "dc.title=ornement arbustes and dc.author=cuisance peter seabrook and dc.publisher=floraisse and (dc.date=1973)",
+        "query_used": "dc.title=arbustes ornement and dc.author=peter seabrook cuisance and dc.publisher=floraisse and (dc.date=1973)",
         "action_used": "KOHA_SRU_TITLE_AUTHOR_PUBLISHER_DATE",
         "nb_matched_records": 1,
         "matched_records_ids": [
@@ -4827,9 +4827,9 @@
                     "0"
                 ],
                 "ITEMS_BARCODE": [
-                    "ENSP_0008226",
                     "ENSP_0007884",
-                    "ENSP_0008225"
+                    "ENSP_0008225",
+                    "ENSP_0008226"
                 ]
             },
             "fcr_processed_id": "00027A000"
@@ -4886,13 +4886,13 @@
                 "status": "SUCCESS",
                 "error_type": null,
                 "msg": null,
-                "query": "cql.serverChoice=vars randonnee top cols 25 carte aiguille larche chambeyron and cql.serverChoice=geographique national institut and (cql.serverChoice=2000)",
+                "query": "cql.serverChoice=larche chambeyron top carte 25 cols vars randonnee aiguille and cql.serverChoice=national institut geographique and (cql.serverChoice=2000)",
                 "returned_ids": [
                     "532639"
                 ]
             }
         },
-        "query_used": "cql.serverChoice=vars randonnee top cols 25 carte aiguille larche chambeyron and cql.serverChoice=geographique national institut and (cql.serverChoice=2000)",
+        "query_used": "cql.serverChoice=larche chambeyron top carte 25 cols vars randonnee aiguille and cql.serverChoice=national institut geographique and (cql.serverChoice=2000)",
         "action_used": "KOHA_SRU_ANY_TITLE_PUBLISHER_DATE",
         "nb_matched_records": 1,
         "matched_records_ids": [
@@ -4938,9 +4938,9 @@
                         "0"
                     ],
                     "ITEMS_BARCODE": [
-                        "ENSP_0008226",
                         "ENSP_0007884",
-                        "ENSP_0008225"
+                        "ENSP_0008225",
+                        "ENSP_0008226"
                     ]
                 },
                 "fcr_processed_id": "00027Y000",
@@ -5009,11 +5009,11 @@
                     "0"
                 ],
                 "ITEMS_BARCODE": [
-                    "ENSP_0008213",
                     "ENSP_0008221",
-                    "ENSP_0007923",
                     "ENSP_0008209",
+                    "ENSP_0007923",
                     "ENSP_0008222",
+                    "ENSP_0008213",
                     "ENSP_0008206"
                 ]
             },
@@ -5080,13 +5080,13 @@
                 "status": "SUCCESS",
                 "error_type": null,
                 "msg": null,
-                "query": "dc.title=ecrins froid sirac parc top mourre merlette 25 orcieres national",
+                "query": "dc.title=top national orcieres 25 merlette ecrins mourre froid parc sirac",
                 "returned_ids": [
                     "532640"
                 ]
             }
         },
-        "query_used": "dc.title=ecrins froid sirac parc top mourre merlette 25 orcieres national",
+        "query_used": "dc.title=top national orcieres 25 merlette ecrins mourre froid parc sirac",
         "action_used": "KOHA_SRU_TITLE",
         "nb_matched_records": 1,
         "matched_records_ids": [
@@ -5130,11 +5130,11 @@
                         "0"
                     ],
                     "ITEMS_BARCODE": [
-                        "ENSP_0008213",
                         "ENSP_0008221",
-                        "ENSP_0007923",
                         "ENSP_0008209",
+                        "ENSP_0007923",
                         "ENSP_0008222",
+                        "ENSP_0008213",
                         "ENSP_0008206"
                     ]
                 },
@@ -5171,7 +5171,7 @@
         "error": false,
         "error_message": null,
         "original_line": null,
-        "fcr_processed_id": "00029A020",
+        "fcr_processed_id": "00029A018",
         "input_query": "NO INPUT QUERY",
         "original_uid": "ENSP76104",
         "origin_database": {
@@ -5207,7 +5207,7 @@
                     "ENSP_0007351"
                 ]
             },
-            "fcr_processed_id": "00029A020"
+            "fcr_processed_id": "00029A018"
         },
         "matched_record_tries": {
             "0": {
@@ -5270,15 +5270,13 @@
                 "status": "SUCCESS",
                 "error_type": null,
                 "msg": null,
-                "query": "dc.title=jardins artistes",
+                "query": "dc.title=artistes jardins",
                 "returned_ids": [
-                    "532641",
                     "221235",
-                    "180803",
+                    "532641",
                     "375113",
+                    "180803",
                     "570577",
-                    "563950",
-                    "236276",
                     "568744",
                     "345062",
                     "561183",
@@ -5296,17 +5294,15 @@
                 ]
             }
         },
-        "query_used": "dc.title=jardins artistes",
+        "query_used": "dc.title=artistes jardins",
         "action_used": "KOHA_SRU_TITLE",
-        "nb_matched_records": 21,
+        "nb_matched_records": 19,
         "matched_records_ids": [
-            "532641",
             "221235",
-            "180803",
+            "532641",
             "375113",
+            "180803",
             "570577",
-            "563950",
-            "236276",
             "568744",
             "345062",
             "561183",
@@ -5323,6 +5319,77 @@
             "127835"
         ],
         "target_database": {
+            "221235": {
+                "data": {
+                    "ID": [
+                        "221235"
+                    ],
+                    "PPN": [
+                        "051885573"
+                    ],
+                    "DOCUMENT_TYPE": [
+                        "LIV"
+                    ],
+                    "ISBN": [
+                        "2-907010-27-1"
+                    ],
+                    "GENERAL_PROCESSING_DATA_DATES": [
+                        [
+                            "1993",
+                            "    "
+                        ]
+                    ],
+                    "ERRONEOUS_ISBN": [],
+                    "TITLE": [
+                        "Jardins d'artistes"
+                    ],
+                    "AUTHORS": [
+                        "Lennard Erica",
+                        "Cox Madison"
+                    ],
+                    "PUBLISHERS_NAME": [
+                        "Michel Aveline Éditeur"
+                    ],
+                    "EDITION_NOTES": [],
+                    "PHYSICAL_DESCRIPTION": [
+                        "1 volume(207 pages)"
+                    ],
+                    "PUBLICATION_DATES": [
+                        "1993"
+                    ],
+                    "LINKING_PIECE": [],
+                    "EXPORTED_TO_DIGITAL_LIBRARY": [
+                        ""
+                    ],
+                    "ITEMS_BARCODE": []
+                },
+                "fcr_processed_id": "00029Y000",
+                "analysis": {
+                    "title": {
+                        "title_ratio": 100,
+                        "title_partial_ratio": 100,
+                        "title_token_sort_ratio": 100,
+                        "title_token_set_ratio": 100
+                    },
+                    "dates": false,
+                    "publishers": {
+                        "score": 100,
+                        "target_db": "michel aveline editeur",
+                        "origin_db": "michel aveline editeur"
+                    },
+                    "other_ids": {
+                        "nb": 0,
+                        "result": "SKIPPED"
+                    },
+                    "global": {
+                        "result": "PARTIAL_MATCH",
+                        "nb_succesful_checks": 2,
+                        "title": true,
+                        "publisher": true,
+                        "date": false
+                    }
+                }
+            },
             "532641": {
                 "data": {
                     "ID": [
@@ -5363,7 +5430,7 @@
                         "ENSP_0007351"
                     ]
                 },
-                "fcr_processed_id": "00029Y000",
+                "fcr_processed_id": "00029Y001",
                 "analysis": {
                     "title": {
                         "title_ratio": 100,
@@ -5390,43 +5457,39 @@
                     }
                 }
             },
-            "221235": {
+            "375113": {
                 "data": {
                     "ID": [
-                        "221235"
+                        "375113"
                     ],
-                    "PPN": [
-                        "051885573"
-                    ],
+                    "PPN": [],
                     "DOCUMENT_TYPE": [
-                        "LIV"
+                        "TE"
                     ],
-                    "ISBN": [
-                        "2-907010-27-1"
-                    ],
+                    "ISBN": [],
                     "GENERAL_PROCESSING_DATA_DATES": [
                         [
-                            "1993",
+                            "2004",
                             "    "
                         ]
                     ],
                     "ERRONEOUS_ISBN": [],
                     "TITLE": [
-                        "Jardins d'artistes"
+                        "Jardins d'artistes.  vagabondes résistances."
                     ],
                     "AUTHORS": [
-                        "Lennard Erica",
-                        "Cox Madison"
+                        "Lannuzel Florence",
+                        "Mosser Monique. Dir."
                     ],
                     "PUBLISHERS_NAME": [
-                        "Michel Aveline Éditeur"
+                        "Ecole d'architecture de Versailles "
                     ],
                     "EDITION_NOTES": [],
                     "PHYSICAL_DESCRIPTION": [
-                        "1 vol. (207 p.)"
+                        "82 p. "
                     ],
                     "PUBLICATION_DATES": [
-                        "1993"
+                        "2004"
                     ],
                     "LINKING_PIECE": [],
                     "EXPORTED_TO_DIGITAL_LIBRARY": [
@@ -5434,18 +5497,18 @@
                     ],
                     "ITEMS_BARCODE": []
                 },
-                "fcr_processed_id": "00029Y001",
+                "fcr_processed_id": "00029Y002",
                 "analysis": {
                     "title": {
-                        "title_ratio": 100,
+                        "title_ratio": 61,
                         "title_partial_ratio": 100,
-                        "title_token_sort_ratio": 100,
+                        "title_token_sort_ratio": 61,
                         "title_token_set_ratio": 100
                     },
                     "dates": false,
                     "publishers": {
-                        "score": 100,
-                        "target_db": "michel aveline editeur",
+                        "score": 36,
+                        "target_db": "ecole d architecture de versailles",
                         "origin_db": "michel aveline editeur"
                     },
                     "other_ids": {
@@ -5453,10 +5516,10 @@
                         "result": "SKIPPED"
                     },
                     "global": {
-                        "result": "PARTIAL_MATCH",
-                        "nb_succesful_checks": 2,
-                        "title": true,
-                        "publisher": true,
+                        "result": "NO_MATCH",
+                        "nb_succesful_checks": 0,
+                        "title": false,
+                        "publisher": false,
                         "date": false
                     }
                 }
@@ -5505,7 +5568,7 @@
                     ],
                     "ITEMS_BARCODE": []
                 },
-                "fcr_processed_id": "00029Y002",
+                "fcr_processed_id": "00029Y003",
                 "analysis": {
                     "title": {
                         "title_ratio": 73,
@@ -5517,73 +5580,6 @@
                     "publishers": {
                         "score": 35,
                         "target_db": "la maison rustique flammarion",
-                        "origin_db": "michel aveline editeur"
-                    },
-                    "other_ids": {
-                        "nb": 0,
-                        "result": "SKIPPED"
-                    },
-                    "global": {
-                        "result": "NO_MATCH",
-                        "nb_succesful_checks": 0,
-                        "title": false,
-                        "publisher": false,
-                        "date": false
-                    }
-                }
-            },
-            "375113": {
-                "data": {
-                    "ID": [
-                        "375113"
-                    ],
-                    "PPN": [],
-                    "DOCUMENT_TYPE": [
-                        "TE"
-                    ],
-                    "ISBN": [],
-                    "GENERAL_PROCESSING_DATA_DATES": [
-                        [
-                            "2004",
-                            "    "
-                        ]
-                    ],
-                    "ERRONEOUS_ISBN": [],
-                    "TITLE": [
-                        "Jardins d'artistes.  vagabondes résistances."
-                    ],
-                    "AUTHORS": [
-                        "Lannuzel Florence",
-                        "Mosser Monique. Dir."
-                    ],
-                    "PUBLISHERS_NAME": [
-                        "Ecole d'architecture de Versailles "
-                    ],
-                    "EDITION_NOTES": [],
-                    "PHYSICAL_DESCRIPTION": [
-                        "82 p. "
-                    ],
-                    "PUBLICATION_DATES": [
-                        "2004"
-                    ],
-                    "LINKING_PIECE": [],
-                    "EXPORTED_TO_DIGITAL_LIBRARY": [
-                        ""
-                    ],
-                    "ITEMS_BARCODE": []
-                },
-                "fcr_processed_id": "00029Y003",
-                "analysis": {
-                    "title": {
-                        "title_ratio": 61,
-                        "title_partial_ratio": 100,
-                        "title_token_sort_ratio": 61,
-                        "title_token_set_ratio": 100
-                    },
-                    "dates": false,
-                    "publishers": {
-                        "score": 36,
-                        "target_db": "ecole d architecture de versailles",
                         "origin_db": "michel aveline editeur"
                     },
                     "other_ids": {
@@ -5663,147 +5659,6 @@
                     }
                 }
             },
-            "563950": {
-                "data": {
-                    "ID": [
-                        "563950"
-                    ],
-                    "PPN": [],
-                    "DOCUMENT_TYPE": [
-                        "LIV"
-                    ],
-                    "ISBN": [
-                        "9782953670806"
-                    ],
-                    "GENERAL_PROCESSING_DATA_DATES": [
-                        [
-                            "2010",
-                            "    "
-                        ]
-                    ],
-                    "ERRONEOUS_ISBN": [],
-                    "TITLE": [
-                        "Jardins, arts et artistes"
-                    ],
-                    "AUTHORS": [
-                        "COLLET (Stéphane)",
-                        "URCAUE"
-                    ],
-                    "PUBLISHERS_NAME": [
-                        "URCAUE"
-                    ],
-                    "EDITION_NOTES": [],
-                    "PHYSICAL_DESCRIPTION": [
-                        "1 vol. (27 p.)"
-                    ],
-                    "PUBLICATION_DATES": [
-                        "2010"
-                    ],
-                    "LINKING_PIECE": [],
-                    "EXPORTED_TO_DIGITAL_LIBRARY": [
-                        "0"
-                    ],
-                    "ITEMS_BARCODE": []
-                },
-                "fcr_processed_id": "00029Y005",
-                "analysis": {
-                    "title": {
-                        "title_ratio": 81,
-                        "title_partial_ratio": 72,
-                        "title_token_sort_ratio": 81,
-                        "title_token_set_ratio": 94
-                    },
-                    "dates": false,
-                    "publishers": {
-                        "score": 21,
-                        "target_db": "urcaue",
-                        "origin_db": "michel aveline editeur"
-                    },
-                    "other_ids": {
-                        "nb": 0,
-                        "result": "SKIPPED"
-                    },
-                    "global": {
-                        "result": "PARTIAL_MATCH",
-                        "nb_succesful_checks": 1,
-                        "title": true,
-                        "publisher": false,
-                        "date": false
-                    }
-                }
-            },
-            "236276": {
-                "data": {
-                    "ID": [
-                        "236276"
-                    ],
-                    "PPN": [
-                        "197883389"
-                    ],
-                    "DOCUMENT_TYPE": [
-                        "DOCA"
-                    ],
-                    "ISBN": [],
-                    "GENERAL_PROCESSING_DATA_DATES": [
-                        [
-                            "2011",
-                            "    "
-                        ]
-                    ],
-                    "ERRONEOUS_ISBN": [],
-                    "TITLE": [
-                        "Artistes jardiniers et jardiniers artistes"
-                    ],
-                    "AUTHORS": [
-                        "Tortosa Guy",
-                        "Borel Julien",
-                        "Cité de l'architecture et du patrimoine Paris"
-                    ],
-                    "PUBLISHERS_NAME": [
-                        "Cité de l'architecture et du patrimoine / Ecole de Chaillot"
-                    ],
-                    "EDITION_NOTES": [
-                        "Enregistrement de la conférence donnée par Guy Tortosa, critique d'art, enseignant, commissaire d'exposition, le jeudi 31 mars 2011, dans le cadre des Cours publics de l’École de Chaillot, session 2010-2011 : Les jardins entre nature et culture"
-                    ],
-                    "PHYSICAL_DESCRIPTION": [
-                        "1 DVD vidéo monoface simple couche zone 2 (1 h 36 min)"
-                    ],
-                    "PUBLICATION_DATES": [
-                        "2011"
-                    ],
-                    "LINKING_PIECE": [],
-                    "EXPORTED_TO_DIGITAL_LIBRARY": [
-                        "0"
-                    ],
-                    "ITEMS_BARCODE": []
-                },
-                "fcr_processed_id": "00029Y006",
-                "analysis": {
-                    "title": {
-                        "title_ratio": 60,
-                        "title_partial_ratio": 83,
-                        "title_token_sort_ratio": 60,
-                        "title_token_set_ratio": 85
-                    },
-                    "dates": false,
-                    "publishers": {
-                        "score": 35,
-                        "target_db": "cite de l architecture et du patrimoine ecole de chaillot",
-                        "origin_db": "michel aveline editeur"
-                    },
-                    "other_ids": {
-                        "nb": 0,
-                        "result": "SKIPPED"
-                    },
-                    "global": {
-                        "result": "NO_MATCH",
-                        "nb_succesful_checks": 0,
-                        "title": false,
-                        "publisher": false,
-                        "date": false
-                    }
-                }
-            },
             "568744": {
                 "data": {
                     "ID": [
@@ -5845,7 +5700,7 @@
                     ],
                     "ITEMS_BARCODE": []
                 },
-                "fcr_processed_id": "00029Y007",
+                "fcr_processed_id": "00029Y005",
                 "analysis": {
                     "title": {
                         "title_ratio": 55,
@@ -5912,7 +5767,7 @@
                     ],
                     "ITEMS_BARCODE": []
                 },
-                "fcr_processed_id": "00029Y008",
+                "fcr_processed_id": "00029Y006",
                 "analysis": {
                     "title": {
                         "title_ratio": 44,
@@ -5978,7 +5833,7 @@
                     ],
                     "ITEMS_BARCODE": []
                 },
-                "fcr_processed_id": "00029Y009",
+                "fcr_processed_id": "00029Y007",
                 "analysis": {
                     "title": {
                         "title_ratio": 68,
@@ -6044,7 +5899,7 @@
                     ],
                     "ITEMS_BARCODE": []
                 },
-                "fcr_processed_id": "00029Y010",
+                "fcr_processed_id": "00029Y008",
                 "analysis": {
                     "title": {
                         "title_ratio": 54,
@@ -6114,7 +5969,7 @@
                     ],
                     "ITEMS_BARCODE": []
                 },
-                "fcr_processed_id": "00029Y011",
+                "fcr_processed_id": "00029Y009",
                 "analysis": {
                     "title": {
                         "title_ratio": 42,
@@ -6178,7 +6033,7 @@
                     ],
                     "ITEMS_BARCODE": []
                 },
-                "fcr_processed_id": "00029Y012",
+                "fcr_processed_id": "00029Y010",
                 "analysis": {
                     "title": {
                         "title_ratio": 18,
@@ -6242,7 +6097,7 @@
                     ],
                     "ITEMS_BARCODE": []
                 },
-                "fcr_processed_id": "00029Y013",
+                "fcr_processed_id": "00029Y011",
                 "analysis": {
                     "title": {
                         "title_ratio": 19,
@@ -6310,7 +6165,7 @@
                     ],
                     "ITEMS_BARCODE": []
                 },
-                "fcr_processed_id": "00029Y014",
+                "fcr_processed_id": "00029Y012",
                 "analysis": {
                     "title": {
                         "title_ratio": 60,
@@ -6374,7 +6229,7 @@
                     ],
                     "ITEMS_BARCODE": []
                 },
-                "fcr_processed_id": "00029Y015",
+                "fcr_processed_id": "00029Y013",
                 "analysis": {
                     "title": {
                         "title_ratio": 17,
@@ -6448,7 +6303,7 @@
                         "ENSP_0006556"
                     ]
                 },
-                "fcr_processed_id": "00029Y016",
+                "fcr_processed_id": "00029Y014",
                 "analysis": {
                     "title": {
                         "title_ratio": 20,
@@ -6521,7 +6376,7 @@
                         "ENSP_0006594"
                     ]
                 },
-                "fcr_processed_id": "00029Y017",
+                "fcr_processed_id": "00029Y015",
                 "analysis": {
                     "title": {
                         "title_ratio": 25,
@@ -6599,7 +6454,7 @@
                     ],
                     "ITEMS_BARCODE": []
                 },
-                "fcr_processed_id": "00029Y018",
+                "fcr_processed_id": "00029Y016",
                 "analysis": {
                     "title": {
                         "title_ratio": 78,
@@ -6651,7 +6506,7 @@
                         "Bord à bord art écologique et art environnemental"
                     ],
                     "AUTHORS": [
-                        "École nationale supérieure du paysage Versailles"
+                        "École nationale supérieure de paysage Versailles"
                     ],
                     "PUBLISHERS_NAME": [
                         "Actes Sud",
@@ -6672,7 +6527,7 @@
                     ],
                     "ITEMS_BARCODE": []
                 },
-                "fcr_processed_id": "00029Y019",
+                "fcr_processed_id": "00029Y017",
                 "analysis": {
                     "title": {
                         "title_ratio": 33,
@@ -6740,7 +6595,7 @@
                     ],
                     "ITEMS_BARCODE": []
                 },
-                "fcr_processed_id": "00029Y020",
+                "fcr_processed_id": "00029Y018",
                 "analysis": {
                     "title": {
                         "title_ratio": 21,
@@ -6831,13 +6686,13 @@
                 "status": "SUCCESS",
                 "error_type": null,
                 "msg": null,
-                "query": "dc.title=robert noailles mallet villa stevens and dc.author=fuzibet monnier briolle gerard cecile agnes and dc.publisher=parentheses and (dc.date=1990)",
+                "query": "dc.title=villa mallet stevens noailles robert and dc.author=cecile gerard agnes briolle fuzibet monnier and dc.publisher=parentheses and (dc.date=1990)",
                 "returned_ids": [
                     "532642"
                 ]
             }
         },
-        "query_used": "dc.title=robert noailles mallet villa stevens and dc.author=fuzibet monnier briolle gerard cecile agnes and dc.publisher=parentheses and (dc.date=1990)",
+        "query_used": "dc.title=villa mallet stevens noailles robert and dc.author=cecile gerard agnes briolle fuzibet monnier and dc.publisher=parentheses and (dc.date=1990)",
         "action_used": "KOHA_SRU_TITLE_AUTHOR_PUBLISHER_DATE",
         "nb_matched_records": 1,
         "matched_records_ids": [
@@ -7012,13 +6867,13 @@
                 "status": "SUCCESS",
                 "error_type": null,
                 "msg": null,
-                "query": "cql.serverChoice=regards patrimoine and cql.serverChoice=musees nationaux reunion and (cql.serverChoice=1992)",
+                "query": "cql.serverChoice=regards patrimoine and cql.serverChoice=reunion nationaux musees and (cql.serverChoice=1992)",
                 "returned_ids": [
                     "155778"
                 ]
             }
         },
-        "query_used": "cql.serverChoice=regards patrimoine and cql.serverChoice=musees nationaux reunion and (cql.serverChoice=1992)",
+        "query_used": "cql.serverChoice=regards patrimoine and cql.serverChoice=reunion nationaux musees and (cql.serverChoice=1992)",
         "action_used": "KOHA_SRU_ANY_TITLE_PUBLISHER_DATE",
         "nb_matched_records": 1,
         "matched_records_ids": [
@@ -7190,13 +7045,13 @@
                 "status": "SUCCESS",
                 "error_type": null,
                 "msg": null,
-                "query": "cql.serverChoice=penser comprendre ville construire and cql.serverChoice=ministere equipement and (cql.serverChoice=1993)",
+                "query": "cql.serverChoice=comprendre penser ville construire and cql.serverChoice=equipement ministere and (cql.serverChoice=1993)",
                 "returned_ids": [
                     "157064"
                 ]
             }
         },
-        "query_used": "cql.serverChoice=penser comprendre ville construire and cql.serverChoice=ministere equipement and (cql.serverChoice=1993)",
+        "query_used": "cql.serverChoice=comprendre penser ville construire and cql.serverChoice=equipement ministere and (cql.serverChoice=1993)",
         "action_used": "KOHA_SRU_ANY_TITLE_PUBLISHER_DATE",
         "nb_matched_records": 1,
         "matched_records_ids": [

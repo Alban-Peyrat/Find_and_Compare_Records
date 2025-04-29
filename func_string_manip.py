@@ -16,7 +16,7 @@ def prep_string(_str:str, _noise = True, _multiplespaces = True) -> str:
     """
     # remove noise (punctuation) if asked (by default yes)
     if _noise:
-        _str = re.sub(r"[\x21-\x2F]|[\x3A-\x40]|[\x5B-\x60]|[\x7B-\x7F]|[\u2010-\u2015]|\.|\,|\?|\!|\;|\/|\:|\=|\[|\]|\'|\-|\(|\)|\||\"|\<|\>|\+|\°", " ", _str, flags=re.IGNORECASE)
+        _str = re.sub(r"[\x21-\x2F]|[\x3A-\x40]|[\x5B-\x60]|[\x7B-\x7F]|[\u2010-\u2015]|\.|\,|\?|\!|\;|\/|\:|\=|\[|\]|\'|\-|\(|\)|\||\"|\<|\>|\+|\°|\~", " ", _str, flags=re.IGNORECASE)
     # replace multiple spaces by ine in string if requested (default yes)
     if _multiplespaces:
         _str = re.sub(r"\s+", " ", _str).strip()
@@ -34,7 +34,9 @@ def nettoie_titre(titre:str) -> str:
         titre_norm = titre_norm.replace('œ', 'oe')
         # out = re.sub(r'[^\w]','',unidecode(titre_norm))
         out = unidecode(titre_norm)
-        return out.lower()
+        # Using unidecode can add back some noise, so we reuse prep string
+        # Unidecode on no nlatin charatcers might jsut break the entire thing, this will need more testing if required
+        return prep_string(out).lower()
     else :
         return titre
 
