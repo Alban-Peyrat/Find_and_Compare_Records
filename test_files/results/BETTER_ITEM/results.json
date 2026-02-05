@@ -91,14 +91,14 @@
                 "status": "SUCCESS",
                 "error_type": null,
                 "msg": null,
-                "query": "mti=menuiserie exterieures maison interieures 1 menuiseries",
+                "query": "mti=1 menuiseries menuiserie maison interieures exterieures",
                 "returned_ids": [
                     "020791909",
                     "198800398"
                 ]
             }
         },
-        "query_used": "mti=menuiserie exterieures maison interieures 1 menuiseries",
+        "query_used": "mti=1 menuiseries menuiserie maison interieures exterieures",
         "action_used": "SRU_SUDOC_MTI",
         "nb_matched_records": 2,
         "matched_records_ids": [
@@ -1093,9 +1093,9 @@
                     "Le marxisme et la philosophie du langage essai d'application de la méthode sociologique en linguistique"
                 ],
                 "AUTHORS": [
-                    "Bahtin Mihail Mihajlovič",
+                    "Bakhtine Mikhaïl Mikhaïlovitch",
                     "Yaguello Marina",
-                    "Якобсон Роман Осипович"
+                    "Jakobson Roman"
                 ],
                 "PUBLISHERS_NAME": [
                     "les Éditions de Minuit"
@@ -1147,7 +1147,7 @@
                         "Le marxisme et la philosophie du langage essai d'application de la méthode sociologique en linguistique"
                     ],
                     "AUTHORS": [
-                        "Bahtin Mihail Mihajlovič",
+                        "Bakhtine Mikhaïl Mikhaïlovitch",
                         "Yaguello Marina",
                         "Jakobson Roman",
                         "Bakhtin Mikhail Mikhaĭlovich"
@@ -2282,8 +2282,8 @@
                     "Giraudy Danièle"
                 ],
                 "PUBLISHERS_NAME": [
-                    "Musées de Marseille",
-                    "Ed. Parenthèses"
+                    "Ed. Parenthèses",
+                    "Musées de Marseille"
                 ],
                 "EDITION_NOTES": [],
                 "PUBLICATION_DATES": [
@@ -2331,8 +2331,8 @@
                         "Giraudy Danièle"
                     ],
                     "PUBLISHERS_NAME": [
-                        "Musées de Marseille",
-                        "Ed. Parenthèses"
+                        "Ed. Parenthèses",
+                        "Musées de Marseille"
                     ],
                     "EDITION_NOTES": [],
                     "PUBLICATION_DATES": [
@@ -2355,8 +2355,8 @@
                     "dates": true,
                     "publishers": {
                         "score": 100,
-                        "target_db": "musees de marseille",
-                        "origin_db": "musees de marseille"
+                        "target_db": "parentheses",
+                        "origin_db": "parentheses"
                     },
                     "other_ids": {
                         "nb": 1,
@@ -2420,7 +2420,7 @@
                     "C 2007"
                 ],
                 "PHYSICAL_DESCRIPTION": [
-                    "1 vol. (301 p.)"
+                    "1 volume (301 pages)"
                 ]
             },
             "fcr_processed_id": "00017A000"
@@ -2595,7 +2595,7 @@
                 "status": "SUCCESS",
                 "error_type": null,
                 "msg": null,
-                "query": "mti=marseille autrefois",
+                "query": "mti=autrefois marseille",
                 "returned_ids": [
                     "09762179X",
                     "27931115X",
@@ -2605,7 +2605,7 @@
                 ]
             }
         },
-        "query_used": "mti=marseille autrefois",
+        "query_used": "mti=autrefois marseille",
         "action_used": "SRU_SUDOC_MTI",
         "nb_matched_records": 5,
         "matched_records_ids": [
@@ -2739,7 +2739,7 @@
                         "Bargès Jean-Joseph-Léandre"
                     ],
                     "PUBLISHERS_NAME": [
-                        "impr. de V. Goupy et Jourdan"
+                        "Imprimerie V. Goupy et Jourdan"
                     ],
                     "EDITION_NOTES": [],
                     "PUBLICATION_DATES": [
@@ -2759,8 +2759,8 @@
                     },
                     "dates": false,
                     "publishers": {
-                        "score": 28,
-                        "target_db": "impr de v goupy et jourdan",
+                        "score": 33,
+                        "target_db": "imprimerie v goupy et jourdan",
                         "origin_db": "diffusion generale de librairie"
                     },
                     "other_ids": {
@@ -2837,7 +2837,7 @@
                     ],
                     "ERRONEOUS_ISBN": [],
                     "TITLE": [
-                        "[Recueil factice contenant 34 pièces]"
+                        "[Recueil factice contenant 34 pièces] Payot. Erpectologie, malacologie et paléontologie des environs du Mont-Blanc. Lyon, 1864, pièce n° 1 Godron. Recherches sur les animmaux sauvages qui habitaient autrefois la chaîne des Vosges. Nancy, 1866, pièce n° 2 Sars. Bidrag til Kundskaben om Middelhavets Littoral-Fauna, pièce n° 3 Vidal. Etude sur le littoral français de la Méditerrannée au point de vue piscicole. Marseille, 1866, pièce n° 4 Schmarda. Die maritime production des österr. Kustenländer, pièce n° 5 Nordmann. Kritisk öfversigt af Finlands Fisk-fauna. Helsingfors, 1863, pièce n° 6 Poelman. Notice sur un Delphinus eschrichth échoué à Flessingue. Bruxelles, pièce n° 7 Jan. Plan d'une iconographie descriptive des ophiviens et description sommaire de nouvelles espèces de serpents. Paris, 1858, pièce n° 8 Jacquart. De la distribution des nerfs pneumogastriques dans les poumons des ophidiens, pièce n° 9 Duméril et Jacquart. Mémoire sur la déglutition chez les ophidiens. Paris, 1865, pièce n° 10 Barbosa du Bocage. Notice sur un nouveau Batracien du Portugal et sur une grenouille de l'Afrique occidentale. Paris, 1864, pièce n° 11 Barbosa du Bocage. Sur quelques espèces inédites de Squalidoe de la tribu acanthiana, Gray, qui fréquentent les côtes du Portugal, pièce n° 12 Barbosa du Bocage. Notice sur un batracien nouveau du Portugal, pièce n° 13 Note sur la découverte d'un zoophyte de la famille Hyalochoetides sur la cote du Portugal, 1864, pièce n° 14 Molin. De Rajidis tribus bolcanis, 1860, pièce n° 15 Dana. The classification of animals based on the priciple of cephalization, 1864, pièce n° 16 Molin. Una monografia del genere spiroptera. Wien, 1860, pièce n° 17 Baillet (de) Quelques observations sur le ver à soie Bombyx cynthia de l' ailante, faux vernis du Japon. Bergerac, 1861, pièce n° 18 Blain. De l'acclimatation du Bombix Cynthia (ver à soie de l' ailante ou vernis du Japon), pièce n° 19 Roy. Notes sur le Bombyx-Cynthia et sur l'introduction en Champagne de la culture de l'ailante, 1861, pièce n° 20 Lereboullet. Rapport sur les éducations de vers à soie du murier faites dans le Dep. du Bas-Rhin pendant l'année 1864. Strasbourg, 1865, pièce n° 21 Renaud. De la sériculture en France. Paris, 1865, pièce n° 22 Landrin. Coquilles nouvelles. Versailles, 1864, pièce n° 23 Echinides et Stellerides recueillies par M. Maillard de 1856 à 1860 dénommés et décrits par M. H. Michelin, pièce n° 24 Milne-Edwards. Faune carcinologique de l'ile de la Réunion, pièce n° 25 Pictet. Note sur la succession des mollusques gastéropodes pendant l'époque crétacée dans la région des alpes suisses et du Jura. Genève, 1864, pièce n° 26 Pouchet et Verrier. Expériences sur les migrations des entozoaires. Rouen, 1862, pièce n° 27 Colin. Mémoire sur le développement et les migrations des Sclérostomes. Paris, 1864, pièce n° 28 Colin. Recherches sur le pentastome ténioïde des cavités nasales du chien, etc., pièce n° 29 Baillet. Recherches sur l'organisation et sur les fonctions de reproduction de quelques nematoïdes de la tribu des sclérostomiens, pièce n° 30 Lortet. Nouveau parasite de l'homme (helophilus horridus lortet). Lyon, 1866, pièce n° 31 Clark. Tubularia not parthenogenous, 1864, pièce n° 32 Passerini. Aphididæ Italicæ hucusque observatæ. Genuae, 1863, pièce n° 33 Bischoff. Bemerkung über den ort der Befruchtung der Sängethier-Eier, pièce n° 34"
                     ],
                     "AUTHORS": [],
                     "PUBLISHERS_NAME": [
@@ -2854,10 +2854,10 @@
                 "fcr_processed_id": "00018Y004",
                 "analysis": {
                     "title": {
-                        "title_ratio": 41,
-                        "title_partial_ratio": 47,
-                        "title_token_sort_ratio": 37,
-                        "title_token_set_ratio": 37
+                        "title_ratio": 1,
+                        "title_partial_ratio": 42,
+                        "title_token_sort_ratio": 1,
+                        "title_token_set_ratio": 100
                     },
                     "dates": false,
                     "publishers": {
@@ -2972,13 +2972,13 @@
                 "status": "SUCCESS",
                 "error_type": null,
                 "msg": null,
-                "query": "mti=marseille autrefois 1",
+                "query": "mti=autrefois 1 marseille",
                 "returned_ids": [
                     "237276658"
                 ]
             }
         },
-        "query_used": "mti=marseille autrefois 1",
+        "query_used": "mti=autrefois 1 marseille",
         "action_used": "SRU_SUDOC_MTI",
         "nb_matched_records": 1,
         "matched_records_ids": [
@@ -2995,7 +2995,7 @@
                     ],
                     "ERRONEOUS_ISBN": [],
                     "TITLE": [
-                        "[Recueil factice contenant 34 pièces]"
+                        "[Recueil factice contenant 34 pièces] Payot. Erpectologie, malacologie et paléontologie des environs du Mont-Blanc. Lyon, 1864, pièce n° 1 Godron. Recherches sur les animmaux sauvages qui habitaient autrefois la chaîne des Vosges. Nancy, 1866, pièce n° 2 Sars. Bidrag til Kundskaben om Middelhavets Littoral-Fauna, pièce n° 3 Vidal. Etude sur le littoral français de la Méditerrannée au point de vue piscicole. Marseille, 1866, pièce n° 4 Schmarda. Die maritime production des österr. Kustenländer, pièce n° 5 Nordmann. Kritisk öfversigt af Finlands Fisk-fauna. Helsingfors, 1863, pièce n° 6 Poelman. Notice sur un Delphinus eschrichth échoué à Flessingue. Bruxelles, pièce n° 7 Jan. Plan d'une iconographie descriptive des ophiviens et description sommaire de nouvelles espèces de serpents. Paris, 1858, pièce n° 8 Jacquart. De la distribution des nerfs pneumogastriques dans les poumons des ophidiens, pièce n° 9 Duméril et Jacquart. Mémoire sur la déglutition chez les ophidiens. Paris, 1865, pièce n° 10 Barbosa du Bocage. Notice sur un nouveau Batracien du Portugal et sur une grenouille de l'Afrique occidentale. Paris, 1864, pièce n° 11 Barbosa du Bocage. Sur quelques espèces inédites de Squalidoe de la tribu acanthiana, Gray, qui fréquentent les côtes du Portugal, pièce n° 12 Barbosa du Bocage. Notice sur un batracien nouveau du Portugal, pièce n° 13 Note sur la découverte d'un zoophyte de la famille Hyalochoetides sur la cote du Portugal, 1864, pièce n° 14 Molin. De Rajidis tribus bolcanis, 1860, pièce n° 15 Dana. The classification of animals based on the priciple of cephalization, 1864, pièce n° 16 Molin. Una monografia del genere spiroptera. Wien, 1860, pièce n° 17 Baillet (de) Quelques observations sur le ver à soie Bombyx cynthia de l' ailante, faux vernis du Japon. Bergerac, 1861, pièce n° 18 Blain. De l'acclimatation du Bombix Cynthia (ver à soie de l' ailante ou vernis du Japon), pièce n° 19 Roy. Notes sur le Bombyx-Cynthia et sur l'introduction en Champagne de la culture de l'ailante, 1861, pièce n° 20 Lereboullet. Rapport sur les éducations de vers à soie du murier faites dans le Dep. du Bas-Rhin pendant l'année 1864. Strasbourg, 1865, pièce n° 21 Renaud. De la sériculture en France. Paris, 1865, pièce n° 22 Landrin. Coquilles nouvelles. Versailles, 1864, pièce n° 23 Echinides et Stellerides recueillies par M. Maillard de 1856 à 1860 dénommés et décrits par M. H. Michelin, pièce n° 24 Milne-Edwards. Faune carcinologique de l'ile de la Réunion, pièce n° 25 Pictet. Note sur la succession des mollusques gastéropodes pendant l'époque crétacée dans la région des alpes suisses et du Jura. Genève, 1864, pièce n° 26 Pouchet et Verrier. Expériences sur les migrations des entozoaires. Rouen, 1862, pièce n° 27 Colin. Mémoire sur le développement et les migrations des Sclérostomes. Paris, 1864, pièce n° 28 Colin. Recherches sur le pentastome ténioïde des cavités nasales du chien, etc., pièce n° 29 Baillet. Recherches sur l'organisation et sur les fonctions de reproduction de quelques nematoïdes de la tribu des sclérostomiens, pièce n° 30 Lortet. Nouveau parasite de l'homme (helophilus horridus lortet). Lyon, 1866, pièce n° 31 Clark. Tubularia not parthenogenous, 1864, pièce n° 32 Passerini. Aphididæ Italicæ hucusque observatæ. Genuae, 1863, pièce n° 33 Bischoff. Bemerkung über den ort der Befruchtung der Sängethier-Eier, pièce n° 34"
                     ],
                     "AUTHORS": [],
                     "PUBLISHERS_NAME": [
@@ -3012,10 +3012,10 @@
                 "fcr_processed_id": "00019Y000",
                 "analysis": {
                     "title": {
-                        "title_ratio": 39,
-                        "title_partial_ratio": 43,
-                        "title_token_sort_ratio": 39,
-                        "title_token_set_ratio": 39
+                        "title_ratio": 1,
+                        "title_partial_ratio": 52,
+                        "title_token_sort_ratio": 1,
+                        "title_token_set_ratio": 100
                     },
                     "dates": false,
                     "publishers": {
@@ -3317,11 +3317,11 @@
                 "status": "SUCCESS",
                 "error_type": null,
                 "msg": null,
-                "query": "mti=2010 revit mastering architecture",
+                "query": "mti=revit mastering architecture 2010",
                 "returned_ids": []
             }
         },
-        "query_used": "mti=2010 revit mastering architecture",
+        "query_used": "mti=revit mastering architecture 2010",
         "action_used": "SRU_SUDOC_MTI",
         "nb_matched_records": 0,
         "matched_records_ids": []
@@ -3468,7 +3468,7 @@
             "$v": "",
             "L035$a": "226735"
         },
-        "fcr_processed_id": "00023A001",
+        "fcr_processed_id": "00023A000",
         "input_query": "9783937718897",
         "original_uid": "226735",
         "origin_database": {
@@ -3501,10 +3501,10 @@
                     "C 2007"
                 ],
                 "PHYSICAL_DESCRIPTION": [
-                    "1 vol. (175 p.)"
+                    "1 volume (175 pages)"
                 ]
             },
-            "fcr_processed_id": "00023A001"
+            "fcr_processed_id": "00023A000"
         },
         "matched_record_tries": {
             "0": {
@@ -3515,17 +3515,15 @@
                 "msg": null,
                 "query": "9783937718897",
                 "returned_ids": [
-                    "11973835X",
-                    "142694959"
+                    "11973835X"
                 ]
             }
         },
         "query_used": "9783937718897",
         "action_used": "ISBN2PPN",
-        "nb_matched_records": 2,
+        "nb_matched_records": 1,
         "matched_records_ids": [
-            "11973835X",
-            "142694959"
+            "11973835X"
         ],
         "target_database": {
             "11973835X": {
@@ -3574,60 +3572,6 @@
                     "other_ids": {
                         "nb": 1,
                         "result": "ONLY_THIS_OTHER_DB_ID"
-                    },
-                    "global": {
-                        "result": "TOTAL_MATCH",
-                        "nb_succesful_checks": 3,
-                        "title": true,
-                        "publisher": true,
-                        "date": true
-                    }
-                }
-            },
-            "142694959": {
-                "data": {
-                    "GENERAL_PROCESSING_DATA_DATES": [
-                        [
-                            "2007",
-                            "    "
-                        ]
-                    ],
-                    "ERRONEOUS_ISBN": [],
-                    "TITLE": [
-                        "Matali Crasset spaces 2000-2007"
-                    ],
-                    "AUTHORS": [
-                        "Klein Caroline"
-                    ],
-                    "PUBLISHERS_NAME": [
-                        "Daab"
-                    ],
-                    "EDITION_NOTES": [],
-                    "PUBLICATION_DATES": [
-                        "",
-                        "C 2007"
-                    ],
-                    "OTHER_DB_ID": [],
-                    "ITEMS_BARCODE": [],
-                    "ITEMS": []
-                },
-                "fcr_processed_id": "00023Y001",
-                "analysis": {
-                    "title": {
-                        "title_ratio": 100,
-                        "title_partial_ratio": 100,
-                        "title_token_sort_ratio": 100,
-                        "title_token_set_ratio": 100
-                    },
-                    "dates": true,
-                    "publishers": {
-                        "score": 100,
-                        "target_db": "daab",
-                        "origin_db": "daab"
-                    },
-                    "other_ids": {
-                        "nb": 0,
-                        "result": "NO_OTHER_DB_ID"
                     },
                     "global": {
                         "result": "TOTAL_MATCH",
@@ -4190,7 +4134,8 @@
                     ],
                     "EDITION_NOTES": [],
                     "PUBLICATION_DATES": [
-                        "1979, cop. 1966"
+                        "1979",
+                        "C1966"
                     ],
                     "OTHER_DB_ID": [],
                     "ITEMS_BARCODE": [],
@@ -4287,8 +4232,8 @@
                         ]
                     ],
                     "ERRONEOUS_ISBN": [
-                        "2-2200-37225-6",
-                        "2-2200-37224-8"
+                        "2-2200-37224-8",
+                        "2-2200-37225-6"
                     ],
                     "TITLE": [
                         "La Méditerranée et le monde méditerranéen à l'époque de Philippe II"
@@ -5489,7 +5434,7 @@
                 "status": "SUCCESS",
                 "error_type": null,
                 "msg": null,
-                "query": "mti=michel saint mont",
+                "query": "mti=saint mont michel",
                 "returned_ids": [
                     "227178149",
                     "094851050",
@@ -5509,6 +5454,7 @@
                     "085389021",
                     "099519712",
                     "279948638",
+                    "010596844",
                     "180799878",
                     "112381111",
                     "060499656",
@@ -5555,7 +5501,6 @@
                     "13128150X",
                     "084042524",
                     "045215561",
-                    "010596844",
                     "114030146",
                     "180799444",
                     "109322231",
@@ -5589,12 +5534,12 @@
                     "11660316X",
                     "092683169",
                     "085398152",
-                    "135297826",
-                    "134229150"
+                    "291218962",
+                    "135297826"
                 ]
             }
         },
-        "query_used": "mti=michel saint mont",
+        "query_used": "mti=saint mont michel",
         "action_used": "SRU_SUDOC_MTI",
         "nb_matched_records": 100,
         "matched_records_ids": [
@@ -5616,6 +5561,7 @@
             "085389021",
             "099519712",
             "279948638",
+            "010596844",
             "180799878",
             "112381111",
             "060499656",
@@ -5662,7 +5608,6 @@
             "13128150X",
             "084042524",
             "045215561",
-            "010596844",
             "114030146",
             "180799444",
             "109322231",
@@ -5696,8 +5641,8 @@
             "11660316X",
             "092683169",
             "085398152",
-            "135297826",
-            "134229150"
+            "291218962",
+            "135297826"
         ],
         "target_database": {
             "227178149": {
@@ -5829,8 +5774,8 @@
                         "Amis du Mont-Saint-Michel Mont-Saint-Michel"
                     ],
                     "PUBLISHERS_NAME": [
-                        "Anthèse",
-                        "les Amis du Mont-Saint-Michel"
+                        "les Amis du Mont-Saint-Michel",
+                        "Anthèse"
                     ],
                     "EDITION_NOTES": [],
                     "PUBLICATION_DATES": [
@@ -5937,8 +5882,8 @@
                         "Centre des monuments nationaux France"
                     ],
                     "PUBLISHERS_NAME": [
-                        "Monum - Editions du Patrimoine",
-                        "Centre Pompidou"
+                        "Centre Pompidou",
+                        "Monum - Editions du Patrimoine"
                     ],
                     "EDITION_NOTES": [],
                     "PUBLICATION_DATES": [
@@ -5959,7 +5904,7 @@
                     "dates": false,
                     "publishers": {
                         "score": 41,
-                        "target_db": "monum du patrimoine",
+                        "target_db": "centre pompidou",
                         "origin_db": "du patrimoine centre des monuments nationaux"
                     },
                     "other_ids": {
@@ -6520,7 +6465,7 @@
                         "Nouveau recueil de notes historiques et archéologiques concernant le département de la Seine-Inférieure et plus spécialement la ville de Rouen"
                     ],
                     "AUTHORS": [
-                        "Robillard de Beaurepaire Charles de"
+                        "Beaurepaire Charles de"
                     ],
                     "PUBLISHERS_NAME": [
                         "E. Cagniard"
@@ -6669,6 +6614,59 @@
                     }
                 }
             },
+            "010596844": {
+                "data": {
+                    "GENERAL_PROCESSING_DATA_DATES": [
+                        [
+                            "1879",
+                            "1883"
+                        ]
+                    ],
+                    "ERRONEOUS_ISBN": [],
+                    "TITLE": [
+                        "Chronique du Mont-Saint-Michel (1343-1468)"
+                    ],
+                    "AUTHORS": [
+                        "Luce Siméon"
+                    ],
+                    "PUBLISHERS_NAME": [
+                        "F. Didot"
+                    ],
+                    "EDITION_NOTES": [],
+                    "PUBLICATION_DATES": [
+                        "1879-1883"
+                    ],
+                    "OTHER_DB_ID": [],
+                    "ITEMS_BARCODE": [],
+                    "ITEMS": []
+                },
+                "fcr_processed_id": "00040Y018",
+                "analysis": {
+                    "title": {
+                        "title_ratio": 63,
+                        "title_partial_ratio": 90,
+                        "title_token_sort_ratio": 63,
+                        "title_token_set_ratio": 92
+                    },
+                    "dates": false,
+                    "publishers": {
+                        "score": 20,
+                        "target_db": "f didot",
+                        "origin_db": "du patrimoine centre des monuments nationaux"
+                    },
+                    "other_ids": {
+                        "nb": 0,
+                        "result": "NO_OTHER_DB_ID"
+                    },
+                    "global": {
+                        "result": "NO_MATCH",
+                        "nb_succesful_checks": 0,
+                        "title": false,
+                        "publisher": false,
+                        "date": false
+                    }
+                }
+            },
             "180799878": {
                 "data": {
                     "GENERAL_PROCESSING_DATA_DATES": [],
@@ -6684,7 +6682,7 @@
                     "ITEMS_BARCODE": [],
                     "ITEMS": []
                 },
-                "fcr_processed_id": "00040Y018",
+                "fcr_processed_id": "00040Y019",
                 "analysis": {
                     "title": {
                         "title_ratio": 82,
@@ -6748,7 +6746,7 @@
                     "ITEMS_BARCODE": [],
                     "ITEMS": []
                 },
-                "fcr_processed_id": "00040Y019",
+                "fcr_processed_id": "00040Y020",
                 "analysis": {
                     "title": {
                         "title_ratio": 35,
@@ -6802,7 +6800,7 @@
                     "ITEMS_BARCODE": [],
                     "ITEMS": []
                 },
-                "fcr_processed_id": "00040Y020",
+                "fcr_processed_id": "00040Y021",
                 "analysis": {
                     "title": {
                         "title_ratio": 26,
@@ -6861,7 +6859,7 @@
                     "ITEMS_BARCODE": [],
                     "ITEMS": []
                 },
-                "fcr_processed_id": "00040Y021",
+                "fcr_processed_id": "00040Y022",
                 "analysis": {
                     "title": {
                         "title_ratio": 27,
@@ -6914,7 +6912,7 @@
                     "ITEMS_BARCODE": [],
                     "ITEMS": []
                 },
-                "fcr_processed_id": "00040Y022",
+                "fcr_processed_id": "00040Y023",
                 "analysis": {
                     "title": {
                         "title_ratio": 20,
@@ -6970,7 +6968,7 @@
                     "ITEMS_BARCODE": [],
                     "ITEMS": []
                 },
-                "fcr_processed_id": "00040Y023",
+                "fcr_processed_id": "00040Y024",
                 "analysis": {
                     "title": {
                         "title_ratio": 27,
@@ -7024,7 +7022,7 @@
                     "ITEMS_BARCODE": [],
                     "ITEMS": []
                 },
-                "fcr_processed_id": "00040Y024",
+                "fcr_processed_id": "00040Y025",
                 "analysis": {
                     "title": {
                         "title_ratio": 50,
@@ -7080,7 +7078,7 @@
                     "ITEMS_BARCODE": [],
                     "ITEMS": []
                 },
-                "fcr_processed_id": "00040Y025",
+                "fcr_processed_id": "00040Y026",
                 "analysis": {
                     "title": {
                         "title_ratio": 50,
@@ -7134,7 +7132,7 @@
                     "ITEMS_BARCODE": [],
                     "ITEMS": []
                 },
-                "fcr_processed_id": "00040Y026",
+                "fcr_processed_id": "00040Y027",
                 "analysis": {
                     "title": {
                         "title_ratio": 41,
@@ -7188,7 +7186,7 @@
                     "ITEMS_BARCODE": [],
                     "ITEMS": []
                 },
-                "fcr_processed_id": "00040Y027",
+                "fcr_processed_id": "00040Y028",
                 "analysis": {
                     "title": {
                         "title_ratio": 31,
@@ -7241,7 +7239,7 @@
                     "ITEMS_BARCODE": [],
                     "ITEMS": []
                 },
-                "fcr_processed_id": "00040Y028",
+                "fcr_processed_id": "00040Y029",
                 "analysis": {
                     "title": {
                         "title_ratio": 26,
@@ -7294,7 +7292,7 @@
                     "ITEMS_BARCODE": [],
                     "ITEMS": []
                 },
-                "fcr_processed_id": "00040Y029",
+                "fcr_processed_id": "00040Y030",
                 "analysis": {
                     "title": {
                         "title_ratio": 26,
@@ -7349,7 +7347,7 @@
                     "ITEMS_BARCODE": [],
                     "ITEMS": []
                 },
-                "fcr_processed_id": "00040Y030",
+                "fcr_processed_id": "00040Y031",
                 "analysis": {
                     "title": {
                         "title_ratio": 26,
@@ -7398,7 +7396,7 @@
                     "ITEMS_BARCODE": [],
                     "ITEMS": []
                 },
-                "fcr_processed_id": "00040Y031",
+                "fcr_processed_id": "00040Y032",
                 "analysis": {
                     "title": {
                         "title_ratio": 21,
@@ -7439,9 +7437,9 @@
                     ],
                     "AUTHORS": [],
                     "PUBLISHERS_NAME": [
+                        "EPHE",
                         "CNRS",
-                        "Totalfina Elf",
-                        "EPHE"
+                        "Totalfina Elf"
                     ],
                     "EDITION_NOTES": [
                         "EPHE = École pratique des hautes études"
@@ -7453,7 +7451,7 @@
                     "ITEMS_BARCODE": [],
                     "ITEMS": []
                 },
-                "fcr_processed_id": "00040Y032",
+                "fcr_processed_id": "00040Y033",
                 "analysis": {
                     "title": {
                         "title_ratio": 16,
@@ -7507,7 +7505,7 @@
                     "ITEMS_BARCODE": [],
                     "ITEMS": []
                 },
-                "fcr_processed_id": "00040Y033",
+                "fcr_processed_id": "00040Y034",
                 "analysis": {
                     "title": {
                         "title_ratio": 24,
@@ -7544,11 +7542,11 @@
                     ],
                     "ERRONEOUS_ISBN": [],
                     "TITLE": [
-                        "Die Welt der Feen im Mittelalter = Le @monde des fées dans la culture médiévale II. Tagung auf dem Mont Saint-Michel IIème congrès au Mont Saint-Michel (31 octobre - 1er novembre 1994)"
+                        "Die Welt der Feen im Mittelalter = Le monde des fées dans la culture médiévale II. Tagung auf dem Mont Saint-Michel IIème congrès au Mont Saint-Michel (31 octobre - 1er novembre 1994)"
                     ],
                     "AUTHORS": [
                         "Congrès",
-                        "Centre d'études médiévales Amiens 1974-2008"
+                        "Centre d'études médiévales équipe d'accueil Amiens 1974-2008"
                     ],
                     "PUBLISHERS_NAME": [
                         "Reineke"
@@ -7561,7 +7559,7 @@
                     "ITEMS_BARCODE": [],
                     "ITEMS": []
                 },
-                "fcr_processed_id": "00040Y034",
+                "fcr_processed_id": "00040Y035",
                 "analysis": {
                     "title": {
                         "title_ratio": 20,
@@ -7614,7 +7612,7 @@
                     "ITEMS_BARCODE": [],
                     "ITEMS": []
                 },
-                "fcr_processed_id": "00040Y035",
+                "fcr_processed_id": "00040Y036",
                 "analysis": {
                     "title": {
                         "title_ratio": 18,
@@ -7668,7 +7666,7 @@
                     "ITEMS_BARCODE": [],
                     "ITEMS": []
                 },
-                "fcr_processed_id": "00040Y036",
+                "fcr_processed_id": "00040Y037",
                 "analysis": {
                     "title": {
                         "title_ratio": 18,
@@ -7719,7 +7717,7 @@
                     "ITEMS_BARCODE": [],
                     "ITEMS": []
                 },
-                "fcr_processed_id": "00040Y037",
+                "fcr_processed_id": "00040Y038",
                 "analysis": {
                     "title": {
                         "title_ratio": 18,
@@ -7777,7 +7775,7 @@
                     "ITEMS_BARCODE": [],
                     "ITEMS": []
                 },
-                "fcr_processed_id": "00040Y038",
+                "fcr_processed_id": "00040Y039",
                 "analysis": {
                     "title": {
                         "title_ratio": 24,
@@ -7834,7 +7832,7 @@
                     "ITEMS_BARCODE": [],
                     "ITEMS": []
                 },
-                "fcr_processed_id": "00040Y039",
+                "fcr_processed_id": "00040Y040",
                 "analysis": {
                     "title": {
                         "title_ratio": 28,
@@ -7889,7 +7887,7 @@
                     "ITEMS_BARCODE": [],
                     "ITEMS": []
                 },
-                "fcr_processed_id": "00040Y040",
+                "fcr_processed_id": "00040Y041",
                 "analysis": {
                     "title": {
                         "title_ratio": 71,
@@ -7942,7 +7940,7 @@
                     "ITEMS_BARCODE": [],
                     "ITEMS": []
                 },
-                "fcr_processed_id": "00040Y041",
+                "fcr_processed_id": "00040Y042",
                 "analysis": {
                     "title": {
                         "title_ratio": 67,
@@ -7998,7 +7996,7 @@
                     "ITEMS_BARCODE": [],
                     "ITEMS": []
                 },
-                "fcr_processed_id": "00040Y042",
+                "fcr_processed_id": "00040Y043",
                 "analysis": {
                     "title": {
                         "title_ratio": 57,
@@ -8052,7 +8050,7 @@
                     "ITEMS_BARCODE": [],
                     "ITEMS": []
                 },
-                "fcr_processed_id": "00040Y043",
+                "fcr_processed_id": "00040Y044",
                 "analysis": {
                     "title": {
                         "title_ratio": 40,
@@ -8111,7 +8109,7 @@
                     "ITEMS_BARCODE": [],
                     "ITEMS": []
                 },
-                "fcr_processed_id": "00040Y044",
+                "fcr_processed_id": "00040Y045",
                 "analysis": {
                     "title": {
                         "title_ratio": 31,
@@ -8166,7 +8164,7 @@
                     "ITEMS_BARCODE": [],
                     "ITEMS": []
                 },
-                "fcr_processed_id": "00040Y045",
+                "fcr_processed_id": "00040Y046",
                 "analysis": {
                     "title": {
                         "title_ratio": 39,
@@ -8221,7 +8219,7 @@
                     "ITEMS_BARCODE": [],
                     "ITEMS": []
                 },
-                "fcr_processed_id": "00040Y046",
+                "fcr_processed_id": "00040Y047",
                 "analysis": {
                     "title": {
                         "title_ratio": 22,
@@ -8278,7 +8276,7 @@
                     "ITEMS_BARCODE": [],
                     "ITEMS": []
                 },
-                "fcr_processed_id": "00040Y047",
+                "fcr_processed_id": "00040Y048",
                 "analysis": {
                     "title": {
                         "title_ratio": 36,
@@ -8336,7 +8334,7 @@
                     "ITEMS_BARCODE": [],
                     "ITEMS": []
                 },
-                "fcr_processed_id": "00040Y048",
+                "fcr_processed_id": "00040Y049",
                 "analysis": {
                     "title": {
                         "title_ratio": 35,
@@ -8392,7 +8390,7 @@
                     "ITEMS_BARCODE": [],
                     "ITEMS": []
                 },
-                "fcr_processed_id": "00040Y049",
+                "fcr_processed_id": "00040Y050",
                 "analysis": {
                     "title": {
                         "title_ratio": 100,
@@ -8446,7 +8444,7 @@
                     "ITEMS_BARCODE": [],
                     "ITEMS": []
                 },
-                "fcr_processed_id": "00040Y050",
+                "fcr_processed_id": "00040Y051",
                 "analysis": {
                     "title": {
                         "title_ratio": 38,
@@ -8501,7 +8499,7 @@
                     "ITEMS_BARCODE": [],
                     "ITEMS": []
                 },
-                "fcr_processed_id": "00040Y051",
+                "fcr_processed_id": "00040Y052",
                 "analysis": {
                     "title": {
                         "title_ratio": 29,
@@ -8555,7 +8553,7 @@
                     "ITEMS_BARCODE": [],
                     "ITEMS": []
                 },
-                "fcr_processed_id": "00040Y052",
+                "fcr_processed_id": "00040Y053",
                 "analysis": {
                     "title": {
                         "title_ratio": 36,
@@ -8608,7 +8606,7 @@
                     "ITEMS_BARCODE": [],
                     "ITEMS": []
                 },
-                "fcr_processed_id": "00040Y053",
+                "fcr_processed_id": "00040Y054",
                 "analysis": {
                     "title": {
                         "title_ratio": 25,
@@ -8661,7 +8659,7 @@
                     "ITEMS_BARCODE": [],
                     "ITEMS": []
                 },
-                "fcr_processed_id": "00040Y054",
+                "fcr_processed_id": "00040Y055",
                 "analysis": {
                     "title": {
                         "title_ratio": 29,
@@ -8714,7 +8712,7 @@
                     "ITEMS_BARCODE": [],
                     "ITEMS": []
                 },
-                "fcr_processed_id": "00040Y055",
+                "fcr_processed_id": "00040Y056",
                 "analysis": {
                     "title": {
                         "title_ratio": 24,
@@ -8767,7 +8765,7 @@
                     "ITEMS_BARCODE": [],
                     "ITEMS": []
                 },
-                "fcr_processed_id": "00040Y056",
+                "fcr_processed_id": "00040Y057",
                 "analysis": {
                     "title": {
                         "title_ratio": 23,
@@ -8820,7 +8818,7 @@
                     "ITEMS_BARCODE": [],
                     "ITEMS": []
                 },
-                "fcr_processed_id": "00040Y057",
+                "fcr_processed_id": "00040Y058",
                 "analysis": {
                     "title": {
                         "title_ratio": 77,
@@ -8873,7 +8871,7 @@
                     "ITEMS_BARCODE": [],
                     "ITEMS": []
                 },
-                "fcr_processed_id": "00040Y058",
+                "fcr_processed_id": "00040Y059",
                 "analysis": {
                     "title": {
                         "title_ratio": 65,
@@ -8928,7 +8926,7 @@
                     "ITEMS_BARCODE": [],
                     "ITEMS": []
                 },
-                "fcr_processed_id": "00040Y059",
+                "fcr_processed_id": "00040Y060",
                 "analysis": {
                     "title": {
                         "title_ratio": 63,
@@ -8981,7 +8979,7 @@
                     "ITEMS_BARCODE": [],
                     "ITEMS": []
                 },
-                "fcr_processed_id": "00040Y060",
+                "fcr_processed_id": "00040Y061",
                 "analysis": {
                     "title": {
                         "title_ratio": 87,
@@ -9034,7 +9032,7 @@
                     "ITEMS_BARCODE": [],
                     "ITEMS": []
                 },
-                "fcr_processed_id": "00040Y061",
+                "fcr_processed_id": "00040Y062",
                 "analysis": {
                     "title": {
                         "title_ratio": 100,
@@ -9087,7 +9085,7 @@
                     "ITEMS_BARCODE": [],
                     "ITEMS": []
                 },
-                "fcr_processed_id": "00040Y062",
+                "fcr_processed_id": "00040Y063",
                 "analysis": {
                     "title": {
                         "title_ratio": 42,
@@ -9140,7 +9138,7 @@
                     "ITEMS_BARCODE": [],
                     "ITEMS": []
                 },
-                "fcr_processed_id": "00040Y063",
+                "fcr_processed_id": "00040Y064",
                 "analysis": {
                     "title": {
                         "title_ratio": 100,
@@ -9162,59 +9160,6 @@
                         "result": "PARTIAL_MATCH",
                         "nb_succesful_checks": 1,
                         "title": true,
-                        "publisher": false,
-                        "date": false
-                    }
-                }
-            },
-            "010596844": {
-                "data": {
-                    "GENERAL_PROCESSING_DATA_DATES": [
-                        [
-                            "1879",
-                            "1883"
-                        ]
-                    ],
-                    "ERRONEOUS_ISBN": [],
-                    "TITLE": [
-                        "Chronique du Mont-Saint-Michel (1343-1468)"
-                    ],
-                    "AUTHORS": [
-                        "Luce Siméon"
-                    ],
-                    "PUBLISHERS_NAME": [
-                        "F. Didot"
-                    ],
-                    "EDITION_NOTES": [],
-                    "PUBLICATION_DATES": [
-                        "1879-1883"
-                    ],
-                    "OTHER_DB_ID": [],
-                    "ITEMS_BARCODE": [],
-                    "ITEMS": []
-                },
-                "fcr_processed_id": "00040Y064",
-                "analysis": {
-                    "title": {
-                        "title_ratio": 63,
-                        "title_partial_ratio": 90,
-                        "title_token_sort_ratio": 63,
-                        "title_token_set_ratio": 92
-                    },
-                    "dates": false,
-                    "publishers": {
-                        "score": 20,
-                        "target_db": "f didot",
-                        "origin_db": "du patrimoine centre des monuments nationaux"
-                    },
-                    "other_ids": {
-                        "nb": 0,
-                        "result": "NO_OTHER_DB_ID"
-                    },
-                    "global": {
-                        "result": "NO_MATCH",
-                        "nb_succesful_checks": 0,
-                        "title": false,
                         "publisher": false,
                         "date": false
                     }
@@ -9337,7 +9282,8 @@
                     ],
                     "EDITION_NOTES": [],
                     "PUBLICATION_DATES": [
-                        "cop. 2006"
+                        "",
+                        "C 2006"
                     ],
                     "OTHER_DB_ID": [],
                     "ITEMS_BARCODE": [],
@@ -9494,8 +9440,8 @@
                         "Estienne P. M."
                     ],
                     "PUBLISHERS_NAME": [
-                        "Pyrémonde",
-                        "Editions des régionalismes"
+                        "Editions des régionalismes",
+                        "Pyrémonde"
                     ],
                     "EDITION_NOTES": [],
                     "PUBLICATION_DATES": [
@@ -10093,8 +10039,8 @@
                         "Fumaroli Marc"
                     ],
                     "PUBLISHERS_NAME": [
-                        "Library of America",
-                        "Literary classics of the United States"
+                        "Literary classics of the United States",
+                        "Library of America"
                     ],
                     "EDITION_NOTES": [],
                     "PUBLICATION_DATES": [
@@ -10364,7 +10310,7 @@
                     "AUTHORS": [
                         "Herval René",
                         "Hambourg André",
-                        "Éditions Arthaud Paris"
+                        "Éditions Arthaud Paris 1870-...."
                     ],
                     "PUBLISHERS_NAME": [
                         "B. Arthaud"
@@ -10996,6 +10942,60 @@
                     }
                 }
             },
+            "291218962": {
+                "data": {
+                    "GENERAL_PROCESSING_DATA_DATES": [
+                        [
+                            "2025",
+                            "2025"
+                        ]
+                    ],
+                    "ERRONEOUS_ISBN": [],
+                    "TITLE": [
+                        "Mont Saint-Michel le coeur battant de la baie"
+                    ],
+                    "AUTHORS": [
+                        "Barreau-Gély Norman",
+                        "Okumura Masaki"
+                    ],
+                    "PUBLISHERS_NAME": [
+                        "Éditions E/P/A"
+                    ],
+                    "EDITION_NOTES": [],
+                    "PUBLICATION_DATES": [
+                        "DL 2025"
+                    ],
+                    "OTHER_DB_ID": [],
+                    "ITEMS_BARCODE": [],
+                    "ITEMS": []
+                },
+                "fcr_processed_id": "00040Y098",
+                "analysis": {
+                    "title": {
+                        "title_ratio": 52,
+                        "title_partial_ratio": 85,
+                        "title_token_sort_ratio": 62,
+                        "title_token_set_ratio": 100
+                    },
+                    "dates": false,
+                    "publishers": {
+                        "score": 16,
+                        "target_db": "e p a",
+                        "origin_db": "du patrimoine centre des monuments nationaux"
+                    },
+                    "other_ids": {
+                        "nb": 0,
+                        "result": "NO_OTHER_DB_ID"
+                    },
+                    "global": {
+                        "result": "NO_MATCH",
+                        "nb_succesful_checks": 0,
+                        "title": false,
+                        "publisher": false,
+                        "date": false
+                    }
+                }
+            },
             "135297826": {
                 "data": {
                     "GENERAL_PROCESSING_DATA_DATES": [
@@ -11024,67 +11024,13 @@
                     "ITEMS_BARCODE": [],
                     "ITEMS": []
                 },
-                "fcr_processed_id": "00040Y098",
+                "fcr_processed_id": "00040Y099",
                 "analysis": {
                     "title": {
                         "title_ratio": 66,
                         "title_partial_ratio": 90,
                         "title_token_sort_ratio": 66,
                         "title_token_set_ratio": 100
-                    },
-                    "dates": false,
-                    "publishers": {
-                        "score": 38,
-                        "target_db": "presses universitaires de caen",
-                        "origin_db": "du patrimoine centre des monuments nationaux"
-                    },
-                    "other_ids": {
-                        "nb": 0,
-                        "result": "NO_OTHER_DB_ID"
-                    },
-                    "global": {
-                        "result": "NO_MATCH",
-                        "nb_succesful_checks": 0,
-                        "title": false,
-                        "publisher": false,
-                        "date": false
-                    }
-                }
-            },
-            "134229150": {
-                "data": {
-                    "GENERAL_PROCESSING_DATA_DATES": [
-                        [
-                            "2009",
-                            "    "
-                        ]
-                    ],
-                    "ERRONEOUS_ISBN": [],
-                    "TITLE": [
-                        "Chroniques latines du Mont Saint-Michel, IXe-XIIe siècle"
-                    ],
-                    "AUTHORS": [
-                        "Bouet Pierre",
-                        "Desbordes Olivier"
-                    ],
-                    "PUBLISHERS_NAME": [
-                        "Presses universitaires de Caen"
-                    ],
-                    "EDITION_NOTES": [],
-                    "PUBLICATION_DATES": [
-                        "2009"
-                    ],
-                    "OTHER_DB_ID": [],
-                    "ITEMS_BARCODE": [],
-                    "ITEMS": []
-                },
-                "fcr_processed_id": "00040Y099",
-                "analysis": {
-                    "title": {
-                        "title_ratio": 53,
-                        "title_partial_ratio": 90,
-                        "title_token_sort_ratio": 53,
-                        "title_token_set_ratio": 92
                     },
                     "dates": false,
                     "publishers": {
@@ -12458,7 +12404,7 @@
                     "DL 2008"
                 ],
                 "PHYSICAL_DESCRIPTION": [
-                    "1 vol. (240 p.)"
+                    "1 volume (240 pages)"
                 ]
             },
             "fcr_processed_id": "00053A000"
@@ -13438,14 +13384,14 @@
                 "status": "SUCCESS",
                 "error_type": null,
                 "msg": null,
-                "query": "mti=metric planning data design handbook",
+                "query": "mti=handbook design data planning metric",
                 "returned_ids": [
                     "191158666",
                     "123455588"
                 ]
             }
         },
-        "query_used": "mti=metric planning data design handbook",
+        "query_used": "mti=handbook design data planning metric",
         "action_used": "SRU_SUDOC_MTI",
         "nb_matched_records": 2,
         "matched_records_ids": [
@@ -14794,8 +14740,8 @@
                 ],
                 "PUBLISHERS_NAME": [
                     "Édisud",
-                    "Toubkal",
-                    "Alif"
+                    "Alif",
+                    "Toubkal"
                 ],
                 "EDITION_NOTES": [],
                 "PUBLICATION_DATES": [
@@ -14844,8 +14790,8 @@
                     ],
                     "PUBLISHERS_NAME": [
                         "Édisud",
-                        "Toubkal",
-                        "Alif"
+                        "Alif",
+                        "Toubkal"
                     ],
                     "EDITION_NOTES": [],
                     "PUBLICATION_DATES": [
@@ -16197,11 +16143,11 @@
                 "status": "SUCCESS",
                 "error_type": null,
                 "msg": null,
-                "query": "mti=1982 michael graves buildings 2 1989 projects tome",
+                "query": "mti=1982 1989 projects 2 tome michael buildings graves",
                 "returned_ids": []
             }
         },
-        "query_used": "mti=1982 michael graves buildings 2 1989 projects tome",
+        "query_used": "mti=1982 1989 projects 2 tome michael buildings graves",
         "action_used": "SRU_SUDOC_MTI",
         "nb_matched_records": 0,
         "matched_records_ids": []
@@ -16582,8 +16528,8 @@
                         "Bouttier Michel"
                     ],
                     "PUBLISHERS_NAME": [
-                        "REMPART",
-                        "Deslée de Brouwer"
+                        "Deslée de Brouwer",
+                        "REMPART"
                     ],
                     "EDITION_NOTES": [],
                     "PUBLICATION_DATES": [
@@ -16835,8 +16781,8 @@
                         "Rudel Jean"
                     ],
                     "PUBLISHERS_NAME": [
-                        "Impr. Édit'offset",
-                        "Bordas"
+                        "Bordas",
+                        "Impr. Édit'offset"
                     ],
                     "EDITION_NOTES": [],
                     "PUBLICATION_DATES": [
@@ -17340,7 +17286,7 @@
                     "Noé L."
                 ],
                 "PUBLISHERS_NAME": [
-                    "H. Vial"
+                    "Editions H. Vial"
                 ],
                 "EDITION_NOTES": [],
                 "PUBLICATION_DATES": [
@@ -17388,7 +17334,7 @@
                         "Noé L."
                     ],
                     "PUBLISHERS_NAME": [
-                        "H. Vial"
+                        "Editions H. Vial"
                     ],
                     "EDITION_NOTES": [],
                     "PUBLICATION_DATES": [
@@ -17965,7 +17911,7 @@
                 "status": "SUCCESS",
                 "error_type": null,
                 "msg": null,
-                "query": "mti=court mots tout",
+                "query": "mti=mots tout court",
                 "returned_ids": [
                     "270082867",
                     "232948690",
@@ -17974,7 +17920,7 @@
                 ]
             }
         },
-        "query_used": "mti=court mots tout",
+        "query_used": "mti=mots tout court",
         "action_used": "SRU_SUDOC_MTI",
         "nb_matched_records": 4,
         "matched_records_ids": [
@@ -18023,57 +17969,6 @@
                     "publishers": {
                         "score": 32,
                         "target_db": "tandem image",
-                        "origin_db": "sens et tonka"
-                    },
-                    "other_ids": {
-                        "nb": 0,
-                        "result": "NO_OTHER_DB_ID"
-                    },
-                    "global": {
-                        "result": "NO_MATCH",
-                        "nb_succesful_checks": 0,
-                        "title": false,
-                        "publisher": false,
-                        "date": false
-                    }
-                }
-            },
-            "232948690": {
-                "data": {
-                    "GENERAL_PROCESSING_DATA_DATES": [
-                        [
-                            "1848",
-                            "1871"
-                        ]
-                    ],
-                    "ERRONEOUS_ISBN": [],
-                    "TITLE": [
-                        "[Recueil factice de 98 affiches, proclamations, prospectus in-quarto éditées durant la Révolution de 1848, les élections législatives d'avril et septembre 1848, l'élection présidentielle de décembre 1848 ou les élections législatives de mai 1849, avec une affiche éditée en 1871 ]"
-                    ],
-                    "AUTHORS": [],
-                    "PUBLISHERS_NAME": [
-                        "[éditeurs variés]"
-                    ],
-                    "EDITION_NOTES": [],
-                    "PUBLICATION_DATES": [
-                        "[1848-1871]"
-                    ],
-                    "OTHER_DB_ID": [],
-                    "ITEMS_BARCODE": [],
-                    "ITEMS": []
-                },
-                "fcr_processed_id": "00093Y001",
-                "analysis": {
-                    "title": {
-                        "title_ratio": 12,
-                        "title_partial_ratio": 42,
-                        "title_token_sort_ratio": 12,
-                        "title_token_set_ratio": 27
-                    },
-                    "dates": false,
-                    "publishers": {
-                        "score": 29,
-                        "target_db": "editeurs varies",
                         "origin_db": "sens et tonka"
                     },
                     "other_ids": {
@@ -18469,7 +18364,7 @@
                     "C 1976"
                 ],
                 "PHYSICAL_DESCRIPTION": [
-                    "1 vol. (63 p.)"
+                    "1 volume (63 pages)"
                 ]
             },
             "fcr_processed_id": "00096A000"

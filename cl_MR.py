@@ -390,6 +390,8 @@ class Matched_Records(object):
             else:
                 thisTry.add_returned_ids(res.get_records_id())
                 thisTry.add_returned_records(res.get_records())
+                if res.error_parsing_records:
+                    thisTry.error_occured(Errors.RECORD_PARSING_ERROR)
 
         # Action SRU Koha on data fields (ISBN, Title, Author, Publisher, Date)
         elif action in [

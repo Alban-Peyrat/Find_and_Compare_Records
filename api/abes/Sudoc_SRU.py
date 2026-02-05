@@ -32,9 +32,9 @@ class SRU_Record_Schemas(Enum):
     UNIMARC_SHORT = "uni_b"
     PICA_SHORT = "pica_b"
     PICA_SHORT_FCV_XML = "picaxml_b"
-    MARC21 = "marc21"
-    ISNI_BASIC = "isni-b"
-    ISNI_EXTENDED = "isni-e"
+    # MARC21 = "marc21"
+    # ISNI_BASIC = "isni-b"
+    # ISNI_EXTENDED = "isni-e"
 
 class SRU_Record_Packings(Enum):
     XML = "xml"
@@ -710,17 +710,17 @@ class SRU_Result_Search(object):
             result = re.sub(r"(?<!<srw:records)>\s*(?=(<srw:record>|<\/srw:records>))", self.closing_tags_fix, result)
             result = re.sub(r"(?<=<record>)\s*<", "", result)
             result = re.sub(r">\s*(?=<\/record>)", "", result) # useless ?
-        # Marc 21
-        if record_schema in [SRU_Record_Schemas.MARC21.value]:
-            result = re.sub(r"(?<=<leader>)\s*R>", "", result)
-            result = re.sub(r"(<TD>|<TR>)", "", result)
-            result = re.sub(r"(?<=<\/leader>)\s*<\/record>\s*<\/srw:recordData>\s*<srw:recordPosition>\s*leader\s*<\/srw:recordPosition>\s*<\/srw:record>\s*(?!\s*(<srw:record>|<\/srw:records>))", "", result)
+        # # Marc 21
+        # if record_schema in [SRU_Record_Schemas.MARC21.value]:
+        #     result = re.sub(r"(?<=<leader>)\s*R>", "", result)
+        #     result = re.sub(r"(<TD>|<TR>)", "", result)
+        #     result = re.sub(r"(?<=<\/leader>)\s*<\/record>\s*<\/srw:recordData>\s*<srw:recordPosition>\s*leader\s*<\/srw:recordPosition>\s*<\/srw:record>\s*(?!\s*(<srw:record>|<\/srw:records>))", "", result)
         # ISNI Basic & ISNI Extended
-        elif record_schema in [SRU_Record_Schemas.ISNI_BASIC.value,
-                SRU_Record_Schemas.ISNI_EXTENDED.value,]:
-            result = self.fix_angle_brackets()
-            result = re.sub(r"</a>\s*<TR>", "</a></TD></TR>", result)
-            result = re.sub(r"(?<=</TR>)\s*(?=(<srw:record>|<\/srw:records>))", self.closing_tags_fix, result)
+        # elif record_schema in [SRU_Record_Schemas.ISNI_BASIC.value,
+        #         SRU_Record_Schemas.ISNI_EXTENDED.value,]:
+        #     result = self.fix_angle_brackets()
+        #     result = re.sub(r"</a>\s*<TR>", "</a></TD></TR>", result)
+        #     result = re.sub(r"(?<=</TR>)\s*(?=(<srw:record>|<\/srw:records>))", self.closing_tags_fix, result)
         # Fix srw:query not correcting < and > and failing parsing
         fix_srw_query_pattern = r"(<srw:query>.*<\/srw:query>)"
         has_matched = re.search(fix_srw_query_pattern, result)
@@ -745,9 +745,12 @@ class SRU_Result_Search(object):
         self.query = query
         
         # Calculated infos
-        self.nb_results = self.get_nb_results()
+        self.legacy_nb_results = self.get_legacy_nb_results()
+        self.legacy_all_records = self.get_legacy_all_records()
         self.records = self.get_records()
         self.records_id = self.get_records_id()
+        self.nb_results = self.get_nb_results()
+        self.error_parsing_records = not len(self.legacy_all_records) == self.nb_results
 
     def get_result(self):
             """Return the result as a string or ET Element depending the chosen recordPacking"""
@@ -761,7 +764,7 @@ class SRU_Result_Search(object):
         """Return the error message."""
         return str(self.error)
 
-    def get_nb_results(self):
+    def get_legacy_nb_results(self):
         """Return the number of results as an int."""
         if self.result_as_parsed_xml.findall("srw:numberOfRecords", XML_NS):
             # Somehow FCR crashed because the text was None
@@ -772,7 +775,11 @@ class SRU_Result_Search(object):
         else: # Prbly not encessary in this SRU
             return 0
 
-    def get_records(self):
+    def get_nb_results(self):
+        """Return the number of results as an int."""
+        return len(self.records)
+
+    def get_legacy_all_records(self):
         """Returns all records as a list"""
         records = self.result_as_parsed_xml.findall(".//srw:record", XML_NS)
         if self.record_packing == SRU_Record_Packings.XML.value:
@@ -785,6 +792,55 @@ class SRU_Result_Search(object):
         else:
             return []
     
+    def get_records(self):
+        """Returns all records with a record ID as a list"""
+        output = []
+        for record in self.legacy_all_records:
+            if self.__get_singular_record_id(record) != None:
+                output.append(record)
+        return output
+
+    def __get_singular_record_id(self, record) -> str|None:
+        """Returns the record ID for a singular record.
+        If record has no ID, return None"""
+        if self.record_packing == SRU_Record_Packings.STRING.value:
+            record = ET.fromstring(record)
+        # Controlfield 001 search
+        # /!\ Always chekc if we find a 001 first as some records are incompelte
+        # https://stp.abes.fr/node/84786/edit?origine=sudoc
+        # Ex : PPN 244159432
+        if self.record_schema in [
+            SRU_Record_Schemas.UNIMARC.value,
+            SRU_Record_Schemas.UNIMARC_SHORT.value,
+        ]:
+            if record.find(".//controlfield[@tag='001']") != None:
+                return record.find(".//controlfield[@tag='001']").text
+        # Datafield 003@ $0 search
+        elif self.record_schema in [
+            SRU_Record_Schemas.PICA.value,
+            SRU_Record_Schemas.PICA_SHORT.value,
+        ]:
+            if record.find(".//datafield[@tag='003@']/subfield[@code='0']") != None:
+                return record.find(".//datafield[@tag='003@']/subfield[@code='0']").text
+        # Tag 003@ $0 search
+        elif self.record_schema in [
+            SRU_Record_Schemas.PICA_XML.value,
+            SRU_Record_Schemas.PICA_SHORT_FCV_XML.value,
+        ]:
+            if record.find(".//ppxml:tag[@id='003@']/ppxml:subf[@id='0']", XML_NS) != None:
+                return record.find(".//ppxml:tag[@id='003@']/ppxml:subf[@id='0']", XML_NS).text
+        # TR TD a href search
+        # elif self.record_schema in [
+        #     SRU_Record_Schemas.ISNI_BASIC.value,
+        #     SRU_Record_Schemas.ISNI_EXTENDED.value
+        # ]:
+        #     output.append(re.findall(r"(?<=https:\/\/www\.sudoc\.fr\/)\d{8}[\d|X]", record.find(".//TR/TD/a").attrib["href"])[0])
+        # elif self.record_schema in [SRU_Record_Schemas.MARC21.value]:
+        #     output.append(re.findall(r"(?<=https:\/\/www\.sudoc\.fr\/)\d{8}[\d|X]", record.find(".//leader/a").attrib["href"])[0])
+        
+        # By default, return None
+        return None
+
     def get_records_id(self):
         """Returns all records as a list of strings"""
         # Don't have values (or can't be parsed)
@@ -793,43 +849,19 @@ class SRU_Result_Search(object):
             SRU_Record_Schemas.PICA_SHORT_FCV_XML.value, # also can't be parsed
             # ↓ those can't be parsed
             # SRU_Record_Schemas.PICA_XML.value,
+            # Support dropped ↓
             # SRU_Record_Schemas.MARC21.value,
             # SRU_Record_Schemas.ISNI_BASIC.value,
             # SRU_Record_Schemas.ISNI_EXTENDED.value
         ]:
             return []
         
-        records = self.get_records()
+        records = self.get_legacy_all_records()
         output = []
         for record in records:
-            if self.record_packing == SRU_Record_Packings.STRING.value:
-                record = ET.fromstring(record)
-            # Controlfield 001 search
-            if self.record_schema in [
-                SRU_Record_Schemas.UNIMARC.value,
-                SRU_Record_Schemas.UNIMARC_SHORT.value,
-            ]:
-                output.append(record.find(".//controlfield[@tag='001']").text)
-            # Datafield 003@ $0 search
-            elif self.record_schema in [
-                SRU_Record_Schemas.PICA.value,
-                SRU_Record_Schemas.PICA_SHORT.value,
-            ]:
-                output.append(record.find(".//datafield[@tag='003@']/subfield[@code='0']").text)
-            # Tag 003@ $0 search
-            elif self.record_schema in [
-                SRU_Record_Schemas.PICA_XML.value,
-                SRU_Record_Schemas.PICA_SHORT_FCV_XML.value,
-            ]:
-                output.append(record.find(".//ppxml:tag[@id='003@']/ppxml:subf[@id='0']", XML_NS).text)
-            # TR TD a href search
-            elif self.record_schema in [
-                SRU_Record_Schemas.ISNI_BASIC.value,
-                SRU_Record_Schemas.ISNI_EXTENDED.value
-            ]:
-                output.append(re.findall(r"(?<=https:\/\/www\.sudoc\.fr\/)\d{8}[\d|X]", record.find(".//TR/TD/a").attrib["href"])[0])
-            elif self.record_schema in [SRU_Record_Schemas.MARC21.value]:
-                output.append(re.findall(r"(?<=https:\/\/www\.sudoc\.fr\/)\d{8}[\d|X]", record.find(".//leader/a").attrib["href"])[0])
+            record_id = self.__get_singular_record_id(record)
+            if record_id != None:
+                output.append(record_id)
         return output
 
     def fix_angle_brackets(self):

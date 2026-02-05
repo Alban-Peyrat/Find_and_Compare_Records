@@ -6,6 +6,16 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ## [Unreleased]
 
+## [2.0.4] - 2026-02-05
+
+### Added
+
+* In JSON result file, match records try on Sudoc SRU action will be flagged as errors if some record had a parsing error. This does not prevent the action from succeeding if some record IDs were returned.
+
+### Fixed
+
+* Updated `Abes_SRU` version to include a fix preventing crashes when a record does not have a record ID
+
 ## [2.0.3] - 2025-04-09
 
 ### Fixed

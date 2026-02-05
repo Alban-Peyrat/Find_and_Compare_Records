@@ -22,6 +22,7 @@ class Errors(Enum):
     REQUIRED_PUBLISHER_MISSING = 12
     REQUIRED_DATE_MISSING = 13
     UNSUPPORTED_DOCTYPE = 14
+    RECORD_PARSING_ERROR = 15
 
 class Error(object):
     def __init__(self, error:Errors, msg:Dict[str, str]) -> None:
@@ -143,6 +144,13 @@ ERRORS_LIST = {
         msg={
             "eng":"This document type is not supported",
             "fre":"Ce type de document n'est pas supporté"
+        }
+    ),
+    Errors.RECORD_PARSING_ERROR:Error(
+        error=Errors.RECORD_PARSING_ERROR,
+        msg={
+            "eng":"Some records had a parsing error",
+            "fre":"Certains notices ont une erreur de parsing"
         }
     )
 }
