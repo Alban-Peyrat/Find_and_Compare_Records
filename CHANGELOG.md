@@ -6,6 +6,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ## [Unreleased]
 
+## [2.1.0] - 2026-02-25
+
+### Changed
+
+* Processing `BETTER_ITEM_MAPS` now does not query on the author. A new proecssing `BETTER_ITEM_MAPS_LEGACY_AUT` can be used to still query on the author
+* Now logs a warning instead of an error if match records does not found any results for a record
+
 ## [2.0.4] - 2026-02-05
 
 ### Added

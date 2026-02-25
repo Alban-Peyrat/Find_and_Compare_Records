@@ -77,7 +77,8 @@ def main(es: Execution_Settings):
         Processing_Names.BETTER_ITEM,
         Processing_Names.BETTER_ITEM_DVD,
         Processing_Names.BETTER_ITEM_NO_ISBN,
-        Processing_Names.BETTER_ITEM_MAPS
+        Processing_Names.BETTER_ITEM_MAPS,
+        Processing_Names.BETTER_ITEM_MAPS_LEGACY_AUT
         ]:
         es.log.simple_info("Koha URL", es.origin_url)
         es.log.simple_info("ILN", es.iln)
@@ -129,7 +130,8 @@ def main(es: Execution_Settings):
             Processing_Names.BETTER_ITEM,
             Processing_Names.BETTER_ITEM_DVD,
             Processing_Names.BETTER_ITEM_NO_ISBN,
-            Processing_Names.BETTER_ITEM_MAPS
+            Processing_Names.BETTER_ITEM_MAPS,
+            Processing_Names.BETTER_ITEM_MAPS_LEGACY_AUT
             ]:
             origin_record = Koha_API_PublicBiblio.Koha_API_PublicBiblio(rec.original_uid, es.origin_url, service=es.service, format="application/marcxml+xml")
             if origin_record.status == 'Error' :
@@ -170,7 +172,10 @@ def main(es: Execution_Settings):
         if rec.error:
             results_report.increase_step(Report_Errors.MATCH_RECORD_NO_MATCH) # report stats
             results_report.increase_match_records_actions(rec.matched_record_instance.tries)
-            es.log.error(rec.error_message)
+            if rec.matched_record_instance.error == Errors.NOTHING_WAS_FOUND:
+                es.log.warning(rec.error_message)
+            else:
+                es.log.error(rec.error_message)
             
             # Skip to next line
             es.csv.write_line(rec, False)
@@ -199,7 +204,8 @@ def main(es: Execution_Settings):
                 Processing_Names.BETTER_ITEM,
                 Processing_Names.BETTER_ITEM_DVD,
                 Processing_Names.BETTER_ITEM_NO_ISBN,
-                Processing_Names.BETTER_ITEM_MAPS
+                Processing_Names.BETTER_ITEM_MAPS,
+                Processing_Names.BETTER_ITEM_MAPS_LEGACY_AUT
                 ]:
                 if "SRU_SUDOC" in rec.action_used.name:
                     record_list = rec.matched_records_ids
@@ -222,7 +228,8 @@ def main(es: Execution_Settings):
                 Processing_Names.BETTER_ITEM,
                 Processing_Names.BETTER_ITEM_DVD,
                 Processing_Names.BETTER_ITEM_NO_ISBN,
-                Processing_Names.BETTER_ITEM_MAPS
+                Processing_Names.BETTER_ITEM_MAPS,
+                Processing_Names.BETTER_ITEM_MAPS_LEGACY_AUT
                 ]:
                 target_db_queried_record = AbesXml.AbesXml(rec.matched_id,service=es.service)
                 if target_db_queried_record.status == 'Error':

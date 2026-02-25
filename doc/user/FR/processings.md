@@ -51,6 +51,19 @@ Ce traitement recherche uniquement à partir des informations contenues dans la 
 Il lance jusqu'à 6 actions différentes pour un même document :
 
 * Il interroge le webservice `ean2ppn` de l'Abes
+* Il interroge le SRU du Sudoc sur les cartes avec le titre, l'éditeur et les dates de publications sur leurs index spécifiques __si toutes ces données sont présentes dans la notice__
+* Il interroge le SRU du Sudoc sur les cartes avec le titre et les dates de publications sur leurs index spécifiques __si toutes ces données sont présentes dans la notice__
+* Il interroge le SRU du Sudoc sur les cartes avec le titre, l'éditeur et les dates de publications sur l'index général __si toutes ces données sont présentes dans la notice__
+* Il interroge le SRU du Sudoc sur les cartes avec le titre et l'éditeur sur l'index général __si toutes ces données sont présentes dans la notice__
+* Il interroge le SRU du Sudoc sur les cartes avec le titre sur son index spécifique
+
+### `BETTER_ITEM_MAPS_LEGACY_AUT`
+
+Ce traitement recherche uniquement à partir des informations contenues dans la notice de la base de données d'origine récupérée par FCR.
+
+Il lance jusqu'à 6 actions différentes pour un même document :
+
+* Il interroge le webservice `ean2ppn` de l'Abes
 * Il interroge le SRU du Sudoc sur les cartes avec le titre, les auteurs, l'éditeur et les dates de publications sur leurs index spécifiques __si toutes ces données sont présentes dans la notice__
 * Il interroge le SRU du Sudoc sur les cartes avec le titre, les auteurs et les dates de publications sur leurs index spécifiques __si toutes ces données sont présentes dans la notice__
 * Il interroge le SRU du Sudoc sur les cartes avec le titre, les auteurs, l'éditeur et les dates de publications sur l'index général __si toutes ces données sont présentes dans la notice__

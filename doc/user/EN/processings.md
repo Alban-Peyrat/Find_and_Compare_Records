@@ -51,6 +51,19 @@ This processing only searches based on data from the origin database record retr
 It launches up to 6 different actions for the same record :
 
 * Queries Abes `ean2ppn`
+* Queries Sudoc SRU on maps using title, the publisher & publication dates on their specific index __if they were all found in the record__
+* Queries Sudoc SRU on maps using title & publication dates on their specific index __if they were all found in the record__
+* Queries Sudoc SRU on maps using title, the publisher & publication dates on the _any_ index __if they were all found in the record__
+* Queries Sudoc SRU on maps using title & the publisher on the _any_ index __if they were all found in the record__
+* Queries Sudoc SRU on maps using title on its specific index
+
+### `BETTER_ITEM_MAPS_LEGACY_AUT`
+
+This processing only searches based on data from the origin database record retrieved by FCR.
+
+It launches up to 6 different actions for the same record :
+
+* Queries Abes `ean2ppn`
 * Queries Sudoc SRU on maps using title, authors, the publisher & publication dates on their specific index __if they were all found in the record__
 * Queries Sudoc SRU on maps using title, authors & publication dates on their specific index __if they were all found in the record__
 * Queries Sudoc SRU on maps using title, authors, the publisher & publication dates on the _any_ index __if they were all found in the record__

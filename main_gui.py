@@ -210,7 +210,8 @@ PROCESSING_CONFIGURATION_SCREEN_MAIN_TAB_LAYOUT = [
                 Processing_Names.BETTER_ITEM.name,
                 Processing_Names.BETTER_ITEM_DVD.name,
                 Processing_Names.BETTER_ITEM_NO_ISBN.name,
-                Processing_Names.BETTER_ITEM_MAPS.name
+                Processing_Names.BETTER_ITEM_MAPS.name,
+                Processing_Names.BETTER_ITEM_MAPS_LEGACY_AUT.name
             ]}
         )
     ],
@@ -224,7 +225,8 @@ PROCESSING_CONFIGURATION_SCREEN_MAIN_TAB_LAYOUT = [
                 Processing_Names.BETTER_ITEM.name,
                 Processing_Names.BETTER_ITEM_DVD.name,
                 Processing_Names.BETTER_ITEM_NO_ISBN.name,
-                Processing_Names.BETTER_ITEM_MAPS.name
+                Processing_Names.BETTER_ITEM_MAPS.name,
+                Processing_Names.BETTER_ITEM_MAPS_LEGACY_AUT.name
             ]}
         )
     ],
@@ -264,7 +266,8 @@ PROCESSING_CONFIGURATION_SCREEN_MAIN_TAB_LAYOUT = [
                 Processing_Names.BETTER_ITEM.name,
                 Processing_Names.BETTER_ITEM_DVD.name,
                 Processing_Names.BETTER_ITEM_NO_ISBN.name,
-                Processing_Names.BETTER_ITEM_MAPS.name
+                Processing_Names.BETTER_ITEM_MAPS.name,
+                Processing_Names.BETTER_ITEM_MAPS_LEGACY_AUT.name
             ]}
         ),
         sg.Input(
@@ -276,7 +279,8 @@ PROCESSING_CONFIGURATION_SCREEN_MAIN_TAB_LAYOUT = [
                 Processing_Names.BETTER_ITEM.name,
                 Processing_Names.BETTER_ITEM_DVD.name,
                 Processing_Names.BETTER_ITEM_NO_ISBN.name,
-                Processing_Names.BETTER_ITEM_MAPS.name
+                Processing_Names.BETTER_ITEM_MAPS.name,
+                Processing_Names.BETTER_ITEM_MAPS_LEGACY_AUT.name
             ]}
         ),
         sg.Text(
@@ -306,7 +310,8 @@ PROCESSING_CONFIGURATION_SCREEN_MAIN_TAB_LAYOUT = [
                 Processing_Names.BETTER_ITEM.name,
                 Processing_Names.BETTER_ITEM_DVD.name,
                 Processing_Names.BETTER_ITEM_NO_ISBN.name,
-                Processing_Names.BETTER_ITEM_MAPS.name
+                Processing_Names.BETTER_ITEM_MAPS.name,
+                Processing_Names.BETTER_ITEM_MAPS_LEGACY_AUT.name
             ]}
         ),
         sg.Input(
@@ -318,7 +323,8 @@ PROCESSING_CONFIGURATION_SCREEN_MAIN_TAB_LAYOUT = [
                 Processing_Names.BETTER_ITEM.name,
                 Processing_Names.BETTER_ITEM_DVD.name,
                 Processing_Names.BETTER_ITEM_NO_ISBN.name,
-                Processing_Names.BETTER_ITEM_MAPS.name
+                Processing_Names.BETTER_ITEM_MAPS.name,
+                Processing_Names.BETTER_ITEM_MAPS_LEGACY_AUT.name
             ]}
         ),
         sg.Text(

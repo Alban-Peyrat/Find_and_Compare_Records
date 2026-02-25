@@ -256,7 +256,11 @@ class Matched_Records(object):
                 Action_Names.SRU_SUDOC_MTI,
                 Action_Names.SRU_SUDOC_MTI_TDO_B,
                 Action_Names.SRU_SUDOC_MTI_TDO_K,
-                Action_Names.SRU_SUDOC_MTI_TDO_V
+                Action_Names.SRU_SUDOC_MTI_TDO_V,
+                Action_Names.SRU_SUDOC_MTI_EDI_APU_TDO_K,
+                Action_Names.SRU_SUDOC_MTI_APU_TDO_K,
+                Action_Names.SRU_SUDOC_TOU_TITLE_PUBLISHER_DATE_TDO_K,
+                Action_Names.SRU_SUDOC_TOU_TITLE_PUBLISHER_TDO_K
                 ]:
             action_instance = get_PODA_instance(action, Action_Names)
             # Leaves if it does nto find the action 

@@ -238,7 +238,8 @@ class Execution_Settings(object):
                 Processing_Names.BETTER_ITEM,
                 Processing_Names.BETTER_ITEM_DVD,
                 Processing_Names.BETTER_ITEM_NO_ISBN,
-                Processing_Names.BETTER_ITEM_MAPS
+                Processing_Names.BETTER_ITEM_MAPS,
+                Processing_Names.BETTER_ITEM_MAPS_LEGACY_AUT
             ]:
             with open(self.file_path, 'r', newline="", encoding="utf-8") as fh:
                 csvdata = csv.DictReader(fh, delimiter=";")
@@ -537,6 +538,10 @@ class Execution_Settings(object):
         def error(self, msg:str):
             """Log a error statement logging first the service then the message"""
             self.logger.error(f"{self.parent.service} :: {msg}")
+
+        def warning(self, msg:str):
+            """Log a warning statement logging first the service then the message"""
+            self.logger.warning(f"{self.parent.service} :: {msg}")
 
     # --- CSV methods for other classes / functions ---
     class CSV(object):

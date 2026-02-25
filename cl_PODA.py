@@ -40,6 +40,10 @@ class Action_Names(Enum):
     SRU_SUDOC_MTI_TDO_B = 27
     SRU_SUDOC_MTI_TDO_K = 28
     SRU_SUDOC_MTI_TDO_V = 29
+    SRU_SUDOC_MTI_EDI_APU_TDO_K = 30
+    SRU_SUDOC_MTI_APU_TDO_K = 31
+    SRU_SUDOC_TOU_TITLE_PUBLISHER_DATE_TDO_K = 32
+    SRU_SUDOC_TOU_TITLE_PUBLISHER_TDO_K = 33
 
 class Action(object):
     def __init__(self, action:Action_Names, isbn:bool=False, ean:bool=False, title:bool=False, authors:bool=False, publisher:bool=False, date:bool=False, doctype:str="", specific_index:bool=True) -> None:
@@ -264,6 +268,35 @@ ACTIONS_LIST = {
         action=Action_Names.SRU_SUDOC_MTI_TDO_V,
         title=True,
         doctype="V"
+    ),
+    Action_Names.SRU_SUDOC_MTI_EDI_APU_TDO_K: Action(
+        action=Action_Names.SRU_SUDOC_MTI_EDI_APU_TDO_K,
+        title=True,
+        publisher=True,
+        date=True,
+        doctype="K"
+    ),
+    Action_Names.SRU_SUDOC_MTI_APU_TDO_K: Action(
+        action=Action_Names.SRU_SUDOC_MTI_APU_TDO_K,
+        title=True,
+        publisher=True,
+        date=True,
+        doctype="K"
+    ),
+    Action_Names.SRU_SUDOC_TOU_TITLE_PUBLISHER_DATE_TDO_K: Action(
+        action=Action_Names.SRU_SUDOC_TOU_TITLE_PUBLISHER_DATE_TDO_K,
+        title=True,
+        publisher=True,
+        date=True,
+        doctype="K",
+        specific_index=False
+    ),
+    Action_Names.SRU_SUDOC_TOU_TITLE_PUBLISHER_TDO_K: Action(
+        action=Action_Names.SRU_SUDOC_TOU_TITLE_PUBLISHER_TDO_K,
+        title=True,
+        publisher=True,
+        doctype="K",
+        specific_index=False
     )
 }
 
@@ -323,6 +356,7 @@ class Operation_Names(Enum):
     SEARCH_IN_KOHA_SRU_VANILLA = 5
     SEARCH_IN_SUDOC_NO_ISBN = 6
     SEARCH_IN_SUDOC_MAPS = 7
+    SEARCH_IN_SUDOC_MAPS_LEGACY_AUT = 8
 
 class Operation(object):
     def __init__(self, operation: Operation_Names, actions:List[Action_Names]) -> None:
@@ -396,6 +430,17 @@ OPERATIONS_LIST = {
         operation=Operation_Names.SEARCH_IN_SUDOC_MAPS,
         actions=[
             Action_Names.EAN2PPN,
+            Action_Names.SRU_SUDOC_MTI_EDI_APU_TDO_K,
+            Action_Names.SRU_SUDOC_MTI_APU_TDO_K,
+            Action_Names.SRU_SUDOC_TOU_TITLE_PUBLISHER_DATE_TDO_K,
+            Action_Names.SRU_SUDOC_TOU_TITLE_PUBLISHER_TDO_K,
+            Action_Names.SRU_SUDOC_MTI_TDO_K
+        ]
+    ),
+    Operation_Names.SEARCH_IN_SUDOC_MAPS_LEGACY_AUT:Operation(
+        operation=Operation_Names.SEARCH_IN_SUDOC_MAPS,
+        actions=[
+            Action_Names.EAN2PPN,
             Action_Names.SRU_SUDOC_MTI_AUT_EDI_APU_TDO_K,
             Action_Names.SRU_SUDOC_MTI_AUT_APU_TDO_K,
             Action_Names.SRU_SUDOC_TOU_TITLE_AUTHOR_PUBLISHER_DATE_TDO_K,
@@ -412,6 +457,7 @@ class Processing_Names(Enum):
     BETTER_ITEM_DVD = 2
     BETTER_ITEM_NO_ISBN = 3
     BETTER_ITEM_MAPS = 4
+    BETTER_ITEM_MAPS_LEGACY_AUT = 5
 
 class Processing_Data_Target(Enum):
     ORIGIN = 0
@@ -550,6 +596,34 @@ PROCESSINGS_LIST = {
             Mapped_Fields.GEOGRAPHICAL_SUBJECT: Processing_Data_Target.BOTH,
         },
         operation=OPERATIONS_LIST[Operation_Names.SEARCH_IN_SUDOC_MAPS],
+        origin_database=DATABASES_LIST[Database_Names.KOHA_PUBLIC_BIBLIO],
+        target_database=DATABASES_LIST[Database_Names.ABESXML],
+        original_file_data_is_csv=True
+    ),
+    Processing_Names.BETTER_ITEM_MAPS_LEGACY_AUT:Processing(
+        processing=Processing_Names.BETTER_ITEM_MAPS_LEGACY_AUT,
+        mapped_data={
+            Mapped_Fields.ID: Processing_Data_Target.ORIGIN,
+            Mapped_Fields.PPN: Processing_Data_Target.ORIGIN,
+            Mapped_Fields.GENERAL_PROCESSING_DATA_DATES: Processing_Data_Target.BOTH,
+            Mapped_Fields.EAN: Processing_Data_Target.BOTH,
+            Mapped_Fields.TITLE: Processing_Data_Target.BOTH,
+            Mapped_Fields.AUTHORS: Processing_Data_Target.BOTH,
+            Mapped_Fields.PUBLISHERS_NAME: Processing_Data_Target.BOTH,
+            Mapped_Fields.EDITION_NOTES: Processing_Data_Target.BOTH,
+            Mapped_Fields.PHYSICAL_DESCRIPTION: Processing_Data_Target.BOTH,
+            Mapped_Fields.PUBLICATION_DATES: Processing_Data_Target.BOTH,
+            Mapped_Fields.CONTENTS_NOTES: Processing_Data_Target.ORIGIN,
+            Mapped_Fields.OTHER_DB_ID: Processing_Data_Target.TARGET,
+            Mapped_Fields.ITEMS_BARCODE: Processing_Data_Target.TARGET,
+            Mapped_Fields.ITEMS: Processing_Data_Target.TARGET,
+            Mapped_Fields.MAPS_HORIZONTAL_SCALE: Processing_Data_Target.BOTH,
+            Mapped_Fields.MAPS_MATHEMATICAL_DATA: Processing_Data_Target.BOTH,
+            Mapped_Fields.SERIES: Processing_Data_Target.BOTH,
+            Mapped_Fields.SERIES_LINK: Processing_Data_Target.BOTH,
+            Mapped_Fields.GEOGRAPHICAL_SUBJECT: Processing_Data_Target.BOTH,
+        },
+        operation=OPERATIONS_LIST[Operation_Names.SEARCH_IN_SUDOC_MAPS_LEGACY_AUT],
         origin_database=DATABASES_LIST[Database_Names.KOHA_PUBLIC_BIBLIO],
         target_database=DATABASES_LIST[Database_Names.ABESXML],
         original_file_data_is_csv=True
